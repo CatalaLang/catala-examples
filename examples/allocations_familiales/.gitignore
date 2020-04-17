@@ -1,0 +1,12 @@
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.fls
+wrapper*.pdf
+allocations_familiales*.tex
+_minted*
+*.toc
+*.pyg
