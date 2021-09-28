@@ -1,4 +1,4 @@
 CATALA_LANG=fr
-SRC=tutoriel_fr.catala_fr
+SRC=droit_successions.catala_fr
 
 include ../Makefile.common.mk
