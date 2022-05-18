@@ -1,16 +1,16 @@
-> Inclusion: ../allocations_familiales.catala_fr
+> Inclusion: ../prestations_familiales.catala_fr
 
 # Tests
 
 ```catala
 déclaration champ d'application Données:
-  sortie enfant1 contenu Enfant
-  sortie enfant2 contenu Enfant
-  sortie enfant3 contenu Enfant
-  sortie enfant4 contenu Enfant
+  sortie enfant1 contenu EnfantPrestationsFamiliales
+  sortie enfant2 contenu EnfantPrestationsFamiliales
+  sortie enfant3 contenu EnfantPrestationsFamiliales
+  sortie enfant4 contenu EnfantPrestationsFamiliales
 
 champ d'application Données:
-  définition enfant1 égal à Enfant {
+  définition enfant1 égal à EnfantPrestationsFamiliales {
     -- identifiant: 1
     -- obligation_scolaire : Pendant
     -- date_de_naissance: |2007-01-01|
@@ -20,7 +20,7 @@ champ d'application Données:
     -- a_déjà_ouvert_droit_aux_allocations_familiales: vrai
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
-  définition enfant2 égal à Enfant {
+  définition enfant2 égal à EnfantPrestationsFamiliales {
     -- identifiant: 2
     -- obligation_scolaire : Après
     -- date_de_naissance: |2003-01-01|
@@ -30,7 +30,7 @@ champ d'application Données:
     -- a_déjà_ouvert_droit_aux_allocations_familiales: vrai
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
-  définition enfant3 égal à Enfant {
+  définition enfant3 égal à EnfantPrestationsFamiliales {
     -- identifiant: 3
     -- obligation_scolaire : Après
     -- date_de_naissance: |2003-01-01|
@@ -40,7 +40,7 @@ champ d'application Données:
     -- a_déjà_ouvert_droit_aux_allocations_familiales: vrai
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
-  définition enfant4 égal à Enfant {
+  définition enfant4 égal à EnfantPrestationsFamiliales {
     -- identifiant: 4
     -- obligation_scolaire : Après
     -- date_de_naissance: |1999-01-01|
@@ -53,7 +53,7 @@ champ d'application Données:
 
 déclaration champ d'application Test1:
   données champ d'application Données
-  f champ d'application PrestationsFamiliales
+  f champ d'application ÉligibilitéPrestationsFamiliales
 
 champ d'application Test1:
   définition f.date_courante égal à |2020-05-01|
