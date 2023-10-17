@@ -2,14 +2,12 @@
 # Variables
 ##########################################
 
-LATEXMK?=latexmk
+LATEXMK ?= latexmk
 
-CURR_DIR=examples/$(shell basename $(shell pwd))/
+CURR_DIR = $(notdir $(CURDIR))/
 
-CATALA=cd ../../; _build/default/compiler/catala.exe
+CATALA ?= catala
 CATALA_OPTS := $(CATALA_OPTS) --language=$(CATALA_LANG)
-
-PLUGIN_DIR=_build/default/compiler/plugins
 
 help : ../Makefile.common.mk
 	@sed -n 's/^#> //p' $<
@@ -35,14 +33,12 @@ help : ../Makefile.common.mk
 %_api_web.ml: %.catala_$(CATALA_LANG)
 	@$(CATALA) Makefile $(CATALA_OPTS) $(CURR_DIR)$<
 	$(CATALA) api_web $(CATALA_OPTS) \
-		--plugin-dir=$(PLUGIN_DIR) \
 		$(CURR_DIR)$<
 
 #> SCOPE=<ScopeName> <target_file>_api_web.ml	: Generates the JSON schema
 %_schema.json: %.catala_$(CATALA_LANG)
 	@$(CATALA) Makefile $(CATALA_OPTS) $(CURR_DIR)$<
 	$(CATALA) json_schema $(CATALA_OPTS) \
-		--plugin-dir=$(PLUGIN_DIR) \
 		-s $(SCOPE) \
 		$(CURR_DIR)$<
 

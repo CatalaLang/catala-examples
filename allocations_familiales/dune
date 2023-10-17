@@ -1,0 +1,37 @@
+(rule
+ (targets allocations_familiales.ml allocations_familiales_api_web.ml)
+ (deps (source_tree ..))
+ (action
+   (run catala api_web -C %{workspace_root} -t
+    %{dep:allocations_familiales.catala_fr})))
+
+(rule
+ (targets allocations_familiales_schema.json)
+ (deps (source_tree ..))
+ (action
+  (run catala json_schema -C %{workspace_root} -t
+    --scope InterfaceAllocationsFamiliales
+    %{dep:allocations_familiales.catala_fr})))
+
+(rule
+ (target allocations_familiales.py)
+ (deps (source_tree ..))
+ (action
+   (run catala Python -C %{workspace_root} -O
+     %{dep:allocations_familiales.catala_fr})))
+
+(library
+ (name allocations_familiales)
+ (public_name catala-examples.allocations_familiales)
+ (wrapped false)
+ (modules allocations_familiales allocations_familiales_api_web)
+ (preprocess (per_module ((pps js_of_ocaml-ppx) allocations_familiales_api_web)))
+ (libraries catala.runtime_ocaml catala.runtime_jsoo))
+
+(install
+ (files
+  (allocations_familiales_schema.json
+   as allocations_familiales/allocations_familiales_schema.json)
+  (allocations_familiales.py
+   as allocations_familiales/allocations_familiales.py))
+ (section lib))
