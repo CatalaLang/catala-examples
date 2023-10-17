@@ -20,6 +20,20 @@
    (run catala Python -C %{workspace_root} -O
      %{dep:allocations_familiales.catala_fr})))
 
+(rule
+ (target allocations_familiales.tex)
+ (deps (source_tree ..))
+ (action
+   (run catala latex -C %{workspace_root}
+    %{dep:allocations_familiales.catala_fr})))
+
+(rule
+ (target allocations_familiales.html)
+ (deps (source_tree ..))
+ (action
+   (run catala html -C %{workspace_root}
+    %{dep:allocations_familiales.catala_fr})))
+
 (library
  (name allocations_familiales)
  (public_name catala-examples.allocations_familiales)
@@ -35,3 +49,11 @@
   (allocations_familiales.py
    as allocations_familiales/allocations_familiales.py))
  (section lib))
+
+(install
+ (files
+  (allocations_familiales.html
+   as allocations_familiales/allocations_familiales.html)
+  (allocations_familiales.tex
+   as allocations_familiales/allocations_familiales.tex))
+ (section doc))

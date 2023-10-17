@@ -1,0 +1,19 @@
+(rule
+ (target tutoriel_fr.html)
+ (deps (source_tree .))
+ (action
+   (run catala html -C %{workspace_root}
+    %{dep:tutoriel_fr.catala_fr})))
+
+(rule
+ (target tutoriel_fr.tex)
+ (deps (source_tree .))
+ (action
+   (run catala latex -C %{workspace_root}
+    %{dep:tutoriel_fr.catala_fr})))
+
+(install
+ (files
+  (tutoriel_fr.html as us_tax_code/tutoriel_fr.html)
+  (tutoriel_fr.tex as us_tax_code/tutoriel_fr.tex))
+ (section doc))
