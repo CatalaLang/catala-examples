@@ -1,6 +1,6 @@
 # Catala examples
 
-This directory contains examples of Catala programs. It is highly recommended
+This repository contains examples of Catala programs. It is highly recommended
 to locate your own Catala programs in this directory, since programs in this
 directory will receive first-class support during the alpha and beta stage
 of the Catala programming language development.
