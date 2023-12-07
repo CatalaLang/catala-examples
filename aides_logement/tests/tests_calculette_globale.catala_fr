@@ -156,41 +156,14 @@ champ d'application Exemple2 :
 ```
 
 ```catala-test-inline
-$ catala Interpret -s Exemple1
-[RESULT] Computation successful! Results:
-[RESULT] montant_versé = 246,23 €
-[RESULT] éligibilité = vrai
-```
-```catala-test-inline
-$ catala Interpret_Lcalc -s Exemple1 --avoid-exceptions
+$ catala test-scope Exemple1
 [RESULT] Computation successful! Results:
 [RESULT] montant_versé = 246,23 €
 [RESULT] éligibilité = vrai
 ```
 
 ```catala-test-inline
-$ catala Interpret_Lcalc -s Exemple1 --avoid-exceptions -O --closure-conversion
-[RESULT] Computation successful! Results:
-[RESULT] montant_versé = 246,23 €
-[RESULT] éligibilité = vrai
-```
-
-```catala-test-inline
-$ catala Interpret -s Exemple2
-[RESULT] Computation successful! Results:
-[RESULT] montant_versé = 230,63 €
-[RESULT] éligibilité = vrai
-```
-
-```catala-test-inline
-$ catala Interpret_lcalc -s Exemple2 --avoid-exceptions
-[RESULT] Computation successful! Results:
-[RESULT] montant_versé = 230,63 €
-[RESULT] éligibilité = vrai
-```
-
-```catala-test-inline
-$ catala Interpret_lcalc -s Exemple2 -O --avoid-exceptions --closure-conversion
+$ catala test-scope Exemple2
 [RESULT] Computation successful! Results:
 [RESULT] montant_versé = 230,63 €
 [RESULT] éligibilité = vrai

@@ -79,26 +79,13 @@ $ catala Typecheck --check-invariants
 ```
 
 ```catala-test-inline
-$ catala Interpret -s Exemple1
+$ catala test-scope Exemple1
 [RESULT] Computation successful! Results:
 [RESULT] montant = 96,48 €
 ```
 
 ```catala-test-inline
-$ catala Interpret_Lcalc -s Exemple1 --avoid-exceptions
-[RESULT] Computation successful! Results:
-[RESULT] montant = 96,48 €
-```
-
-```catala-test-inline
-$ catala Interpret -s Exemple2
+$ catala test-scope Exemple2
 [RESULT] Computation successful! Results:
 [RESULT] montant = 85,00 €
 ```
-
-```catala-test-inline
-$ catala Interpret_lcalc -s Exemple2 --avoid-exceptions
-[RESULT] Computation successful! Results:
-[RESULT] montant = 85,00 €
-```
-

@@ -21,12 +21,22 @@ install: build
 # Running legislation unit tests
 ################################
 
-pass_all_tests:
+test:
 	$(CLERK_TEST)
 
-reset_all_tests: CLERK_OPTS+=--reset
+TEST_FLAGS_LIST = "" --lcalc,--avoid-exceptions,-O
+
+testsuite: .FORCE
+	@for F in $(TEST_FLAGS_LIST); do \
+	  echo >&2; \
+	  [ -z "$$F" ] || echo ">> RE-RUNNING TESTS WITH FLAGS: $$F" >&2; \
+	  $(CLERK_TEST) --test-flags="$$F" || break; \
+	done
+
+pass_all_tests: testsuite
+
 reset_all_tests:
-	$(CLERK_TEST)
+	$(CLERK_TEST) --reset
 
 %.catala_en %.catala_fr %.catala_pl: .FORCE
 	$(CLERK_TEST) ./$@
