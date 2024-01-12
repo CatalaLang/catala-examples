@@ -5,8 +5,17 @@ CLERK_OPTS ?= --makeflags="$(MAKEFLAGS)"
 
 CLERK_TEST = $(CLERK) test $(CLERK_OPTS) $(if $(CATALA_OPTS),--catala-opts=$(CATALA_OPTS),)
 
-all:
-	dune build @install
+OPAM = opam --cli=2.1
+
+build:
+	dune build @install --promote-install-files
+
+install: all
+	if [ x$$($(OPAM) --version) = "x2.1.5" ]; then \
+	  $(OPAM) install . --working-dir; \
+	else \
+	  $(OPAM) install . --working-dir --assume-built; \
+	fi
 
 ################################
 # Running legislation unit tests
