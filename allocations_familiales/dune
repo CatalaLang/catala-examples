@@ -1,6 +1,8 @@
 (rule
  (targets allocations_familiales.ml allocations_familiales_api_web.ml)
- (deps (source_tree ../smic)
+ (deps (glob_files *.catala_fr)
+       (source_tree ../smic)
+       (source_tree ../prologue_france)
        (source_tree ../base_mensuelle_allocations_familiales))
  (action
    (run catala api_web -C %{workspace_root} -t
@@ -8,7 +10,9 @@
 
 (rule
  (targets allocations_familiales_schema.json)
- (deps (source_tree ../smic)
+ (deps (glob_files *.catala_fr)
+       (source_tree ../smic)
+       (source_tree ../prologue_france)
        (source_tree ../base_mensuelle_allocations_familiales))
  (action
   (run catala json_schema -C %{workspace_root} -t
@@ -17,7 +21,9 @@
 
 (rule
  (target allocations_familiales.py)
- (deps (source_tree ../smic)
+ (deps (glob_files *.catala_fr)
+       (source_tree ../smic)
+       (source_tree ../prologue_france)
        (source_tree ../base_mensuelle_allocations_familiales))
  (action
    (run catala Python -C %{workspace_root} -O
@@ -25,7 +31,9 @@
 
 (rule
  (target allocations_familiales.tex)
- (deps (source_tree ../smic)
+ (deps (glob_files *.catala_fr)
+       (source_tree ../smic)
+       (source_tree ../prologue_france)
        (source_tree ../base_mensuelle_allocations_familiales))
  (action
    (run catala latex -C %{workspace_root}
@@ -33,7 +41,9 @@
 
 (rule
  (target allocations_familiales.html)
- (deps (source_tree ../smic)
+ (deps (glob_files *.catala_fr)
+       (source_tree ../smic)
+       (source_tree ../prologue_france)
        (source_tree ../base_mensuelle_allocations_familiales))
  (action
    (run catala html -C %{workspace_root}

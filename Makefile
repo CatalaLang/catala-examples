@@ -10,7 +10,7 @@ OPAM = opam --cli=2.1
 build:
 	dune build @install --promote-install-files
 
-install: all
+install: build
 	if [ x$$($(OPAM) --version) = "x2.1.5" ]; then \
 	  $(OPAM) install . --working-dir; \
 	else \
