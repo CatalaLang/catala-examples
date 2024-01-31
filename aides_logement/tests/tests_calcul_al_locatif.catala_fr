@@ -127,12 +127,7 @@ champ d'application Exemple4 :
 
 ```catala-test-inline
 $ catala Typecheck --check-invariants
-[RESULT] Invariant typing_defaults checked. result: [25388/25388]
-[RESULT] Invariant match_inversion checked. result: [771/771]
-[RESULT] Invariant app_inversion checked. result: [275/275]
-[RESULT] Invariant no_return_a_function checked. result: [3046/3046]
-[RESULT] Invariant no_partial_evaluation checked. result: [275/275]
-[RESULT] Invariant default_no_arrow checked. result: [1460/1460]
+[RESULT] All invariant checks passed
 [RESULT] Typechecking successful!
 ```
 
