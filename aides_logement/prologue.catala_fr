@@ -1243,7 +1243,7 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
       -- logement :
         ménage.logement
       -- personnes_à_charge :
-         (personne_à_charge parmi ménage.personnes_à_charge
+         (liste de personne_à_charge parmi ménage.personnes_à_charge
           tel que
             (selon personne_à_charge sous forme
              -- AutrePersonneÀCharge: vrai

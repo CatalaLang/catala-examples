@@ -916,7 +916,7 @@ champ d'application ÉligibilitéAllocationLogement:
   sous condition
     l_841_1_2_applicable et
     nombre de
-      (personne_à_charge parmi ménage.personnes_à_charge tel que
+      (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
         -- EnfantÀCharge de enfant: prestations_familiales.droit_ouvert de
@@ -940,7 +940,7 @@ champ d'application ÉligibilitéAllocationLogement:
   règle éligibilité_allocation_logement_familiale
   sous condition
     nombre de
-      (personne_à_charge parmi ménage.personnes_à_charge tel que
+      (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
         -- EnfantÀCharge de enfant: non (prestations_familiales.droit_ouvert de
@@ -971,9 +971,8 @@ champ d'application ÉligibilitéAllocationLogement:
 
   règle éligibilité_allocation_logement_familiale
   sous condition
-    nombre de (personne_à_charge parmi ménage.personnes_à_charge
-      tel que éligibilité_commune.condition_2_r823_4 de personne_à_charge)
-    >= 1
+    existe personne_à_charge parmi ménage.personnes_à_charge
+      tel que éligibilité_commune.condition_2_r823_4 de personne_à_charge
   conséquence rempli
 ```
 
@@ -989,7 +988,7 @@ champ d'application ÉligibilitéAllocationLogement:
 
   règle éligibilité_allocation_logement_familiale
   sous condition
-    (nombre de (personne_à_charge parmi ménage.personnes_à_charge tel que
+    existe personne_à_charge parmi ménage.personnes_à_charge tel que
       (selon personne_à_charge sous forme
       -- AutrePersonneÀCharge de parent:
         # Cela a l'air similaire au 3° du R823-4 code construction mais
@@ -999,8 +998,7 @@ champ d'application ÉligibilitéAllocationLogement:
         # est bien égal à 80%.
         parent.ascendant_descendant_collatéral_deuxième_troisième_degré et
         parent.incapacité_80_pourcent_ou_restriction_emploi
-      -- EnfantÀCharge de enfant: faux
-    ))) >= 1
+      -- EnfantÀCharge de enfant: faux)
   conséquence rempli
 ```
 
@@ -1462,7 +1460,7 @@ champ d'application ÉligibilitéAllocationLogement sous condition
   règle éligibilité_allocation_logement_familiale
   sous condition
     nombre de
-      (personne_à_charge parmi ménage.personnes_à_charge tel que
+      (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
         -- EnfantÀCharge de enfant: prestations_familiales.droit_ouvert de
@@ -1751,7 +1749,7 @@ champ d'application ÉligibilitéAllocationLogement sous condition
   règle éligibilité_allocation_logement_familiale
   sous condition
     nombre de
-      (personne_à_charge parmi ménage.personnes_à_charge tel que
+      (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
         -- EnfantÀCharge de enfant: prestations_familiales.droit_ouvert de
