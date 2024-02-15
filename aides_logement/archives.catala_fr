@@ -11,7 +11,7 @@ habituellement au foyer :
 champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
   date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
   définition personnes_à_charge_prises_en_compte égal à
-    personne_à_charge parmi ménage.personnes_à_charge tel que
+    liste de personne_à_charge parmi ménage.personnes_à_charge tel que
       prise_en_compte_personne_à_charge de personne_à_charge
 ```
 
