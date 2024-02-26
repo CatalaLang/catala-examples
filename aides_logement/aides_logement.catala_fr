@@ -1,3 +1,10 @@
+> Usage de France
+> Usage de Bmaf
+> Usage de Prestations_familiales
+> Usage de Allocations_familiales
+
+> Module Aides_logement
+
 > Inclusion: prologue.catala_fr
 
 # Code de la construction et de l'habitation
@@ -12,8 +19,10 @@
 
 > Inclusion: autres_sources.catala_fr
 
-> Inclusion: ../base_mensuelle_allocations_familiales/bmaf.catala_fr
-
-> Inclusion: ../prestations_familiales/prestations_familiales.catala_fr
-
 > Inclusion: archives.catala_fr
+
+```catala-test-inline
+$ catala Typecheck --check-invariants
+[RESULT] All invariant checks passed
+[RESULT] Typechecking successful!
+```

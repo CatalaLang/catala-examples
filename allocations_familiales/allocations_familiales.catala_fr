@@ -1,8 +1,11 @@
+> Usage de France
+> Usage de Bmaf
+> Usage de Smic
+> Usage de Prestations_familiales
+
+> Module Allocations_familiales
+
 > Inclusion: prologue.catala_fr
-
-> Inclusion: ../smic/smic.catala_fr
-
-> Inclusion: ../base_mensuelle_allocations_familiales/bmaf.catala_fr
 
 > Inclusion: autres_codes.catala_fr
 
@@ -15,3 +18,10 @@
 > Inclusion: decrets_divers.catala_fr
 
 > Inclusion: epilogue.catala_fr
+
+
+```catala-test-inline
+$ catala Typecheck --check-invariants
+[RESULT] All invariant checks passed
+[RESULT] Typechecking successful!
+```

@@ -35,7 +35,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
       # l'enfant doit en plus d'avoir moins de 21 ans mais aussi selon le
       # 7e alinéa de L823-1 être éligible aux prestations familiales.
       prestations_familiales.droit_ouvert de
-        EnfantPrestationsFamiliales {
+        Prestations_familiales.EnfantPrestationsFamiliales {
         -- identifiant: enfant.identifiant
         -- obligation_scolaire: enfant.obligation_scolaire
         -- rémuneration_mensuelle: enfant.rémuneration_mensuelle
@@ -77,7 +77,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement :
           (parent.date_naissance +
             âge_l351_8_1_sécu <= date_courante ou
               (parent.titulaire_allocation_personne_âgée et
-               (résultat de VérificationÂgeInférieurOuÉgalÀ avec
+               (résultat de France.VérificationÂgeInférieurOuÉgalÀ avec
                 { -- date_naissance: parent.date_naissance
                   -- date_courante: date_courante
                   -- années: 65 an }).est_inférieur_ou_égal
