@@ -76,7 +76,7 @@ déclaration champ d'application InterfaceAllocationsFamiliales:
   interne enfants_à_charge contenu liste de Enfant
   allocations_familiales champ d'application AllocationsFamiliales
   entrée i_ressources_ménage contenu argent
-  entrée i_résidence contenu Collectivité
+  entrée i_résidence contenu France.Collectivité
   résultat i_montant_versé contenu argent
   entrée i_personne_charge_effective_permanente_est_parent condition
   entrée i_personne_charge_effective_permanente_remplit_titre_I condition
@@ -122,10 +122,10 @@ champ d'application InterfaceAllocationsFamiliales:
        -- prise_en_charge : enfant.d_prise_en_charge
        -- obligation_scolaire :
          (si enfant.d_date_de_naissance + 3 an >= i_date_courante alors
-           Avant
+           SituationObligationScolaire.Avant
          sinon (si enfant.d_date_de_naissance + 16 an >= i_date_courante alors
-           Pendant
-         sinon Après))
+           SituationObligationScolaire.Pendant
+         sinon SituationObligationScolaire.Après))
        -- a_déjà_ouvert_droit_aux_allocations_familiales:
          enfant.d_a_déjà_ouvert_droit_aux_allocations_familiales
        -- bénéficie_titre_personnel_aide_personnelle_logement:

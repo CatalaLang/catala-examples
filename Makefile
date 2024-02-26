@@ -1,7 +1,7 @@
 CLERK ?= clerk
 
 CATALA_OPTS ?=
-CLERK_OPTS ?= --makeflags="$(MAKEFLAGS)"
+CLERK_OPTS ?= --makeflags="$(MAKEFLAGS)" -I base_mensuelle_allocations_familiales -I smic -I prologue_france -I prestations_familiales -I allocations_familiales -I aides_logement -I droit_successions
 
 CLERK_TEST = $(CLERK) test $(CLERK_OPTS) $(if $(CATALA_OPTS),--catala-opts=$(CATALA_OPTS),)
 
