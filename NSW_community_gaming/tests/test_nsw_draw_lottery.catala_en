@@ -23,7 +23,7 @@ scope Test1:
 ```
 
 ```catala-test-inline
-$ catala Interpret -s Test1
+$ catala test-scope Test1
 [RESULT] Computation successful!
 ```
 
@@ -47,7 +47,7 @@ scope Test2:
 ```
 
 ```catala-test-inline
-$ catala Interpret -s Test2
+$ catala test-scope Test2
 [RESULT] Computation successful!
 ```
 
@@ -70,7 +70,7 @@ scope Test3:
 ```
 
 ```catala-test-inline
-$ catala Interpret -s Test3
+$ catala test-scope Test3
 [RESULT] Computation successful!
 ```
 
@@ -93,6 +93,6 @@ scope Test4:
 ```
 
 ```catala-test-inline
-$ catala Interpret -s Test4
+$ catala test-scope Test4
 [RESULT] Computation successful!
 ```
