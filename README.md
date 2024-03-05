@@ -22,12 +22,12 @@ of the Catala programming language development.
 
 ## Building and running examples
 
-Use [Clerk](https://catalalang.github.io/catala/clerk.html) (it come installed
+Use [Clerk](https://catalalang.github.io/catala/clerk.html) (it comes installed
 alongside catala) to build and test your examples.
 
-> Note: For now, the OCaml, Javascript and Python artifacts that as used in
+> Note: For now, the OCaml, Javascript and Python artifacts that are used in
 > https://github.com/CatalaLang/french-law are generated using `dune` rules
-> instead for now, while Clerk is getting mature enough. See the examples in
+> instead, while Clerk is getting mature enough. See the examples in
 > `aides_logement/dune` and `allocations_familiales/dune`.
 
 ## Testing examples

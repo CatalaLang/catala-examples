@@ -4,21 +4,21 @@ synopsis: "Collection of Catala programs"
 description:
   "This package gathers implementations of algorithmic portions of various legislative texts, as well as tutorials and examples. Installed artefacts include OCaml and Python libraries resulting from the compilation of the examples written in Catala"
 maintainer: ["contact@catala-lang.org"]
-authors: ["Denis Merigoux"]
+authors: [ "Denis Merigoux"
+           "Nicolas Chataing"
+           "Emile Rolley"
+           "Louis Gesbert"
+           "Aymeric Fromherz"
+           "Alain Delaët-Tixeuil"
+           "Raphaël Monat" ]
 license: "Apache-2.0"
 homepage: "https://github.com/CatalaLang/catala-examples"
 bug-reports: "https://github.com/CatalaLang/catala/issues"
 depends: [
   "dune" {>= "2.8"}
   "ocaml" {>= "4.11.0"}
-  "catala" {= version}
+  "catala" {>= "0.9.0" & < "0.10"}
   "odoc" {with-doc}
 ]
-build: [
-  [
-    "dune" "build" "-p" name "-j" jobs "@install"
-      "@runtest" {with-test}
-      "@doc" {with-doc}
-  ]
-]
+build: [ make "all" "test" {with-test} ]
 dev-repo: "git+https://github.com/CatalaLang/catala-examples.git"
