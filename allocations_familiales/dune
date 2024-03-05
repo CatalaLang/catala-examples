@@ -1,19 +1,23 @@
 (rule
+ (alias deps)
+ (deps
+  (glob_files *.catala_fr)
+  (source_tree ../prologue_france)
+  (source_tree ../smic)
+  (source_tree ../base_mensuelle_allocations_familiales)
+  (source_tree ../prestations_familiales))
+ (action (progn)))
+
+(rule
  (targets allocations_familiales.ml allocations_familiales_api_web.ml)
- (deps (glob_files *.catala_fr)
-       (source_tree ../smic)
-       (source_tree ../prologue_france)
-       (source_tree ../base_mensuelle_allocations_familiales))
+ (deps (alias deps))
  (action
    (run catala api_web -C %{workspace_root} -t
     %{dep:allocations_familiales.catala_fr})))
 
 (rule
  (targets allocations_familiales_schema.json)
- (deps (glob_files *.catala_fr)
-       (source_tree ../smic)
-       (source_tree ../prologue_france)
-       (source_tree ../base_mensuelle_allocations_familiales))
+ (deps (alias deps))
  (action
   (run catala json_schema -C %{workspace_root} -t
     --scope InterfaceAllocationsFamiliales
@@ -21,35 +25,33 @@
 
 (rule
  (target allocations_familiales.py)
- (deps (glob_files *.catala_fr)
-       (source_tree ../smic)
-       (source_tree ../prologue_france)
-       (source_tree ../base_mensuelle_allocations_familiales))
+ (deps (alias deps))
  (action
    (run catala Python -C %{workspace_root} -O
      %{dep:allocations_familiales.catala_fr})))
 
 (rule
  (target allocations_familiales.tex)
- (deps (glob_files *.catala_fr)
-       (source_tree ../smic)
-       (source_tree ../prologue_france)
-       (source_tree ../base_mensuelle_allocations_familiales))
+ (deps (alias deps))
  (action
    (run catala latex -C %{workspace_root}
     %{dep:allocations_familiales.catala_fr})))
 
 (rule
  (target allocations_familiales.html)
- (deps (glob_files *.catala_fr)
-       (source_tree ../smic)
-       (source_tree ../prologue_france)
-       (source_tree ../base_mensuelle_allocations_familiales))
+ (deps (alias deps))
  (action
    (run catala html -C %{workspace_root}
     %{dep:allocations_familiales.catala_fr})))
 
-(copy_files tests/tests_allocations_familiales.ml)
+(copy_files tests/tests_allocations_familiales.catala_fr)
+
+(rule
+ (targets tests_allocations_familiales.ml)
+ (deps (alias deps))
+ (action
+  (run catala OCaml -t tests_allocations_familiales.catala_fr)))
+
 
 (library
  (name allocations_familiales)

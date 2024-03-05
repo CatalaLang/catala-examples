@@ -1,19 +1,24 @@
 (rule
- (targets aides_logement.ml aides_logement_api_web.ml)
+ (alias deps)
  (deps
-  (source_tree .)
+  (glob_files *.catala_fr)
+  (source_tree ../prologue_france)
+  (source_tree ../smic)
   (source_tree ../base_mensuelle_allocations_familiales)
-  (source_tree ../prestations_familiales))
+  (source_tree ../prestations_familiales)
+  (source_tree ../allocations_familiales))
+ (action (progn)))
+
+(rule
+ (targets aides_logement.ml aides_logement_api_web.ml)
+ (deps (alias deps))
  (action
   (run catala api_web -C %{workspace_root} -t
     %{dep:aides_logement.catala_fr})))
 
 (rule
  (targets aides_logement_schema.json)
- (deps
-  (source_tree .)
-  (source_tree ../base_mensuelle_allocations_familiales)
-  (source_tree ../prestations_familiales))
+ (deps (alias deps))
  (action
   (run catala json_schema -C %{workspace_root} -t
     --scope "CalculetteAidesAuLogementGardeAltern\195\169e"
@@ -21,30 +26,21 @@
 
 (rule
  (target aides_logement.py)
- (deps
-  (source_tree .)
-  (source_tree ../base_mensuelle_allocations_familiales)
-  (source_tree ../prestations_familiales))
+ (deps (alias deps))
  (action
    (run catala Python -C %{workspace_root} -O
     %{dep:aides_logement.catala_fr})))
 
 (rule
  (target aides_logement.html)
- (deps
-  (source_tree .)
-  (source_tree ../base_mensuelle_allocations_familiales)
-  (source_tree ../prestations_familiales))
+ (deps (alias deps))
  (action
    (run catala html -C %{workspace_root}
     %{dep:aides_logement.catala_fr})))
 
 (rule
  (target aides_logement.tex)
- (deps
-  (source_tree .)
-  (source_tree ../base_mensuelle_allocations_familiales)
-  (source_tree ../prestations_familiales))
+ (deps (alias deps))
  (action
    (run catala latex -C %{workspace_root}
     %{dep:aides_logement.catala_fr})))
