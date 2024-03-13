@@ -3,6 +3,10 @@ CLERK ?= clerk
 
 BUILD = _build
 
+# Tests use a separate build directory because they may need different flags
+# (e.g. no --trace) and the objects would otherwise overwrite the main ones
+BUILD_TESTS = _build/clerk_tests
+
 VERSION = 0.9.0
 
 #############################################
@@ -12,25 +16,23 @@ VERSION = 0.9.0
 CATALA_INCLUDE := base_mensuelle_allocations_familiales:smic:prologue_france:prestations_familiales:allocations_familiales:aides_logement:droit_successions
 export CATALA_INCLUDE
 
-CATALA_FLAGS ?=
-CLERK_FLAGS ?= --build-dir=$(BUILD) --makeflags="$(MAKEFLAGS)"
+CATALA_FLAGS ?= --trace
+CLERK_FLAGS ?= --exe=$(CATALA)
 
-CLERK_BUILD = $(CLERK) build --catala-opts=--trace $(CLERK_FLAGS)
+CLERK_BUILD = $(CLERK) build --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts=$(CATALA_FLAGS),) $(CLERK_FLAGS)
 
-CLERK_TEST = $(CLERK) test $(CLERK_FLAGS) $(if $(CATALA_FLAGS),--catala-opts=$(CATALA_FLAGS),)
+CLERK_TEST = $(CLERK) test $(CLERK_FLAGS) --build-dir=$(BUILD_TESTS)
 
 OPAM = opam --cli=2.1
 
-OCAMLC = $(shell ocamlfind ocamlc -only-show -package catala.runtime_ocaml)
-OCAMLOPT = $(shell ocamlfind ocamlopt -only-show -package catala.runtime_ocaml)
+OCAMLC = ocamlfind ocamlc -package catala.runtime_ocaml
+OCAMLOPT = ocamlfind ocamlopt -package catala.runtime_ocaml
 
 JSOO_FLAGS = --pretty --source-map-inline --no-extern-fs
 
 CATALA_DEPENDS = $(CATALA) depends -I $(CATALA_INCLUDE) $(CATALA_FLAGS) --prefix=$(BUILD)
 
-OCAML_FLAGS = -g \
-  $(shell ocamlfind query -r -i-format catala.runtime_jsoo) \
-  $(addprefix -I _build/,$(subst :, , $(CATALA_INCLUDE)))
+OCAML_FLAGS = -g
 
 #######################
 # List of build targets
@@ -53,12 +55,13 @@ TARGETS := \
   $(foreach lib,$(TARGET_LIBS),$(addprefix $(lib),$(LIB_SUFFIXES))) \
   $(foreach lib,$(TARGET_DOCS),$(addprefix $(lib),$(DOC_SUFFIXES)))
 
-FRENCH_LAW_SUFFIXES := _python.tar.gz _npm.tar.gz
-FRENCH_LAW := $(addprefix $(BUILD)/french-law,$(FRENCH_LAW_SUFFIXES))
+FRENCH_LAW_TARGETS := \
+  french_law_python.tar.gz \
+  french-law_npm.tar.gz
 
 all: \
   $(addprefix $(BUILD)/,$(TARGETS)) \
-  $(FRENCH_LAW) \
+  $(addprefix $(BUILD)/,$(FRENCH_LAW_TARGETS)) \
   catala-examples.install
 
 $(BUILD):
@@ -82,18 +85,27 @@ $(BUILD)/%.html: %.catala_??
 # Rules: OCaml compilation
 ##########################
 
-$(BUILD)/%.cmi $(BUILD)/%.cmo $(BUILD)/%.cmx $(BUILD)/%.cmxs $(BUILD)/%.exe: %.catala_??
+$(BUILD)/%.cmi: %.catala_??
 	$(CLERK_BUILD) $@
-# Clerk target equivalent to $(*F)@module
+$(BUILD)/%.cmo: %.catala_??
+	$(CLERK_BUILD) $@
+$(BUILD)/%.cmx: %.catala_??
+	$(CLERK_BUILD) $@
+$(BUILD)/%.cmxs: %.catala_??
+	$(CLERK_BUILD) $@
+$(BUILD)/%.exe: %.catala_??
+	$(CLERK_BUILD) $@
 
-$(BUILD)/%.cma: $(BUILD)/%.cmo
+$(BUILD)/%.cma: $(BUILD)/%.cmi
 	$(OCAMLC) $(OCAML_FLAGS) \
 	  $(shell $(CATALA_DEPENDS) --extension=cmo $(BUILD)/$*.catala_??) \
+	  -intf-suffix .ml \
 	  -a -o $@
 
-$(BUILD)/%.cmxa: $(BUILD)/%.cmx
+$(BUILD)/%.cmxa: $(BUILD)/%.cmi
 	$(OCAMLOPT) $(OCAML_FLAGS) \
 	  $(shell $(CATALA_DEPENDS) --extension=cmx $(BUILD)/$*.catala_??) \
+	  -intf-suffix .ml \
 	  -a -o $@
 
 ###############################################
@@ -112,6 +124,7 @@ $(BUILD)/%-web.bc:
 	ocamlfind ocamlc -linkpkg \
 	  -package catala.runtime_jsoo,js_of_ocaml-ppx \
 	  $(OCAML_FLAGS) \
+	  $(addprefix -I $(BUILD)/,$(subst :, , $(CATALA_INCLUDE))) \
 	  $(MLDEPS) \
 	  $(API) \
 	  -o $@
@@ -199,7 +212,7 @@ $(BUILD)/%_python.tar.gz:
 	mv $(BUILD)/$(*F).toml $(BUILD)/python/$(*F)/pyproject.toml
 	tar czf $@ -C $(BUILD)/python $(*F)
 
-$(BUILD)/french-law_python.tar.gz: $(TARGET_LIBS:=.catala_??) | $(BUILD)
+$(BUILD)/french_law_python.tar.gz: $(TARGET_LIBS:=.catala_??) | $(BUILD)
 
 ##############
 # Installation
@@ -215,13 +228,13 @@ catala-examples.install: $(TARGET_LIBS:=.catala_??)
 	  echo "lib: ["; \
 	  echo "  \"META\""; \
 	  $(foreach lib,$(TARGET_LIBS),\
-	    $(foreach ext,.a .ml .cmi .cmt .cmx .cma .cmxa _schema.json,\
+	    $(foreach ext,.a .ml .cmt .cma .cmxa _schema.json,\
 	      echo "  \"$(BUILD)/$(lib)$(ext)\" {\"$(lib)$(ext)\"}"; )\
-	    $(foreach f,$(shell catala depends -I $(CATALA_INCLUDE) --extension=cmi $(lib).catala_??),\
-	      echo "  \"$(BUILD)/$f\" {\"$(dir $(lib))$(notdir $f)\"}"; )\
+	    $(foreach f,$(shell catala depends -I $(CATALA_INCLUDE) --extension= $(lib).catala_??),\
+	      echo "  \"$(BUILD)/$f.mli\" {\"$(dir $(lib))$(notdir $f.mli)\"}"; \
+	      echo "  \"$(BUILD)/$f.cmi\" {\"$(dir $(lib))$(notdir $f.cmi)\"}"; )\
 	  ) \
-	  $(foreach sfx,$(FRENCH_LAW_SUFFIXES),\
-	    echo "  \"$(BUILD)/french-law$(sfx)\" {\"french-law$(sfx)\"}"; )\
+	  $(foreach f,$(FRENCH_LAW_TARGETS),echo "  \"$(BUILD)/$f\" {\"$f\"}"; )\
 	  echo "]"; \
 	  echo "libexec: ["; \
 	  $(foreach f,$(INSTALL_libexec),echo "  \"$(BUILD)/$f\" {\"$f\"}";) \
@@ -232,6 +245,12 @@ catala-examples.install: $(TARGET_LIBS:=.catala_??)
 	  $(foreach f,$(INSTALL_doc),echo "  \"$(BUILD)/$f\" {\"$f\"}";) \
 	  echo "]"; \
 	} >$@
+
+INSTALL_PREFIX ?= $(realpath $(shell ocamlfind query catala)/../..)
+
+local-install: all
+	$(if $(INSTALL_PREFIX),,$(error Could not determine INSTALL_PREFIX for installation))
+	opam-installer --prefix=$(INSTALL_PREFIX)
 
 # Files to be installed are listed in the catala-examples.install file
 install: all
@@ -248,22 +267,23 @@ clean: .FORCE
 # Running legislation unit tests
 ################################
 
-test: $(BUILD)/allocations_familiales/tests/tests_allocations_familiales.exe
+binary-tests: \
+  $(BUILD)/allocations_familiales/tests/tests_allocations_familiales.exe \
+  $(BUILD)/aides_logement/tests/tests_calculette_globale.exe
+	$(^:= && ) echo "$(CURDIR): all binary tests passed"
+
+test: .FORCE binary-tests
 	$(CLERK_TEST)
-	$^
 
 TEST_FLAGS_LIST = "" --lcalc,--avoid-exceptions,-O
 
-testsuite: $(BUILD)/allocations_familiales/tests/tests_allocations_familiales.exe .FORCE
+testsuite: .FORCE binary-tests
 	@for F in $(TEST_FLAGS_LIST); do \
 	  echo >&2; \
 	  [ -z "$$F" ] || echo ">> RE-RUNNING TESTS WITH FLAGS: $$F" >&2; \
 	  echo $(CLERK_TEST) --test-flags="$$F"; \
 	  $(CLERK_TEST) --test-flags="$$F" || break; \
 	done
-	@echo >&2
-	@echo ">> RUNNING OCAML-NATIVE TESTS" >&2
-	$<
 
 pass_all_tests: testsuite
 
@@ -272,7 +292,7 @@ reset_all_tests:
 
 .FORCE:
 
-.PHONY: pass_all_tests reset_all_tests
+.PHONY: all pass_all_tests reset_all_tests
 
 # Disables make removing intermediate files
 .SECONDARY:
