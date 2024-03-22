@@ -228,7 +228,7 @@ catala-examples.install: $(TARGET_LIBS:=.catala_??)
 	  echo "lib: ["; \
 	  echo "  \"META\""; \
 	  $(foreach lib,$(TARGET_LIBS),\
-	    $(foreach ext,.a .ml .cmt .cma .cmxa _schema.json,\
+	    $(foreach ext,.a .ml .cma .cmxa _schema.json,\
 	      echo "  \"$(BUILD)/$(lib)$(ext)\" {\"$(lib)$(ext)\"}"; )\
 	    $(foreach f,$(shell catala depends -I $(CATALA_INCLUDE) --extension= $(lib).catala_??),\
 	      echo "  \"$(BUILD)/$f.mli\" {\"$(dir $(lib))$(notdir $f.mli)\"}"; \
