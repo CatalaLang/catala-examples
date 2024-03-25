@@ -1,45 +1,47 @@
-> Inclusion: ../allocations_familiales.catala_fr
+> Usage de France
+> Usage de Prestations_familiales
+> Usage de Allocations_familiales en tant que AF
 
 # Tests
 
 ```catala
 déclaration champ d'application Données:
-  résultat enfant1 contenu Enfant
-  résultat enfant2 contenu Enfant
-  résultat enfant3 contenu Enfant
-  résultat enfant4 contenu Enfant
+  résultat enfant1 contenu AF.Enfant
+  résultat enfant2 contenu AF.Enfant
+  résultat enfant3 contenu AF.Enfant
+  résultat enfant4 contenu AF.Enfant
 
 champ d'application Données:
-  définition enfant1 égal à Enfant {
+  définition enfant1 égal à AF.Enfant {
     -- identifiant: 1
-    -- obligation_scolaire : Pendant
+    -- obligation_scolaire : AF.SituationObligationScolaire.Pendant
     -- date_de_naissance: |2007-01-01|
     -- rémuneration_mensuelle: 0€
     -- prise_en_charge: EffectiveEtPermanente
     -- a_déjà_ouvert_droit_aux_allocations_familiales: vrai
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
-  définition enfant2 égal à Enfant {
+  définition enfant2 égal à AF.Enfant {
     -- identifiant: 2
-    -- obligation_scolaire : Après
+    -- obligation_scolaire : AF.SituationObligationScolaire.Après
     -- date_de_naissance: |2003-01-01|
     -- rémuneration_mensuelle: 1000€
     -- prise_en_charge: EffectiveEtPermanente
     -- a_déjà_ouvert_droit_aux_allocations_familiales: vrai
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
-  définition enfant3 égal à Enfant {
+  définition enfant3 égal à AF.Enfant {
     -- identifiant: 3
-    -- obligation_scolaire : Après
+    -- obligation_scolaire : AF.SituationObligationScolaire.Après
     -- date_de_naissance: |2003-01-01|
     -- rémuneration_mensuelle: 400€
     -- prise_en_charge: EffectiveEtPermanente
     -- a_déjà_ouvert_droit_aux_allocations_familiales: vrai
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
-  définition enfant4 égal à Enfant {
+  définition enfant4 égal à AF.Enfant {
     -- identifiant: 4
-    -- obligation_scolaire : Après
+    -- obligation_scolaire : AF.SituationObligationScolaire.Après
     -- date_de_naissance: |1999-01-01|
     -- rémuneration_mensuelle: 0€
     -- prise_en_charge: EffectiveEtPermanente
@@ -49,7 +51,7 @@ champ d'application Données:
 
 déclaration champ d'application Test1:
   données champ d'application Données
-  f champ d'application PrestationsFamiliales
+  f champ d'application AF.PrestationsFamiliales
 
 champ d'application Test1:
   définition f.date_courante égal à |2020-05-01|

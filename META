@@ -1,0 +1,20 @@
+package "aides_logement" (
+  directory = "aides_logement"
+  version = "0.9.0"
+  description = ""
+  requires = "catala.runtime_ocaml"
+  archive(byte) = "Aides_logement.cma"
+  archive(native) = "Aides_logement.cmxa"
+  plugin(byte) = "Aides_logement.cma"
+  plugin(native) = "Aides_logement.cmxs"
+)
+package "allocations_familiales" (
+  directory = "allocations_familiales"
+  version = "0.9.0"
+  description = ""
+  requires = "catala.runtime_ocaml"
+  archive(byte) = "Allocations_familiales.cma"
+  archive(native) = "Allocations_familiales.cmxa"
+  plugin(byte) = "Allocations_familiales.cma"
+  plugin(native) = "Allocations_familiales.cmxs"
+)

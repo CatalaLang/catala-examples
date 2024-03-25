@@ -1,4 +1,5 @@
-> Inclusion: ../aides_logement.catala_fr
+> Usage de France
+> Usage de Aides_logement en tant que AL
 
 # Tests
 
@@ -6,7 +7,7 @@
 # Tiré de la page 54 de
 # https://www.ecologie.gouv.fr/sites/default/files/les_aides_personnelles_au_logement_element_de_calcul_septembre_2021.pdf#page=45
 déclaration champ d'application Exemple1:
-  calcul champ d'application CalculAllocationLogementAccessionPropriété
+  calcul champ d'application AL.CalculAllocationLogementAccessionPropriété
   résultat montant contenu argent
 
 champ d'application Exemple1:
@@ -21,7 +22,7 @@ champ d'application Exemple1:
   définition calcul.charges_mensuelles_prêt égal à 450 €
 
   définition calcul.type_travaux_logement égal à
-    TypeTravauxLogementR842_5.PasDeTravaux
+    AL.TypeTravauxLogementR842_5.PasDeTravaux
   définition calcul.date_entrée_logement égal à |2015-10-10|
   définition calcul.local_habité_première_fois_bénéficiaire égal à faux
   définition calcul.copropriété égal à faux
@@ -40,7 +41,7 @@ champ d'application Exemple1:
 
 ```catala
 déclaration champ d'application Exemple2:
-  calcul champ d'application CalculAllocationLogementAccessionPropriété
+  calcul champ d'application AL.CalculAllocationLogementAccessionPropriété
   résultat montant contenu argent
 
 champ d'application Exemple2:
@@ -55,7 +56,7 @@ champ d'application Exemple2:
   définition calcul.charges_mensuelles_prêt égal à 500 €
 
   définition calcul.type_travaux_logement égal à
-    TypeTravauxLogementR842_5.PrévuDansListeR321_15
+    AL.TypeTravauxLogementR842_5.PrévuDansListeR321_15
   définition calcul.date_entrée_logement égal à |2020-12-01|
   définition calcul.local_habité_première_fois_bénéficiaire égal à faux
   définition calcul.copropriété égal à faux
