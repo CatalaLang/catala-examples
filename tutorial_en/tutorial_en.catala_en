@@ -19,10 +19,10 @@ things out.
 # and start typing your program.
 
 # For a complete reference of the Catala syntax, see:
-# https://github.com/CatalaLang/catala/raw/master/doc/syntax/syntax.pdf
+# https://catalalang.github.io/catala/syntax.pdf
 
 # This tutorial itself is written as a Catala program and can be accessed at:
-# https://github.com/CatalaLang/catala/blob/master/examples/tutorial_en
+# https://github.com/CatalaLang/catala-examples/tree/master/tutorial_en
 ```
 
 ## Literate programming
