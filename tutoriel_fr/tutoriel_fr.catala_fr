@@ -24,10 +24,10 @@ des compétences en informatique devraient pouvoir s’en sortir.
 # et commencez à taper votre programme.
 
 # Pour une référence complète de la syntaxe Catala, voyez sur :
-# https://github.com/CatalaLang/catala/raw/master/doc/syntax/syntax.pdf
+# https://catalalang.github.io/catala/syntax.pdf
 
 # Ce tutoriel est lui-même écrit comme un programme Catala et est accessible à :
-# https://github.com/CatalaLang/catala/blob/master/examples/tutoriel_fr
+# https://github.com/CatalaLang/catala-examples/tree/master/tutoriel_fr
 ```
 
 ## Programmation littéraire
