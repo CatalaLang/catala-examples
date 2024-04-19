@@ -366,7 +366,7 @@ champ d'application Smic :
 ```catala
 champ d'application Smic :
   définition brut_horaire sous condition
-    date_courante >= |2024-01-01| (
+    date_courante >= |2024-01-01| et (
       (résidence = Mayotte)
     )
   conséquence égal à 8,80 €
