@@ -19,7 +19,7 @@ export CATALA_INCLUDE
 CATALA_FLAGS ?= --trace
 CLERK_FLAGS ?= --exe=$(CATALA)
 
-CLERK_BUILD = $(CLERK) build --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts=$(CATALA_FLAGS),) $(CLERK_FLAGS)
+CLERK_BUILD = $(CLERK) build --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts='$(CATALA_FLAGS)',) $(CLERK_FLAGS)
 
 CLERK_TEST = $(CLERK) test $(CLERK_FLAGS) --build-dir=$(BUILD_TESTS)
 
@@ -30,7 +30,7 @@ OCAMLOPT = ocamlfind ocamlopt -package catala.runtime_ocaml
 
 JSOO_FLAGS = --pretty --source-map-inline --no-extern-fs
 
-CATALA_DEPENDS = $(CATALA) depends -I $(CATALA_INCLUDE) $(CATALA_FLAGS) --prefix=$(BUILD)
+CATALA_DEPENDS = $(CATALA) depends -I $(CATALA_INCLUDE) --prefix=$(BUILD)
 
 OCAML_FLAGS = -g
 
@@ -38,7 +38,9 @@ OCAML_FLAGS = -g
 # List of build targets
 #######################
 
-DOC_SUFFIXES := .tex .html
+NODOC ?=
+
+DOC_SUFFIXES := $(if $(NODOC),,.tex .html)
 LIB_SUFFIXES := $(DOC_SUFFIXES) .py .cma .cmxs .cmxa _schema.json
 
 TARGET_LIBS = \
