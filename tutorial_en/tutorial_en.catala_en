@@ -436,7 +436,20 @@ scope Test1:
   assertion income_tax = $72,000
 ```
 
-This test should pass. Let us now consider a failing test case:
+This test should pass. We can validate it by inserting a special test snippet in
+the file as follows:
+
+```catala-test-inline
+$ catala interpret --scope Test1 --disable-warnings
+[RESULT] Computation successful! Results:
+[RESULT] income_tax = $72,000.00
+```
+
+Running `clerk test` will automatically check that the given command matches its
+expected output when run on this file (in practice, it's generally preferred to
+put such tests in a separate file).
+
+Let us now consider a failing test case:
 
 ```catala
 declaration scope Test2:
@@ -453,8 +466,33 @@ scope Test2:
   assertion income_tax = $0
 ```
 
+```catala-test-inline
+$ catala interpret --scope Test2 --disable-warnings
+[ERROR] There is a conflict between multiple valid consequences for assigning
+  the same variable.
+
+This consequence has a valid justification:
+┌─⯈ tutorial_en/tutorial_en.catala_en:318.7-318.30:
+└───┐
+318 │       income * brackets.rate1
+    │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+    └┬ The Catala language tutorial
+     └┬ Functions
+      └─ Article 4
+
+This consequence has a valid justification:
+┌─⯈ tutorial_en/tutorial_en.catala_en:385.22-385.24:
+└───┐
+385 │   consequence equals $0
+    │                      ‾‾
+    └┬ The Catala language tutorial
+     └┬ Scope inclusion
+      └─ Article 6
+#return code 123#
+```
+
 This test case should compute a $0 income tax because of Article 6. But instead,
-execution will yield an error saying that there is a conflict between rules.
+execution yields an error stating that there is a conflict between rules.
 
 ## Defining exceptions to rules
 
@@ -519,6 +557,12 @@ scope Test3:
   assertion income_tax = $0
 ```
 
+```catala-test-inline
+$ catala interpret --scope Test3 --disable-warnings
+[RESULT] Computation successful! Results:
+[RESULT] income_tax = $0.00
+```
+
 ### Defining exceptions to groups of rules
 
 Note that the label system also lets you define more complicated exceptions
@@ -564,15 +608,21 @@ scope Test4:
   assertion income_tax = $0
 ```
 
+```catala-test-inline
+$ catala interpret --scope Test4 --disable-warnings
+[RESULT] Computation successful! Results:
+[RESULT] income_tax = $0.00
+```
+
 ### Direct scope calls
 
 In some cases, it is useful to apply the computation of a scope only under
 specific circumstances. For example, some social benefits may have different
 computation modes depending on the situation of the beneficiary. In this case,
-defining each of the different modes as subscopes is tedious for two reasons:
-first, some input values may not be relevant for the cases the beneficiary is
-not concerned with, and the language will still enforce that you leave nothing
-undefined ; second, unnecessary computation will take place.
+defining each of the different modes as subscopes can be tedious for two
+reasons: first, some input values may not be relevant for the cases the
+beneficiary is not concerned with, and the language will still enforce that you
+leave nothing undefined ; second, unnecessary computation will take place.
 
 For these cases, it is possible to call a scope directly, specifying all its
 input variables at once, and getting back its output variables in a way similar
@@ -592,14 +642,54 @@ scope Test5:
   }
   definition income_tax equals
     if normal_income_tax_computation_applies then
-      (output of NewIncomeTaxComputationFixed with
-        { -- individual: individual }).income_tax
+      let result_of_tax_computation
+      equals
+        output of NewIncomeTaxComputationFixed with {
+          -- individual: individual
+        }
+      in result_of_tax_computation.income_tax
     else $0 # Insert some other modes of computation here
 ```
 
-Here the `output of NewIncomeTaxComputationFixed with` syntax triggers a call of the scope
-while setting its input variable `individual`; then the "dot" syntax is used to
-recover its `income_tax` output field.
+There are three important bits here:
+- the `output of NewIncomeTaxComputationFixed with { ... }` is the most
+  interesting part: it triggers a call of the named scope while setting its input
+  variable `individual`
+- it is wrapped in a `let <name> equals <expression> in ...` construct we
+  haven't seen yet: this allows us to give a name to the result of the call so
+  that we can refer to it within the last part
+- `result_of_tax_computation.income_tax` re-uses the name we have just been
+  defining, which holds the results of the scope call, and retrieves the output
+  of the scope we are interested in, here `income_tax`
+
+You can check that `income_tax` was defined as an output with content `money`,
+which matches what we are expecting here.
+
+### Implicit scope structures, and output scopes
+
+It's not by chance that `result_of_tax_computation.income_tax` looks similar to
+the way we access a field in a structure: in fact, when defining any scope (here
+we are concerned with `NewIncomeTaxComputationFixed`) a structure with the same
+name, and containing all of its outputs as fields, was automatically
+defined by Catala. In our case there is just one output, so the structure
+`NewIncomeTaxComputationFixed` has a single field `data income_tax content
+money`.
+
+The `result_of_tax_computation` intermediate name in practice holds this
+structure, as returned by the direct scope call. And the `.income_tax` syntax is
+indeed an access to the `income_tax` field of this structure.
+
+In addition, when declaring a subscope, it is possible to prefix it with
+`output`:
+
+```catala
+declaration scope Test4bis:
+  output tax_computation scope NewIncomeTaxComputationFixed
+```
+
+Besides defining the subscope, this declares `tax_computation` as an output
+variable that will contain the structure holding the outputs of
+`NewIncomeTaxComputationFixed`.
 
 ## Context scope variables
 
@@ -703,10 +793,24 @@ scope WealthTax:
     # Here, "wealth" refers to the state "after_charity_decuctions"
 
   assertion wealth > $0
-  # Outside of the definition of "wealth", "wealth" always refer to the final
-  # state of the variable, here "after_capping".
+  # this refers to the final state of the variable, here "after_capping".
 
 ```
+
+#### Accessing states
+
+Any references to `wealth` outside of its definition would refer to its last, or
+"outcome" state (any *definitions* of `wealth`, if it were the case the variable
+was marked `input` or `context`, would obviously affect its first, or "starting"
+state). But it may happen that the law explicitely refers to the "uncapped
+wealth after charity reductions". This can be accessed by explicitely writing
+`wealth state after_charity_deductions`.
+
+There are two limitations to this:
+- it is only available within the scope the variable is defined in: even if
+  `wealth` were an output, its intermediate states remain opaque to the outside.
+- it is not allowed within definitions of the variable itself, where the
+  preceding state is always implicitely used.
 
 ## Catala values
 
@@ -747,7 +851,6 @@ declaration scope IntegerValues:
 
 scope IntegerValues:
   definition value1 under condition 12 - (5 * 3) < 65 consequence equals 45 * 9
-  # The / operators corresponds to an integer division that truncates towards 0.
   definition value2 equals value1 * value1 * 65 * 100
 ```
 
@@ -755,7 +858,7 @@ scope IntegerValues:
 
 Decimals in Catala also have infinite precisions, behaving like true mathematical
 rational numbers, and not like computer floating point numbers that perform
-approximate computations. Operators are suffixed with ".".
+approximate computations.
 
 ```catala
 declaration scope DecimalValues:
@@ -765,7 +868,7 @@ declaration scope DecimalValues:
 scope DecimalValues:
   definition value1 under condition
     12.655465446655426 - 0.45265426541654  < 12.3554654652 consequence
-  equals 45 / 9
+  equals 45 / 8
   # The / operator corresponds to an exact division. The division of integers
   # yields a decimal.
   definition value2 equals value1 * value1 * 65%
@@ -789,11 +892,15 @@ declaration scope MoneyValues:
 
 scope MoneyValues:
   definition value1 under condition
-    12.655465446655426 - 0.45265426541654  < 12.3554654652 consequence
-  equals (decimal of 45) / (decimal of 9)
+    12.655465446655426 - 0.45265426541654 < 12.3554654652 consequence
+  equals 45 / 8
   definition value2 equals
     $1.00 * ((($6,520.23 - $320.45) * value1) / $45)
 ```
+
+Multiplying two money amounts is not supported, as it is most likely to be a
+coding error ; if processing a computation complex enough to require it, convert
+them to decimals first using the syntax `decimal of $1.00`.
 
 
 ### Dates and durations
@@ -805,8 +912,7 @@ Durations measured in days, months or years are not mixable with each other,
 as months and years do not always have the same number of days. This non-mixability
 is not captured by the type system of Catala but will yield errors at runtime.
 Date literals are specified using the ISO 8601 standard to avoid confusion between
-american and european notations. Date operators are prefixed by "@" while
-duration operators are prefixed by "^".
+american and european notations.
 
 ```catala
 declaration scope DateValues:
@@ -819,9 +925,77 @@ scope DateValues:
     (value1 - |1999-12-31|) + 45 day # 367 + 45 days (2000 is bissextile)
 ```
 
-### Listes
+#### Ambiguities
 
-Often, Catala programs need to speak about a collection of data because the law
+Date computations can be ambiguous. What's `|2024-02-29| + 1 year` ?
+
+```catala
+declaration scope AmbiguousDate:
+  output result content date
+
+scope AmbiguousDate:
+  definition result equals |2000-02-29| + 1 year
+```
+
+```catala-test-inline
+$ catala interpret --scope AmbiguousDate --disable-warnings
+[ERROR] Unexpected error: Dates_calc.Dates.AmbiguousComputation
+#return code 125#
+```
+
+Indeed, there are two possible answers to this, and none is canonically better
+than the other. Depending on the jurisdiction or jurisprudence, you can specify
+which one is right for the case at hand as so:
+
+```catala
+declaration scope AmbiguousDate2:
+  output result content date
+
+scope AmbiguousDate2:
+  definition result equals |2000-02-29| + 1 year
+  date round decreasing   # or "increasing"
+```
+
+```catala-test-inline
+$ catala interpret --scope AmbiguousDate2 --disable-warnings
+[RESULT] Computation successful! Results:
+[RESULT] result = 2001-02-28
+```
+
+Some other cases are always ambiguous and will always result in an error, like
+asking whether `30 day < 1 month`.
+
+```catala
+declaration scope AmbiguousDate3:
+  output result content boolean
+
+scope AmbiguousDate3:
+  definition result equals 30 day < 1 month
+```
+
+```catala-test-inline
+$ catala interpret --scope AmbiguousDate3 --disable-warnings
+[ERROR] Cannot compare together durations that cannot be converted to a
+  precise number of days
+
+┌─⯈ tutorial_en/tutorial_en.catala_en:961.28-961.34:
+└───┐
+961 │   definition result equals 30 day < 1 month
+    │                            ‾‾‾‾‾‾
+    └─ return code 125#
+
+┌─⯈ tutorial_en/tutorial_en.catala_en:961.37-961.44:
+└───┐
+961 │   definition result equals 30 day < 1 month
+    │                                     ‾‾‾‾‾‾‾
+    └─ return code 125#
+#return code 123#
+```
+
+
+### Lists
+
+Often, Catala programs need to work with collections of data because the law
 talks about the number of children, the maximum of a list, etc. Catala features
 first-class support for lists.
 You can create a list, filter its elements but also aggregate over its contents
@@ -829,13 +1003,23 @@ to compute all sorts of values.
 
 ```catala
 declaration scope ListValues:
-  internal value1 content list of integer
-  internal value2 content integer
+  internal values content list of integer
+  output total content integer
+  output average content decimal
+  output positive_values content list of integer
+  output relative_values content list of decimal
 
 scope ListValues:
-  definition value1 equals [45;-6;3;4;0;2155]
-  definition value2 equals sum integer of (i * i) for i among value1
-  # sum of squares
+  definition values equals
+      [ 45; -6; 3; 4; 0; 2155 ]
+  definition total equals
+      sum integer of values
+  definition average equals
+      total / number of values
+  definition positive_values equals
+      list of x among values such that x >= 0
+  definition relative_values equals
+      (x / total) for x among values
 ```
 
 ## Conclusion
@@ -861,97 +1045,23 @@ Toplevel definitions are available by name throughout the program ; they can
 depend on each other (as long as there are no cycles), but are not allowed to
 rely on any scope evaluations.
 
-## Example 1: toplevel constants
+They can be useful both for defining constants and pure utility functions
 
-### A. Using only scope definitions
+## Examples
 
-a. Throughout this corpus, the number of workdays per week is assumed to be 5.
+### Defining a constant
 
-```catala
-declaration scope WorkdaysPerWeek:
-  output value content integer
-
-scope WorkdaysPerWeek:
-  definition value equals 5
-
-# Requiring to declare the scope with just an output variable is quite
-# cumbersome, and impedes readability
-```
-
-b. The General Lunch Allocation is $2 per workday, over the number of work weeks.
-
-```catala
-declaration scope LunchAllocation_A:
-  input number_of_work_weeks content integer
-  workdays_per_week scope WorkdaysPerWeek
-  # The subscope needs to be declared just to access its value.
-  # Note that in some cases it may be a good thing to have that dependency
-  # explicit
-  output value content money
-
-scope LunchAllocation_A:
-  definition value equals
-    $2 * (number_of_work_weeks * workdays_per_week.value / 7)
-  # The value requires <scope_name>.<variable_name> to be accessed
-```
-
-
-
-### B. Using toplevel definitions
-
-a. Throughout this corpus, the number of workdays per week is assumed to be 5.
+« Throughout this corpus, the number of workdays per week is assumed to be 5. »
 
 ```catala
 declaration workdays_per_week content integer equals 5
-# This is more straightforward: declaration and value are given at once,
-# no need for a sub-variable name.
+# We could declare, then define a scope with a single output variable here, but
+# it would be pretty verbose.
 ```
 
-b. The General Lunch Allocation is $2 per workday, over the number of work weeks.
+### Defining a function with a single argument
 
-```catala
-declaration scope LunchAllocation_B:
-  input number_of_work_weeks content integer
-  output value content money
-
-scope LunchAllocation_B:
-  definition value equals $2 * (number_of_work_weeks * workdays_per_week / 7)
-  # No need for a subscope, `workdays_per_week` is accessed directly by name
-```
-
-## Example 2: toplevel functions
-
-a. The base allocation is equal to 30% of the rent
-
-```catala
-declaration scope Allocation:
-  input rent content money
-  output value content money
-    state base
-    state final
-
-scope Allocation:
-  definition value state base equals rent * 30%
-```
-
-### A. With the current syntax
-
-b. The final allocation is rounded up to the next multiple of $100
-
-```catala
-scope Allocation:
-  definition value state final equals
-    round of (value / 100.0 + $0.49) * 100.0
-    # Here you should explain why that formula does what the text says,
-    # since that's far from obvious
-    # It's ok if it's just used once, but far from ideal if that specific
-    # rounding is used all over the law.
-```
-
-
-### B. Proposed new syntax for "toplevel functions"
-
-b. The final allocation is rounded up to the next multiple of $100
+« [...] The final allocation is rounded up to the next multiple of $100 »
 
 ```catala
 declaration round_up_100
@@ -959,46 +1069,49 @@ declaration round_up_100
     depends on money_amount content money
   equals
     round of (money_amount / 100.0 + $0.49) * 100.0
-    # The explanation is still needed, but it doesn't clutter the current scope
-    # This definition could even be put in the Prelude
-
-scope Allocation:
-  definition value state final equals round_up_100 of value
+# This computation would certainly require some justification where it is
+# declared.
 ```
 
-## Example 3: functions with multiple parameters
+The point here is that the computation formula is purely technical, so once
+justified where it is written, and when actually needing this computation in the
+translation of the law, you just need to write `round_up_100 of value`, which is
+much more self-explanatory.
 
-The amount to include in gross income is the excess of the fair market value of
-the property over the amount paid.
+### Functions with multiple parameters
 
-```catala-metadata
+« The amount to include in gross income is the excess of the fair market value of
+the property over the amount paid. »
+
+Here we could write the formula `if fair_market_value > amount_paid then
+fair_market_value - amount_paid else $0`, which is the definition of "excess
+of". However, it requires careful reading to make sure there was no mistake, and
+takes us further from the law and into technical detail. It's better to define a
+named function as such:
+
+```catala
+declaration excess content money
+  depends on x content money,
+             y content money
+  equals
+  if x > y then x - y
+  else $0
+
 declaration scope IncludeInGrossIncome:
   input fair_market_value content money
   input amount_paid content money
   output amount_to_include content money
-```
-
-### A. With the current syntax
-
-```catala
-scope IncludeInGrossIncome:
-  definition amount_to_include equals
-    if fair_market_value > amount_paid then fair_market_value - amount_paid
-    else $0
-    # That's basically the definition of "excess of"
-```
-
-### B. With a two-argument function
-
-```catala
-declaration excess
-    content money
-    depends on x content money,
-               y content money
-  equals
-    if x > y then x - y
-    else $0
 
 scope IncludeInGrossIncome:
   definition amount_to_include equals excess of fair_market_value, amount_paid
 ```
+
+Here the function definition is easy to verify, and the final definition of the
+scope is very easy to understand, while staying closer to the original text.
+
+# Annex B: tuples
+
+and list combinations
+
+# Annex C: modules
+
