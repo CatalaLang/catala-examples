@@ -2054,8 +2054,8 @@ de la date d'emménagement.
 ```catala
 champ d'application ÉligibilitéPrimeDeDéménagement:
   règle condition_rang_enfant sous condition
-    nombre de (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
-      (selon personne_à_charge sous forme
+    nombre de (liste de personne_à_charge parmi ménage.personnes_à_charge
+      tel que (selon personne_à_charge sous forme
       -- EnfantÀCharge: vrai
       -- AutrePersonneÀCharge: faux)
     ) +

@@ -1541,7 +1541,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge de enfant:
-      enfant.obligation_scolaire sous forme Prestations_familiales.SituationObligationScolaire.Après et
+      enfant.obligation_scolaire sous forme
+        Prestations_familiales.SituationObligationScolaire.Après et
       (enfant.date_de_naissance + prestations_familiales.âge_l512_3_2 >
         date_courante) et
       enfant.études_apprentissage_stage_formation_pro_impossibilité_travail
@@ -1807,7 +1808,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge de enfant:
-      enfant.obligation_scolaire sous forme Prestations_familiales.SituationObligationScolaire.Après et
+      enfant.obligation_scolaire sous forme
+        Prestations_familiales.SituationObligationScolaire.Après et
       (enfant.date_de_naissance + prestations_familiales.âge_l512_3_2 >
         date_courante) et
       enfant.études_apprentissage_stage_formation_pro_impossibilité_travail

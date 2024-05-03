@@ -30,7 +30,7 @@ Les prestations familiales comprennent :
 
 9°) l'allocation journalière de présence parentale.
 
-NOTA : 
+NOTA :
 
 Conformément au IV de l’article 5 de la loi n° 2020-692 du 8 juin 2020,
 ces dispositions entrent en vigueur à une date fixée par décret, et au plus
@@ -71,7 +71,8 @@ champ d'application PrestationsFamiliales :
   # sont référencées plus tard dans l'article L521-1
   règle conditions_hors_âge de enfant sous condition
     (enfant.obligation_scolaire sous forme SituationObligationScolaire.Avant ou
-     enfant.obligation_scolaire sous forme SituationObligationScolaire.Pendant ou
+     enfant.obligation_scolaire sous forme SituationObligationScolaire.Pendant
+     ou
      enfant.obligation_scolaire sous forme SituationObligationScolaire.Après) et
     (enfant.rémuneration_mensuelle <= plafond_l512_3_2)
   conséquence rempli
@@ -95,9 +96,9 @@ peut être différent de celui mentionné au 2° du présent article.
 Pour l'attribution de l'allocation forfaitaire versée en cas de décès d'un
 enfant prévue à l'article L. 545-1, l'âge limite retenu peut être différent de
 celui fixé en application du 2° du présent article et la condition relative à
-la rémunération de l'enfant n'est pas exigée. 
+la rémunération de l'enfant n'est pas exigée.
 
-NOTA : 
+NOTA :
 
 Conformément au IV de l’article 5 de la loi n° 2020-692 du 8 juin 2020, ces
 dispositions entrent en vigueur à une date fixée par décret, et au plus tard à
@@ -305,7 +306,7 @@ d) enfants confiés à un service public, à une institution privée, à un part
 # est confié à un service social.
 ```
 
-NOTA : 
+NOTA :
 
 Se reporter aux conditions d'application prévues à l'article 10 de
 l'ordonnance n° 2019-950 du 11 septembre 2019. Conformément à l'article 25 de
@@ -404,7 +405,7 @@ fixée en application de l'article L. 551-1 .
 # Aucun changement dans le code, puisque les articles restent applicables
 ```
 
-NOTA : 
+NOTA :
 
 Conformément au IV de l’article 4 de la loi n° 2020-692 du 8 juin 2020, ces
 dispositions entrent en vigueur à une date fixée par décret, et au plus tard
