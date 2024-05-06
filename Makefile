@@ -284,7 +284,7 @@ testsuite: .FORCE binary-tests
 	  echo >&2; \
 	  [ -z "$$F" ] || echo ">> RE-RUNNING TESTS WITH FLAGS: $$F" >&2; \
 	  echo $(CLERK_TEST) --test-flags="$$F"; \
-	  $(CLERK_TEST) --test-flags="$$F" || break; \
+	  $(CLERK_TEST) --test-flags="$$F" || exit 1; \
 	done
 
 pass_all_tests: testsuite
