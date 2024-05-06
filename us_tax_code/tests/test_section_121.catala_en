@@ -147,30 +147,42 @@ scope Test6:
 
 ```catala-test-inline
 $ catala test-scope Test1 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test2 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test3 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test4 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test5 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test6 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

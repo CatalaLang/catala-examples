@@ -75,18 +75,24 @@ champ d'application Exemple2:
 
 ```catala-test-inline
 $ catala Typecheck --check-invariants
-[RESULT] All invariant checks passed
-[RESULT] Typechecking successful!
+┌─[RESULT]─
+│ All invariant checks passed
+└─
+┌─[RESULT]─
+│ Typechecking successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Exemple1
-[RESULT] Computation successful! Results:
-[RESULT] montant = 96,48 €
+┌─[RESULT]─
+│ montant = 96,48 €
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Exemple2
-[RESULT] Computation successful! Results:
-[RESULT] montant = 85,00 €
+┌─[RESULT]─
+│ montant = 85,00 €
+└─
 ```

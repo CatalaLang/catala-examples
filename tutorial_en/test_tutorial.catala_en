@@ -30,10 +30,14 @@ scope UnitTest2:
 
 ```catala-test-inline
 $ catala test-scope UnitTest1 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope UnitTest2 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

@@ -13,5 +13,7 @@ zakres Test_A7_U1_P7:
 ```
 ```catala-test-inline
 $ catala test-scope Test_A7_U1_P7 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

@@ -64,5 +64,7 @@ champ d'application Test1:
 
 ```catala-test-inline
 $ catala test-scope Test1 --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

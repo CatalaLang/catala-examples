@@ -24,10 +24,14 @@ zakres Test_A7_U1_P1_PPb:
 
 ```catala-test-inline
 $ catala test-scope Test_A7_U1_P1_PPa --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test_A7_U1_P1_PPb --disable-warnings
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

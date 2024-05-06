@@ -1,6 +1,6 @@
 package "aides_logement" (
   directory = "aides_logement"
-  version = "0.9.0"
+  version = "0.10.0"
   description = ""
   requires = "catala.runtime_ocaml"
   archive(byte) = "Aides_logement.cma"
@@ -10,7 +10,7 @@ package "aides_logement" (
 )
 package "allocations_familiales" (
   directory = "allocations_familiales"
-  version = "0.9.0"
+  version = "0.10.0"
   description = ""
   requires = "catala.runtime_ocaml"
   archive(byte) = "Allocations_familiales.cma"

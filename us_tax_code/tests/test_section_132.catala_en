@@ -44,15 +44,21 @@ scope TestSection132_3:
 
 ```catala-test-inline
 $ catala test-scope TestSection132_1
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope TestSection132_2
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope TestSection132_3
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

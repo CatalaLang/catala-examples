@@ -27,7 +27,9 @@ scope Test1:
 
 ```catala-test-inline
 $ catala test-scope Test1
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ## Test2
@@ -53,7 +55,9 @@ scope Test2:
 
 ```catala-test-inline
 $ catala test-scope Test2
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ## Test3
@@ -78,7 +82,9 @@ scope Test3:
 
 ```catala-test-inline
 $ catala test-scope Test3
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ## Test4
@@ -104,7 +110,9 @@ scope Test4:
 
 ```catala-test-inline
 $ catala test-scope Test4
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ## Test5
@@ -130,5 +138,7 @@ scope Test5:
 
 ```catala-test-inline
 $ catala test-scope Test5
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

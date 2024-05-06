@@ -69,20 +69,28 @@ champ d'application Test4:
 
 ```catala-test-inline
 $ catala test-scope Test1
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test2
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test3
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Test4
-[RESULT] Computation successful!
+┌─[RESULT]─
+│ Computation successful!
+└─
 ```

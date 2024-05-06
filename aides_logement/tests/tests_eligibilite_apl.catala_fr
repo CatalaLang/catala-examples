@@ -216,23 +216,28 @@ champ d'application Exemple3 :
 
 ```catala-test-inline
 $ catala Typecheck
-[RESULT] Typechecking successful!
+┌─[RESULT]─
+│ Typechecking successful!
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Exemple1 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] éligible = vrai
+┌─[RESULT]─
+│ éligible = vrai
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Exemple2 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] éligible = AllocationLogementFamiliale ()
+┌─[RESULT]─
+│ éligible = AllocationLogementFamiliale ()
+└─
 ```
 
 ```catala-test-inline
 $ catala test-scope Exemple3 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] éligible = AllocationLogementFamiliale ()
+┌─[RESULT]─
+│ éligible = AllocationLogementFamiliale ()
+└─
 ```

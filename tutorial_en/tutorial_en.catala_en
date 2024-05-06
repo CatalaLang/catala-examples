@@ -443,8 +443,9 @@ the file as follows:
 
 ```catala-test-inline
 $ catala interpret --scope Test1 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] income_tax = $72,000.00
+┌─[RESULT]─
+│ income_tax = $72,000.00
+└─
 ```
 
 Running `clerk test` will automatically check that the given command matches its
@@ -470,26 +471,26 @@ scope Test2:
 
 ```catala-test-inline
 $ catala interpret --scope Test2 --disable-warnings
-[ERROR] There is a conflict between multiple valid consequences for assigning
-  the same variable.
-
-This consequence has a valid justification:
-┌─⯈ tutorial_en/tutorial_en.catala_en:318.7-318.30:
-└───┐
-318 │       income * brackets.rate1
-    │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-    └┬ The Catala language tutorial
-     └┬ Functions
-      └─ Article 4
-
-This consequence has a valid justification:
-┌─⯈ tutorial_en/tutorial_en.catala_en:387.22-387.24:
-└───┐
-387 │   consequence equals $0
-    │                      ‾‾
-    └┬ The Catala language tutorial
-     └┬ Scope inclusion
-      └─ Article 6
+┌─[ERROR]─
+│
+│  During evaluation: conflict between multiple valid consequences for
+│  assigning the same variable.
+│
+├─➤ tutorial_en/tutorial_en.catala_en:318.7-318.30:
+│     │
+│ 318 │       income * brackets.rate1
+│     │       ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+├─ The Catala language tutorial
+│  └┬ Functions
+│   └─ Article 4
+│
+├─➤ tutorial_en/tutorial_en.catala_en:387.22-387.24:
+│     │
+│ 387 │   consequence equals $0
+│     │                      ‾‾
+└─ The Catala language tutorial
+   └┬ Scope inclusion
+    └─ Article 6
 #return code 123#
 ```
 
@@ -563,8 +564,9 @@ scope Test3:
 
 ```catala-test-inline
 $ catala interpret --scope Test3 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] income_tax = $0.00
+┌─[RESULT]─
+│ income_tax = $0.00
+└─
 ```
 
 ### Defining exceptions to groups of rules
@@ -614,8 +616,9 @@ scope Test4:
 
 ```catala-test-inline
 $ catala interpret --scope Test4 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] income_tax = $0.00
+┌─[RESULT]─
+│ income_tax = $0.00
+└─
 ```
 
 ### Direct scope calls
@@ -703,13 +706,13 @@ variable that will contain the structure holding the outputs of
 
 ```catala-test-inline
 $ catala interpret --scope Test4bis --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT]
-tax_computation =
-  NewIncomeTaxComputationFixed {
-    -- tax_formula: <function>
-    -- income_tax: $0.00
-  }
+┌─[RESULT]─
+│ tax_computation =
+│   NewIncomeTaxComputationFixed {
+│     -- tax_formula: <function>
+│     -- income_tax: $0.00
+│   }
+└─
 ```
 
 
@@ -961,7 +964,11 @@ scope AmbiguousDate:
 
 ```catala-test-inline
 $ catala interpret --scope AmbiguousDate --disable-warnings
-[ERROR] Unexpected error: Dates_calc.Dates.AmbiguousComputation
+┌─[ERROR]─
+│
+│  Unexpected error: Dates_calc.Dates.AmbiguousComputation
+│
+└─
 #return code 125#
 ```
 
@@ -980,8 +987,9 @@ scope AmbiguousDate2:
 
 ```catala-test-inline
 $ catala interpret --scope AmbiguousDate2 --disable-warnings
-[RESULT] Computation successful! Results:
-[RESULT] result = 2001-02-28
+┌─[RESULT]─
+│ result = 2001-02-28
+└─
 ```
 
 Some other cases are always ambiguous and will inevitably result in an error,
@@ -997,20 +1005,16 @@ scope AmbiguousDate3:
 
 ```catala-test-inline
 $ catala interpret --scope AmbiguousDate3 --disable-warnings
-[ERROR] Cannot compare together durations that cannot be converted to a
-  precise number of days
-
-┌─⯈ tutorial_en/tutorial_en.catala_en:995.28-995.34:
-└───┐
-995 │   definition result equals 30 day < 1 month
-    │                            ‾‾‾‾‾‾
-    └─ return code 125#
-
-┌─⯈ tutorial_en/tutorial_en.catala_en:995.37-995.44:
-└───┐
-995 │   definition result equals 30 day < 1 month
-    │                                     ‾‾‾‾‾‾‾
-    └─ return code 125#
+┌─[ERROR]─
+│
+│  During evaluation: ambiguous comparison between durations in different
+│  units (e.g. months vs. days).
+│
+├─➤ tutorial_en/tutorial_en.catala_en:1003.35-1003.36:
+│      │
+│ 1003 │   definition result equals 30 day < 1 month
+│      │                                   ‾
+└─ return code 125#
 #return code 123#
 ```
 
