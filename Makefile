@@ -78,10 +78,10 @@ $(BUILD):
 # run `catala latex $(catala depends $^)` to include all dependencies.
 
 $(BUILD)/%.tex: %.catala_??
-	$(CATALA) latex $(CATALA_FLAGS) $^ -o $@
+	$(CATALA) latex $(CATALA_FLAGS) $^ -o $@ --wrap
 
 $(BUILD)/%.html: %.catala_??
-	$(CATALA) html $(CATALA_FLAGS) $^ -o $@
+	$(CATALA) html $(CATALA_FLAGS) $^ -o $@ --wrap
 
 ##########################
 # Rules: OCaml compilation
