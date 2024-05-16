@@ -1014,7 +1014,10 @@ $ catala interpret --scope AmbiguousDate3 --disable-warnings
 │      │
 │ 1003 │   definition result equals 30 day < 1 month
 │      │                                   ‾
-└─ return code 125#
+└─ The Catala language tutorial
+   └┬ Catala values
+    └┬ Dates and durations
+     └─ Ambiguities
 #return code 123#
 ```
 
