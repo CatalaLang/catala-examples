@@ -61,7 +61,7 @@ individual's income over a year.
 # We will soon learn what to write here in order to translate the meaning
 # of the article into Catala code.
 
-# To create a block of Catala code in your file, bound it with Mardown-style
+# To create a block of Catala code in your file, bound it with Markdown-style
 # "```catala" and "```" delimiters.
 ```
 
@@ -152,7 +152,7 @@ attributes preceding the variable names. "input" means that the variable has to
 be defined only when the scope IncomeTaxComputation is called. "internal" means
 that the variable cannot be seen from outside the scope: it is neither an input
 nor an output of the scope. "output" means that a caller scope can retrieve the
-computed value of the variable. Note that a variable can also be simulataneously
+computed value of the variable. Note that a variable can also be simultaneously
 an input and an output of the scope, in that case it should be annotated with
 "input output".
 
@@ -242,7 +242,7 @@ the law. But we will see how to do that later.
 ## Rules
 
 So far, you've learnt how to declare a scope with some variables, and
-give definitions to these variables scattered accross the text of
+give definitions to these variables scattered across the text of
 the law at the relevant locations. But there is a pattern very frequent
 in legislative texts: what about conditions? A condition is a value that
 can be either true or false, like a boolean in programming. However, the
@@ -320,7 +320,7 @@ scope TwoBracketsTaxComputation :
       brackets.breakpoint * brackets.rate1 +
       (income - brackets.breakpoint) * brackets.rate2
     )
-    # This is the formula for implementing a two-bracketstax system.
+    # This is the formula for implementing a two-brackets tax system.
 ```
 
 ## Scope inclusion
@@ -362,7 +362,7 @@ scope NewIncomeTaxComputation :
 
   definition income_tax equals two_brackets.tax_formula of individual.income
   # After the subscope has executed, you can retrieve results from it. Here,
-  # we retrive the result of variable "tax_formula" of computed by the
+  # we retrieve the result of variable "tax_formula" of computed by the
   # subscope "two_brackets". It's up yo you to choose what is an input and
   # an output of your subscope; if you make an inconsistent choice, the
   # Catala compiler will warn you.
@@ -724,14 +724,14 @@ law can sometimes be adversarial to good programming practices and define
 provisions that break the abstraction barrier normally associated to a function.
 
 This can be the case when an outside body of legislative text "reuses" a
-a legal concept but adding a twist on it. Consider the following fictionnal
+a legal concept but adding a twist on it. Consider the following fictional
 (but not quite pathological computational-wise) example.
 
 ### Article 7
 
 The justice system delivers fines to individuals when they committed an offense.
 The fines are determined based on the amount of taxes paid by the individual.
-The more taxes the invidual pays, the higher the fine. However, the determination
+The more taxes the individual pays, the higher the fine. However, the determination
 of the amount of taxes paid by an individual in this context shall include
 a flat tax fee of $500 for individuals earning less than $10,000.
 
@@ -815,7 +815,7 @@ scope WealthTax:
       value_of_buildings_used_for_charity
   definition wealth state after_capping equals
     if wealth >= $2,500,000 then $2,500,000 else wealth
-    # Here, "wealth" refers to the state "after_charity_decuctions"
+    # Here, "wealth" refers to the state "after_charity_deductions"
 
   assertion wealth > $0
   # this refers to the final state of the variable, here "after_capping".
@@ -835,7 +835,7 @@ There are two limitations to this:
 - it is only available within the scope the variable is defined in: even if
   `wealth` were an output, its intermediate states remain opaque to the outside.
 - it is not allowed within definitions of the variable itself, where the
-  preceding state is always implicitely used.
+  preceding state is always implicitly used.
 
 ## Catala values
 
@@ -881,7 +881,7 @@ scope IntegerValues:
 
 ### Decimals
 
-Decimals in Catala also have infinite precisions, behaving like true mathematical
+Decimals in Catala also have infinite precision, behaving like true mathematical
 rational numbers, and not like computer floating point numbers that perform
 approximate computations.
 
@@ -904,7 +904,7 @@ scope DecimalValues:
 
 In Catala, money is simply represented as an integer number of cents. You cannot
 in Catala have a more precise amount of money than a cent. However, you can
-muliply an amount of money by a decimal, and the result is rounded towards the
+multiply an amount of money by a decimal, and the result is rounded towards the
 nearest cent. This principled behaviour to keep track of where you need precision
 in your computations and select decimals for precision instead of relying on
 money figures where sub-cent precision matters. Two money amounts can be divided,
@@ -947,7 +947,7 @@ declaration scope DateValues:
 scope DateValues:
   definition value1 equals |2000-01-01| + 1 year # yields |2001-01-01|
   definition value2 equals
-    (value1 - |1999-12-31|) + 45 day # 367 + 45 days (2000 is bissextile)
+    (value1 - |1999-12-31|) + 45 day # 367 + 45 days (2000 is a leap year)
 ```
 
 #### Ambiguities
@@ -1060,7 +1060,7 @@ sometimes it is useful to group together a fixed number of values of different,
 known types. These are called pairs when the number is two, tuples in the
 general case.
 
-In general, it should be favoured to explicitely declare a named structure, with
+In general, it should be favoured to explicitly declare a named structure, with
 named `data` fields to hold each of those. But sometimes, for intermediate
 values, that can become cumbersome. Elements of a tuple are simply separated by
 commas, and delimited by parentheses as so:
