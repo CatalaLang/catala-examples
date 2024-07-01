@@ -1,0 +1,10 @@
+[project]
+include_dirs = [
+  "base_mensuelle_allocations_familiales",
+  "smic",
+  "prologue_france",
+  "prestations_familiales",
+  "allocations_familiales",
+  "aides_logement",
+  "droit_successions",
+]

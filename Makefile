@@ -14,7 +14,6 @@ VERSION = 0.10.0
 #############################################
 
 CATALA_INCLUDE := base_mensuelle_allocations_familiales:smic:prologue_france:prestations_familiales:allocations_familiales:aides_logement:droit_successions
-export CATALA_INCLUDE
 
 CATALA_FLAGS ?= --trace
 CLERK_FLAGS ?= --exe=$(CATALA)
@@ -115,7 +114,7 @@ $(BUILD)/%.cmxa: $(BUILD)/%.cmi
 ###############################################
 
 $(BUILD)/%_api_web.ml: %.catala_?? | $(BUILD)/%.cmo
-	$(CATALA) api_web $(CATALA_FLAGS) $^ -o $@
+	$(CATALA) api_web -I $(CATALA_INCLUDE) $(CATALA_FLAGS) $^ -o $@
 
 $(BUILD)/%-web.bc:
 	$(if $^,,$(error Building a js bundle ($@) requires expliciting the expected contents))
@@ -142,7 +141,7 @@ $(BUILD)/french-law-web.bc: \
 
 $(BUILD)/%_schema.json: %.catala_??
 	$(if $(SCOPE),,$(error Building a json schema ($@) requires an explicit scope))
-	$(CATALA) json_schema $^ -o $@ --scope=$(SCOPE)
+	$(CATALA) json_schema -I $(CATALA_INCLUDE) $^ -o $@ --scope=$(SCOPE)
 
 $(BUILD)/aides_logement/Aides_logement_schema.json: \
   SCOPE=CalculetteAidesAuLogementGardeAlternée
