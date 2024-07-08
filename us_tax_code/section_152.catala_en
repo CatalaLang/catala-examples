@@ -12,49 +12,8 @@ taxpayer who is—
 
 (i) a parent of the individual, or
 
-```catala
-
-declaration structure Period:
-  data begin content date
-  data end content date
-
-declaration structure Individual:
-    data adjusted_gross_income content money # assumed: over taxable year
-
-declaration structure Child:
-    data parents content list of Individual
-    data guardians content list of Individual
-
-declaration scope Qualified_parent:
-    input child content Child
-    input claimer content Individual
-    internal highest_gross_individual content Individual
-    input dummy_individual content Individual # :(
-    output is_qualified content boolean
-
-scope Qualified_parent:
-    definition is_qualified equals
-    exists indiv among child.parents such that indiv = claimer
-
-```
-
 (ii) if clause (i) does not apply, the taxpayer with the highest
 adjusted gross income for such taxable year.
-
-```catala
-
-scope Qualified_parent under condition number of child.parents = 0:
-                                   # and number of child.guardians > 0:
-    definition highest_gross_individual equals
-        content of indiv among child.guardians
-            such that indiv.adjusted_gross_income is maximum
-            or if list empty then dummy_individual
-
-    definition is_qualified equals
-    exists indiv among child.guardians such that indiv = claimer
-    and claimer = highest_gross_individual
-
-```
 
 ### (B) More than 1 parent claiming qualifying child
 
