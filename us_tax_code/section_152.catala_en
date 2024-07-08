@@ -1,8 +1,151 @@
 # 26 U.S. Code § 152 - Dependent defined
 
-## Subsection (c)(4) (?)
+(a) In general
 
-### (A) In general
+For purposes of this subtitle, the term “dependent” means—
+
+(1) a qualifying child, or
+
+(2) a qualifying relative.
+
+(b) ExceptionsFor purposes of this section—
+
+(1) Dependents ineligible
+
+If an individual is a dependent of a taxpayer for any taxable year of
+such taxpayer beginning in a calendar year, such individual shall be
+treated as having no dependents for any taxable year of such
+individual beginning in such calendar year.
+
+(2) Married dependents
+
+An individual shall not be treated as a dependent of a taxpayer under
+subsection (a) if such individual has made a joint return with the
+individual’s spouse under section 6013 for the taxable year beginning
+in the calendar year in which the taxable year of the taxpayer begins.
+
+(3) Citizens or nationals of other countries
+
+(A) In general
+
+The term “dependent” does not include an individual who is not a
+citizen or national of the United States unless such individual is a
+resident of the United States or a country contiguous to the United
+States.
+
+(B) Exception for adopted child
+
+Subparagraph (A) shall not exclude any child of a taxpayer (within the
+meaning of subsection (f)(1)(B)) from the definition of “dependent”
+if—
+
+(i) for the taxable year of the taxpayer, the child has the same
+principal place of abode as the taxpayer and is a member of the
+taxpayer’s household, and
+
+(ii) the taxpayer is a citizen or national of the United States.
+
+## (c) Qualifying child
+
+For purposes of this section—
+
+### (1) In general
+
+```catala-metadata
+
+declaration scope BaseChildTaxpayerQualification:
+  input child content Child
+  input taxpayer content Taxpayer
+  input same_residence_child_taxpayer content boolean
+
+  internal relationship_requirement condition
+  internal residence_requirement condition
+  internal age_requirement condition
+  internal self_support_requirement condition
+  internal child_joint_return_requirement condition
+
+  output is_qualifying condition
+
+declaration structure Child:
+
+
+declaration structure Taxpayer:
+
+```
+
+The term “qualifying child” means, with respect to any
+taxpayer for any taxable year, an individual—
+
+(A) who bears a relationship to the taxpayer described in paragraph
+(2),
+
+(B) who has the same principal place of abode as the taxpayer for more
+than one-half of such taxable year,
+
+```catala
+scope BaseChildTaxpayerQualification:
+    rule residence_requirement
+    under condition same_residence_child_taxpayer
+    consequence fulfilled
+```
+
+(C) who meets the age requirements of paragraph (3),
+
+(D) who has not provided over one-half of such individual’s own
+support for the calendar year in which the taxable year of the
+taxpayer begins, and
+
+(E) who has not filed a joint return (other than only for a claim of
+refund) with the individual’s spouse under section 6013 for the
+taxable year beginning in the calendar year in which the taxable year
+of the taxpayer begins.
+
+```catala
+scope BaseChildTaxpayerQualification:
+  rule is_qualifying under condition
+    relationship_requirement and
+    residence_requirement and
+    age_requirement and
+    self_support_requirement and
+    child_joint_return_requirement
+  consequence fulfilled
+```
+
+### (2) Relationship
+
+For purposes of paragraph (1)(A), an individual bears
+a relationship to the taxpayer described in this paragraph if such
+individual is—
+
+(A) a child of the taxpayer or a descendant of such a child, or
+
+(B) a brother, sister, stepbrother, or stepsister of the taxpayer or a
+descendant of any such relative.
+
+### (3) Age requirements
+
+#### (A) In general
+
+For purposes of paragraph (1)(C), an individual meets the requirements
+of this paragraph if such individual is younger than the taxpayer
+claiming such individual as a qualifying child and—
+
+(i) has not attained the age of 19 as of the close of the calendar
+year in which the taxable year of the taxpayer begins, or
+
+(ii) is a student who has not attained the age of 24 as of the close
+of such calendar year.
+
+#### (B) Special rule for disabled
+
+In the case of an individual who is permanently and totally disabled
+(as defined in section 22(e)(3)) at any time during such calendar
+year, the requirements of subparagraph (A) shall be treated as met
+with respect to such individual.
+
+### (4) Special rule relating to 2 or more who can claim the same qualifying child
+
+#### (A) In general
 
 Except as provided in subparagraphs (B) and (C), if (but for this
 paragraph) an individual may be claimed as a qualifying child by 2 or
@@ -15,11 +158,9 @@ taxpayer who is—
 (ii) if clause (i) does not apply, the taxpayer with the highest
 adjusted gross income for such taxable year.
 
-### (B) More than 1 parent claiming qualifying child
-
-If the parents claiming any qualifying child do not file a joint
-return together, such child shall be treated as the qualifying child
-of—
+#### (B) More than 1 parent claiming qualifying childIf the parents
+claiming any qualifying child do not file a joint return together,
+such child shall be treated as the qualifying child of—
 
 (i) the parent with whom the child resided for the longest period of
 time during the taxable year, or
@@ -28,10 +169,348 @@ time during the taxable year, or
 time during such taxable year, the parent with the highest adjusted
 gross income.
 
-### (C) No parent claiming qualifying child
+#### (C) No parent claiming qualifying child
 
 If the parents of an individual may claim such individual as a
 qualifying child but no parent so claims the individual, such
 individual may be claimed as the qualifying child of another taxpayer
 but only if the adjusted gross income of such taxpayer is higher than
 the highest adjusted gross income of any parent of the individual.
+
+(d) Qualifying relativeFor purposes of this section—
+
+(1) In general
+
+The term “qualifying relative” means, with respect to any taxpayer for
+any taxable year, an individual—
+
+(A) who bears a relationship to the taxpayer described in paragraph
+(2),
+
+(B) whose gross income for the calendar year in which such taxable
+year begins is less than the exemption amount (as defined in section
+151(d)),
+
+(C) with respect to whom the taxpayer provides over one-half of the
+individual’s support for the calendar year in which such taxable year
+begins, and
+
+(D) who is not a qualifying child of such taxpayer or of any other
+taxpayer for any taxable year beginning in the calendar year in which
+such taxable year begins.
+
+(2) RelationshipFor purposes of paragraph (1)(A), an individual bears
+a relationship to the taxpayer described in this paragraph if the
+individual is any of the following with respect to the taxpayer:
+
+(A) A child or a descendant of a child.
+
+(B) A brother, sister, stepbrother, or stepsister.
+
+(C) The father or mother, or an ancestor of either.
+
+(D) A stepfather or stepmother.
+
+(E) A son or daughter of a brother or sister of the taxpayer.
+
+(F) A brother or sister of the father or mother of the taxpayer.
+
+(G) A son-in-law, daughter-in-law, father-in-law, mother-in-law,
+brother-in-law, or sister-in-law.
+
+(H) An individual (other than an individual who at any time during the
+taxable year was the spouse, determined without regard to section
+7703, of the taxpayer) who, for the taxable year of the taxpayer, has
+the same principal place of abode as the taxpayer and is a member of
+the taxpayer’s household.
+
+(3) Special rule relating to multiple support agreementsFor purposes
+of paragraph (1)(C), over one-half of the support of an individual for
+a calendar year shall be treated as received from the taxpayer if—
+
+(A) no one person contributed over one-half of such support,
+
+(B) over one-half of such support was received from 2 or more persons
+each of whom, but for the fact that any such person alone did not
+contribute over one-half of such support, would have been entitled to
+claim such individual as a dependent for a taxable year beginning in
+such calendar year,
+
+(C) the taxpayer contributed over 10 percent of such support, and
+
+(D) each person described in subparagraph (B) (other than the
+taxpayer) who contributed over 10 percent of such support files a
+written declaration (in such manner and form as the Secretary may by
+regulations prescribe) that such person will not claim such individual
+as a dependent for any taxable year beginning in such calendar year.
+
+(4) Special rule relating to income of handicapped dependents
+
+(A) In general
+
+For purposes of paragraph (1)(B), the gross income of an individual
+who is permanently and totally disabled (as defined in section
+22(e)(3)) at any time during the taxable year shall not include income
+attributable to services performed by the individual at a sheltered
+workshop if—
+
+(i) the availability of medical care at such workshop is the principal
+reason for the individual’s presence there, and
+
+(ii) the income arises solely from activities at such workshop which
+are incident to such medical care.
+
+(B) Sheltered workshop definedFor purposes of subparagraph (A), the
+term “sheltered workshop” means a school—
+
+(i) which provides special instruction or training designed to
+alleviate the disability of the individual, and
+
+(ii) which is operated by an organization described in section
+501(c)(3) and exempt from tax under section 501(a), or by a State, a
+possession of the United States, any political subdivision of any of
+the foregoing, the United States, or the District of Columbia.
+
+(5) Special rules for support
+
+(A) In general
+
+For purposes of this subsection—
+
+(i) payments to a spouse of alimony or separate maintenance payments
+shall not be treated as a payment by the payor spouse for the support
+of any dependent, and
+
+(ii) in the case of the remarriage of a parent, support of a child
+received from the parent’s spouse shall be treated as received from
+the parent.
+
+(B) Alimony or separate maintenance paymentFor purposes of
+subparagraph (A), the term “alimony or separate maintenance payment”
+means any payment in cash if—
+
+(i) such payment is received by (or on behalf of) a spouse under a
+divorce or separation instrument (as defined in section 121(d)(3)(C)),
+
+(ii) in the case of an individual legally separated from the
+individual’s spouse under a decree of divorce or of separate
+maintenance, the payee spouse and the payor spouse are not members of
+the same household at the time such payment is made, and
+
+(iii) there is no liability to make any such payment for any period
+after the death of the payee spouse and there is no liability to make
+any payment (in cash or property) as a substitute for such payments
+after the death of the payee spouse.
+
+(e) Special rule for divorced parents, etc.
+
+(1) In general
+
+Notwithstanding subsection (c)(1)(B), (c)(4), or (d)(1)(C), if—
+
+(A) a child receives over one-half of the child’s support during the
+calendar year from the child’s parents—
+
+(i) who are divorced or legally separated under a decree of divorce or
+separate maintenance,
+
+(ii) who are separated under a written separation agreement, or
+
+(iii) who live apart at all times during the last 6 months of the
+calendar year, and—
+
+(B) such child is in the custody of 1 or both of the child’s parents
+for more than one-half of the calendar year, such child shall be
+treated as being the qualifying child or qualifying relative of the
+noncustodial parent for a calendar year if the requirements described
+in paragraph (2) or (3) are met.
+
+(2) Exception where custodial parent releases claim to exemption for
+the yearFor purposes of paragraph (1), the requirements described in
+this paragraph are met with respect to any calendar year if—
+
+(A) the custodial parent signs a written declaration (in such manner
+and form as the Secretary may by regulations prescribe) that such
+custodial parent will not claim such child as a dependent for any
+taxable year beginning in such calendar year, and
+
+(B) the noncustodial parent attaches such written declaration to the
+noncustodial parent’s return for the taxable year beginning during
+such calendar year.
+
+(3) Exception for certain pre-1985 instruments
+
+(A) In general
+
+For purposes of paragraph (1), the requirements described in this
+paragraph are met with respect to any calendar year if—
+
+(i) a qualified pre-1985 instrument between the parents applicable to
+the taxable year beginning in such calendar year provides that the
+noncustodial parent shall be entitled to any deduction allowable under
+section 151 for such child, and
+
+(ii) the noncustodial parent provides at least $600 for the support of
+such child during such calendar year.
+
+For purposes of this subparagraph, amounts expended for the support of
+a child or children shall be treated as received from the noncustodial
+parent to the extent that such parent provided amounts for such
+support.
+
+(B) Qualified pre-1985 instrumentFor purposes of this paragraph, the
+term “qualified pre-1985 instrument” means any decree of divorce or
+separate maintenance or written agreement—
+
+(i) which is executed before January 1, 1985,
+
+(ii) which on such date contains the provision described in
+subparagraph (A)(i), and
+
+(iii) which is not modified on or after such date in a modification
+which expressly provides that this paragraph shall not apply to such
+decree or agreement.
+
+(4) Custodial parent and noncustodial parentFor purposes of this
+subsection—
+
+(A) Custodial parent
+
+The term “custodial parent” means the parent having custody for the
+greater portion of the calendar year.
+
+(B) Noncustodial parent
+
+The term “noncustodial parent” means the parent who is not the custodial parent.
+
+(5) Exception for multiple-support agreement
+
+This subsection shall not apply in any case where over one-half of the
+support of the child is treated as having been received from a
+taxpayer under the provision of subsection (d)(3).
+
+(6) Special rule for support received from new spouse of parent
+
+For purposes of this subsection, in the case of the remarriage of a
+parent, support of a child received from the parent’s spouse shall be
+treated as received from the parent.
+
+(f) Other definitions and rulesFor purposes of this section—
+
+(1) Child defined
+
+(A) In general
+
+The term “child” means an individual who is—
+
+(i) a son, daughter, stepson, or stepdaughter of the taxpayer, or
+
+(ii) an eligible foster child of the taxpayer.
+
+(B) Adopted child
+
+In determining whether any of the relationships specified in
+subparagraph (A)(i) or paragraph (4) exists, a legally adopted
+individual of the taxpayer, or an individual who is lawfully placed
+with the taxpayer for legal adoption by the taxpayer, shall be treated
+as a child of such individual by blood.
+
+(C) Eligible foster child
+
+For purposes of subparagraph (A)(ii), the term “eligible foster child”
+means an individual who is placed with the taxpayer by an authorized
+placement agency or by judgment, decree, or other order of any court
+of competent jurisdiction.
+
+(2) Student defined
+
+The term “student” means an individual who during each of 5 calendar
+months during the calendar year in which the taxable year of the
+taxpayer begins—
+
+(A) is a full-time student at an educational organization described in
+section 170(b)(1)(A)(ii), or
+
+(B) is pursuing a full-time course of institutional on-farm training
+under the supervision of an accredited agent of an educational
+organization described in section 170(b)(1)(A)(ii) or of a State or
+political subdivision of a State.
+
+(3) Determination of household status
+
+An individual shall not be treated as a member of the taxpayer’s
+household if at any time during the taxable year of the taxpayer the
+relationship between such individual and the taxpayer is in violation
+of local law.
+
+(4) Brother and sister
+
+The terms “brother” and “sister” include a brother or sister by the
+half blood.
+
+(5) Special support test in case of studentsFor purposes of
+subsections (c)(1)(D) and (d)(1)(C), in the case of an individual who
+is—
+
+(A) a child of the taxpayer, and
+
+(B) a student, amounts received as scholarships for study at an
+educational organization described in section 170(b)(1)(A)(ii) shall
+not be taken into account.
+
+(6) Treatment of missing children
+
+(A) In general
+
+Solely for the purposes referred to in subparagraph (B),
+a child of the taxpayer—
+
+(i) who is presumed by law enforcement authorities to have been
+kidnapped by someone who is not a member of the family of such child
+or the taxpayer, and
+
+(ii) who had, for the taxable year in which the kidnapping occurred,
+the same principal place of abode as the taxpayer for more than
+one-half of the portion of such year before the date of the
+kidnapping, shall be treated as meeting the requirement of subsection
+(c)(1)(B) with respect to a taxpayer for all taxable years ending
+during the period that the child is kidnapped.
+
+(B) PurposesSubparagraph (A) shall apply solely for purposes of
+determining—
+
+(i) the deduction under section 151(c),
+
+(ii) the credit under section 24 (relating to child tax credit),
+
+(iii) whether an individual is a surviving spouse or a head of a
+household (as such terms are defined in section 2), and
+
+(iv) the earned income credit under section 32.
+
+(C) Comparable treatment of certain qualifying relativesFor purposes
+of this section, a child of the taxpayer—
+
+(i) who is presumed by law enforcement authorities to have been
+kidnapped by someone who is not a member of the family of such child
+or the taxpayer, and
+
+(ii) who was (without regard to this paragraph) a qualifying relative
+of the taxpayer for the portion of the taxable year before the date of
+the kidnapping,
+
+shall be treated as a qualifying relative of the taxpayer for all
+taxable years ending during the period that the child is kidnapped.
+
+(D) Termination of treatment
+
+Subparagraphs (A) and (C) shall cease to apply as of the first taxable
+year of the taxpayer beginning after the calendar year in which there
+is a determination that the child is dead (or, if earlier, in which
+the child would have attained age 18).
+
+(7) Cross references
+
+For provision treating child as dependent of both parents for purposes
+of certain provisions, see sections 105(b), 132(h)(2)(B), and
+213(d)(5).
