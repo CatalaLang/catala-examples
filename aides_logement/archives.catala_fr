@@ -4939,3 +4939,166 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     sinon # si nombre_personnes_à_charge = 6 alors
       9 032 €
 ```
+
+# Archives du code de la sécurité sociale
+
+## Articles en vigueur  jusqu'au 1er septembre 2023
+
+### Article L161-17-2 | LEGIARTI000025014605 [archive]
+
+L'âge d'ouverture du droit à une pension de retraite mentionné au premier alinéa
+de l'article L. 351-1 du présent code, à l'article L. 732-18 du code rural
+et de la pêche maritime, au 1° du I de l'article L. 24 et au 1° de l'article
+L. 25 du code des pensions civiles et militaires de retraite est fixé à
+soixante-deux ans pour les assurés nés à compter du 1er janvier 1955.
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante < |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    date_naissance_assuré >= |1955-01-01|
+  conséquence égal à 62 an
+
+champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
+  date_courante < |2023-09-01|:
+  définition ouverture_droits_retraite.date_naissance_assuré égal à
+    demandeur.date_naissance
+  définition âge_l161_17_2_sécu égal à
+    ouverture_droits_retraite.âge_ouverture_droit
+```
+
+Cet âge est fixé par décret dans la limite de l'âge mentionné au premier
+alinéa pour les assurés nés avant le 1er janvier 1955 et, pour ceux nés
+entre le 1er juillet 1951 et le 31 décembre 1954, de manière croissante :
+
+1° A raison de quatre mois par génération pour les assurés nés entre le 1er
+juillet 1951 et le 31 décembre 1951 ;
+
+2° A raison de cinq mois par génération pour les assurés nés entre le 1er
+janvier 1952 et le 31 décembre 1954.
+
+NOTA :
+
+Loi n° 2010-1330 du 9 novembre 2010, article 118 II : Les dispositions de
+l'article 18 sont applicables aux pensions prenant effet à compter du 1er juillet 2011.
+
+
+####### Article L351-8 | LEGIARTI000028498855 [archive]
+
+Bénéficient du taux plein même s'ils ne justifient pas de la durée requise
+d'assurance ou de périodes équivalentes dans le régime général et un ou
+plusieurs autres régimes obligatoires :
+
+1° Les assurés qui atteignent l'âge prévu à l'article L. 161-17-2 augmenté
+de cinq années ;
+
+```catala
+champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
+  date_courante < |2023-09-01|:
+  définition âge_l351_8_1_sécu égal à âge_l161_17_2_sécu + 5 an
+```
+
+1° bis Les assurés ayant interrompu leur activité professionnelle en raison de
+leur qualité d'aidant familial telle que définie à l'article L. 245-12 du code
+de l'action sociale et des familles qui atteignent l'âge de soixante-cinq ans
+dans des conditions déterminées par décret en Conseil d'Etat ;
+
+1° ter Les assurés justifiant d'une incapacité permanente au moins égale à un
+taux fixé par décret, qui atteignent l'âge mentionné à l'article L. 161-17-2 ;
+
+2°) les assurés reconnus inaptes au travail dans les conditions prévues à
+l'article L. 351-7 ;
+
+3°) les anciens déportés ou internés titulaires de la carte de déporté ou
+interné de la Résistance ou de la carte de déporté ou interné politique ;
+
+4°) les mères de famille salariées justifiant d'une durée minimum d'assurance
+dans le régime général, ou dans ce régime et celui des salariés agricoles qui
+ont élevé au moins un nombre minimum d'enfants, dans les conditions prévues au
+deuxième alinéa de l'article L. 342-4 , et qui ont exercé un travail manuel
+ouvrier pendant une durée déterminée ;
+
+4° bis) les travailleurs handicapés admis à demander la liquidation de leur
+pension de retraite avant l'âge prévu au premier alinéa de l'article L. 351-1 ;
+
+5°) les anciens prisonniers de guerre lorsque, sur leur demande, leur pension
+est liquidée à un âge variant suivant la durée de captivité dans des conditions
+fixées par décret.
+
+Les anciens prisonniers de guerre évadés de guerre, au-delà d'un certain temps
+de captivité, et les anciens prisonniers rapatriés pour maladie peuvent choisir
+le régime le plus favorable.
+
+Toute partie de mois n'est pas prise en considération.
+
+Les dispositions du 5°) ci-dessus s'appliquent à tous les anciens combattants
+pour leur durée de service actif passé sous les drapeaux.
+
+NOTA :
+
+Conformément à l'article 37 IV de la loi n° 2014-40 du 20 janvier 2014,
+l'article L351-8, dans sa rédaction issue de la présente loi, est applicable
+aux pensions prenant effet à compter du 1er février 2014.
+
+
+######### Article D161-2-1-9 | LEGIARTI000025089933
+
+L'âge prévu au second alinéa de l'article L. 161-17-2 est fixé à :
+
+1° Soixante ans pour les assurés nés avant le 1er juillet 1951 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante < |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    date_naissance_assuré < |1951-07-01|
+  conséquence égal à 60 an
+```
+
+2° Soixante ans et quatre mois pour les assurés nés entre le 1er juillet
+1951 et le 31 décembre 1951 inclus ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante < |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    date_naissance_assuré >= |1951-07-01| et
+    date_naissance_assuré <= |1951-12-31|
+  conséquence égal à 60 an + 4 mois
+```
+
+3° Soixante ans et neuf mois pour les assurés nés en 1952 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante < |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1952
+  conséquence égal à 60 an + 9 mois
+```
+
+4° Soixante et un ans et deux mois pour les assurés nés en 1953 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante < |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1953
+  conséquence égal à 61 an + 2 mois
+```
+
+5° Soixante et un ans et sept mois pour les assurés nés en 1954 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante < |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1954
+  conséquence égal à 61 an + 7 mois
+```
+
+6° Soixante deux ans pour les assurés nés à compter du 1er janvier 1955.
+
+```catala
+# Déjà codé dans L161-17-2
+```

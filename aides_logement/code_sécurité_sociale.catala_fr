@@ -105,19 +105,20 @@ certaines structures sur le territoire français.
 
 ######## Paragraphe 1 : Information et simplification des démarches des assurés.
 
-######### Article L161-17-2 | LEGIARTI000025014605
+######### Article L161-17-2 | LEGIARTI000047452768
 
 L'âge d'ouverture du droit à une pension de retraite mentionné au premier alinéa
 de l'article L. 351-1 du présent code, à l'article L. 732-18 du code rural
 et de la pêche maritime, au 1° du I de l'article L. 24 et au 1° de l'article
 L. 25 du code des pensions civiles et militaires de retraite est fixé à
-soixante-deux ans pour les assurés nés à compter du 1er janvier 1955.
+soixante-quatre ans pour les assurés nés à compter du 1er janvier 1968.
 
 ```catala
-champ d'application OuvertureDroitsRetraite:
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante >= |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    date_naissance_assuré >= |1955-01-01|
-  conséquence égal à 62 an
+    date_naissance_assuré >= |1968-01-01|
+  conséquence égal à 64 an
 
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition ouverture_droits_retraite.date_naissance_assuré égal à
@@ -127,19 +128,14 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
 ```
 
 Cet âge est fixé par décret dans la limite de l'âge mentionné au premier
-alinéa pour les assurés nés avant le 1er janvier 1955 et, pour ceux nés
-entre le 1er juillet 1951 et le 31 décembre 1954, de manière croissante :
-
-1° A raison de quatre mois par génération pour les assurés nés entre le 1er
-juillet 1951 et le 31 décembre 1951 ;
-
-2° A raison de cinq mois par génération pour les assurés nés entre le 1er
-janvier 1952 et le 31 décembre 1954.
+alinéa pour les assurés nés avant le 1er janvier 1968 et, pour ceux nés entre
+le 1er septembre 1961 et le 31 décembre 1967, de manière croissante, à raison
+de trois mois par génération.
 
 NOTA :
 
-Loi n° 2010-1330 du 9 novembre 2010, article 118 II : Les dispositions de
-l'article 18 sont applicables aux pensions prenant effet à compter du 1er juillet 2011.
+Conformément au B du XXX de l'article 10 de la loi n° 2023-270 du 14 avril 2023,
+ces dispositions s'appliquent aux pensions prenant effet à compter du 1er septembre 2023.
 
 ### Livre III : Dispositions relatives aux assurances sociales et à diverses catégories de personnes rattachées au régime générale
 
@@ -160,6 +156,11 @@ d'une incapacité permanente au moins égale à un taux fixé par décret.
 # Définit ÉligibilitéAidesPersonnelleLogement.âge_l351_1_5_sécu,
 # mais valeur dans un décret.
 ```
+
+NOTA :
+
+Conformément au B du VII de l’article 11 de la loi n° 2023-270 du 14 avril 2023,
+ces dispositions s'appliquent aux pensions prenant effet à compter du 1er septembre 2023.
 
 ###### Section 2 : Périodes d'assurance, périodes équivalentes et périodes assimilées
 
@@ -196,18 +197,19 @@ du 1er septembre 2023.
 
 ###### Section 5 : Taux et montant de la pension
 
-####### Article L351-8 | LEGIARTI000028498855
+####### Article L351-8 | LEGIARTI000047452736
 
 Bénéficient du taux plein même s'ils ne justifient pas de la durée requise
 d'assurance ou de périodes équivalentes dans le régime général et un ou
 plusieurs autres régimes obligatoires :
 
-1° Les assurés qui atteignent l'âge prévu à l'article L. 161-17-2 augmenté
-de cinq années ;
+1° Les assurés qui atteignent l'âge prévu au premier alinéa de l'article L. 161-17-2 augmenté
+de trois années ;
 
 ```catala
-champ d'application ÉligibilitéAidesPersonnelleLogement:
-  définition âge_l351_8_1_sécu égal à âge_l161_17_2_sécu + 5 an
+champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
+  date_courante >= |2023-09-01|:
+  définition âge_l351_8_1_sécu égal à âge_l161_17_2_sécu + 3 an
 ```
 
 1° bis Les assurés ayant interrompu leur activité professionnelle en raison de
@@ -215,26 +217,30 @@ leur qualité d'aidant familial telle que définie à l'article L. 245-12 du cod
 de l'action sociale et des familles qui atteignent l'âge de soixante-cinq ans
 dans des conditions déterminées par décret en Conseil d'Etat ;
 
-1° ter Les assurés justifiant d'une incapacité permanente au moins égale à un
-taux fixé par décret, qui atteignent l'âge mentionné à l'article L. 161-17-2 ;
+1° ter (Abrogé) ;
 
-2°) les assurés reconnus inaptes au travail dans les conditions prévues à
-l'article L. 351-7 ;
+2° Les assurés reconnus inaptes au travail et les assurés justifiant d'une
+incapacité permanente au moins égale à un taux fixé par décret admis à demander
+la liquidation de leur pension de retraite dans les conditions prévues à
+l'article L. 351-1-5 ;
 
-3°) les anciens déportés ou internés titulaires de la carte de déporté ou
-interné de la Résistance ou de la carte de déporté ou interné politique ;
+3° Les anciens déportés ou internés titulaires de la carte de déporté ou interné
+de la Résistance ou de la carte de déporté ou interné politique ;
 
-4°) les mères de famille salariées justifiant d'une durée minimum d'assurance
+4° Les mères de famille salariées justifiant d'une durée minimum d'assurance
 dans le régime général, ou dans ce régime et celui des salariés agricoles qui
 ont élevé au moins un nombre minimum d'enfants, dans les conditions prévues au
 deuxième alinéa de l'article L. 342-4 , et qui ont exercé un travail manuel
 ouvrier pendant une durée déterminée ;
 
-4° bis) les travailleurs handicapés admis à demander la liquidation de leur
+4° bis Les travailleurs handicapés admis à demander la liquidation de leur
 pension de retraite avant l'âge prévu au premier alinéa de l'article L. 351-1 ;
 
-5°) les anciens prisonniers de guerre lorsque, sur leur demande, leur pension
-est liquidée à un âge variant suivant la durée de captivité dans des conditions
+4° ter Les assurés dont l'âge mentionné au même premier alinéa est abaissé dans
+des conditions prévues à l'article L. 351-1-1 ;
+
+5° Les anciens prisonniers de guerre lorsque, sur leur demande, leur pension est
+liquidée à un âge variant suivant la durée de captivité dans des conditions
 fixées par décret.
 
 Les anciens prisonniers de guerre évadés de guerre, au-delà d'un certain temps
@@ -248,9 +254,9 @@ pour leur durée de service actif passé sous les drapeaux.
 
 NOTA :
 
-Conformément à l'article 37 IV de la loi n° 2014-40 du 20 janvier 2014,
-l'article L351-8, dans sa rédaction issue de la présente loi, est applicable
-aux pensions prenant effet à compter du 1er février 2014.
+Conformément au B du XXX de l'article 10 et au B de l’article 11 de la loi n°
+2023-270 du 14 avril 2023, ces dispositions s'appliquent aux pensions prenant
+effet à compter du 1er septembre 2023.
 
 ### Livre VIII : Allocations aux personnes âgées - Allocation aux adultes handicapés - Aides à l'emploi pour la garde des jeunes enfants - Aides aux collectivités et organismes logeant à titre temporaire des personnes défavorisées ou gérant des aires d'accueil des gens du voyage - Protection complémentaire en matière de simultanément
 
@@ -291,14 +297,15 @@ plafonds, la ou les allocations sont réduites à due concurrence.
 
 ######## Paragraphe 2 : Ouverture du droit et liquidation.
 
-######### Article D161-2-1-9 | LEGIARTI000025089933
+######### Article D161-2-1-9 | LEGIARTI000047634502
 
 L'âge prévu au second alinéa de l'article L. 161-17-2 est fixé à :
 
 1° Soixante ans pour les assurés nés avant le 1er juillet 1951 ;
 
 ```catala
-champ d'application OuvertureDroitsRetraite:
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
     date_naissance_assuré < |1951-07-01|
   conséquence égal à 60 an
@@ -308,7 +315,8 @@ champ d'application OuvertureDroitsRetraite:
 1951 et le 31 décembre 1951 inclus ;
 
 ```catala
-champ d'application OuvertureDroitsRetraite:
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
     date_naissance_assuré >= |1951-07-01| et
     date_naissance_assuré <= |1951-12-31|
@@ -318,7 +326,8 @@ champ d'application OuvertureDroitsRetraite:
 3° Soixante ans et neuf mois pour les assurés nés en 1952 ;
 
 ```catala
-champ d'application OuvertureDroitsRetraite:
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
     accès_année de date_naissance_assuré = 1952
   conséquence égal à 60 an + 9 mois
@@ -327,7 +336,8 @@ champ d'application OuvertureDroitsRetraite:
 4° Soixante et un ans et deux mois pour les assurés nés en 1953 ;
 
 ```catala
-champ d'application OuvertureDroitsRetraite:
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
     accès_année de date_naissance_assuré = 1953
   conséquence égal à 61 an + 2 mois
@@ -336,17 +346,105 @@ champ d'application OuvertureDroitsRetraite:
 5° Soixante et un ans et sept mois pour les assurés nés en 1954 ;
 
 ```catala
-champ d'application OuvertureDroitsRetraite:
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
     accès_année de date_naissance_assuré = 1954
   conséquence égal à 61 an + 7 mois
 ```
 
-6° Soixante deux ans pour les assurés nés à compter du 1er janvier 1955.
+6° Soixante-deux ans pour les assurés nés entre le 1er janvier 1955 et le 31 août 1961 inclus ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    date_naissance_assuré >= |1955-01-01| et
+    date_naissance_assuré <= |1961-31-08|
+  conséquence égal à 62 an
+```
+
+7° Soixante-deux ans et trois mois pour les assurés nés entre le 1er septembre 1961 et le 31 décembre 1961 inclus ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    date_naissance_assuré >= |1961-09-01| et
+    date_naissance_assuré <= |1961-12-31|
+  conséquence égal à 62 an + 3 mois
+```
+
+8° Soixante-deux ans et six mois pour les assurés nés en 1962 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1962
+  conséquence égal à 62 an + 6 mois
+```
+
+9° Soixante-deux ans et neuf mois pour les assurés nés en 1963 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1963
+  conséquence égal à 62 an + 9 mois
+```
+
+10° Soixante-trois ans pour les assurés nés en 1964 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1964
+  conséquence égal à 63 an
+```
+
+11° Soixante-trois ans et trois mois pour les assurés nés en 1965 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1965
+  conséquence égal à 63 an + 3 mois
+```
+
+12° Soixante-trois ans et six mois pour les assurés nés en 1966 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1966
+  conséquence égal à 63 an + 6 mois
+```
+
+13° Soixante-trois ans et neuf mois pour les assurés nés en 1967 ;
+
+```catala
+champ d'application OuvertureDroitsRetraite sous condition
+  date_courante > |2023-09-01|:
+  définition âge_ouverture_droit sous condition
+    accès_année de date_naissance_assuré = 1967
+  conséquence égal à 62 an + 9 mois
+```
+
+14° Soixante-quatre ans pour les assurés nés à compter du 1er janvier 1968.
 
 ```catala
 # Déjà codé dans L161-17-2
 ```
+
+NOTA :
+
+Conformément à l'article 9 du décret n° 2023-436 du 3 juin 2023, ces dispositions
+s'appliquent aux pensions prenant effet à compter du 1er septembre 2023.
 
 ### Livre VIII : Allocations aux personnes âgées - Allocation aux adultes handicapés - Aides à l'emploi pour la garde des jeunes enfants - Protection complémentaire en matière de santé
 
