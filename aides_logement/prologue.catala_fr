@@ -1083,6 +1083,7 @@ déclaration champ d'application CalculAllocationLogement:
 déclaration champ d'application OuvertureDroitsRetraite:
   résultat âge_ouverture_droit contenu durée
   entrée date_naissance_assuré contenu date
+  entrée date_courante contenu date
 ```
 
 ### Quantification des impayés de dépense de logement

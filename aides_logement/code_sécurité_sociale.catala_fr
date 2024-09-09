@@ -123,6 +123,7 @@ champ d'application OuvertureDroitsRetraite sous condition
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition ouverture_droits_retraite.date_naissance_assuré égal à
     demandeur.date_naissance
+  définition ouverture_droits_retraite.date_courante égal à date_courante
   définition âge_l161_17_2_sécu égal à
     ouverture_droits_retraite.âge_ouverture_droit
 ```
@@ -360,7 +361,7 @@ champ d'application OuvertureDroitsRetraite sous condition
   date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
     date_naissance_assuré >= |1955-01-01| et
-    date_naissance_assuré <= |1961-31-08|
+    date_naissance_assuré <= |1961-08-31|
   conséquence égal à 62 an
 ```
 
