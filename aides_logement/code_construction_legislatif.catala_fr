@@ -200,7 +200,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   assertion seuil_l822_3_parts_usufruit < 20 %
 ```
 
-###### Article L822-4 | LEGIARTI000038814940
+###### Article L822-4 | LEGIARTI000049392199
 
 Les aides personnelles au logement ne sont pas dues si le local est loué ou
 sous-loué en partie à des tiers, sauf s'il s'agit d'une personne âgée ou
@@ -246,7 +246,7 @@ s'appliquent également au locataire, au sous-locataire et au propriétaire.
 ```
 
 Pour l'attribution d'une aide personnelle au logement, en cas d'intermédiation
-locative et en cas d'application des dispositions de l'article L. 442-8-1 du
+locative et en cas d'application des articles L. 442-8-1 et L. 442-8-1-2 du
 présent code prévoyant une sous-location totale du logement, le sous-locataire
 est assimilé au locataire.
 
@@ -716,7 +716,7 @@ conclus dans les conditions prévues par la loi n° 84-595 du 12 juillet 1984
 définissant la location-accession à la propriété immobilière, lorsque ces
 logements ont été construits, améliorés ou acquis et améliorés au moyen d'aides
 de l'Etat ou de prêts dont les caractéristiques et les conditions d'octroi sont
-fixées par voie réglementaire, sous les réserves énoncées à l ‘ article L. 831-2.
+fixées par voie réglementaire, sous les réserves énoncées à l ‘ article L. 831-2 .
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
@@ -1443,7 +1443,7 @@ Mayotte " ;
 
 c) L'article est complété par quatre alinéas ainsi rédigés :
 
-" 4° Aux personnes qui ont au moins un enfant à charge au sens de l'article
+" 4° Aux personnes qui ont au moins un enfant à charge au sens de l' article
 L. 512-3 du code de la sécurité sociale ;
 
 ```catala
