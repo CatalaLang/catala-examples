@@ -362,31 +362,30 @@ de la construction et de l’habitation, à compter du mois de mai 2021.
 ######## Article R822-6 | LEGIARTI000047985814
 
 Ne sont prises en compte que pour la fraction dépassant le plafond individuel
-prévu à l'article L. 815-9 du code de la sécurité sociale multiplié par 1,25
+prévu à l' article L. 815-9 du code de la sécurité sociale multiplié par 1,25
 les ressources de chacune des personnes vivant habituellement au foyer qui
 sont :
 
 1° Soit enfants du bénéficiaire de l'aide ou de son conjoint ;
 
 2° Soit ascendants du bénéficiaire ou de son conjoint ayant atteint un âge au
-moins égal à celui mentionné au 1° de l'article L. 351-8 du code de la
-sécurité sociale, ou d'un âge au moins égal à celui mentionné à l'article L.
+moins égal à celui mentionné au 1° de l' article L. 351-8 du code de la
+sécurité sociale , ou d'un âge au moins égal à celui mentionné à l' article L.
 351-1-5 du même code en cas d'inaptitude au travail, ou âgés d'au moins
 soixante-cinq ans s'ils percevaient l'allocation de solidarité aux personnes
 âgées ;
 
 3° Soit ascendants, descendants ou collatéraux au deuxième degré ou au
 troisième degré du bénéficiaire ou de son conjoint et titulaires de la carte "
-mobilité-inclusion " comportant la mention " invalidité " prévue à l'article
+mobilité-inclusion " comportant la mention " invalidité " prévue à l' article
 L. 241-3 du code de l'action sociale et des familles ou de la carte
 d'invalidité prévue à l'article L. 241-3 du même code, dans sa rédaction
 antérieure au 1er janvier 2017.
 
-NOTA:
+NOTA :
 
 Conformément au I de l’article 7 du décret n° 2023-799 du 21 août 2023, ces
-dispositions sont applicables aux prestations dues à compter du 1er septembre
-2023.
+dispositions sont applicables aux prestations dues à compter du 1er septembre 2023.
 
 ```catala
 # Nous choissisons par manque de ressources (sic) de développement de laisser
@@ -1243,11 +1242,10 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
   conséquence rempli
 ```
 
-NOTA:
+NOTA :
 
 Conformément au I de l’article 7 du décret n° 2023-799 du 21 août 2023, ces
-dispositions sont applicables aux prestations dues à compter du 1er septembre
-2023.
+dispositions sont applicables aux prestations dues à compter du 1er septembre 2023.
 
 ####### Article R823-5 | LEGIARTI000038878931
 
@@ -1393,7 +1391,7 @@ logement sont fixées :
 sous-locataires, y compris un logement dans une résidence universitaire
 définie à l'article L. 631-12 et dans une résidence-service définie à
 l'article L. 631-13, par les règles communes figurant aux articles
-D. 823-16 à D. 823-19, et, en outre, pour les allocations de logement,
+D. 823-16 à D. 823-19 , et, en outre, pour les allocations de logement,
 par les règles particulières figurant aux articles D. 842-1 à D. 842-4 ;
 
 2° Pour les ménages résidant dans un logement-foyer défini à l'article
@@ -1721,7 +1719,7 @@ a eu lieu.
 Les dispositions des articles R. 823-10 et R. 823-12 ne peuvent avoir pour effet
 d'interrompre le droit aux aides personnelles au logement.
 
-Par dérogation aux dispositions des articles R. 831-2, R. 832-6 et R. 832-8,
+Par dérogation aux dispositions des articles R. 831-2 , R. 832-6 et R. 832-8,
 en cas de déménagement, de conclusion ou de résiliation des conventions mentionnées
 à l'article L. 831-1 , le droit aux aides personnelles au logement :
 
@@ -1761,7 +1759,7 @@ d'un mois à compter de la date de remboursement du solde du prêt.
 
 ######## Article D823-16 | LEGIARTI000038878905
 
-Pour les ménages mentionnés au 1° de l'article D. 823-9, le montant mensuel de l'aide
+Pour les ménages mentionnés au 1° de l'article D. 823-9 , le montant mensuel de l'aide
 est calculé selon la formule suivante :
 
 $$\textrm{Af} = \textrm{L} + \textrm{C}-\textrm{Pp}$$
@@ -1801,7 +1799,7 @@ de la composition familiale ;
 ```
 
 4° " Pp " est la participation personnelle du ménage calculée selon les dispositions
-de l'article D. 823-17.
+de l'article D. 823-17 .
 
 ```catala
 # Ne donne pas précisément la formule mais uniquement le principe général,
@@ -1903,7 +1901,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
 
 ######## Article D823-17 | LEGIARTI000041419255
 
-La participation personnelle du ménage, mentionnée au 4° de l'article D. 823-16, est
+La participation personnelle du ménage, mentionnée au 4° de l'article D. 823-16 , est
 la somme d'une participation minimale et d'une participation au titre des ressources
 du ménage, calculée selon la formule suivante :
 
@@ -2991,7 +2989,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
 
 ####### Article R832-6 | LEGIARTI000038878754
 
-Sous réserve des dispositions de l'article R. 823-14, l'aide est versée :
+Sous réserve des dispositions de l'article R. 823-14 , l'aide est versée :
 
 1° Soit, si le propriétaire occupe le logement à la date de la première échéance due au titre de ce prêt :
 
@@ -3116,7 +3114,7 @@ la composition familiale ;
 # on ne formalise pas ici.
 ```
 
-5° " L0 " est la mensualité minimale, calculée selon les dispositions de l'article D. 832-15.
+5° " L0 " est la mensualité minimale, calculée selon les dispositions de l'article D. 832-15 .
 
 ```catala
 # Ne donne pas précisément la formule mais uniquement le principe général,
@@ -3137,7 +3135,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
 ```
 
 Ce résultat est minoré d'un abattement au titre de la dépense nette minimale, dont les modalités
-de calcul sont fixées par l'article D. 832-17.
+de calcul sont fixées par l'article D. 832-17 .
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
@@ -3184,7 +3182,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
 
 ####### Article D832-11 | LEGIARTI000047401383
 
-Le coefficient " K ", mentionné au 2° de l'article D. 832-10, est ainsi calculé selon la formule
+Le coefficient " K ", mentionné au 2° de l'article D. 832-10 , est ainsi calculé selon la formule
 et les modalités suivantes :
 
 $$\textrm{K} =  0,95 - \frac{\textrm{R}}{\textrm{cm} \times \textrm{N}}$$
@@ -3363,10 +3361,10 @@ destinés à l'habitation, acquis et améliorés, occupés par leur propriétair
 par l'accédant titulaire d'un contrat de location-accession, par l'application
 de pourcentages à des tranches de ressources, dont les limites inférieures et
 supérieures initiales sont multipliées par le nombre de parts “ N ” défini au
-4° de l'article D. 832-11, dans la limite des ressources du ménage “ R ”
+4° de l'article D. 832-11 , dans la limite des ressources du ménage “ R ”
 définies au 2° de l'article D. 832-11. Ce résultat est divisé par douze.
 Les pourcentages et les limites initiales des tranches sont fixés par arrêté
-selon la date de signature du contrat de prêt ou de location-accession.
+selon la date de signature du contrat de prêt ou de location-accession ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
@@ -3548,7 +3546,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
 
 Les arrêtés mentionnés dans la présente section sont pris par les ministres chargés du
 logement, du budget, de la sécurité sociale et de l'agriculture.
-832-26
+
 Le zonage géographique est fixé par arrêté des ministres chargés du logement et du budget.
 
 ```catala
@@ -3798,7 +3796,7 @@ champ d'application CalculAidePersonnaliséeLogementFoyer:
 
 ######## Article D832-25 | LEGIARTI000047401364
 
-Le coefficient " K ", défini au 2° de l'article D. 832-24, est calculé selon la formule et
+Le coefficient " K ", défini au 2° de l'article D. 832-24 , est calculé selon la formule et
 les modalités précisées au 1° du présent article.
 
 Toutefois, pour les logements-foyers de jeunes travailleurs conventionnés après le 30 septembre 1990
@@ -3994,7 +3992,7 @@ champ d'application CalculNombrePartLogementFoyer:
 ######## Article D832-26 | LEGIARTI000047401357
 
 L'équivalence de loyer et de charges minimale “ E0 ”, définie au 4° de l'article
-D. 832-24, est obtenue par application de pourcentages à des tranches de
+D. 832-24 , est obtenue par application de pourcentages à des tranches de
 ressources, dont les limites inférieures et supérieures initiales sont
 multipliées par le nombre de parts “ N ” défini au e du 1° de l'article
 D. 832-25, dans la limite des ressources du ménage “ R ” définies au b du 1°
@@ -4056,7 +4054,7 @@ résidences sociales mentionnés au deuxième alinéa de l'article D. 832-25,
 “ E0 ” est obtenue par application de pourcentages à des tranches de ressources,
 dont les limites inférieures et supérieures initiales sont multipliées par le
 nombre de parts “ N ” défini au d du 2° de l'article D. 832-25, dans la limite
-des ressources du ménage “ R ” définies au b du 2° de l'article D. 832-25. Le
+des ressources du ménage “ R ” définies au b du 2° de l'article D. 832-25 . Le
 résultat est majoré d'un montant forfaitaire, le total étant ensuite divisé par
 douze.
 
@@ -4413,7 +4411,7 @@ champ d'application CalculAllocationLogementAccessionPropriété:
 ```
 
 3° " L " est la mensualité éligible ; elle correspond à la mensualité principale,
-déterminée selon les dispositions articles D. 842-7 à D. 842-10, prise en compte dans la
+déterminée selon les dispositions articles D. 842-7 à D. 842-10 , prise en compte dans la
 limite d'un plafond fixé par arrêté en fonction de la zone géographique et de la
 composition familiale ;
 
@@ -4463,7 +4461,7 @@ champ d'application CalculAllocationLogementAccessionPropriété:
 ```
 
 Le montant ainsi obtenu est minoré d'un abattement au titre de la dépense nette minimale,
-dont les modalités de calcul sont précisées par l'article D. 842-11.
+dont les modalités de calcul sont précisées par l'article D. 842-11 .
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
@@ -4780,7 +4778,7 @@ champ d'application ÉligibilitéAllocationLogement sous condition
 ####### Article D842-15 | LEGIARTI000038878655
 
 Pour les bénéficiaires résidant dans un logement-foyer, ou assimilé, mentionné
-au 3° de l'article D. 823-9, à l'exception des étudiants logés dans un studio
+au 3° de l'article D. 823-9 , à l'exception des étudiants logés dans un studio
 d'un logement-foyer défini à l'article L. 633-1 pour lesquels le montant mensuel
 de l'aide est calculé selon les modalités précisées au 1° de l'article D. 823-9,
 le montant mensuel de l'aide est calculé selon la formule et les modalités suivantes :
@@ -4924,7 +4922,7 @@ champ d'application CalculAllocationLogementFoyer:
 
 ####### Article D842-16 | LEGIARTI000047985424
 
-Un arrêté fixe l'équivalence de loyer " L ", définie au 3° de l'article D. 842-15,
+Un arrêté fixe l'équivalence de loyer " L ", définie au 3° de l'article D. 842-15 ,
 pour chacune des catégories de personnes résidant dans un logement-foyer ou assimilé,
 mentionné au 3° de l'article D. 823-9 .
 
@@ -4934,10 +4932,10 @@ Ces catégories comprennent :
 
 2° Les étudiants logés dans une chambre ayant fait l'objet d'une réhabilitation ;
 
-3° Les personnes dont l'âge est au moins égal à celui prévu au 1° de l' article
+3° Les personnes dont l'âge est au moins égal à celui prévu au 1° de l'article
 L. 351-8 du code de la sécurité sociale, ou à celui mentionné à l'article L.
 351-1-5 du même code en cas d'inaptitude au travail, les personnes titulaires
-de l'allocation mentionnée à l'article L. 815-1 du code de la sécurité sociale
+de l'allocation mentionnée à l' article L. 815-1 du code de la sécurité sociale
 dont l'âge est au moins égal à soixante-cinq ans, ainsi que les personnes
 handicapées ;
 
@@ -4952,6 +4950,11 @@ déclaration énumération CatégorieÉquivalenceLoyerAllocationLogementFoyer:
   -- PersonnesÂgéesSelon3DeD842_16
   -- AutresPersonnes
 ```
+
+NOTA :
+
+Conformément au I de l’article 3 du décret n° 2023-800 du 21 août 2023, ces
+dispositions sont applicables aux prestations dues à compter du 1er septembre 2023.
 
 ####### Article D842-17 | LEGIARTI000038878651
 
@@ -5325,11 +5328,13 @@ a) Au premier alinéa, les mots : " l'article L. 815-9 du code de la sécurité 
 remplacés par les mots : " l'article 28 de l'ordonnance n° 2002-411 du 27 mars 2002 relative à
 la protection sanitaire et sociale à Mayotte " ;
 
-b) Au troisième alinéa, les mots : " par l'article L. 161-17-2 du code de la
-sécurité sociale " sont remplacés par les mots : " par le premier alinéa de
-l'article 6 de la même ordonnance " et les mots : " l'allocation de solidarité
-aux personnes âgées " sont remplacés par les mots : " l'allocation spéciale
-pour les personnes âgées prévue par l'article 28 de la même ordonnance " ;
+b) Au troisième alinéa, les mots : " celui mentionné au 1° de l'article L.
+351-8 du code de la sécurité sociale " sont remplacés par les mots : "
+soixante-sept ans " et les mots : " celui mentionné à l'article L. 351-1-5
+du même code " sont remplacés par les mots : " soixante-deux ans " et les mots
+: " l'allocation de solidarité aux personnes âgées " sont remplacés par les
+mots : " l'allocation spéciale pour les personnes âgées prévue par l'article
+28 de la même ordonnance " ;
 
 ```catala
 # Fait la correspondance avec le droit local mais ne change pas le calcul, on ne
@@ -5368,9 +5373,8 @@ b) Au quatrième alinéa, les mots : " par le 1° de l'article L. 351-8 du code 
 sociale " sont remplacés par les mots : " par le second alinéa de l'article 6 de l'ordonnance
 n° 2002-411 du 27 mars 2002 relative à la protection sanitaire et sociale à Mayotte " ;
 
-c) Au cinquième alinéa, les mots : " prévu par l'article L. 161-17-2 du code
-de la sécurité sociale " sont remplacés par les mots : " prévu par le premier
-alinéa de l'article 6 de la même ordonnance " et les mots : " des articles L.
+c) Au cinquième alinéa, les mots : " l'âge prévu par l'article L. 351-1-5 du code
+de la sécurité sociale " sont remplacés par les mots : " soixante-deux ans " et les mots : " des articles L.
 161-19, L. 351-8 ou L. 643-3 du même code " sont remplacés par les mots : " de
 l'article L. 161-19 du code de la sécurité sociale ainsi que des articles 12
 et 23 de la même ordonnance " ;
@@ -5420,33 +5424,11 @@ le Département de Mayotte. "
 # code donc rien ici.
 ```
 
-NOTA : Se reporter aux conditions d'application prévues à l'article 25 du décret n° 2019-1574
-du 30 décembre 2019. Conformément à l'article 1 du décret n° 2020-451 du 20 avril 2020
-l'article susvisé a été modifié : Ces dispositions sont applicables au calcul des droits,
-d'une part, à l'aide personnalisée au logement prévue pour les accédants à la propriété par
-l'article L. 831-1 du code de la construction et de l'habitation, d'autre part, aux autres
-aides personnelles au logement prévues par le même code, à compter des mois respectifs fixés
-par arrêté des ministres en charge du logement, de la santé et du budget et, au plus tard, du
-1er janvier 2021.
+NOTA :
 
-Aux termes de l'article 2 du décret n° 2020-1816 du 29 décembre 2020, l'article 25 du décret
-n° 2019-1574 du 30 décembre 2019 a été modifié : Ces dispositions sont applicables au calcul
-des droits à l’aide personnelle au logement à compter du mois de janvier 2021 ou, pour le
-calcul des droits à l’aide personnalisée au logement prévue pour les accédants à la propriété
-par l’article L. 831-1 du code de la construction et de l’habitation, à compter du mois de mai
-2021.
+Conformément au I de l’article 7 du décret n° 2023-799 du 21 août 2023, ces
+dispositions sont applicables aux prestations dues à compter du 1er septembre 2023.
 
-```catala
-champ d'application ÉligibilitéAidesPersonnelleLogement:
-  définition date_entrée_vigueur_différée_cch égal à |2021-01-01|
-
-champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  définition éligibilité_commune.date_entrée_vigueur_différée_cch sous condition
-    ménage.logement.mode_occupation sous forme
-      AccessionPropriétéLocalUsageExclusifHabitation
-  conséquence égal à
-    |2021-05-01|
-```
 
 ###### Article D861-6 | LEGIARTI000038878589
 
@@ -5506,7 +5488,7 @@ champ d'application CalculAllocationLogementAccessionPropriété sous condition
 ```
 
 2° Les arrêtés relatifs aux allocations de logement prévus aux articles D. 842-13 et
-D. 842-18 sont également pris par le ministre chargé de l'outre-mer ;
+D. 842-18 sont également pris par le ministre chargé de l'outre-mer.
 
 ```catala
 # Rien à coder ici.interne
@@ -5671,8 +5653,7 @@ l'article 28 de la même ordonnance ".
 NOTA :
 
 Conformément au I de l’article 3 du décret n° 2023-800 du 21 août 2023, ces
-dispositions sont applicables aux prestations dues à compter du 1er septembre
-2023.
+dispositions sont applicables aux prestations dues à compter du 1er septembre 2023.
 
 ###### Article D861-11 | LEGIARTI000038878577
 
@@ -5761,7 +5742,7 @@ l'objet d'une subvention ou du coût de l'opération d'acquisition-amélioration
 Pour leur application en Guadeloupe, en Guyane, en Martinique, à La Réunion et
 à Mayotte :
 
-1° A l'article D. 832-25, le deuxième alinéa et le 2° ne sont pas applicables ;
+1° A l'article D. 832-25 , le deuxième alinéa et le 2° ne sont pas applicables ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer sous condition
@@ -5776,14 +5757,14 @@ champ d'application CalculAidePersonnaliséeLogementFoyer sous condition
     faux
 ```
 
-2° A l'article D. 832-26, le deuxième alinéa n'est pas applicable ;
+2° A l'article D. 832-26 , le deuxième alinéa n'est pas applicable ;
 
 ```catala
 # Le deuxième alinéa de D832-26 est aussi gouverné par le booléen
 # "condition_2_du_832_25" que nous avons défini au dessus.
 ```
 
-3° A l'article D. 832-27, les mots : “ selon le type de logements-foyers ”
+3° A l'article D. 832-27 , les mots : “ selon le type de logements-foyers ”
 sont supprimés ;
 
 ```catala
@@ -5791,7 +5772,7 @@ sont supprimés ;
 # au calcul.
 ```
 
-4° A l'article D. 832-28, les mots : “ de l'agriculture ” sont remplacés par
+4° A l'article D. 832-28 , les mots : “ de l'agriculture ” sont remplacés par
 les mots : “ de l'outre-mer ”.
 
 
@@ -5898,8 +5879,15 @@ propriété par l’article L. 831-1 du code de la construction et de l’habita
 mois de mai 2021.
 
 ```catala
-# NOTA similaire à R861-5, voir cet article pour l'encodage de la date
-# d'entrée en vigueur différée.
+champ d'application ÉligibilitéAidesPersonnelleLogement:
+  définition date_entrée_vigueur_différée_cch égal à |2021-01-01|
+
+champ d'application ÉligibilitéAidePersonnaliséeLogement:
+  définition éligibilité_commune.date_entrée_vigueur_différée_cch sous condition
+    ménage.logement.mode_occupation sous forme
+      AccessionPropriétéLocalUsageExclusifHabitation
+  conséquence égal à
+    |2021-05-01|
 ```
 
 ###### Article R862-3 | LEGIARTI000039621265
@@ -6326,9 +6314,10 @@ décembre 2000 relative à la solidarité et au renouvellement urbain.
 # Décence du logement déjà prise en compte dans L822-9
 ```
 
-NOTA : Conformément à l'article 6 du décret n° 2021-1750 du 21 décembre 2021, ces
-dispositions s'appliquent aux contributions et aux prestations dues à compter du 1er
-janvier 2022.
+NOTA :
+
+Conformément au II de l’article 7 du décret n° 2023-799 du 21 août 2023,
+ces dispositions sont applicables aux pensions prenant effet à compter du 1er septembre 2023.
 
 ####### Article D 863-5 | LEGIARTI000044636784
 
@@ -6481,9 +6470,10 @@ sécurité sociale sont applicables au recouvrement des indus.
 # Pas pertinent pour le moment.
 ```
 
-NOTA : Conformément à l'article 6 du décret n° 2021-1750 du 21 décembre 2021, ces
-dispositions s'appliquent aux contributions et aux prestations dues à compter du 1er
-janvier 2022 sous réserve des dispositions de l'article 7 dudit décret.
+NOTA :
+
+Conformément au I de l’article 7 du décret n° 2023-799 du 21 août 2023, ces
+dispositions sont applicables aux prestations dues à compter du 1er septembre 2023.
 
 ####### Article D863-7 | LEGIARTI000044636789
 
