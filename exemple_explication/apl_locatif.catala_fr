@@ -1,0 +1,830 @@
+# Prologue
+
+```catala-metadata
+déclaration champ d'application CalculAidePersonnaliséeLogementLocatif:
+  entrée loyer_principal contenu argent
+  entrée ressources_ménage_arrondies contenu argent
+  entrée bénéficiaire_aide_adulte_ou_enfant_handicapés
+    contenu booléen
+  entrée date_courante contenu date
+  entrée nombre_personnes_à_charge contenu entier
+  entrée situation_familiale_calcul_apl contenu SituationFamilialeCalculAPL
+  entrée zone contenu ZoneDHabitation
+  entrée logement_est_chambre contenu booléen
+  entrée âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+    contenu booléen
+  entrée colocation contenu booléen
+  entrée réduction_loyer_solidarité contenu argent
+
+  interne loyer_éligible contenu argent
+  interne taux_loyer_éligible contenu décimal
+    état formule
+    état taux_arrondi
+  interne rapport_loyers contenu décimal
+  interne loyer_référence contenu argent
+  interne fraction_l832_3 contenu décimal
+  interne plafond_dégressivité_d823_16 contenu argent
+  interne plafond_suppression_d823_16 contenu argent
+  interne montant_forfaitaire_d823_16 contenu argent
+  interne montant_minimal_aide_d823_16 contenu argent
+  interne abattement_forfaitaire_d823_17 contenu argent
+  interne taux_prise_compte_ressources contenu décimal
+
+  interne montant_forfaitaire_charges_d823_16 contenu argent
+  interne plafond_loyer_d823_16_2 contenu argent
+  interne participation_minimale contenu argent
+  interne taux_composition_familiale contenu décimal
+  interne participation_personnelle contenu argent
+
+  résultat aide_finale contenu argent
+    état base
+    état diminué
+    état minoration_forfaitaire
+    état contributions_sociales_arrondi
+    état réduction_loyer_solidarité
+    état montant_minimal
+
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  # Ce programme ne peut pas être utilisé avec des dates trop anciennes,
+  # pour lesquelles les textes en vigueur n'ont pas été formalisés.
+  assertion date_courante >= |2020-10-01|
+  assertion nombre_personnes_à_charge >= 0
+  # Lors d'un entretien le 23/05/2022 avec DGALN/DHUP/FE4, nous avons
+  # demandé quel barème spécial avait priorité entre celui du logement
+  # chambre et de la colocation. Il nous a été répondu que la situation
+  # d'un logement chambre partagé en colocation n'avait pas été considéré.
+  # Aussi, nous supposons que ce cas n'arrive pas via cette assertion ci-
+  # dessous.
+  assertion non (logement_est_chambre et colocation)
+
+déclaration énumération SituationFamilialeCalculAPL:
+  -- PersonneSeule
+  -- Couple
+
+
+# La répartition des communes par zones est donnée par l'arrêté du 17 mars
+# 1978 relatif au classement des communes par zones géographiques et
+# l'article 6 de l'arrêté du 5 mai 1995 relatif aux subventions de
+# l'Etat et aux prêts pour la construction, l'acquisition et
+# l'amélioration des logements locatifs aidés. Toutefois le phrasé de ces
+# articles laisse subsister une source d'incertitude quant au zonage de la
+# Guyane qui est un département d'outre mer mais qui n'est pas une île non
+# reliée au continent. D'après un mail du 21/04/2023 de DGALN/DHUP/FE4,
+# "La Guyane est bien comprise en zone II. Les territoires qui composent la zone
+# II doivent être entendus comme l’ensemble de ceux listés, auxquels s’ajoute la
+# Guyane puisque le dernier alinéa de l’article 6 exclut strictement les
+# départements d’outre-mer de la zone III."
+déclaration énumération ZoneDHabitation:
+  -- Zone1
+  -- Zone2
+  -- Zone3
+```
+
+# Code de la construction est de l'habitation
+
+## Article L832-3 | LEGIARTI000038814872
+
+Le montant de l'aide personnalisée au logement est diminué, pour les bénéficiaires
+concernés par la réduction de loyer de solidarité définie à l'article L. 442-2-1 ,
+à hauteur d'une fraction de cette réduction comprise entre 90 % et 98 %. Cette fraction
+est fixée par voie réglementaire.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition aide_finale
+  état réduction_loyer_solidarité
+  égal à
+    si
+      aide_finale - réduction_loyer_solidarité * fraction_l832_3 >= 0€
+    alors
+      aide_finale - réduction_loyer_solidarité * fraction_l832_3
+    sinon 0€
+
+  assertion fraction_l832_3 >= 90% et fraction_l832_3 <= 98%
+```
+
+
+## Article D823-16 | LEGIARTI000038878905
+
+Pour les ménages mentionnés au 1° de l'article D. 823-9 , le montant mensuel de l'aide
+est calculé selon la formule suivante :
+
+$$\textrm{Af} = \textrm{L} + \textrm{C}-\textrm{Pp}$$
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition aide_finale état base égal à
+    soit aide_finale égal à
+      loyer_éligible + montant_forfaitaire_charges_d823_16 -
+      participation_personnelle
+    dans
+    si aide_finale < 0 € alors 0 € sinon aide_finale
+```
+
+où :
+
+1° " Af " est l'aide mensuelle résultant de la formule de calcul ;
+
+2° " L " est le loyer éligible, correspondant au loyer principal pris en compte dans
+la limite d'un plafond fixé par arrêté en fonction de la zone géographique et, sauf
+dans le cas où le logement occupé est une chambre, de la composition familiale ;
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition loyer_éligible égal à
+    si loyer_principal > plafond_loyer_d823_16_2
+    alors plafond_loyer_d823_16_2
+    sinon loyer_principal
+```
+
+3° " C " est le montant forfaitaire au titre des charges, fixé par arrêté en fonction
+de la composition familiale ;
+
+```catala
+# Ne donne pas précisément la formule mais uniquement le principe général,
+# on ne formalise pas ici.
+```
+
+4° " Pp " est la participation personnelle du ménage calculée selon les dispositions
+de l'article D. 823-17 .
+
+```catala
+# Ne donne pas précisément la formule mais uniquement le principe général,
+# on ne formalise pas ici.
+```
+
+Le montant ainsi calculé est diminué lorsque le loyer principal dépasse un plafond
+de dégressivité. Il décroît proportionnellement au dépassement de ce plafond, de telle
+sorte qu'il soit nul lorsqu'il atteint un plafond de suppression. Le montant de ces
+plafonds est obtenu par l'application de coefficients multiplicateurs, fixés par
+arrêté en fonction de la zone géographique, au montant du plafond de loyer mentionné
+au 2°. Le plafond de dégressivité ne peut être inférieur à ce plafond de loyer
+multiplié par 2,5. Toutefois, cette diminution ne s'applique pas lorsque le demandeur
+ou son conjoint est bénéficiaire de l'allocation aux adultes handicapés prévue à
+l' article L. 821-1 du code de la sécurité sociale ou de l'allocation d'éducation de
+l'enfant handicapé prévue à l'article L. 541-1 du même code.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition aide_finale état diminué égal à
+    si loyer_principal > plafond_suppression_d823_16 alors
+      0€
+    sinon (si loyer_principal > plafond_dégressivité_d823_16 alors
+        aide_finale - (aide_finale *
+          ((loyer_principal - plafond_dégressivité_d823_16) /
+            (plafond_suppression_d823_16 - plafond_dégressivité_d823_16)))
+        # Faire un graphique pour se convaincre que la pente proportionnelle
+        # a bien cette expression.
+    sinon aide_finale)
+
+  exception définition aide_finale
+  état diminué
+  sous condition
+    bénéficiaire_aide_adulte_ou_enfant_handicapés
+  conséquence égal à aide_finale
+
+  assertion plafond_dégressivité_d823_16 >= plafond_loyer_d823_16_2 * 2,5
+```
+
+Le résultat ainsi obtenu est minoré d'un montant fixé forfaitairement par arrêté.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition aide_finale
+  état minoration_forfaitaire
+  égal à
+    si
+      aide_finale - montant_forfaitaire_d823_16 >= 0€
+    alors
+      aide_finale - montant_forfaitaire_d823_16
+    sinon 0€
+```
+
+Le montant qui en résulte est diminué d'un montant représentatif des contributions
+sociales qui s'y appliquent, arrondi à l'euro inférieur, puis majoré de ce montant
+représentatif.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition aide_finale
+  état contributions_sociales_arrondi
+  égal à
+    soit crds égal à
+      aide_finale * 0,5%
+    dans
+    soit aide_finale_moins_crds_arrondie égal à
+      arrondi de ((aide_finale - crds) - 0,50€)
+    dans
+    si
+      aide_finale_moins_crds_arrondie + crds >= 0€
+    alors
+      aide_finale_moins_crds_arrondie + crds
+    sinon 0€
+```
+
+Pour les locataires qui bénéficient de la réduction de loyer de solidarité en application
+de l'article L. 442-2-1 , ce résultat est réduit d'un montant égal à 98 % de la réduction
+de loyer de solidarité.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition fraction_l832_3 égal à 98%
+```
+
+Lorsque ce dernier résultat, calculé selon les dispositions précédentes, est inférieur à
+un montant fixé par arrêté, selon celle des trois aides dont le ménage bénéficie, il
+n'est pas procédé à son versement.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition aide_finale état montant_minimal égal à
+    si
+      aide_finale < montant_minimal_aide_d823_16
+    alors 0 € sinon aide_finale
+```
+
+## Article D823-17 | LEGIARTI000041419255
+
+La participation personnelle du ménage, mentionnée au 4° de l'article D. 823-16 , est
+la somme d'une participation minimale et d'une participation au titre des ressources
+du ménage, calculée selon la formule suivante :
+
+$$\textrm{Pp} = \textrm{P0} + \textrm{Tp}\times (\textrm{R}-\textrm{R0})$$
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition participation_personnelle égal à
+    soit participation_ressources égal à
+       (ressources_ménage_arrondies - abattement_forfaitaire_d823_17) *
+        taux_prise_compte_ressources
+    dans
+    soit participation_ressources égal à
+      si participation_ressources < 0€ alors 0€ sinon participation_ressources
+    dans
+    participation_minimale + participation_ressources
+```
+
+où :
+
+1° " Pp " est la participation personnelle du ménage ;
+
+2° " P0 " est la participation minimale calculée selon des modalités précisées par
+arrêté et qui ne peut être inférieure à un montant minimum défini par arrêté ;
+
+
+```catala
+# Ne donne pas précisément la formule mais uniquement le principe général,
+# on ne formalise pas ici.
+```
+
+3° " Tp " est le taux de prise en compte des ressources du ménage. Il est égal à la
+somme d'un premier taux en fonction de la composition familiale et d'un second taux
+en fonction du loyer éligible défini au 2° de l'article D. 823-16. Le second taux est
+obtenu par l'application de taux progressifs à des tranches successives du loyer éligible,
+exprimé en proportion d'un loyer de référence en fonction de la composition familiale.
+Les valeurs du premier taux, les modalités de calcul du second taux et les valeurs des
+loyers de référence sont fixées par arrêté ;
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif:
+  définition taux_prise_compte_ressources égal à
+    taux_composition_familiale + taux_loyer_éligible
+```
+
+# Arrêté du 27 septembre 2019 relatif au calcul des aides personnelles au logement et de la prime de déménagement
+
+
+## Article 7 | LEGIARTI000048109313
+
+Les plafonds de loyers visés au 2° de l'article D. 823-16 du même code sont fixés comme suit (en euros) :
+
+---------------------------------------------------------------------------------------------------
+Zone Personne seule Couple sans personne à charge Personne seule ou couple    Par personne à
+                                                  ayant une personne à charge charge supplémentaire
+---- -------------- ----------------------------- --------------------------- ---------------------
+I	   319,30         385,09                        435,24	                    63,15
+
+II   278,28         340,62                        383,28                      55,79
+
+III  260,82         316,17                        354,51                      50,81
+---------------------------------------------------------------------------------------------------
+
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
+TREL2321292A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2023.
+
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+
+  # Colonne 1
+  étiquette base définition plafond_loyer_d823_16_2 sous condition
+    (situation_familiale_calcul_apl sous forme PersonneSeule) et
+    nombre_personnes_à_charge = 0
+  conséquence égal à
+    selon zone sous forme
+    -- Zone1: 319,30€
+    -- Zone2: 278,28€
+    -- Zone3: 260,82€
+
+  # Colonne 2
+  étiquette base définition plafond_loyer_d823_16_2 sous condition
+    (situation_familiale_calcul_apl sous forme Couple) et
+    nombre_personnes_à_charge = 0
+  conséquence égal à
+    selon zone sous forme
+    --Zone1: 385,09€
+    --Zone2: 340,62€
+    --Zone3: 316,17€
+
+  # Colonnes 3 et 4
+  étiquette base définition plafond_loyer_d823_16_2 sous condition
+    nombre_personnes_à_charge >= 1
+  conséquence égal à
+    selon zone sous forme
+    --Zone1:
+      435,24€ + 63,15€ * décimal de (nombre_personnes_à_charge - 1)
+    --Zone2:
+      383,28€ + 55,79€ * décimal de (nombre_personnes_à_charge - 1)
+    --Zone3:
+      354,51€ + 50,81€ * décimal de (nombre_personnes_à_charge - 1)
+```
+
+
+## Article 8 | LEGIARTI000048109310
+
+Dans le cas où le logement occupé est une chambre, les plafonds
+de loyers visés au 2° de l'article D. 823-16 du même code sont
+fixés comme suit, quelle que soit la taille de la famille (en euros) :
+
+- 90 % des loyers plafonds de location pour une personne isolée ;
+- 75 % des loyers plafonds de location pour une personne isolée,
+dans le cas des personnes âgées ou handicapées adultes hébergées
+à titre onéreux chez des particuliers.
+
+On obtient les loyers plafonds suivants (en euros) :
+
+MONTANTS DES LOYERS PLAFONDS CHAMBRE EN APL ET EN AL
+(arrondis au centime d'euros le plus proche)
+
+----------------------------------------
+Bénéficiaires	            Zones	Montants
+------------------------- ----- --------
+Cas général	              I	    287,37
+
+                          II	  250,45
+
+                          III   234,74
+
+
+Cas des personnes âgées   I     239,48
+ou handicapées adultes
+hébergées à titre onéreux
+chez des particuliers
+
+                          II    208,71
+
+                          III   195,62
+----------------------------------------
+
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
+TREL2321292A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2023.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition
+    date_courante >= |2023-10-01| et
+    logement_est_chambre:
+
+  étiquette chambre exception base
+  définition plafond_loyer_d823_16_2 égal à
+    selon zone sous forme
+    -- Zone1: 287,37€
+    -- Zone2: 250,45€
+    -- Zone3: 234,74€
+
+  exception chambre définition plafond_loyer_d823_16_2 sous condition
+    âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+  conséquence égal à
+    selon zone sous forme
+    -- Zone1: 239,48€
+    -- Zone2: 208,71€
+    -- Zone3: 195,62€
+```
+
+## Article 9 | LEGIARTI000048109307
+
+Les montants forfaitaires au titre des charges visés au 3° de
+l'article D. 823-16 du même code sont fixés comme suit (en euros) :
+
+----------------------------------
+Désignation	          Toutes zones
+--------------------- ------------
+Bénéficiaire isolé ou 58,08
+couple sans personne
+à charge
+
+Par personne          13,17
+supplémentaire
+à charge
+----------------------------------
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
+TREL2321292A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2023.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+
+  définition montant_forfaitaire_charges_d823_16 égal à
+    58,08€ + 13,17€ * décimal de nombre_personnes_à_charge
+```
+
+## Article 10 | LEGIARTI000039160745
+
+Les coefficients appliqués au plafond de loyer prévu par l'article
+D. 823-16 du même code, permettant de déterminer les premier et second
+plafonds de loyer mentionnés au même article, sont établis selon le tableau
+comme suit :
+
+-----------------------------------------------------
+ZONE PREMIER PLAFOND DE LOYER SECOND PLAFOND DE LOYER
+---- ------------------------ -----------------------
+I	   3,4                      4
+
+II   2,5                      3,1
+
+III	 2,5                      3,1
+-----------------------------------------------------
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2019-10-01|: # Voir article 50
+  définition plafond_dégressivité_d823_16 égal à
+    selon zone sous forme
+    -- Zone1: plafond_loyer_d823_16_2 * 3,4
+    -- Zone2: plafond_loyer_d823_16_2 * 2,5
+    -- Zone3: plafond_loyer_d823_16_2 * 2,5
+
+  définition plafond_suppression_d823_16 égal à
+    selon zone sous forme
+    -- Zone1: plafond_loyer_d823_16_2 * 4,0
+    -- Zone2: plafond_loyer_d823_16_2 * 3,1
+    -- Zone3: plafond_loyer_d823_16_2 * 3,1
+```
+
+
+## Article 11 | LEGIARTI000039160747
+
+Le montant de minoration forfaitaire prévu au 9e alinéa de l'article D. 823-16
+du même code est fixé à 5 euros.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2019-10-01|: # Voir article 50
+  définition montant_forfaitaire_d823_16 égal à 5 €
+```
+
+## Article 12 | LEGIARTI000039160749
+
+Le seuil de versement prévu au dernier alinéa de l'article D. 823-16 du même code,
+avant application de la contribution pour le remboursement de la dette sociale,
+est fixé à 10 euros pour les allocations de logement et à 0 euro pour l'aide
+personnalisée au logement.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2019-10-01|: # Voir article 50
+  définition montant_minimal_aide_d823_16 égal à
+     0 €
+```
+
+## Article 13 | LEGIARTI000048109304
+
+La participation minimale P0 définie au 2° de l'article D. 823-17 du même code est
+égale à la plus élevée des deux valeurs suivantes : 8,5 % de la somme du loyer éligible
+défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 37,91 euros.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+  définition participation_minimale égal à
+    si
+      (loyer_éligible + montant_forfaitaire_charges_d823_16)
+        * 8,5% >= 37,91 €
+    alors
+      (loyer_éligible + montant_forfaitaire_charges_d823_16) * 8,5%
+    sinon
+      37,91 €
+```
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
+TREL2321292A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2023.
+
+## Article 14 | LEGIARTI000048109301
+
+Pour l'application de l'article D. 823-17 du même code, le taux de participation
+personnelle Tp du ménage, exprimé en pourcentage, est calculé selon la formule suivante :
+
+$$\textrm{Tp} = \textrm{TF} + \textrm{TL}$$
+
+dans laquelle :
+
+1° TF représente un taux fonction de la taille de la famille donné par le tableau suivant :
+
+
+VALEURS DE TF
+
+Bénéficiaires                                        TF
+---------------------------------------------------- ------
+Isolé	                                               2,83 %
+Couple sans personne à charge	                       3,15 %
+Personne seule ou couple ayant:
+une personne à charge                                2,70 %
+2 personnes à charge                                 2,38 %
+3 personnes à charge                                 2,01 %
+4 personnes à charge                                 1,85 %
+5 personnes à charge                                 1,79 %
+6 personnes à charge                                 1,73 %
+Majoration par personne à charge supplémentaire     -0,06 %
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+  étiquette base définition taux_composition_familiale égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 2,83%
+      -- Couple: 3,15%
+    sinon si nombre_personnes_à_charge = 1 alors
+      2,70%
+    sinon si nombre_personnes_à_charge = 2 alors
+      2,38%
+    sinon si nombre_personnes_à_charge = 3 alors
+      2,01%
+    sinon si nombre_personnes_à_charge = 4 alors
+      1,85%
+    sinon si nombre_personnes_à_charge = 5 alors
+      1,79%
+    sinon si nombre_personnes_à_charge = 6 alors
+      1,73%
+    sinon
+      1,73% - (0,06% * (décimal de
+        (nombre_personnes_à_charge - 6)))
+```
+
+2° TL représente un taux complémentaire fixé ci-dessous en fonction de la valeur du rapport
+RL entre le loyer retenu dans la limite du plafond L et un loyer de référence LR : $\textrm{RL} = \textrm{L} / \textrm{LR}$.
+
+RL est exprimé en pourcentage et arrondi à la deuxième décimale.
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+  définition rapport_loyers égal à
+    arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
+```
+
+Pour la détermination de TL , les taux progressifs et les tranches successives de RL mentionnés
+au 3° de l'article D. 823-17 du même code sont fixés comme suit :
+
+- 0 % pour la tranche de RL inférieure à 45 % ;
+
+- 0,45 % pour la tranche de RL entre 45 % et 75 % ;
+
+- 0,68 % pour la tranche de RL supérieure à 75 %.
+
+TL est exprimé en pourcentage et arrondi à la troisième décimale.
+Le tableau suivant traduit cette formule :
+
+Si $\textrm{RL}<45\%$ Si $45\% < \textrm{RL} < 75\%$                 Si $\textrm{RL} >75 \%$
+--------------------- ---------------------------------------------- ---------------------------------------------------------------
+$\textrm{TL}=0 \%$    $\textrm{TL}=0,45 \%\times (\textrm{RL}-45\%)$ $\textrm{TL}=0,45\%\times30 \%+0,68 \%\times(\textrm{RL}-75\%)$
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+  # Ici on choisit de mettre des >= pour inclure le résultat sur la crête
+  # dans la case de droite ; nous avons bien vérifié que sur la crête le
+  # résultat est le même à gauche et à droite.
+  définition taux_loyer_éligible état formule égal à
+    si rapport_loyers < 45% alors 0% sinon (
+    si rapport_loyers >= 45% et rapport_loyers < 75% alors
+      0,45% * (rapport_loyers - 45%)
+    sinon (si rapport_loyers >= 75% alors
+      0,45% * 30% + 0,68% * (rapport_loyers - 75%)
+    sinon 0,0))
+  définition taux_loyer_éligible état taux_arrondi égal à
+    # La troisième décimale en pourcentage est en fait la cinquième décimale
+    (arrondi de (taux_loyer_éligible * 100000,0)) / 100000,0
+```
+
+Le loyer de référence LR est défini selon le tableau suivant (en euros) :
+
+Composition du ménage	                                Montant
+---------------------------------------------------- --------
+Bénéficiaire isolé                                    278,28
+Couple sans personne à charge	                        340,62
+Personne seule ou couple ayant une personne à charge  383,28
+Majoration par personne à charge	                    55,79
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01|:
+
+  définition loyer_référence égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 278,28€
+      -- Couple: 340,62€
+    sinon 383,28€ + 55,79€ * décimal de (nombre_personnes_à_charge - 1)
+```
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
+TREL2321292A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2023.
+
+## Article 15 | LEGIARTI000048656246
+
+Pour l'application du 5° de l'article D. 823-17 du même code, le forfait " R0 " est fixé selon
+le tableau suivant (en euros) :
+
+Composition du foyer	                     MONTANT  (en euros)
+-----------------------------------------  -------------------
+Personne seule sans personne à charge	     5 186
+Couple sans personne à charge	             7 430
+Personne seule ou couple ayant :
+    -une personne à charge	               8 862
+    -deux personnes à charge	             9 061
+    -trois personnes à charge	             9 408
+    -quatre personnes à charge	           9 758
+    -cinq personnes à charge	             10 105
+    -six personnes à charge                10 454
+    -par personne à charge supplémentaire  343
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-01-01|:
+
+  définition abattement_forfaitaire_d823_17 égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 5186 €
+      -- Couple:  7 430 €
+    sinon si nombre_personnes_à_charge = 1 alors
+      8 862 €
+    sinon si nombre_personnes_à_charge = 2 alors
+      9 061 €
+    sinon si nombre_personnes_à_charge = 3 alors
+      9 408 €
+    sinon si nombre_personnes_à_charge = 4 alors
+      9 758 €
+    sinon si nombre_personnes_à_charge = 5 alors
+      10 105 €
+    sinon si nombre_personnes_à_charge = 6 alors
+      10 454 €
+    sinon
+      10 454 € + 343 € * décimal de (nombre_personnes_à_charge - 6)
+```
+
+NOTA :
+
+Conformément à l’article 2 de l’arrêté du 15 décembre 2023 (NOR : TREL2328932A),
+ces dispositions sont applicables aux prestations dues à compter du
+1er janvier 2024.
+
+## Article 16 | LEGIARTI000048109298
+
+Dans le cas des colocataires prévus à l'article D. 823-18 du même code :
+
+1° Les plafonds de loyers sont fixés à 75 % des plafonds de loyers définis au 2° de l'article
+D. 823-16 du même code et fixés à l'article 7.
+
+Les montants obtenus par l'application de ces pourcentages sont arrondis au centime d'euro le plus proche.
+On obtient les loyers plafonds suivants (en euros) :
+
+--------------------------------------------------------
+Zone	                             I       II     III
+---------------------------------- ------- ------ ------
+Personne seule	                    239,48 208,71	195,62
+
+Couple sans personne à charge	      288,82 255,47	237,13
+
+Personne seule ou couple ayant une
+personne à charge	                  326,43 287,46	265,88
+
+Par personne à
+charge supplémentaire               47,36  41,84  38,11
+--------------------------------------------------------
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01| et colocation:
+
+  # Ici l'exception est rapportée au cas de base puisqu'on suppose
+  # qu'on ne peut pas être en colocation dans un logement constitué
+  # d'une seule chambre.
+
+  exception base définition plafond_loyer_d823_16_2 sous condition
+    (situation_familiale_calcul_apl sous forme PersonneSeule) et
+    nombre_personnes_à_charge = 0
+  conséquence égal à
+    selon zone sous forme
+    -- Zone1: 239,48€
+    -- Zone2: 208,71€
+    -- Zone3: 195,62€
+
+  exception base définition plafond_loyer_d823_16_2 sous condition
+    (situation_familiale_calcul_apl sous forme Couple) et
+    nombre_personnes_à_charge = 0
+  conséquence égal à
+    selon zone sous forme
+    --Zone1: 288,82€
+    --Zone2: 255,47€
+    --Zone3: 237,13€
+
+  exception base définition plafond_loyer_d823_16_2 sous condition
+    nombre_personnes_à_charge >= 1
+  conséquence égal à
+    selon zone sous forme
+    --Zone1:
+      326,43€ + 47,36€ * décimal de (nombre_personnes_à_charge - 1)
+    --Zone2:
+      287,46€ + 41,84€ * décimal de (nombre_personnes_à_charge - 1)
+    --Zone3:
+      265,88€ + 38,11€ * décimal de (nombre_personnes_à_charge - 1)
+```
+
+2° Le montant forfaitaire au titre des charges est fixé comme suit (en euros) :
+
+Composition du foyer	           Montant
+-------------------------------- -------
+Bénéficiaire isolé               29,03
+Couple sans personne à charge	   58,08
+Majoration par personne à charge 13,17
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2023-10-01| et colocation:
+  exception
+  définition montant_forfaitaire_charges_d823_16 égal à
+    (selon situation_familiale_calcul_apl sous forme
+    -- PersonneSeule: 29,03€
+    -- Couple: 58,08€) +
+    13,17€ * décimal de nombre_personnes_à_charge
+```
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
+TREL2321292A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2023.
+
+# Tests
+
+
+```catala
+déclaration champ d'application Exemple1 :
+  résultat calcul champ d'application CalculAidePersonnaliséeLogementLocatif
+
+champ d'application Exemple1:
+  définition calcul.loyer_principal égal à 700 €
+  définition calcul.date_courante égal à |2024-09-10|
+  définition calcul.logement_est_chambre égal à faux
+  définition calcul.âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+    égal à faux
+  définition calcul.zone égal à Zone1
+  définition calcul.situation_familiale_calcul_apl égal à Couple
+  définition calcul.nombre_personnes_à_charge égal à 3
+  définition calcul.colocation égal à faux
+  définition calcul.réduction_loyer_solidarité égal à 0 €
+  définition calcul.ressources_ménage_arrondies égal à 15 000 €
+  définition calcul.bénéficiaire_aide_adulte_ou_enfant_handicapés égal à faux
+  assertion calcul.aide_finale = 463,32 €
+```
+
+```catala-test-inline
+$ catala test-scope Exemple1 --disable-warnings
+┌─[RESULT]─
+│ calcul =
+│   CalculAidePersonnaliséeLogementLocatif {
+│     -- aide_finale: 463,32 €
+│   }
+└─
+```
