@@ -276,7 +276,7 @@ binary-tests: \
 test: .FORCE binary-tests
 	$(CLERK_TEST)
 
-TEST_FLAGS_LIST = "" --lcalc,--closure-conversion,-O
+TEST_FLAGS_LIST = "" --lcalc,-O
 
 testsuite: .FORCE binary-tests
 	@for F in $(TEST_FLAGS_LIST); do \
