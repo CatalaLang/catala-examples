@@ -1,0 +1,60 @@
+# LOI n° 2022-1157 du 16 août 2022 de finances rectificative pour 2022 (1)
+
+## Première partie : conditions générales de l'équilibre financier
+
+### Titre Ier : dispositions relatives aux ressources
+
+#### Article 5 | JORFARTI000046186676
+
+I. - Par dérogation au titre II du livre Ier de la troisième partie du code du
+travail et aux stipulations conventionnelles applicables dans l'entreprise,
+l'établissement ou la branche, le salarié, quelle que soit la taille de
+l'entreprise, peut, sur sa demande et en accord avec l'employeur, renoncer à
+tout ou partie des journées ou demi-journées de repos acquises au titre des
+périodes postérieures au 1er janvier 2022 et jusqu'au 31 décembre 2025 en
+application d'un accord ou d'une convention collective instituant un dispositif
+de réduction du temps de travail maintenu en vigueur en application de la loi n°
+2008-789 du 20 août 2008 portant rénovation de la démocratie sociale et réforme
+du temps de travail ou en application d'un dispositif de jours de repos
+conventionnels mis en place dans le cadre des articles L. 3121-41 à L. 3121-47
+du code du travail.
+
+Les journées ou demi-journées travaillées à la suite de l'acceptation de cette
+demande donnent lieu à une majoration de salaire au moins égale au taux de
+majoration de la première heure supplémentaire applicable dans l'entreprise. Les
+heures correspondantes ne s'imputent pas sur le contingent légal ou
+conventionnel d'heures supplémentaires prévu à l'article L. 3121-30 du même
+code.
+
+II. - Les rémunérations versées aux salariés au titre des journées ou
+demi-journées mentionnées au I du présent article ouvrent droit au bénéfice des
+articles L. 241-17 et L. 241-18 du code de la sécurité sociale et de
+l'exonération d'impôt sur le revenu prévue à l'article 81 quater du code général
+des impôts.
+
+III. - Le montant des rémunérations exonérées d'impôt sur le revenu en
+application du II du présent article est pris en compte pour l'appréciation de
+la limite annuelle prévue au I de l'article 81 quater du code général des impôts
+et est inclus dans le montant du revenu fiscal de référence défini au 1° du IV
+de l'article 1417 du même code.
+
+```catala
+champ d'application TraitementsSalairesDéclarant:
+  définition assiette_exonérations_81_quater
+      état art_5_lfr_2022
+    égal à assiette_exonérations_81_quater + revenus.pourboires_exonérés
+```
+
+IV. - La perte de recettes résultant pour l'Etat du prolongement, du 31 décembre
+2023 au 31 décembre 2025, de la possibilité pour les salariés de convertir
+certains jours de repos en majoration de salaire est compensée, à due
+concurrence, par la création d'une taxe additionnelle à l'accise sur les tabacs
+prévue au chapitre IV du titre Ier du livre III du code des impositions sur les
+biens et services.
+
+V. - La perte de recettes résultant pour les organismes de sécurité sociale du
+prolongement, du 31 décembre 2023 au 31 décembre 2025, de la possibilité pour
+les salariés de convertir certains jours de repos en majoration de salaire est
+compensée, à due concurrence, par la majoration de l'accise sur les tabacs
+prévue au chapitre IV du titre Ier du livre III du code des impositions sur les
+biens et services.

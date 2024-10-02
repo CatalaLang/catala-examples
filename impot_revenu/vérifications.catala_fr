@@ -1,0 +1,203 @@
+# Vérification des saisies
+
+## Déclaration 2042
+
+### Cases AM/AD/AO/AC/AV
+
+La déclaration 2042 offre une case par situation, ce qui se traduit par autant
+d'entrées booléennes dans notre programme. Cependant vu que ces situations
+sont mutuellement exclusives, nous traduisons ce groupe de cases dans une
+énumération et empêchons l'utilisateur de cocher plusieurs cases en même temps.
+
+```catala
+champ d'application NombreDeParts:
+  définition situation_familiale égal à
+  si foyer_fiscal.mariées alors Mariées sinon
+  si foyer_fiscal.célibataire alors Célibataire sinon
+  si foyer_fiscal.pacsées alors Pacsées sinon
+  si foyer_fiscal.divorcée_séparées alors DivorcéeSéparées sinon
+  # si veuve alors
+  Veuve
+
+  # Une et une seule case doit être cochée
+  assertion (
+    1 =
+    nombre de liste de case parmi [
+      foyer_fiscal.mariées;
+      foyer_fiscal.célibataire;
+      foyer_fiscal.pacsées;
+      foyer_fiscal.divorcée_séparées;
+      foyer_fiscal.veuve
+    ] tel que case = vrai
+  )
+```
+
+### Case AG
+
+Vous avez une pension de veuve de guerre.
+
+```catala
+champ d'application NombreDeParts:
+  # "La demi-part supplémentaire accordée aux contribuables maries dont un
+  # conjoint est âgé de plus de soixante-quinze ans et est titulaire soit de la
+  # carte du combattant, soit d'une pension servie en application des
+  # dispositions du code des pensions militaires d’invalidité et des victimes de
+  # guerre constitue une règle dérogatoire au mode de détermination du quotient
+  # familial. Elle doit donc être interprétée strictement. Par suite, cette
+  # demi-part supplémentaire ne peut être accordée au couple marié, dans lequel
+  # l’épouse a cessé de percevoir la pension qui est à l'origine de cet
+  # avantage." (Rép. Boucheron : AN 30 avril 1990 p. 2111 n°24112).
+  assertion non (foyer_fiscal.pensionné_veuve_de_guerre et
+    selon situation_familiale sous forme
+    -- Mariées: vrai
+    -- Pacsées: vrai
+    -- n'importe quel: faux)
+  # TODO juridique : faut-il exiger que la case "veuve" soit cochée et interdire
+  # la case "célibataire" si AG est cochée?
+
+  # Le BOFIP précise que « Le bénéfice de la demi-part supplémentaire n'est
+  # accordé qu'une seule fois, même si le contribuable entre dans plusieurs des
+  # cas prévus par la loi. » (BOI-IR-LIQ-10-20-20-20, paragraphe 180).
+  # Pas besoin de coder de condition ici puisque cocher les deux cases AW et AG
+  # revient à activer le booléen NombreDeParts.situation_195_1_applicable qui ne
+  # peut pas donner deux fois la demi-part supplémentaire par construction.
+```
+
+### Case AL
+
+Vous viviez seul au 1er janvier 2022 (ou au 31 décembre 2022 en cas de
+divorce/séparation/rupture de Pacs en 2022) et vous avez un enfant :
+
+• majeur non rattaché à votre foyer (ou mineur imposé en son nom propre)
+
+• ou décédé après l’âge de 16 ans ou par suite de faits de guerre.
+
+Vous avez élevé cet enfant pendant au moins cinq années au cours desquelles
+vous viviez seul.
+
+```catala
+champ d'application NombreDeParts:
+  assertion (si foyer_fiscal.célibataire_divorcé_veuf_sans_enfant alors
+    selon situation_familiale sous forme
+    -- DivorcéeSéparées: vrai
+    -- Célibataire: vrai
+    -- Veuve: vrai
+    -- n'importe quel: faux
+    sinon vrai)
+  # La case AL n'est pas compatible avec la case BT ni avec la case DN.
+  # Voir 195 1° du CGI, https://gitlab.adullact.net/dgfip/ir-catala/-/issues/2.
+  assertion non (foyer_fiscal.célibataire_divorcé_veuf_sans_enfant et
+    foyer_fiscal.parent_isolé)
+  assertion non (foyer_fiscal.célibataire_divorcé_veuf_sans_enfant et
+    foyer_fiscal.nombre_enfants_majeurs_mariés_ou_chargés_famille != 0,0)
+```
+### Case AW
+
+– Vous êtes célibataire, divorcé, séparé, veuf :
+
+· vous êtes âgé de plus de 74 ans (né avant le 1.1.1949) et
+vous remplissez ces conditions ;
+
+· ou vous êtes âgé de plus de 74 ans (né avant le 1.1.1949) et votre
+conjoint décédé bénéficiait de la demi-part supplémentaire ou était
+titulaire de la carte du combattant ;
+
+· ou votre conjoint décédé en 2022 bénéficiait de la demi-part
+supplémentaire
+
+```catala
+champ d'application NombreDeParts:
+  assertion (si foyer_fiscal.pensionné_guerre_célibataire_veuf alors
+    selon situation_familiale sous forme
+    -- DivorcéeSéparées: vrai
+    -- Célibataire: vrai
+    -- Veuve: vrai
+    -- n'importe quel: faux
+    sinon vrai)
+```
+
+### Case AS
+
+Vous êtes mariés ou liés par un Pacs : l’un des deux déclarants, âgé
+de plus de 74 ans (né avant le 1.1.1949), remplit ces conditions
+
+```catala
+champ d'application NombreDeParts:
+  assertion (si foyer_fiscal.pensionné_guerre_marié_pacsé alors
+    selon situation_familiale sous forme
+    -- Mariées: vrai
+    -- Pacsées: vrai
+    -- n'importe quel: faux
+    sinon vrai)
+```
+
+### Case AG
+
+Vous avez une pension de veuve de guerre
+
+```catala
+# TODO juridique: quid des veuves de guerre qui se remarient ? Doit-on vérifier
+# que les veuves de guerre sont toujours veuves ?
+```
+
+### Case BT
+
+Vous êtes célibataire, divorcé ou séparé et, au 1er janvier 2022 (ou au
+31 décembre 2022 en cas de divorce/séparation/rupture du PACS), vous viviez
+seul avec vos enfants ou des personnes invalides recueillies sous votre toit.
+
+```catala
+champ d'application NombreDeParts:
+  assertion (si foyer_fiscal.parent_isolé alors
+    selon situation_familiale sous forme
+    -- DivorcéeSéparées: vrai
+    -- Célibataire: vrai
+    -- n'importe quel: faux
+    sinon vrai)
+```
+
+### Case 0XX
+
+Dans le formulaire papier 2042-C, la case OXX est unique et en réalité doit
+être remplie par un champ de texte libre qui explique exactement la nature
+des revenus différés ou exceptionnels. Dans cette calculette, il est possible
+de décrire précisément à la machine la catégorie, le montant, le régime
+et l'échéance de chacun des revenus exceptionnels ou différés. Cependant,
+certains de ces revenus sont rattachés à un déclarant particulier tandis
+que d'autres sont rattachés à l'ensemble du foyer fiscal. La vérification
+ci-dessous a pour objectif de vérifier que, pour chaque déclarant et
+pour le foyer fiscal, l'entrée des revenus exceptionnels ou différés de
+la calculette rattache bien les bons de types de revenus à un déclarant
+particulier ou bien à l'ensemble du foyer fiscal.
+
+De plus, les revenus exceptionnels pour l'ensemble du foyer fiscal ne peuvent
+pas relever du régime de l'article 163-0 A bis.
+
+```catala
+champ d'application TraitementsSalairesDéclarant:
+  assertion pour tout revenu_exceptionnel_ou_différé parmi
+    revenus.revenus_exceptionnels_ou_différés on a
+    selon revenu_exceptionnel_ou_différé.catégorie sous forme
+    -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes: vrai
+    -- TraitementsSalaires: vrai
+    -- n'importe quel: faux
+
+champ d'application TraitementsSalairesFoyerFiscal:
+  assertion pour tout revenu_exceptionnel_ou_différé parmi
+    revenus.revenus_exceptionnels_ou_différés on a
+    (selon revenu_exceptionnel_ou_différé.catégorie sous forme
+    -- RenteViagèreOnéreux: vrai
+    -- n'importe quel: faux) et
+    (selon revenu_exceptionnel_ou_différé.régime sous forme
+    -- Article163_0_A: vrai
+    -- Article163_0_A_bis: faux)
+```
+
+## Revenus quotientés
+
+TODO informatique : s'assurer que à tous les endroits où l'on permet dans
+les structures Catala des revenus quotientés, que ceux-ci ont bien la
+bonne catégorie par rapport à là où ils apparaissent dans les structures Catala.
+
+TODO informatique : vérifier qu'il ne puisse exister de revenus exceptionnels
+spécifiques aux locations meublées dans les BIC que dans les BIC non-professionnels.

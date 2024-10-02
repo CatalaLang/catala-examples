@@ -7,6 +7,7 @@ include_dirs = [
   "allocations_familiales",
   "aides_logement",
   "droit_successions",
+  "impot_revenu"
 ]
 
 [[module]]
@@ -55,4 +56,19 @@ includes = [
   "prestations_familiales/prologue.catala_fr",
   "prestations_familiales/sécurité_sociale_L.catala_fr",
   "prestations_familiales/securite_sociale_R.catala_fr",
+]
+
+[[module]]
+name = "Impot_revenu"
+module_uses = [
+  "Oracles"
+]
+includes = [
+  "impot_revenu/prologue.catala_fr",
+  "impot_revenu/vérifications.catala_fr",
+  "impot_revenu/cgi_revenus.catala_fr",
+  "impot_revenu/lfr_2022.catala_fr",
+  "impot_revenu/loi_2022-1158.catala_fr",
+  "impot_revenu/archives_cgi.catala_fr",
+  "impot_revenu/modèle_convention_fiscale_ocde.catala_fr"
 ]

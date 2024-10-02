@@ -1,0 +1,133 @@
+# Articles du modèle de convention fiscale concernant le revenu et la fortune (OCDE)
+
+Ce modèle de convention est disponible sur le [site de l'OCDE](https://www.oecd.org/fr/ctp/conventions/articles-modele-de-convention-fiscale-2017.pdf).
+
+## Chapitre 5 : méthodes pour éliminer les doubles impositions
+
+### Article 23 A : méthode d'exemption
+
+1. Lorsqu’un résident d’un État contractant reçoit des revenus ou possède de
+   la fortune qui sont imposables dans l’autre État contractant conformément
+   aux dispositions de la présente Convention (sauf dans la mesure où ces
+   dispositions autorisent l’imposition par cet autre État uniquement parce
+   que le revenu est également un revenu reçu par un résident de cet autre
+   État ou parce que la fortune est également une fortune possédée par un
+   résident de cet autre État), le premier État exempte de l’impôt ces revenus
+   ou cette fortune, sous réserve des dispositions des paragraphes 2 et 3.
+
+2. Lorsqu’un résident d’un État contractant reçoit des éléments de revenu qui
+   sont imposables dans l’autre État contractant conformément aux dispositions
+   des articles 10 et 11 (sauf dans la mesure où ces dispositions autorisent
+   l’imposition par cet autre État uniquement parce que le revenu est
+   également un revenu reçu par un résident de cet autre État), le premier
+   État accorde, sur l’impôt qu’il perçoit sur les revenus de ce résident, une
+   déduction d’un montant égal à l’impôt payé dans cet autre État. Cette
+   déduction ne peut toutefois excéder la fraction de l’impôt, calculé avant
+   déduction, correspondant à ces éléments de revenus reçus de cet autre État.
+
+3. Lorsque, conformément à une disposition quelconque de la Convention, les
+   revenus qu’un résident d’un État contractant reçoit ou la fortune qu’il
+   possède sont exempts d’impôt dans cet État, celui-ci peut néanmoins, pour
+   calculer le montant de l’impôt sur le reste des revenus ou de la fortune de
+   ce résident, tenir compte des revenus ou de la fortune exemptés.
+
+4. Les dispositions du paragraphe 1 ne s’appliquent pas au revenu reçu ou à la
+   fortune possédée par un résident d’un État contractant lorsque l’autre État
+   Contractant applique les dispositions de la Convention pour exempter
+   d’impôt ce revenu ou cette fortune ou applique les dispositions du
+   paragraphe 2 de l’article 10 ou 11 à ce revenu.
+
+### Article 23 B : méthode d'imputation
+
+1. Lorsqu’un résident d’un État contractant reçoit des revenus ou possède de
+   la fortune qui sont imposables dans l’autre État contractant conformément
+   aux dispositions de la présente Convention (sauf dans la mesure où ces
+   dispositions autorisent l’imposition par cet autre État uniquement parce
+   que le revenu est également un revenu reçu par un résident de cet autre
+   État ou parce que la fortune est également une fortune possédée par un
+   résident de cet autre État), le premier État accorde : a) sur l’impôt qu’il
+   perçoit sur les revenus de ce résident, une déduction d’un montant égal à
+   l’impôt sur le revenu payé dans cet autre État ; b) sur l’impôt qu’il
+   perçoit sur la fortune de ce résident, une déduction d’un montant égal à
+   l’impôt sur la fortune payé dans cet autre État. Dans l’un ou l’autre cas,
+   cette déduction ne peut toutefois excéder la fraction de l’impôt sur le
+   revenu ou de l’impôt sur la fortune, calculé avant déduction, correspondant
+   selon le cas aux revenus ou à la fortune imposables dans cet autre État.
+
+2. Lorsque, conformément à une disposition quelconque de la Convention, les
+   revenus qu’un résident d’un État contractant reçoit ou la fortune qu’il
+   possède sont exempts d’impôt dans cet État, celui-ci peut néanmoins, pour
+   calculer le montant de l’impôt sur le reste des revenus ou de la fortune de
+   ce résident, tenir compte des revenus ou de la fortune exemptés.
+
+```catala
+champ d'application TraitementsSalairesDéclarant:
+  définition traitements_salaires_avec_déduction_frais_professionnels
+  état convention_internationale égal à
+    traitements_salaires_avec_déduction_frais_professionnels +
+      revenus.salaires_étrangers_impôt_imputé
+
+  définition pensions_retraites_rentes_79 état convention_internationale égal à
+    pensions_retraites_rentes_79 ++ [
+        PensionRetraiteRente {
+          -- valeur_initiale: revenus.pensions_étrangères_impôts_imputé
+          -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+        }
+    ]
+
+champ d'application TraitementsSalairesFoyerFiscal:
+  définition rentes_viagères_titre_onéreux état étrangères_imputables égal à
+    rentes_viagères_titre_onéreux +
+    somme argent de
+      (rente_viagère.valeur -
+        calcul_déduction_rente_viagères_titre_onéreux de rente_viagère)
+      pour rente_viagère parmi [
+        RenteViagèreOnéreux {
+          -- valeur: revenus.rentes_étrangères_imputables_percues_49moins_ans
+          -- catégorie: RenteViagèreOnéreuxMoins49Ans
+        };
+        RenteViagèreOnéreux {
+          -- valeur: revenus.rentes_étrangères_imputables_percues_50_59ans
+          -- catégorie: RenteViagèreOnéreuxEntre50Et59Ans
+        };
+        RenteViagèreOnéreux {
+          -- valeur: revenus.rentes_étrangères_imputables_percues_60_69ans
+          -- catégorie: RenteViagèreOnéreuxEntre60Et69Ans
+        };
+        RenteViagèreOnéreux {
+          -- valeur: revenus.rentes_étrangères_imputables_percues_70plus_ans
+          -- catégorie: RenteViagèreOnéreuxPlus70Ans
+        }
+      ]
+
+  # Voir article 193 du CGI pour la justification du fait que les crédits
+  # d'impôts sont calculés sur la base du revenu brut global ; il faut donc
+  # inclure dans le revenu brut global et les traitements salaires ces salaires
+  # étrangers.
+
+champ d'application BénéficesIndustrielsCommerciauxDéclarant:
+  définition revenus_imposables_réel_professionnels état étrangers égal à
+    revenus_imposables_réel_professionnels +
+    revenus.professionnels.revenus_imposables_réel_source_étrangère_imputés
+
+  définition revenus_imposables_réel_non_professionnels état étrangers égal à
+    revenus_imposables_réel_non_professionnels +
+    revenus.non_professionnels.généraux.
+      revenus_imposables_réel_source_étrangère_imputés
+
+  définition revenus_imposables_réel_non_professionnels_locations_meublées
+    état étrangers
+  égal à
+    revenus_imposables_réel_non_professionnels_locations_meublées +
+    revenus.non_professionnels.locations_meublées_réel_source_étrangère
+
+champ d'application BénéficesNonCommerciauxDéclarant:
+  définition revenus_imposables_réel_professionnels état étrangers égal à
+    revenus_imposables_réel_professionnels +
+    revenus.professionnels.généraux.revenus_imposables_source_étrangère_imputés
+
+  définition revenus_imposables_réel_non_professionnels état étrangers égal à
+    revenus_imposables_réel_non_professionnels +
+    revenus.non_professionnels.généraux.
+      revenus_imposables_source_étrangère_imputés
+```

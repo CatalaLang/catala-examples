@@ -1,0 +1,2849 @@
+> Usage de Interface
+> Usage de Impot_revenu en tant que IR
+
+# Tests calcul revenu global sur traitements et salaires
+
+## Cas de test 1
+
+En 2022, le foyer fiscal a déclaré ses revenus comme suit :
+
+- 1AJ: 10 000.
+
+### Calcul du revenu brut global
+
+[L’article 12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214/)
+dispose que “_L’impôt est dû chaque année à raison des bénéfices ou revenus
+que le contribuable réalise ou dont il dispose au cours de la même année_”. Et
+le [1 de l’article 13 de
+préciser](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)
+: “_Le bénéfice ou revenu imposable est constitué par l’excédent du produit
+brut, y compris la valeur des profits et avantages en nature, sur les dépenses
+effectuées en vue de l’acquisition et de la conservation du revenu_". Le [2 de
+ce même article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)
+fixe les modalités de détermination du revenu global net annuel. Ce revenu
+global net annuel sert de base à l’impôt sur le revenu. Afin de pouvoir le
+calculer, il faut commencer par déterminer le revenu brut global. Pour cela :
+
+- Il faut d’abord déterminer les revenus nets catégoriels. Ces revenus sont
+  déterminés selon les règles propres à chaque catégorie de revenus (ex :
+  traitements et salaires, [3 de l’article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)).
+
+- Puis déterminer le revenu brut global, qui est la somme des revenus nets
+  catégoriels “_diminué, le cas échéant, du montant des déficits susceptibles
+  d’être imputés sur le revenu global_”([2 de l’article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)).
+
+#### Régime applicable aux traitements et salaires.
+
+Les règles relatives aux revenus issus des traitements et salaires sont
+traitées par [l’article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114/2019-12-30).
+Les contribuables percevant des traitements et des salaires ont la possibilité
+de soustraire de leur revenu brut les dépenses afférentes à l’acquisition et à
+la conservation du revenu.
+
+Cette possibilité se traduit par une déduction des frais professionnels prévue
+au [3 de l’article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622408/2023-06-03/).
+
+Cette déduction prend deux formes :
+
+— Une déduction forfaitaire de 10% du revenu brut : cette déduction est
+encadrée par un montant minimal de 472€ (pour les revenus de 2022 et qui ne
+doit pas avoir pour conséquence d’aboutir à un déficit) et un montant maximal
+de 13 522€ (pour les revenus de 2022, [deuxième et troisième alinéa du 3 de
+l’article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622408/2023-06-03/)).
+
+— La déduction des frais réels, prévue aux quatrième alinéa et suivant de ce
+même texte. Il s’agit par exemple des frais kilométriques.
+
+Précision : l’option pour les frais réels ne peut se cumuler avec la déduction
+[forfaitaire](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912).
+
+Soit pour le cas d’espèce : Le déclarant 1
+
+— Déclarant 1 : A perçu un traitement ou salaire de 10 000 € et n'a pas opté
+pour la déduction des frais réels. Soit : 10 000 *0.1 = 1 000
+
+Soit 10 000 - 1 000 = 9 000 €.
+
+**Le revenu brut global du déclarant 1 sera de 9 000€.**
+
+### Résultat
+
+```catala
+déclaration champ d'application TraitementsSalaires1:
+  résultat sortie contenu IR.TraitementsSalairesDéclarant
+
+champ d'application TraitementsSalaires1:
+  définition sortie égal à
+    (résultat de IR.TraitementsSalairesDéclarant avec {
+      -- revenus: (résultat de Interface.TraitementsSalairesDéclarant avec {
+        -- traitements_salaires: 10 000 €
+        }).sortie
+      -- année_revenus : 2022
+      -- selecteur_plafond_abattement_pensions_retraites_rentes : Déplafonné
+    })
+```
+
+Le test ci-dessus doit donner le résultat suivant à l'exécution.
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires1 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesDéclarant {
+│     -- abattement_pensions_retraites_rentes: 0,00 €
+│     -- déduction_frais_professionnels_traitements_salaires: 1 000,00 €
+│     -- exonérations_81_quater: 0,00 €
+│     -- prélèvement_libératoire: 0,00 €
+│     -- traitements_salaires_avec_déduction_frais_professionnels:
+│       10 000,00 €
+│     -- revenu_brut_déclarant_hors_quotient: 9 000,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test 2
+
+En 2022, le foyer fiscal a déclaré ses revenus comme suit :
+
+- 1AJ : 10 000;
+- 1AK :  2 000.
+
+## Calculer le revenu brut global du foyer fiscal.
+
+L’article [12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214/)
+dispose que “_L’impôt est dû chaque année à raison des bénéfices ou revenus
+que le contribuable réalise ou dont il dispose au cours de la même année_”. Et
+le [1 de l’article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)
+de préciser : “_Le bénéfice ou revenu imposable est constitué par l’excédent
+du produit brut, y compris la valeur des profits et avantages en nature, sur
+les dépenses effectuées en vue de l’acquisition et de la conservation du
+revenu_”.
+
+Le [2 de ce même article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)
+fixe les modalités de détermination du revenu global net annuel. Ce revenu
+global net annuel sert de base à l’impôt sur le revenu. Afin de pouvoir le
+calculer, il faut commencer par déterminer le revenu brut global. Pour cela :
+
+- Il faut d’abord déterminer les revenus nets catégoriels. Ces revenus sont
+  déterminés selon les règles propres à chaque catégorie de revenus (ex :
+  traitements et salaires, [3 de l’article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)).
+
+- Puis déterminer le revenu brut global, qui est la somme des revenus nets
+  catégoriels “_diminué, le cas échéant, du montant des déficits susceptibles
+  d’être imputés sur le revenu global_”([2 de l’article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)).
+
+### Régime applicable aux traitements et salaires.
+
+Les règles relatives aux revenus issus des traitements et salaires sont
+traitées par [l’article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114/2019-12-30).
+
+Les contribuables percevant des traitements et des salaires ont la possibilité
+de soustraire de leur revenu brut les dépenses afférentes à l’acquisition et à
+la conservation du revenu. Cette possibilité se traduit par une déduction des
+frais professionnels prévue au [3 de l’article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622408/2023-06-03/).
+
+Cette déduction prend deux formes :
+
+— Une déduction forfaitaire de 10% du revenu brut : cette déduction est
+encadrée par un montant minimal de 472€ (pour les revenus de 2022 et qui ne
+doit pas avoir pour conséquence d’aboutir à un déficit) et un montant maximal
+de 13 522€ (pour les revenus de 2022, [deuxième et troisième alinéa du 3 de
+l’article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622408/2023-06-03/)).
+
+— La déduction des frais réels, prévue aux quatrième alinéa et suivant de ce
+même texte. Il s’agit par exemple des frais kilométriques.
+
+Précision : l’option pour les frais réels ne peut se cumuler avec la déduction
+[forfaitaire](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912).
+
+Soit pour le cas d’espèce : Le déclarant 1
+
+— Déclarant 1 : A perçu un traitement ou salaire de 10 000 € et a opté pour
+les frais réels (2 000€).
+
+Soit : 10 000 - 2 000 = 8 000€. La déduction des frais réels étant ici plus
+avantageuse pour le contribuable que la déduction forfaitaire de 10%.
+
+**Le revenu brut global du foyer fiscal est donc de 8 000€.**
+
+```catala
+déclaration champ d'application TraitementsSalaires2:
+  résultat sortie contenu IR.TraitementsSalairesDéclarant
+
+champ d'application TraitementsSalaires2:
+  définition sortie égal à
+    (résultat de IR.TraitementsSalairesDéclarant avec {
+      -- revenus: (résultat de Interface.TraitementsSalairesDéclarant avec {
+        -- frais_réels: IR.FraisRéels.Oui contenu 2000 €
+        -- traitements_salaires: 10 000 €
+      }).sortie
+      -- année_revenus : 2022
+      -- selecteur_plafond_abattement_pensions_retraites_rentes : Déplafonné
+    })
+```
+
+Le test ci-dessus doit donner le résultat suivant à l'exécution.
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires2 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesDéclarant {
+│     -- abattement_pensions_retraites_rentes: 0,00 €
+│     -- déduction_frais_professionnels_traitements_salaires: 2 000,00 €
+│     -- exonérations_81_quater: 0,00 €
+│     -- prélèvement_libératoire: 0,00 €
+│     -- traitements_salaires_avec_déduction_frais_professionnels:
+│       10 000,00 €
+│     -- revenu_brut_déclarant_hors_quotient: 8 000,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+
+## Cas de test 3
+
+### Énoncé
+
+Jérôme est veuf. Retraité, il touche une petite pension de 20 000 euros par
+an. En 2022, il a touché le capital de son plan épargne retraite, soit 30 000
+euros. Pour l'imposition de ce capital il a choisi le prélèvement libératoire
+à 7,5%. Sa déclaration 2042 est donc remplie comme suit:
+
+Case V
+
+Case 1AS : 20 000
+
+Case 1AT : 30 000
+
+Calculer le nombre de parts et le revenu brut global du foyer fiscal de
+Jérôme.
+
+### Sur la question du nombre de parts
+
+L'[article 227 du code
+civil](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006422916/)
+dispose que "_Le mariage se dissout :
+
+1° Par la mort de l'un des époux_".
+
+l'[article 732 du même
+code](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006430936)
+ajoute que "_Est conjoint successible le conjoint survivant non divorcé_".
+
+Ces articles encadrent le statut du conjoint survivant. Autrement dit des
+veufs et veuves. Ce statut a également des incidences en matière fiscale.
+
+L'alinéa 1 de l'[article 193 du Code Général des
+Impôts](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033844057)
+(CGI) énonce que " _le revenu imposable est pour le calcul de l'impôt sur le
+revenu, divisé en un certain nombre de parts, fixé conformément à l'article
+194, d'après la situation et les charges de famille du contribuable_".
+l'article 194 précité précise qu'une personne veuve sans enfants représente
+une part.
+
+Ainsi, le foyer fiscal de Jérôme, veuf et sans enfant est composé d'une seule
+part.
+
+### Sur la question du revenu global
+
+Le
+[BOFIP](https://bofip.impots.gouv.fr/bofip/1322-PGP.html/identifiant=BOI-IR-BASE-10-10-10-10-20161128)
+définit le revenu global comme étant "_la totalité des revenus des membres du
+foyer fiscal_". Il s'agit donc de la somme des revenus nets catégoriels de
+tous les membre du foyer fiscal (2° de l'[article 13 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+
+Le 1° de l'[article 13 du même
+code](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)
+définit le revenu net catégoriel comme étant la différence entre le revenu brut
+et des "_dépenses effectuées en vue de l'acquisition et de la conservation du
+revenu_".
+
+Le 3° de ce même article 13 ajoute que : "_le bénéfice ou revenu net de
+chacune des catégories de revenus visées au 2 est déterminé distinctement
+suivant les règles propres à chacune d'entre elles_". Les catégories visées
+par le 2 de l'article 13 sont:
+
+-Les revenus fonciers;
+
+-Les bénéfices industriels et commerciaux;
+
+-Les rémunérations allouées aux gérants de certaines sociétés;
+
+-Les bénéfices de l'exploitation agricole;
+
+-Les traitements, salaires, pensions et rentes viagères;
+
+-Les bénéfices des professions non commerciales.
+
+La résolution du cas nécessite de se concentrer uniquement sur les règles
+relatives à la catégorie des traitements, salaires, pensions et rentes
+viagères. Ces derniers sont définis aux articles 79 à 91 du CGI.
+
+L'[article
+79](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114)
+disposant que "_les traitements, indemnités, émoluments, salaires, pensions et
+rentes viagères concourent à la formation du revenu global servant de base à
+l'impôt sur le revenu. Il en est de même des prestations de retraite servie
+sous forme de capital_".
+
+Dans la catégorie des pensions on trouve par exemple: les pensions
+alimentaires ([article 80
+quater](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042907576/2023-07-13),
+[article 80
+septies](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302542/2023-07-13));
+les prestations servies par le régime de prévoyance des joueurs professionnels
+de football ([article 80
+decies](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302548/2023-07-13)).
+
+Sauf exception, les pensions et retraites bénéficient d'un abattement de 10% (sur le montant du revenu brut)
+(5a de l'[article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+Toujours selon les dispositions du 5a de l'article 158 du CGI, l'abattement de
+10% est plafonné à 4123 euros pour l'ensemble des pensions et retraites
+perçues par le foyer fiscal. De même, cet abattement ne peut être inférieur à
+422 euros " _sans pouvoir excéder le montant brut des pensions et retraites_"
+. Contrairement au montant maximal de l'abattement, le montant minimal
+s'applique à chacune des pensions et retraites perçues par chacun des membres
+du foyer.
+
+(Précision: les montants des planchers et des plafonds sont revalorisés chaque année dans les mêmes modalités et proportions que la
+"limite supérieure de la première tranche du barème de l'impôt sur le revenu", 5 de l'article 158 du CGI)
+
+Application au cas de Jérôme: Jérôme touche une pension de retraite de 20 000
+euros par an. Cette pension entre dans le champ des articles 79 et 158 du CGI.
+En conséquence son revenu global sera de
+
+20 000*0,1= 2 000.
+
+Le montant de l'abattement de 10% sur la pension de Jérôme est de 2 000 euros.
+
+20 000- 2 000= 18 000.
+
+### Le revenu global de Jérôme pour 2022 est de 18 000 euros.
+
+### Sur la question de la rente en capital taxable à 7,5%
+
+Prévues par les articles 79, 5 b quinquies  de l'[article
+158](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/),
+les prestations de retraites en capital correspondent à des versements alloués
+en vue de la retraite
+([BOI-RSA-PENS-10-10-10-30](https://bofip.impots.gouv.fr/bofip/7781-PGP.html/identifiant%3DBOI-RSA-PENS-10-10-10-30-20160720#DISTINCTION_DES_PRESTATIONS_21),
+paragraphe 10).
+
+Conformément aux dispositions du 5b quinquies et du II de l'article 163 bis du
+CGI, le contribuable percevant une rente en capital peut opter pour
+l'imposition de cette rente à 7,5%. Cette demande doit être expresse et est
+irrévocable. De plus, le prélèvement de 7,5% est libératoire d'impôt sur le
+revenu.
+
+Aux termes du II de l'article [163 bis du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038836589), ce
+prélèvement est assis sur le montant du capital diminué d'un abattement de
+10%. Et le BOFIP
+([BOI-RSA-PENS-30-10-20](https://bofip.impots.gouv.fr/bofip/7456-PGP.html/identifiant%3DBOI-RSA-PENS-30-10-20-20121211#Modalites_doption_pour_le_p_11),
+paragraphe 200), de rajouter que cet abattement de 10% n'est pas plafonné.
+
+Aussi Jérôme devra s'acquitter au titre du prélèvement de 7,5% d'une somme de:
+30 000 * 0,1 = 3 000. Le montant de l'abattement de 10% sur le capital de la
+rente de Jérome est de 3 000 euros.
+
+30 000 - 3 000= 27 000, Le prélèvement de 7,5% sera assis sur un capital de 27
+000 euros.
+
+27 000 - 7,5% = 24 975. 27 000 - 24 975 = 2025.
+
+### Au titre du prélèvement libératoire de 7,5% sur les prestations de retraites en capital, Jérôme devra s'acquitter d'une somme de 2025 euros.
+
+```catala
+déclaration champ d'application TraitementsSalaires3:
+  résultat parts contenu IR.NombreDeParts
+  résultat traitements_salaires contenu IR.TraitementsSalairesDéclarant
+
+champ d'application TraitementsSalaires3:
+  définition parts égal à
+    (résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
+        -- veuve: vrai
+      }).sortie
+      -- année_revenus : 2022
+    })
+  définition traitements_salaires égal à
+    (résultat de IR.TraitementsSalairesDéclarant avec {
+      -- revenus: (résultat de Interface.TraitementsSalairesDéclarant avec {
+        -- pensions_retraites_rentes: 20 000 €
+        -- pensions_retraites_en_capital_7_5pct: 30 000 €
+      }).sortie
+      -- année_revenus : 2022
+      -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
+    })
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires3 --disable-warnings
+┌─[RESULT]─
+│ parts =
+│   Impot_revenu.NombreDeParts {
+│     -- nombre_de_parts: 1,0
+│     -- abattement: 0,00 €
+│   }
+│ traitements_salaires =
+│   Impot_revenu.TraitementsSalairesDéclarant {
+│     -- abattement_pensions_retraites_rentes: 2 000,00 €
+│     -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│     -- exonérations_81_quater: 0,00 €
+│     -- prélèvement_libératoire: 2 025,00 €
+│     -- traitements_salaires_avec_déduction_frais_professionnels: 0,00 €
+│     -- revenu_brut_déclarant_hors_quotient: 18 000,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test 4
+
+```catala
+déclaration champ d'application TraitementsSalaires4:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires4:
+  définition déclarant1.pensions_retraites_rentes égal à 52 000 €
+  définition déclarant2.pensions_retraites_rentes égal à 60 000 €
+  définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : []
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+Au vu des cases remplies par les contribuables du foyer fiscal X, il est
+possible d'en déduire qu'ils ont perçu, au cours de l'année 2022, soit une
+pension, soit une retraite, soit une rente.
+
+Les règles relatives issues aux revenus issus des traitements, salaires,
+pensions, rentes viagères et indemintés sont fixées par l'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables pensionnés, retraités et rentiers ont la possibilité de
+soustraire du montant brut de ces revenus les dépenses afférentes à
+l'acquisition ou la conservation du revenu. Cette possibilité se traduit par
+un abattement de 10% du montant de ces revenus. Cet abattement est prévu par
+les [deuxième et troisième alinéas du a du 5 de l'article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/).
+
+L'abattement de 10% est encadré par:
+
+- Un montant minimal de 422 € (pour les revenus de 2022): ce montant minimal
+  "_s'applique au montant des pensions ou retraites perçu par chaque retraité
+  ou pensionné membre du foyer fiscal_" et ne peut avoir pour conséquence
+  d'aboutir à un déficit. (troisième alinéa du a du 5 de l'[article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+
+- Un montant maximal de 4123 € (pour les revenus de 2022): contrairement au
+  montant minimal, le montant maximal de l'abattement trouve à s'appliquer
+  "_au montant total des pensions et retraites perçues par l'ensemble des
+  membres du foyer fiscal._" (deuxième alinéa du a du 5 de l'[article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+
+Ainsi, pour calculer l'abattement applicable aux revenus du foyer fiscal X, il
+faut calculer la somme des abttements 10%
+([BOI-RSA-PENS-30-10-10](https://bofip.impots.gouv.fr/bofip/7458-PGP.html/identifiant%3DBOI-RSA-PENS-30-10-10-20170531#Abattement_de_10%C2%A0%_sur_le_m_11)).
+
+Soit :
+
+- Déclarant 1 : 52 000 x 0.1 = 5 200
+- Déclarant 2 : 60 000 x 0.1 = 6 000
+
+Somme des abattements pour le foyer fiscal : 5 200 + 6 000 = 11 200.
+
+11 200 étant supérieur  à 4 123, **ici on appliquera le montant maximal de
+l'abattement aux revenus du foyer fiscal soit 4 123 €**.
+
+Ramené au prorata pour chaque déclarant cela donne :
+
+- Pour le déclarant 1 : (4 123/ 11 200)x 5 200 = 1 914,25
+- Pour le déclarant 2 : (4 123/ 11 200)x 6 000 = 2 208,75.
+
+```catala
+champ d'application TraitementsSalaires4:
+  # Le total des abattements doit être le plafond
+  assertion
+    somme argent de résultats.abattement_pensions_retraites_rentes
+      pour résultats parmi
+        sortie.déclarations_avec_résultats_traitements_salaires
+    = 4123 €
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires4 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 1 914,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 50 086,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 2 209,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 57 791,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 0,00 €
+│     -- revenu_brut_global: 107 877,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test 5
+
+En 2023, le foyer fiscal Y a rempli sa déclaration 2042 comme suit:
+
+- 1AS : 72 000
+- 1BS : 300
+- 1CT : 100 000
+
+Déterminer le montant de l'abattement ou de la déduction afférente aux revenus
+du foyer fiscal Y.
+
+Au vu des cases remplies par les contribuables, il est possible d'en déduire
+que  ces derniers ont perçu soit une pension, soit une retraite soit une
+rente.
+
+Les règles relatives aux revenus issus des traitements, salaires, pensions,
+rentes viagères et indemnités sont traitées par l'[article 79 du Code Général
+des
+Impôts,CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Au vu de la déclaration 2042 du foyer fiscal Y, il convient de distinguer :
+- Les règles relatives à l'abattement applicable aux pensions, retraites et
+  rentes de droit commun.
+- Les règles relatives aux pensions perçues sous forme de capital taxées à
+  7.5%
+
+## Règles relatives a l'abattement applicable aux pensions, retraites et rentes de droit commun
+
+En l'espèce il s'agit des pensions, retraites ou rentes perçues par les
+déclarants 1 et 2.
+
+Les contribuables pensionnés, retraités ou rentiers ont la possibilité de
+soustraire de leurs revenus les dépenses afférentes à l'acquisition et à la
+conservation d'un revenu. Cette possibilité se traduit par un abattement de
+10% du montant de ces revenus. Cet abattement est prévu par les [deuxième et
+troisième alinéas du a du 5 de l'article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/).
+
+Cet abattement de 10% est encadré par:
+
+- Un montant minimal de 422€ : ce montant minimal "*'applique au montant des
+  pensions ou retraites perçu par chaque retraité ou pensionné membre du foyer
+  fiscal*" mais ne peut avoir pour conséquence d'aboutir à un déficit.
+  ([troisième alinéa du a du 5 de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+- Un montant maximal de 4 123€ : * contrairement au montant minimal, le
+  montant maximal trouve à s'appliquer " *au montant total des pensions et
+  retraites perçues par l'ensemble des membres du foyer fiscal.*" ([deuxième
+  alinéa du a du 5 de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+
+En conséquence, pour déterminer le montant de l'abattement applicable aux
+déclarants 1 et 2 du foyer fiscal Y il faut calculer l'abattement par rapport
+à  l'[abattement de la
+somme](https://bofip.impots.gouv.fr/bofip/7458-PGP.html/identifiant%3DBOI-RSA-PENS-30-10-10-20170531#Abattement_de_10%C2%A0%_sur_le_m_11).
+
+Néanmoins, il apparait que l'abattement de 10% relatifs au revenus du
+déclarant 1 sont supérieurs au plancher de 4 123€, il faudra donc calculer les
+abattements par rapport à la somme des abattements et non par rapport à
+l'[abattement de la
+somme](https://bofip.impots.gouv.fr/bofip/7458-PGP.html/identifiant%3DBOI-RSA-PENS-30-10-10-20170531#Abattement_de_10%C2%A0%_sur_le_m_11)
+
+soit pour le cas présent:
+
+- Déclarant 1: 72 000€ soit, 72 000 x 0.1 = 7 200
+- Déclarant 2: 300€. Ici, comme l'abattement minimal ne peut aboutir à un
+  déficit, l'abattement pris en compte sera de 300€.
+
+Mais 7 200+ 300 = 7 500. La somme des abattements étant supérieure à 4 123€
+c'est le montant maximal qu'on appliquera aux revenus du foyer fiscal Y.
+
+soit au prorata:
+
+- Déclarant 1 : 4123- 300 = 3823
+- Déclarant 2: 300
+
+En conséquence le montant net des pensions perçues est de :
+
+Déclarant 1 : 72 000-3 823 = 68 177
+
+Déclarant 2 : 300 - 300 = 0.
+
+```catala
+# TODO juridique : ici, le prorata ne s'applique qu'au déclarant 1 puisque
+# le déclarant 2 est au plancher de l'abattement. Mais cette règle de
+# pro-ratisation ne marche plus quand on a plus de 10 déclarants au plancher.
+# Doit-on alors aussi pro-ratiser les déclarants au plancher ?
+```
+
+## Règles relatives aux pensions percues sous formes de capital taxables à 7,5%
+
+Aux termes du [II de l'article 163 bis du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000038836589) les
+pensions et retraites versées sous forme de capital peuvent, sur demande
+expresse et irrévocable du contribuable, être soumises à un prélèvement
+libératoire au taux de 7,5%.
+
+Comme les pensions, retraites et rentes de droit commun, ce prélèvement est
+assis sur un abattement de 10%. Cependant, contrairement à l'abattement de
+droit commun, [cet abattement n'est pas
+plafonné](https://bofip.impots.gouv.fr/bofip/7456-PGP.html/identifiant%3DBOI-RSA-PENS-30-10-20-20121211#Modalites_d%E2%80%99imposition_21)(paragraphe
+200).
+
+
+Soit pour la personne à charge : 100 000 x 0.1 = 10 000 Donc 100 000- 10 000=
+90 000 Le prélèvement de 7,5% sera donc assis sur un montant de 90 000 €.
+
+90 000x 7,5% = 6 750. Le contribuable devra s'acquitter d'un prélèvement de 6
+750€.
+
+```catala
+déclaration champ d'application TraitementsSalaires5:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant3 champ d'application Interface.TraitementsSalairesDéclarant
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires5:
+  définition déclarant1.pensions_retraites_rentes égal à 72 000 €
+  définition déclarant2.pensions_retraites_rentes égal à 300 €
+  définition déclarant3.pensions_retraites_en_capital_7_5pct égal à 100 000 €
+  définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : [déclarant3.sortie]
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires5 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 3 958,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 68 042,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 165,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 135,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 6 750,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 0,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 0,00 €
+│     -- revenu_brut_global: 68 177,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test 6 (n°1 du POC 2023)
+
+Un couple pacsé avec un enfant à charge en résidence alternée (foyer fiscal P)
+rempli sa déclaration 2042 comme suit:
+* 1AJ: 48 000
+* 1AK: 4 000
+* 1BS: 42 000
+* 1BO: 3 500
+* 1CJ: 3 000
+
+Calculer le revenu brut global du foyer fiscal P.
+
+L'article [12 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214)
+dispose que "_L'impôt est dû chaque année à raison des bénéfices ou revenus que le contribuable
+réalise ou dont il dispose au cours de la même année._" Et le [1 de l'article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2023-10-03) de préciser:
+"_Le bénéfice ou revenu imposable est constitué par l'excédent du produit brut, y compris la
+valeur des profits et avantages en nature, sur les dépenses effectuées en vue de l'acquisition et
+de la conservation du revenu._"
+
+Le [2 de ce même article 13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)
+fixe les modalités de détermination du revenu global net annuel. Ce revenu global net annuel sert
+de base à l'impôt sur le revenu. Afin de pouvoir le calculer, il faut commencer par déterminer le
+revenu brut global. Pour cela:
+- Il faut d'abord déterminer les revenus nets catégoriels. Ces revenus sont déterminés selon les
+  règles propres à chaque catégorie de revenus (ex: traitements et salaires, [3 de l'article 13 du
+  CGI] (https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+- Puis déterminer le revenu brut global, qui est la somme des revenus nets catégoriels "_diminué,
+  le cas échéant, du montant des déficits susceptibles d'être imputés sur [le revenu
+  global_"](https://bofip.impots.gouv.fr/bofip/6445-PGP.html/identifiant%3DBOI-IR-BASE-20210330)([2
+  de l'article 13 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+
+
+### A.Détermination des revenus nets catégoriels du foyer fiscal P.
+
+En l'espèce tous les revenus du foyer fiscal P relèvent de la catégorie des
+traitements, salaires, pensions et rentes viagères.
+
+Cependant, la détermination des revenus nets catégoriels du foyer varie du fait
+de la différence entre les règles afférentes aux traitements et salaires et
+celles relatives aux pensions, retraites et rentes.
+
+#### 1-Régime applicable aux traitements et salaires.
+
+Les règles relatives aux revenus issus des traitements et salaires sont traitées
+par l'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables percevant des traitements et des salaires ont la possibilité
+de soustraire de leur revenu brut les dépenses afférentes à l'acquisition et à
+la conservation du revenu. Cette possibilité se traduit par une déduction des
+frais professionnels prévue au 3 de l'[article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046197322).
+
+Cette déduction prend deux formes:
+
+- Une déduction forfaitaire de 10% du revenu brut : cette déduction est encadrée
+  par un montant minimal de 472€ (pour les revenus de 2022 et qui ne doit pas avoir pour conséquence
+  d'aboutir à un déficit) et un montant maximal de 13 522€ (pour les revenus de 2022, deuxième et
+  troisième alinéa du [3 de l'article 83 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046197322)).
+- La déduction des frais réels, prévue aux quatrième alinéa et suivant de ce
+  même texte. Il s'agit par exemple des frais kilométriques.
+
+Précision: l'option pour les frais réels ne peut se cumuler avec la déduction
+forfaitaire
+([BOI-RSA-BASE-30-50-30](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912)).
+
+Soit pour le cas d'espèce : Le déclarant 1 et la première personne à charge.
+
+- Déclarant 1: A perçu un traitement ou salaire de 48 000 € et a opté pour les
+  frais réels (4 000€).
+
+Soit : 48 000 - 4 000 = 44 000€. Néanmoins, par avantage pour le contribuable la
+déduction forfaitaire lui sera appliquée car elle est plus avantageuse que les
+frais réels.
+
+Donc : 48 000x0.1 = 4 800. Le montant de la déduction forfaitaire sera de 4
+800€.
+
+Le revenu net catégoriel du déclarant 1 sera donc: 48 000 - 4 800 = 43 200€.
+
+- Personne à charge : A perçu un salaire de 3 000€. Dans ce cas c'est le montant
+  minimal de la déduction qui lui sera appliqué. Son revenu net sera donc de :
+
+3 000 - 472 = 2 528€. le revenu net de la première personne à charge sera de 2
+528€.
+
+#### 2-Régime applicable aux pensions retraites et rentes.
+
+Comme les revenus issus des traitements et salaires, les règles afférentes aux
+revenus issus des pensions, retraites et rentes sont traitées par l'[article 79
+du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables pensionnés, retraités ou rentiers ont également la possibilité
+de déduire de leur revenu brut les sommes afférentes à l'acquisition et à la
+conservation du revenu. Mais, dans leur cas, cela se traduit par un abattement
+de 10%. Cet abattement est prévu par les deuxième et troisième alinéas a du 5 de
+l'[article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/).
+
+Cet abattement de 10% est encadré par:
+
+* Un montant minimal de 422€ (Pour les revenus de l'année 2022): ce montant "s'applique au montant des pensions ou
+  retraites perçu par chaque retraité ou pensionné membre du foyer fiscal"* ais
+  ne peut avoir pour conséquence d'aboutir à un déficit. (troisième alinéa du a
+  du [5 de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+* Un montant maximal de 4 123€ (Pour les revenus de l'année 2022):
+    * contrairement au montant minimal, le montant maximal trouve à s'appliquer
+      " *au montant total des pensions et retraites perçues par l'ensemble des
+      membres du foyer fiscal.*" (deuxième alinéa du a du 5 de l'[article 158 du
+      CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+
+En conséquence, pour déterminer le montant de l'abattement applicable au
+déclarant  2 du foyer fiscal P il faut calculer l'abattement par rapport à
+l'abattement de la  somme
+([BOI-RSA-PENS-30-10-10](https://bofip.impots.gouv.fr/bofip/7458-PGP.html/identifiant%3DBOI-RSA-PENS-30-10-10-20170531#Abattement_de_10%C2%A0%_sur_le_m_11),
+paragraphe 160).
+
+Le déclarant 2 perçoit une pension de 42 000€ ainsi qu'une pension alimentaire
+de 3 500€.
+- (42 000 + 3500)x 0.1= 4 550
+
+Ce montant est supérieur à 4 123€, soit le plafond global de l'abattement sur
+le foyer fiscal. Or déclarant 2 est le seul déclarant du foyer qui a des
+pensions, retraites, ou rente, donc le plafond s'applique également
+individuellement à lui. 4 123€ sera donc le montant maximal de l'abattement
+applicable aux revenus du déclarant 2. Donc :
+
+(42 000+ 3 500)-4 123 = 41 377. Le revenu net du déclarant 2 est de 41 377€.
+
+B-Détermination du revenu brut global du foyer fiscal P.
+
+Le revenu brut global étant la somme des revenus nets catégoriels, pour le foyer
+fiscal P cela donne :
+
+43 200+ 2 528+ 41 377 = 87 105€. **Le revenu brut global du foyer fiscal P est
+de 87 105€**
+
+```catala
+déclaration champ d'application TraitementsSalaires6:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant3 champ d'application Interface.TraitementsSalairesDéclarant
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires6:
+  définition déclarant1.traitements_salaires égal à 48 000 €
+  définition déclarant1.frais_réels égal à Oui contenu 4 000 €
+  définition déclarant2.pensions_retraites_rentes égal à 42 000 €
+  définition déclarant2.pensions_alimentaires_perçues égal à 3 500 €
+  définition déclarant3.traitements_salaires égal à 3 000 €
+    définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : [déclarant3.sortie]
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires6 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             4 800,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             48 000,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 43 200,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 4 123,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 41 377,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             472,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             3 000,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 2 528,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 0,00 €
+│     -- revenu_brut_global: 87 105,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test revenus quotientés
+
+En 2023, le foyer fiscal R a rempli les déclarations 2042 et 2042C comme suit:
+
+- Déclaration 2042:
+
+--> Case M cochée.
+
+--> Case F, 2 enfants nés en 2010 et 2014.
+
+--> Case R année de naissance 1960.
+
+--> 1AJ: 48 650
+
+--> 1BP : 8 950
+
+--> 1CS : 150
+
+--> 1CW : 75 000
+
+- Déclaration 2042C:
+
+Case 0XX: Rappel de salaires, déclarant 1, quatre années : 250 000€.
+
+1- Calculer le nombre de parts du foyer fiscal R
+
+2- Calculer le revenu brut global du foyer fiscal R.
+
+### Calcul du nombre de parts du foyer fiscal R
+
+#### Analyse
+
+##### Sur le couple marié
+
+Le mariage est régi par le [titre V du Code
+civil](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006117710/).
+Afin de pouvoir se marier, les deux époux doivent être des personnes
+physiques, majeures , capables et consentantes.
+
+Le mariage emporte des conséquences fiscales. En effet, le [1 de l'article 6
+du Code Général des Impôts
+(CGI)](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369),
+pose le principe de l'imposition commune pour les couples mariés. Cependant,
+d'autres dispositions de ce même article tendent à atténuer ce prinicpe:
+
+- Le cas de l'imposition séparée obligatoire : le [4 de l'article
+  6](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+  dispose que les époux sont séparément imposés "
+
+_a. Lorsqu'ils sont séparés de biens et ne vivent pas sous le même toit ;_
+
+_b. Lorsqu'étant en instance de séparation de corps ou de divorce, ils ont été
+autorisés à avoir des résidences séparées ;_
+
+_c. Lorsqu'en cas d'abandon du domicile conjugal par l'un ou l'autre des
+époux, chacun dispose de revenus distincts._".
+
+- Les époux peuvent également choisir une imposition séparée : Le 5 de
+  l'article 6 du CGI dispose qu'ils peuvent choisir l'imposition séparée au
+  titre de l'année du mariage. Dans ce cas, chacun des époux sera
+  personnellement imposé au titre des revenus qu'il a perçus mais également de
+  la quote-part des revenus communs lui revenant.
+
+###### Sur la question des enfants mineurs
+
+L'[article 414 du Code
+civil](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006136230)
+expose que la majorité est fixée à dix-huit ans. En dessous de ce âge les
+personnes sont considérées comme mineures, ce qui emporte des incidences
+fiscales.
+
+Le [1 de l'article 6 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+dispose en effet que les enfants mineurs sont imposés communément avec leurs
+parents. Il est néanmoins possible qu'ils soient imposés séparément. En effet
+le [2 de ce même
+article](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+le permet lorsque le mineur soit tire des revenus de son travail soit dispose
+d'une fortune personnelle.
+
+##### Sur la question de la personne invalide vivant sous le toit du contribuable
+
+Aux termes de l'[article 196 A bis du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033220369)
+dispose qu'une personne titulaire de la carte mobilité inclusion mention
+"invalidité" et vivant de manière permanente chez le contribuable est
+considérée comme étant à la charge de ce dernier au sens de l'[article 196 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006303122/2023-10-20?init=true&page=1&query=article+196+A+bis+CGI&searchField=ALL&tab_selection=all).
+
+##### Application du droit au cas d'espèce
+
+L'INSEE définit le foyer fiscal comme étant ["_l'ensemble des personnes
+inscrites sur une même déclaration de
+revenus._"](https://www.insee.fr/fr/metadonnees/definition/c1735).
+
+Les contribuables souscrivant une même déclaration de revenus permettent une
+majoration du quotient familial de leur foyer fiscal. Le quotient familial est
+la démonstration du postulat selon lequel l'impôt sur le revenu est calculé
+proportionnellement ["_aux facultés contributives des
+contribuables_"](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant=BOI-IR-LIQ-10-20120912).
+
+Le système du quotient familial se matérialise par la division du revenu du
+foyer fiscal en un certain nombre de parts. Ce nombre de parts est fixé aux
+[articles 194 et 195 du
+CGI](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006069577/LEGISCTA000006179577/#LEGISCTA000006179577).
+
+###### Sur la question du couple marié et des enfants mineurs
+
+Sans précision supplémentaires et au titre du [1 de l'article 6 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369) le
+couple marié et les enfants mineurs sont imposés communément.
+
+En conséquence, et suivant l'[article 194 de ce même
+code](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781):
+
+- Le couple marié représente deux parts de quotient familial.
+- Les deux enfants mineurs représentent chacun une demi-part de quotient
+  familial.
+
+###### Sur la question de la personne invalide vivant sous le toit du contribuable
+
+Étant assimilée à un enfant à charge pour le contribuable ([dernier alinéa du
+I de  l'article
+194](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781)),
+la personne invalide est comptée comme le troisième enfant et représente donc
+une part de quotient familial.
+
+De plus, étant titulaire de la carte mobilité inclusion, la personne majore le
+quotient familial d'une demi-part supplémentaire ([dbis du 1 de l'article 195
+du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046860994/2023-10-20)).
+
+**Le nombre de parts de quotient familial du foyer fiscal R est donc de 4.5**.
+
+
+### Calcul du revenu brut global du foyer fiscal R
+
+L'[article 12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214)
+dispose que "_L'impôt est dû chaque année à raison des bénéfices ou revenus
+que le contribuable réalise ou dont il dispose au cours de la même année._".
+Et le [1 de l'article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2023-10-20)
+de préciser : "_Le bénéfice ou revenu imposable est constitué par l'excédent
+du produit brut, y compris la valeur des profits et avantages en nature, sur
+les dépenses effectuées en vue de l'acquisition et de la conservation du
+revenu_".
+
+Le [2 de ce même article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2023-10-20)
+fixe les modalités de détermination du revenu global net annuel. Ce revenu
+global net annuel sert de base à l'impôt sur le revenu. Afin de pouvoir le
+calculer, il faut commencer par calculer le revenu brut global. Pour cela:
+
+- Il faut d'abord déterminer les revenus nets catégoriels. Ces revenus nets
+  sont déterminés selon les règles propres à chaque catégories de revenus (ex:
+  traitements et salaires).
+- Puis déterminer le revenu brut global qui est la somme des revenus nets
+  catégoriels diminuée ["_le cas échéant, du montant des déficits susceptibles
+  d'être imputés sur le revenu
+  global_"](https://bofip.impots.gouv.fr/bofip/6445-PGP.html/identifiant%3DBOI-IR-BASE-20210330)
+  ([2 de l'article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2023-10-20)).
+
+#### Détermination des revenus nets catégoriels du foyer fiscal R
+
+En l'espèce, tous les revenus du foyer fiscal R relèvent de la catégorie des
+traitements, salaires pensions et rentes viagères.
+
+Néanmoins la détermination des revenus nets catégoriels varie du fait de la
+différences entre les règles relatives aux traitements, salaires, pensions,
+retraites, rentes viagères et revenus taxés au quotient.
+
+##### Régime applicable aux traitements et salaires
+
+Les règles relatives aux revenus issus des traitements et salaires sont
+traitées par l'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables percevant des traitements et salaires ont la possibilité de
+soustraire de leurs revenus bruts les dépenses afférentes à l'acquisition et à
+la conservation du revenu. Cette possibilité prend la forme d'une déduction
+pour frais professionnels prévue au [3 de l'article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046197322).
+Cette déduction prend deux formes :
+
+- Une déduction forfaitaire de 10% du revenu brut: cette déduction est
+  encadrée par un montant minimal de 472€ (Pour les revenus de l'année 2022, qui ne doit pas avoir pour
+  conséquence d'aboutir à un déficit) et un montant maximal de 13 522€
+  (pour les revenus de l'année 2022, [deuxième et troisième alinéa du 3 de l'article 83 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046197322)).
+- La déduction des frais réels. Prévue au quatrième alinéa et suivant du 3 de
+  ce même article. Ex: les frais kilométriques. [Cependant, les frais réels ne
+  peuvent se cumuler avec la déduction
+  forfaitaire](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912).
+
+Soit pour les déclarants 1 et 2 :
+
+- Déclarant 1 : a perçu un traitement ou un salaire de 48 650€ et n'a pas opté
+  pour la prise en compte de ses frais réels. La déduction forfaitaire de 10%
+  lui sera donc appliquée.
+
+--> Calcul du montant de la déduction : 48 650*0.1 = 4 865.
+
+--> Calcul du revenu net catégoriel du déclarant 1 : 48 650 - 4865 = 43 785€.
+
+- Déclarant 2 : a perçu des revenus d'un montant de 8 950€ entrant dans la
+  case 1BP "autres revenus imposables". Comme pour le déclarant 1, le
+  déclarant 2 se verra également appliquer la déduction forfaitaire de 10% car
+  il n'y a pas eu d'option pour les frais réels.
+
+--> Calcul du montant de la déduction : 8 950*0.1 = 895.
+
+--> Calcul du revenu net catégoriel du déclarant 2 : 8 950 - 895 = 8 055€.
+
+##### Régime applicable aux pensions retraites et rentes de droit commun
+
+Comme pour les revenus issus des traitements et salaires, les règles
+afférentes aux revenus issus des pensions, retraites et rentes sont régies par
+l'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables pensionnés, retraités ou rentiers ont également la
+possibilité de déduire de leur revenu brut les dépenses afférentes à
+l'acquisition et à la conservation du revenu. Mais, dans leur cas, cela se
+traduit par un abattement de 10% sur ces revenus. Cet abattement est prévu par
+les [deuxième et troisième alinéas du a du 5 de l'article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/).
+
+Cet abattement de 10% est encadré par (les montants sont valables pour l'année 2022)
+
+- Un montant minimal de 422€ : ce montant "_s'applique au montant des pensions
+  ou retraites perçu par chaque retraité ou pensionné membre du foyer fiscal_"
+  mais ne peut avoir pour conséquence de créer un déficit. ([troisième alinéa
+  du a du 5 de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+- Un montant maximal de 4 123€ : le montant maximal trouve à s'appliquer "_au
+  montant total des pensions et retraites perçues par l'ensemble des membres
+  du foyer fiscal._" ([deuxième alinéa du a du 5 de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+
+En l'espèce, la personne à charge perçoit une pension, une retraite ou une
+rente de 150€. Ici, l'abattement minimal ne trouve pas à s'appliquer car cela
+aurait pour conséquence d'aboutir à un déficit. Aussi le revenu net de la
+personne à charge sera de :
+
+150-150 = 0€.
+
+##### Régime applicable aux rentes viagères à titre onéreux
+
+L'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114)
+dispose que les rentes viagères "_concourent à la formation du revenu global
+servant de base à l'impôt sur le revenu._"
+
+Les rentes viagères à titre onéreux perçues par le crédit rentier sont
+considérées comme un revenu au titre du [6 de l'article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)
+mais uniquement "_pour une fraction de leur montant. Cette fraction,
+déterminée d'après l'âge du crédirentier lors de l'entrée en jouissance de la
+rente, est fixée à :
+
+– 70 % si l'intéressé est âgé de moins de 50 ans ;
+
+– 50 % s'il est âgé de 50 à 59 ans inclus ;
+
+– 40 % s'il est âgé de 60 à 69 ans inclus ;
+
+– 30 % s'il est âgé de plus de 69 ans._"
+
+En l'espèce, le crédirentier a entre 60 et 69 ans lors de l'entrée en
+jouissance de la rente. Ainsi la fraction imposable de la rente sera de 40%.
+
+Soit : 75 000*0.4 = 30 000€.
+
+Le montant imposable de la rente viagère à titre onéreux sera de 30 000€.
+
+##### Régime applicables aux revenus taxés au quotient
+
+En 2022, au titre du rappel des salaires des quatre années précédentes, le
+déclarant 1 a perçu 250 000€. Il demande que ces revenus soient taxés en
+application du système du quotient.
+
+Dans le but d'éviter que le barème progressif de l'impôt sur le revenu
+n'entraîne une imposition excessive, l'[article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)
+prévoit un système particulier d'imposition : le système du quotient.
+
+Le système du quotient s'applique aux revenus exceptionnels ou différés perçus
+par le contribuable. Il ["_consiste, après avoir calculé l’impôt d’après le
+barème progressif sur le revenu net global « ordinaire » imposable du
+contribuable, à calculer l’impôt par l’application du même barème au total
+formé par le revenu net global « ordinaire » imposable et une fraction du
+revenu exceptionnel ou différé. La différence entre ces deux résultats est
+multipliée par le coefficient utilisé (diviseur) pour calculer cette fraction,
+et cette somme est additionnée aux droits simples calculés sur le seul revenu
+net global « ordinaire »
+imposable._"](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720#Modalites_d%E2%80%99application_du__12)
+(BOI-IR-LIQ-20-30-20, paragraphe 20).
+
+Concernant les revenus différés le coefficient correspond au "nombre d'années
+civiles correspondant aux échéances normales de versement augmenté de un" ([II
+de l'article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Pour les revenus exceptionnels, le coefficient est de quatre ([I de l'article
+163 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Néanmoins, avant de procéder au calcul de l'impôt avec la fraction des revenus
+taxés au quotient, il faut d'abord déterminer le revenu net selon les règles
+propres à la catégorie à laquelle appartient le revenu au quotient.
+
+En l'espèce, il s'agit de salaires (revenus différés).
+
+Dans l'hypothèse où le revenu exceptionnel ou différé appartient à la même
+catégorie que les revenus "ordinaires" perçus par le contribuables, alors il
+faut déterminer le revenu net de la catégorie. Le résultat "_est ensuite
+ventilé au prorata des revenus nets de frais professionnels pour obtenir le
+revenu catégoriel net « ordinaire » et le revenu catégoriel net à taxer selon
+le système du
+[quotient](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720#Modalites_d%E2%80%99application_du__12)._".
+
+Soit pour le déclarant 1 :
+- Revenus ordinaires: 48 650*0.1 = 4865.
+- Revenus taxés au quotient : 250 000*0.1 = 25 000. Or (4 865+ 25 000 = 29
+  865) est supérieur au montant maximal de la déduction forfaitaire de 10% (
+  13 522€).
+
+Il faudra donc utiliser le montant maximal de 13 522€ et le ventiler entre les
+revenus "ordinaires" et les revenus taxés au quotient.
+
+- Soit pour les revenus ordinaires :
+
+--> Calcul de la déduction forfaitaire de 10% : (13 522/29 865)*4 865 = 2
+202,7 (arrondi à 2 203).
+
+--> Calcul du revenu net catégoriel : 48 650- 2 203 = 46 447.
+
+- Soit pour les revenus taxés au quotient :
+
+--> Calcul de la déduction forfaitaire de 10% : (13 522/ 29 685)*25 000 = 11
+319,2 (arrondi à 11 319).
+
+--> Calcul du revenu net catégoriel taxé au quotient : 250 000 - 11 319 = 238
+681.
+
+**Les revenus nets catégoriels du foyer fiscal R sont donc:**
+
+- Pour le déclarant 1 : Salaires "ordinaires " : **46 447€;** salaires taxés
+  au quotient: **238 681€.**
+- Pour le déclarant 2 : autres revenus imposables : **8 055€.**
+- Pour la personne à charge 1 : pensions et retraites: **0€.**
+- Rente viagère à titre onéreux : **30 000€.**
+
+##### Calcul du revenu brut global du foyer fiscal R
+
+Le revenu brut global étant la somme des revenus nets catégoriels, tous les
+revenus du foyer fiscal devraient être ajoutés entre eux.
+
+Néanmoins, les revenus taxés au quotient n'entrent pas dans le calcul du
+revenu brut global "ordinaire". En effet, afin de pouvoir calculer ensuite
+l'impôt global il convient de suivre la méthode suivante : "
+
+- calcul des droits simples résultant de l'application du barème progressif au
+  seul revenu net global « ordinaire » imposable (DS1) ;
+
+- calcul des droits simples par application du même barème au total formé par
+  le revenu net global « ordinaire » imposable et la fraction appropriée
+  (quotient) bénéficiant du système du quotient (DS2) ;
+
+- calcul de la différence entre les deux résultats précédents et
+  multiplication par le diviseur utilisé pour calculer le quotient (DS2 - DS1)
+  × N = DS3 ;
+
+- addition de la somme ainsi obtenue et des droits simples calculés sur le
+  seul revenu net global « ordinaire » imposable : [DS1 +
+  DS3](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720#Modalites_d%E2%80%99application_du__12)."
+
+**Aussi le revenu brut global du foyer fiscal R sera : 46 447 + 8 055 + 0 + 30
+000 = 84 502€**
+
+```catala
+déclaration champ d'application TraitementsSalaires7:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant3 champ d'application Interface.TraitementsSalairesDéclarant
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires7:
+ définition déclarant1.traitements_salaires égal à 48 650 €
+  définition déclarant1.revenus_exceptionnels_ou_différés égal à [
+    IR.RevenuExceptionnelOuDifféré {
+      -- valeur : 250 000€
+      -- régime : Article163_0_A
+      -- échéance : RevenuDifféréÉchéanceNormale contenu 2018
+      -- catégorie : TraitementsSalaires
+    }
+  ]
+  définition déclarant2.autres_revenus_imposables_chômage_préretraite égal à
+    8950 €
+  définition déclarant3.pensions_retraites_rentes égal à 150 €
+  définition foyer.rentes_percues_60_69ans égal à 75 000 €
+    définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : [déclarant3.sortie]
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires7 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             2 203,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             48 650,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 46 447,00 €
+│           -- revenus_quotientés:
+│             [
+│               Impot_revenu.RevenuQuotienté {
+│                 -- valeur_nette: 238 681,00 €
+│                 -- déduction: 11 319,00 €
+│                 -- coefficient: 5
+│                 -- catégorie: TraitementsSalaires ()
+│               }
+│             ]
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             895,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             8 950,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 8 055,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 150,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 0,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 30 000,00 €
+│     -- revenu_brut_global: 84 502,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test revenus quotientés 2
+
+* 1AJ : 72 360
+* 1BJ : 46 544
+* 1 BK : 5000
+* 1CZ : 6 936
+* 0XX: revenus différés, années d'échéance 5, 920 000.
+
+Calcul revenu brut global.
+
+### Calcul du revenu brut global du foyer fiscal
+
+L’article [12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214/)
+dispose que “_L’impôt est dû chaque année à raison des bénéfices ou  revenus
+que le contribuable réalise ou dont il dispose au cours de la même année_”. Et
+le [1 de l’article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)
+de préciser : “_Le bénéfice ou revenu imposable est constitué par l’excédent
+du produit brut, y compris la valeur des profits et avantages en nature, sur
+les dépenses effectuées en vue de l’acquisition et de la conservation du
+revenu_”.
+
+Le [2 de ce même article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)
+fixe les modalités de détermination du revenu global net annuel. Ce revenu
+global net annuel sert de base à l’impôt sur le revenu. Afin de pouvoir le
+calculer, il faut commencer par calculer le revenu brut global. Pour cela :
+
+— Il faut d’abord déterminer les revenus nets catégoriels. Ces revenus nets
+sont déterminés selon les règles propres à chaque catégories de revenus (ex :
+traitements et salaires).
+
+— Puis déterminer le revenu brut global qui est la somme des revenus nets
+catégoriels diminuée “_le cas échéant, du montant des déficits susceptibles
+d’être imputés sur le revenu global_” ([2 de l’article 13 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-06-17)).
+
+#### Détermination des revenus nets catégoriels du foyer fiscal
+
+En l’espèce, tous les revenus du foyer fiscal relèvent de la catégorie des
+traitements, salaires pensions et rentes viagères.
+
+Néanmoins la détermination des revenus nets catégoriels varie du fait de la
+différence entre les règles relatives aux traitements, salaires, pensions,
+retraites, rentes viagères et revenus taxés au quotient.
+
+##### Régime applicable aux traitements et salaires
+
+Les règles relatives aux revenus issus des traitements et salaires sont
+traitées par [l’article
+79](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114/2019-12-30)
+du CGI.
+
+Les contribuables percevant des traitements et salaires ont la possibilité de
+soustraire de leurs revenus bruts les dépenses afférentes à l’acquisition et à
+la conservation du revenu.
+
+Cette possibilité prend la forme d’une déduction pour frais professionnels
+prévue au [3 de l’article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622408/2023-06-03/).
+Cette déduction prend deux formes :
+
+— Une déduction forfaitaire de 10% du revenu brut : cette déduction est
+encadrée par un montant minimal de 472€ (Pour les revenus de l’année 2022, qui
+ne doit pas avoir pour conséquence d’aboutir à un déficit) et un montant
+maximal de 13 522€ (pour les revenus de l’année 2022, [deuxième et troisième
+alinéa du 3 de l’article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622408/2023-06-03/)).
+
+— La déduction des frais réels. Prévue au quatrième alinéa et suivant du 3 de
+ce même article. Ex : les frais kilométriques. Cependant, les frais réels ne
+peuvent se cumuler avec la déduction
+[forfaitaire](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912).
+
+Soit pour les déclarants 1 et 2 :
+
+— Déclarant 1 : a perçu un traitement ou un salaire de 72 360€ et n’a pas opté
+pour la prise en compte de ses frais réels. La déduction forfaitaire de 10%
+lui sera donc appliquée. –> Calcul du montant de la déduction : 72 360*0.1 = 7
+236 –> Calcul du revenu net catégoriel du déclarant 1 : 72 360 - 7 236 = 65
+124
+
+— Déclarant 2 : a perçu des revenus d’un montant de 46 544€. Contrairement au
+déclarant 1 , le déclarant 2 a choisi la déduction de ses frais réels, ceux ci
+sont d'un montant de 5 000 €. Soit  : –> Calcul du revenu net catégoriel du
+déclarant 2 : 46 544 - 5 000 = 41 544.
+
+##### Régime applicable aux pensions retraites et rentes de droit commun
+
+Comme pour les revenus issus des traitements et salaires, les règles
+afférentes aux revenus issus des pensions, retraites et rentes sont régies par
+[l’article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114/2019-12-30).
+
+Les contribuables pensionnés, retraités ou rentiers ont également la
+possibilité de déduire de leur revenu brut les dépenses afférentes à
+l’acquisition et à la conservation du revenu. Mais dans leur cas, cela se
+traduit par un abattement de 10% sur ces revenus. Cet abattement est prévu
+par[ les deuxième et troisième alinéas du a du 5 de l’article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622551/2023-06-03/).
+
+Cet abattement de 10% est encadré par (les montants sont valables pour l’année
+2022) :
+
+— Un montant minimal de 422€ : ce montant “_s’applique au montant des pensions
+ou retraites perçu par chaque retraité ou pensionné membre du foyer fiscal_”
+mais ne peut avoir pour conséquence de créer un déficit. ([troisième alinéa du
+a du 5 de l’article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622551/2023-06-03/)).
+
+— Un montant maximal de 4 123€ : le montant maximal trouve à s’appliquer “_au
+mon- tant total des pensions et retraites perçues par l’ensemble des membres
+du foyer fiscal_”.([deuxième alinéa du a du 5 de l’article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622551/2023-06-03/)).
+
+En l’espèce, la personne à charge perçoit une pension d'invalidité d'un
+montant de  6 936€. Soit : -> Calcul du montant de l'abattement : 6 936*0.1 =
+693.6 soit arrondi à 694 -> Calcul du revenu net catégoriel du déclarant 3 :
+6936-694 = 6 242. Le revenu net catégoriel du déclarant 3 est de 6 242€.
+
+##### Régime applicables aux revenus taxés au quotient
+
+En 2022, au titre du rappel des salaires des cinq années précédentes, le
+déclarant 1 a perçu 920 000€. Il demande que ces revenus soient taxés en
+application du système du quotient. Dans le but d’éviter que le barème
+progressif de l’impôt sur le revenu n’entraîne une imposition excessive,
+[l’article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)
+prévoit un système particulier d’imposition : le système du quotient.
+
+Le système du quotient s’applique aux revenus exceptionnels ou différés perçus
+par le contribuable. Il “_consiste, après avoir calculé l’impôt d’après le
+barème progressif sur le revenu net global « ordinaire » imposable du
+contribuable, à calculer l’impôt par l’application du même barème au total
+formé par le revenu net global « ordinaire » imposable et une fraction du
+revenu exceptionnel ou différé. La différence entre ces deux résultats est
+multipliée par le coefficient utilisé (diviseur) pour calculer cette fraction,
+et cette somme est additionnée aux droits simples calculés sur le seul revenu
+net global « ordinaire »
+[imposable_]"(https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720).
+
+Concernant les revenus différés le coefficient correspond au _“nombre d’années
+civiles correspondant aux échéances normales de versement augmenté de un_”
+([II de l’article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Pour les revenus exceptionnels, le coefficient est de quatre ([I de l’article
+163 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Néanmoins, avant de procéder au calcul de l’impôt avec la fraction des revenus
+taxés au quotient, il faut d’abord déterminer le revenu net selon les règles
+propres à la catégorie à laquelle appartient le revenu au quotient.
+
+En l’espèce, il s’agit de salaires (revenus différés).
+
+Dans l’hypothèse où le revenu exceptionnel ou différé appartient à la même
+catégorie que les revenus “ordinaires” perçus par le contribuables, alors il
+faut déterminer le revenu net de la catégorie. Le
+[résultat](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720)
+“_est ensuite ventilé au prorata des revenus nets de frais professionnels pour
+obtenir le revenu catégoriel net « ordinaire » et le revenu catégoriel net à
+taxer selon le système du quotient_”.
+
+Soit pour le déclarant 1 :
+
+- Revenus ordinaires : 72 360*0.1 = 7 236
+- Revenus taxés au quotient : 920 000*0.1 = 92 000.
+
+Or (7 236+ 92 000 = 99 236) est supérieur au montant maximal de la déduction
+forfaitaire de 10% ( 13 522€).
+
+Il faudra donc utiliser le montant maximal de 13 522€ et le ventiler entre les
+revenus “ordinaires” et les revenus taxés au quotient.
+
+— Soit pour les revenus ordinaires :
+
+–> Calcul de la déduction forfaitaire de 10% : (13 522/99 236)*7 236 = 985.9
+(arrondi à 986). –> Calcul du revenu net catégoriel : 72360-986 = 71 374
+
+— Soit pour les revenus taxés au quotient :
+
+–> Calcul de la déduction forfaitaire de 10% : (13 522/99 236)*92 000 = 12 536
+
+–> Calcul du revenu net catégoriel taxé au quotient :920 000-12 536 = 907 464.
+
+Les revenus nets catégoriels du foyer fiscal R sont donc :
+
+— Pour le déclarant 1 : Salaires “ordinaires” : 71 374€ ; salaires taxés au
+quotient : 907 464€.
+
+— Pour le déclarant 2 : traitements et salaires :  41 544€.
+
+— Pour la personne à charge 1 : pension d'invalidité : 6 242€.
+
+### Calcul du revenu brut global du foyer fiscal
+
+Le revenu brut global étant la somme des revenus nets catégoriels, tous les
+revenus du foyer fiscal devraient être ajoutés entre eux.
+
+Néanmoins, les revenus taxés au quotient n’entrent pas dans le calcul du
+revenu brut global “ordinaire”. En effet, afin de pouvoir calculer ensuite
+l’impôt global il convient de suivre la [méthode
+suivante](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720)
+:
+
+— "_calcul des droits simples résultant de l’application du barème progressif
+au seul revenu net global « ordinaire » imposable (DS1) ;
+
+— calcul des droits simples par application du même barème au total formé par
+le revenu net global « ordinaire » imposable et la fraction appropriée
+(quotient) bénéficiant du système du quotient (DS2) ;
+
+— calcul de la différence entre les deux résultats précédents et
+multiplication par le diviseur utilisé pour calculer le quotient (DS2 - DS1) ×
+N = DS3 ;
+
+— addition de la somme ainsi obtenue et des droits simples calculés sur le
+seul revenu net global « ordinaire » imposable : DS1 + DS3_”.
+
+**Aussi le revenu brut global du foyer fiscal R sera : 71 374 + 41 544 + 6 242
+= 119 160€.**
+
+```catala
+déclaration champ d'application TraitementsSalaires8:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant3 champ d'application Interface.TraitementsSalairesDéclarant
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires8:
+ définition déclarant1.traitements_salaires égal à  72 360 €
+  définition déclarant1.revenus_exceptionnels_ou_différés égal à
+    [IR.RevenuExceptionnelOuDifféré {
+      -- valeur : 920 000 €
+      -- régime : Article163_0_A
+      -- échéance : RevenuDifféréÉchéanceNormale contenu 2017
+      -- catégorie : TraitementsSalaires
+    }]
+  définition déclarant2.traitements_salaires égal à  46 544 €
+  définition déclarant2.frais_réels égal à IR.FraisRéels.Oui contenu 5 000 €
+  définition déclarant3.pensions_invalidité égal à 6 936 €
+  définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : [déclarant3.sortie]
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+
+# TODO juridique : à vérifier (issue #45).
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires8 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             986,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             72 360,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 71 374,00 €
+│           -- revenus_quotientés:
+│             [
+│               Impot_revenu.RevenuQuotienté {
+│                 -- valeur_nette: 907 464,00 €
+│                 -- déduction: 12 536,00 €
+│                 -- coefficient: 6
+│                 -- catégorie: TraitementsSalaires ()
+│               }
+│             ]
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             5 000,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             46 544,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 41 544,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 694,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 6 242,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 0,00 €
+│     -- revenu_brut_global: 119 160,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas test n°9 (revenus quotientés forts, traitements salaires faibles)
+
+1 AJ : 350
+
+0XX : revenus différés, rappel de salaires, échéance normale : 6, montant : 500 000
+
+## Calcul de la déduction déplafonnée
+
+- Revenus ordinaires : 350*0.1 = 35
+- Revenus quotientés : 500 000*0.1 = 50 000
+
+## Application du plafond de la déduction
+
+50 000 + 35 = 50 035 or > 13 522
+
+- Revenus ordinaires : (13 522/ 50 065)*35 = 9.4 soit 9.
+- Revenus quotientés : (13 522/ 50 035)*50 000 = 13 512.5 soit 13 513
+
+## Calcul du revenu net catégoriel
+
+- Revenus ordinaires : 350 - 9 = 341
+- Revenus quotientés : 500 000 - 13 513 = 486 487
+
+
+```catala
+déclaration champ d'application TraitementsSalaires9:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires9:
+  définition déclarant1.traitements_salaires égal à 350 €
+  définition déclarant1.revenus_exceptionnels_ou_différés égal à
+    [IR.RevenuExceptionnelOuDifféré {
+      -- valeur : 500 000 €
+      -- régime : Article163_0_A
+      -- échéance : RevenuDifféréÉchéanceNormale contenu 2017
+      -- catégorie : TraitementsSalaires
+    }]
+
+  définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : PasDeDéclaration
+      -- déclarations_personnes_à_charge : []
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+TODO juridique : faut-il appliquer ou non le plancher de la déduction avant
+le calcul du plafond pro-ratisé entre traitements salaires classiques et
+revenus quotientés ? L'exemple du BOFiP ne permet de le déterminer mais
+ce cas de test si (issue #56).
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires9 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 94,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             350,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 256,00 €
+│           -- revenus_quotientés:
+│             [
+│               Impot_revenu.RevenuQuotienté {
+│                 -- valeur_nette: 486 572,00 €
+│                 -- déduction: 13 428,00 €
+│                 -- coefficient: 6
+│                 -- catégorie: TraitementsSalaires ()
+│               }
+│             ]
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 0,00 €
+│     -- revenu_brut_global: 256,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test nombre de parts + revenus 2
+
+Jean est marié à Marie. Ensemble ils ont trois enfants:
+
+-Les jumeaux Victor et Lucie. Ils ont 19 ans. Lucie est également titulaire de
+la Carte Mobilité Inclusion (CMI) mention "invalidité".
+
+-Jacques, 8 ans. Jacques est l'enfant que Jean a eu avec Paule. Il vit en
+résidence alternée chez cette dernière.
+
+Le couple perçoit différents revenus: Jean perçoit un salaire de 40 000 euros
+par an. Marie un traitement de 20 000 euros par an. Victor, apprenti, est
+rémunéré 8 000 euros par an. En outre, Jean, né en 1975, perçoit une rente
+viagère de 15 000 euros par an.
+
+Leur déclaration de revenus n°2042 est remplie comme suit:
+
+- 1AJ: 40 000
+- 1BJ: 20 000
+- 1AW: 15 000
+
+Calculer: le nombre de parts du foyer fiscal de Jean et Marie ainsi que leur
+revenu global et les différentes déductions et abattements inhérents à la
+détermination de ce revenu.
+
+## Analyse
+
+### I - Calcul du nombre de parts du foyer fiscal de Jean et Marie
+
+L'INSEE définit le foyer fiscal comme étant ["_l'ensemble des personnes
+inscrites sur une même déclaration de
+revenus_"](https://www.insee.fr/fr/metadonnees/definition/c1735).
+
+Les contribuables souscrivant une même déclaration de revenu permettent une
+majoration du quotient familial de leur foyer fiscal.
+
+Le système du quotient familial est la démonstration du postulat selon lequel
+l'impôt sur le revenu est calculé proportionnellement ["_aux facultés
+contributives des
+contribuables_"](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant=BOI-IR-LIQ-10-20120912).
+
+Ce système se matérialise par la division du revenu imposable de chaque foyer
+fiscal par un certain nombre de parts [article 193 du Code Général des Impôts,
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033844057).
+
+Le nombre de parts à prendre en compte pour la détermination du quotient
+familial est fixé aux [articles
+194](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781/2023-07-20)
+et
+[195](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046860994/2023-07-20)
+du même code.
+
+#### A - Sur la question du couple marié
+
+Le mariage est régi par le [titre V du Code Civil](
+https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006117710/1919-08-09).
+Afin de pouvoir se marier, deux personnes physiques doivent être majeures,
+capables et consentantes.
+
+Considérant que si le [1 de l'article 6 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+pose le principe de l'imposition commune pour les couples mariés, les
+dispositions du 5 de ce même article atténuent ce principe. En effet, les
+époux peuvent opter pour l'imposition distincte de leurs revenus perçus durant
+l'année de leur mariage.
+
+Ainsi, chacun des époux sera distinctement imposé sur ses revenus personnels
+mais également sur la ["_quote part des revenus lui
+revenant_"](https://bofip.impots.gouv.fr/bofip/505-PGP.html/identifiant%3DBOI-IR-CHAMP-20-20-10-20160603)(paragraphe
+140).
+
+En l'absence de précisions supplémentaires, le postulat sera pris que Jean et
+Marie se sont mariés avant 2022.
+
+Ainsi, aux termes du deuxième alinéa de l'[article 6 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369),
+Jean et Marie sont imposés communément.
+
+**Selon les dispositions de l'article 194 du CGI, le couple marié (imposé
+communément) représente deux parts de quotient familial.**
+
+
+#### B - Sur la question de l'imposition des jumeaux Victor et Lucie
+
+##### 1 - Imposition des enfants majeurs
+
+Victor et Lucie ont 19 ans. A défaut de précisions contraires, le postulat
+sera pris qu'ils sont rattachés au foyer fiscal de leurs parents.
+
+Le [3 de l'article 6 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+dispose que les enfants majeurs célibataires sont imposables personnellement.
+Néanmoins, le 2° du 3 de ce même article leur offre la possibilité de demander
+à être rattachés au foyer fiscal de leurs parents.
+
+Afin de pouvoir demander (et obtenir) ce rattachement, les enfants majeurs
+célibataires doivent satisfaire l'une des conditions posées par le 3 de
+l'article 6. A savoir:
+
+-Être âgés de moins de 21 ans.
+
+-Être âgés de moins de 25 ans et poursuivre des études.
+
+-Effectuer, peu importe l'âge, leur service national.
+
+Le rattachement des enfants majeurs célibataires entraîne une majoration de
+quotient familial de leurs parents.
+
+##### 2 - Imposition des enfants majeurs titulaires de la carte mobilité inclusion mention "invalidité"
+
+Comme énoncé précédemment, les enfants majeurs célibataires peuvent demander
+leur rattachement au foyer de leurs parents.
+
+Concernant les enfants majeurs infirmes, l'[article 196 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006303122),
+les considère comme à charge de leurs parents et ce quelque soit leur âge.
+
+De plus le [2 du I de l'article
+195](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046860994/2023-07-20)
+accorde une majoration supplémentaire d'une demi-part de quotient familial aux
+enfants titulaires de la CMI mention invalidité.
+
+#### C - Sur la question de l'imposition de Jacques, enfant mineur en résidence alternée
+
+L'[article 194 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781/2023-07-20)
+dispose que la majoration de quotient familial auquel ouvre la charge des
+enfants mineurs est répartie entre les deux parents lorsque ces derniers les
+assument à part égale. Soit une majoration de quotient familial de :
+
+- 0,25 part pour les deux premiers enfants.
+
+- 0,5 à compter du troisième.
+
+#### D - Détermination du nombre de parts du foyer fiscal de Jean et Marie
+
+Comme vu plus haut le couple marié de Jean et Marie représente deux parts de
+quotient familial.
+
+Concernant les enfants, le BOFIP précise la méthode de calcul à appliquer pour
+déterminer le nombre de parts de quotient familial qu'ils représentent: ["_Les
+enfants à charge exclusive sont pris en compte avant l'enfant dont la charge
+est partagée. Chaque enfant à charge exclusive de rang 1 et 2 ouvre droit à
+une demi-part de quotient familial. L'enfant à charge partagée qui constitue,
+du point de vue fiscal, le troisième enfant du contribuable ouvre droit pour
+sa part à une demi-part de quotient
+familial._](https://bofip.impots.gouv.fr/bofip/2028-PGP.html/identifiant%3DBOI-IR-LIQ-10-20-20-10-20140326)(paragraphe
+90).
+
+Donc, les enfants représentent:
+
+-Victor, premier enfant:  0,5 part de quotient familial.
+
+-Lucie, second enfant: 0,5 part de quotient familial+ 0.5 part car elle est
+titulaire de la Carte Mobilité Inclusion mention "invalidité".
+
+-Enfin Jacques, troisième enfant de fait: +0.5 part du fait de la résidence
+alternée.
+
+**En conséquence, le foyer fiscal de Jean et Marie compte 4 parts de quotient
+familial.**
+
+
+### II - Détermination du revenu global du foyer fiscal de Jean et Marie
+
+L'[article 12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214)
+dispose que "*L'impôt est dû chaque année à raison des bénéfices ou revenus
+que le contribuable réalise ou dont il dispose au cours de la même année.*".
+Et le [1 de l'article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2023-10-03)de
+préciser: "*Le bénéfice ou revenu imposable est constitué par l'excédent du
+produit brut, y compris la valeur des profits et avantages en nature, sur les
+dépenses effectuées en vue de l'acquisition et de la conservation du
+revenu.*".
+
+Le 2 de ce même article 13 fixe les modalités de détermination du revenu
+global net annuel. Ce revenu global net annuel sert de base à l'impôt sur le
+revenu. Afin de pouvoir le calculer, il faut commencer par déterminer le
+revenu brut global. Pour cela:
+
+* Il faut d'abord déterminer les revenus nets catégoriels. Ces revenus sont
+  déterminés selon les règles propres à chaque catégorie de revenus (ex:
+  traitements et salaires, [3 de l'article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+* Puis déterminer le revenu brut global, qui est la somme des revenus nets
+  catégoriels ["*diminué, le cas échéant, du montant des déficits susceptibles
+  d'être imputés sur le revenu
+  global*"((https://bofip.impots.gouv.fr/bofip/6445-PGP.html/identifiant%3DBOI-IR-BASE-20210330)(2
+  de l'article 13 du CGI
+  https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+
+#### A. Détermination des revenus nets catégoriels du foyer fiscal de Jean et Marie.
+
+En l'espèce tous les revenus du foyer fiscal relèvent de la catégorie des
+traitements, salaires, pensions et rentes viagères.
+
+Cependant, la détermination des revenus nets catégoriels du foyer varie du
+fait de la différence entre les règles afférentes aux traitements et salaires
+et celles relatives aux pensions, retraites et rentes.
+
+##### 1 - Régime applicable aux traitements et salaires.
+
+Les règles relatives aux revenus issus des traitements et salaires sont
+traitées par l'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables percevant des traitements et des salaires ont la possibilité
+de soustraire de leur revenu brut les dépenses afférentes à l'acquisition et à
+la conservation du revenu. Cette possibilité se traduit par une déduction des
+frais professionnels prévue au [3 de l'article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046197322).
+
+Cette déduction prend deux formes:
+
+* Une déduction forfaitaire de 10% du revenu brut (les montants encadrant la
+  déduction forfaitaires ne sont valables que pour l'année 2022) : cette
+  déduction est encadrée par un montant minimal de 422€ (qui ne doit pas avoir
+  pour conséquence d'aboutir à un déficit) et un montant maximal de 13 522€
+  ([deuxième et troisième alinéa du 3 de l'article 83 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046197322)).
+* La déduction des frais réels, prévue aux quatrième alinéa et suivant de ce
+  même texte. Il s'agit par exemple des frais kilométriques.
+
+Précision: l'option pour les frais réels ne peut se cumuler avec la [déduction
+forfaitaire](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912).
+
+Soit pour le cas d'espèce : Les déclarants 1 et 2.
+
+* Déclarant 1: A perçu un traitement ou salaire de 40 000 € et n'a pas opté
+  pour les frais réels. Aussi c'est la déduction forfaitaire pour frais
+  professionnels qui sera appliqué à ses revenus.
+
+Donc : 40 000x0.1 = 4 000. Le montant de la déduction forfaitaire sera de 4
+000€.
+
+Le revenu net catégoriel du déclarant 1 sera donc: 40 000 - 4 000 = 36 000€.
+
+* Déclarant 2 : A perçu un salaire de 20  000€. Ici, c'est la déduction qui
+  lui sera également appliquée. Son revenu net sera donc de : 20 000* 0.1 = 2
+  000
+
+En conséquence : 20 000 - 2 000 = 18 000. le revenu net du déclarant 2 sera de
+18 000€.
+
+##### 2 - Régime applicable aux rentes viagères à titre onéreux
+
+L'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114)
+dispose que les rentes viagères "*concourent à la formation du revenu global
+servant de base à l'impôt sur le revenu.*"
+
+Les rentes viagères à titre onéreux perçues par le crédit rentier sont
+considérées comme un revenu au titre du [6 de l'article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)
+mais uniquement "\_pour une fraction de leur montant. Cette fraction,
+déterminée d'après l'âge du crédirentier lors de l'entrée en jouissance de la
+rente, est fixée à :
+
+– 70 % si l'intéressé est âgé de moins de 50 ans ;
+
+– 50 % s'il est âgé de 50 à 59 ans inclus ;
+
+– 40 % s'il est âgé de 60 à 69 ans inclus ;
+
+– 30 % s'il est âgé de plus de 69 ans.\_"
+
+En l'espèce, le crédirentier a moins de  50 ans lors de l'entrée en jouissance
+de la rente. Ainsi la fraction imposable de la rente sera de 70%.
+
+Soit : 15 000/0.7 = 10 500.
+
+Le montant imposable de la rente viagère à titre onéreux sera de 10 500€.
+
+#### B - Détermination du revenu brut global du foyer fiscal de Jean et Marie
+
+Le revenu brut global étant la somme des revenus nets catégoriels, tous les
+revenus du foyer fiscal doivent donc être ajoutés entre eux.
+
+**Soit : 36 000 + 18 000 + 10 500 = 64 500. Le revenu brut global du foyer de
+Jean et Marie sera de 64 500€**
+
+```catala
+déclaration champ d'application TraitementsSalaires10:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+
+ foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires10:
+ définition déclarant1.traitements_salaires égal à  40000 €
+  définition foyer.rentes_percues_49moins_ans égal à 15 000 €
+
+  définition déclarant2.traitements_salaires égal à  20000 €
+  définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : []
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires10 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             4 000,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             40 000,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 36 000,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             2 000,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             20 000,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 18 000,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 10 500,00 €
+│     -- revenu_brut_global: 64 500,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```
+
+## Cas de test 11 (n°2 du POC 2023)
+
+Un couple marié avec trois enfants à charge dont l'un est handicapé et en résidence alternée a
+rempli ses déclaration 2042 et 2042C comme suit :
+
+Déclarant 1 :
+- 1AJ : 130 000
+- 1GH : 11 000
+- 1AD : 6 200
+- 0XX : 4 123 (quatre années, revenus exceptionnels)
+
+Déclarant 2 :
+- 1BP : 8 000
+- 1BF : 2 000
+
+Déclarant 3 :
+- 1CZ : 350
+
+Déclarant 4 :
+- 1DC: 3 800
+
+Déclarant 5 :
+- 1EJ : 500
+- 1EK : 850
+
+Revenus communs au foyer :
+- 1CW : 2 500
+- 1AR : 1 500
+- 1TT : 2 345
+- 1TZ : 4 000
+- 1UZ : 1 234
+
+1- Calculer le revenu net catégoriel des membres du foyer fiscal.
+
+2- Calculer le revenu brut global du foyer fiscal
+
+## Calcul du revenu brut global du foyer fiscal
+
+L'article [12 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214)
+dispose que "_L'impôt est dû chaque année à raison des bénéfices ou revenus que le contribuable
+réalise ou dont il dispose au cours de la même année._" Et le [1 de l'article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2023-10-03) de préciser:
+"_Le bénéfice ou revenu imposable est constitué par l'excédent du produit brut, y compris la
+valeur des profits et avantages en nature, sur les dépenses effectuées en vue de l'acquisition et
+de la conservation du revenu._"
+
+Le [2 de ce même article 13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)
+fixe les modalités de détermination du revenu global net annuel. Ce revenu global net annuel sert
+de base à l'impôt sur le revenu. Afin de pouvoir le calculer, il faut commencer par déterminer le
+revenu brut global. Pour cela:
+- Il faut d'abord déterminer les revenus nets catégoriels. Ces revenus sont déterminés selon les
+  règles propres à chaque catégorie de revenus (ex: traitements et salaires, [3 de l'article 13 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+- Puis déterminer le revenu brut global, qui est la somme des revenus nets catégoriels "_diminué,
+  le cas échéant, du montant des déficits susceptibles d'être imputés sur [le revenu
+  global_"](https://bofip.impots.gouv.fr/bofip/6445-PGP.html/identifiant%3DBOI-IR-BASE-20210330)([2
+  de l'article 13 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+
+### Calcul des revenus nets catégoriels du foyer fiscal
+
+#### Déclarant 1
+
+En l'espèce le déclarant 1 n'a perçu que des revenus relevant de la catégorie des traitements et
+salaires.
+
+Ces derniers sont régis par l'[article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114). Aussi, le déclarant 1
+a la possibilité de soustraire de ses revenus les dépenses afférentes à l'acquisition et à la
+conservation du revenu. Cette possibilité se traduit par une déduction pour frais  professionnels
+prévue par le  [3 de l'article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/).
+
+La déduction pour frais professionnels prend deux formes :
+
+- Une déduction forfaitaire de 10% du revenu brut ([deuxième et troisième alinéa du 3 de l'article
+  83 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/)): cette
+  déduction est encadrée par un montant minimal de 472€ (pour les revenus perçus en 2022), montant
+  minimal qui ne doit également pas avoir pour effet d'aboutir à un déficit, et un montant maximal
+  de 13 522 € (montant également valable pour les revenus perçus en 2022).
+
+- La déduction des frais réels : prévue aux [quatrième alinéas et suivants de ce même
+  texte](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/), il s'agit par
+  exemple des frais kilométriques.
+
+Précision : l'option pour les frais réels n'est pas cumulable, pour les revenus d'un contribuable,
+avec la déduction forfaitaire de
+[10%](https://bofip.impots.gouv.fr/bofip/2453-PGP.html/identifiant=BOI-RSA-BASE-30-50-30-20120912).
+
+soit pour les traitements et salaires déclarés en case 1AJ : 130 000€, le contribuable n'ayant pas
+opté pour les frais réels, il sera appliqué la déduction forfaitaire de 10% soit : 130 000x 0.1 =
+13 000€.
+
+Ensuite, le contribuable a déclaré 11 000€ d'heures supplémentaires et de RTT. Aux termes de
+l'[article 5 de la loi du 16 aout 2022 de finances rectificative pour
+2022](https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000046186676) et de l'[article 81
+quater du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041822851), le plafond
+d'exonération est de 7 500€.
+
+Soit pour le contribuable : 11 000 - 7 500 = 3 500. Il sera imposable au titre des heures
+supplémentaires et RTT à hauteur de 3 500€. Donc : 3 500 x 0.1 = 350.
+
+Le déclarant 1 a également déclaré avoir perçu 6 200€ au titre de la prime de partage de la
+valeur. Aux termes du [V de l'article 1 de la loi du 16 août 2022 portant mesures d'urgence pour
+le pouvoir d'achat](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000046186723), la prime de
+partage de la valeur est exonérée d'impôt sur le revenu "_dans la limite de 3 000 € par
+bénéficiaire et par année civile_". Aux termes de ce même texte, le plafond d'exonération peut
+être relevé à 6 000€ si l'entreprise a conclu un accord d'intéressement par
+[exemple](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000046186723). Si le contribuable
+bénéficie de la majoration du plafond d'exonération de la prime de partage de la valeur il doit
+cocher les cases 1 AV à 1 DV de la déclaration 2042.
+
+Or, ce n'est pas le cas en espèce. Aussi le plafond d'exonération applicable à ces revenus sera de
+3 000€ soit : 6 200 - 3 000 = 3 200. Soit 3 200*0.1= 320 donc c'est le plafond de 472€ qui
+s'appliquera.
+
+De plus, le déclarant 1 a déclaré des revenus d'un montant de 2 345 € en case 1 TT.
+
+Cette case renvoie aux :
+
+- Gains de levée d'option attribuées  à compter du 28/09/2012;
+- Gains d'acquisition d'actions gratuites attribuées à compter du 28/09/2012 sur décision de
+  l'assemblée générale extraordinaire (AGE) prise au plus tard le 07/08/2015;
+- Gains d'actions gratuites attribuées sur décision de l'AGE prise à compter du 31/12/2016 pour
+  leur fraction excédant 300 000€.
+
+###### Gains de levée d'option
+
+Prévus à l'[article 80 bis du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000027518390), les gains de levée
+d'option correspondent à la différence entre la valeur des titres au jour de la levée d'option et
+le prix de souscription ou d'achat. Ce
+[gain](https://bofip.impots.gouv.fr/bofip/5661-PGP.html/identifiant=BOI-RSA-ES-20-10-20-20-20160613#D._Options_attribuees_a_com_28)
+est "_imposé selon le régime applicable aux traitements et salaires_."
+
+
+###### Gains d'acquisition
+
+Le gain d'acquisition est  un avantage salarial ([article 80 quaterdecies du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042340496/2021-01-01/))
+correspondant à la valeur  des actions à la date d'attribution définitive. Cet avantage constitue
+un complément de rémunération pour le
+[bénéficiaire](https://bofip.impots.gouv.fr/bofip/5654-PGP.html/identifiant%3DBOI-RSA-ES-20-20-20-20170724).
+
+Cependant, l'imposition de ce gain d'acquisition a évolué au fil du temps. Il faut donc distinguer
+:
+
+###### Gains d'acquisition d'actions gratuites attribuées à compter du 28/09/2012 sur décision de l'AGE prise au plus tard le 07/08/2015
+
+L'article [80 quaterdecies du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031011153/2015-08-08/) dans sa
+version en vigueur du 08/08/2015 au 31/12/2016, dispose que le gain d'acquisition, dans sa
+[totalité](https://bofip.impots.gouv.fr/bofip/5654-PGP.html/identifiant%3DBOI-RSA-ES-20-20-20-20170724),
+"_est imposable de plein droit selon les règles applicables aux traitements et salaires_".
+
+###### Gains d'acquisition d'actions gratuites attribuées sur décision de l'AGE prise à compter du 31/12/2016 pour leur fraction excédant 300 000€
+
+Aux termes de l'[article 80
+quaterdecies](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042340496/2021-01-01/) :
+la fraction du gain d'acquisition supérieure à 300 000€ est imposée selon selon les règles des
+traitements et salaires.
+
+**En conséquence, les 2 345€ qu'à déclaré le déclarant 1 en case 1 TT sont imposables au titre des
+traitements et salaires**
+
+
+Enfin, en 2022, le déclarant 1 a perçu des revenus exceptionnels d'un montant de 4 123€. Il
+demande à ce que ces revenus soient taxés selon le système du quotient.
+
+Dans le but d'éviter que le barème progressif de l'impôt sur le revenu n'entraîne une imposition
+excessive, l'[article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385) prévoit un système
+particulier d'imposition : le système du quotient.
+
+Le système du quotient s'applique aux revenus exceptionnels ou différés perçus par le
+contribuable.
+[Il](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720#Modalites_d%E2%80%99application_du__12)
+"_consiste, après avoir calculé l’impôt d’après le barème progressif sur le revenu net global «
+ordinaire » imposable du contribuable, à calculer l’impôt par l’application du même barème au
+total formé par le revenu net global « ordinaire » imposable et une fraction du revenu
+exceptionnel ou différé. La différence entre ces deux résultats est multipliée par le coefficient
+utilisé (diviseur) pour calculer cette fraction, et cette somme est additionnée aux droits simples
+calculés sur le seul revenu net global « ordinaire » imposable._".
+
+Concernant les revenus différés le coefficient correspond au "nombre d'années civiles
+correspondant aux échéances normales de versement augmenté de un" ([II de l'article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Pour les revenus exceptionnels, le coefficient est de quatre ([I de l'article 163 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Néanmoins, avant de procéder au calcul de l'impôt avec la fraction des revenus taxés au quotient,
+il faut d'abord déterminer le revenu net selon les règles propres à la catégorie à laquelle
+appartient le revenu au quotient.
+
+En l'espèce, il s'agit de salaires (revenus exceptionnels).
+
+Dans l'hypothèse où le revenu exceptionnel  appartient à la même catégorie que les revenus
+"ordinaires" perçus par le contribuables, alors il faut déterminer le revenu net de la catégorie.
+Le résultat "_est ensuite ventilé au prorata des revenus nets de frais professionnels pour obtenir
+le revenu catégoriel net « ordinaire » et le revenu catégoriel net à taxer selon le système du
+[quotient](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720#Modalites_d%E2%80%99application_du__12)._".
+
+Soit pour le déclarant 1 :
+
+- Revenus ordinaires : (130 000 + 3 500+ 3 200 + 2 345 )*0.1 = 13 904,5 (arrondi à 13 905).
+- Revenus au quotient : 4 123*0.1 = 412,3 soit 412.
+
+Or 13 905 + 412 = 14 317 qui est un montant supérieur au plafond de 13 522€. C'est donc ce dernier
+qui sera appliqué au prorata des revenus "ordinaires" et des revenus au quotient. Soit :
+
+- Revenus ordinaires : (13 522/14 317)*13 905 = 13 132,8 soit 13 133 . **Le revenu "ordinaire" net
+  catégoriel du déclarant 1sera donc de 13 9045- 13 133 = 125 912€**.
+- Revenus au quotient : (13 522/14 317)*412 = 389,1 arrondi à 389. **Le revenu net catégoriel à
+  taxer au quotient du déclarant 1 sera donc de : 4123- 389 = 3 734€.**
+
+#### Déclarant 2
+
+Le déclarant 2 a déclaré :
+
+- 8 000 € en case 1BP (autres revenus imposables)
+- 2 000€ en case 1BF (salaires perçus par les non résidents et salaires de source étrangère avec
+  crédit d'impôt égal à l'impôt l'impôt français).
+
+Si le déclarant 2 n'a perçu que des revenus relevant de la catégorie des traitements et salaires,
+il faut cependant distinguer entre ceux de source française et ceux de source étrangère.
+
+##### Revenus de source française
+
+Le déclarant 2 a rempli la case 1 BP qui correspond à d'autres revenus imposables que les
+traitements et salaires. Cette case correspond à la déclaration des revenus de remplacement. Il
+s'agit :
+- des indemnités des salariés privés d'emploi.
+- Les allocations de préretraite.
+- Les aides à la réinsertion versés aux travailleurs étrangers regagnant leur pays d'origine.
+
+Ces revenus sont imposables dans la catégorie des [traitements et
+salaires](https://bofip.impots.gouv.fr/bofip/5599-PGP.html/identifiant%3DBOI-RSA-CHAMP-20-20-20131029).
+
+En conséquence, les revenus d'origine française du déclarant 2 sont donc soumis aux règles posées
+par [l'article 79 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+De plus, ils peuvent également bénéficier de la déduction pour frais professionnels prévus par le
+[3 de l'article 83 de ce même
+code](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/).
+
+N'ayant pas opté pour la déduction des frais réels, les revenus français du déclarant 2
+bénéficieront de la déduction forfaitaire de 10% ([deuxième et troisième alinéas du 3 de l'article
+83 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/)).
+
+##### Revenus de source étrangère
+
+Sans autres précisions, le postulat sera pris que le déclarant 2 a déclaré des revenus de source
+étrangère avec crédit d'impôt égal à l'impôt français.
+
+[Le premier alinéa de l'article 4 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302200) dispose que
+
+"_Les personnes qui ont en France leur domicile fiscal sont passibles de l'impôt sur le revenu en
+raison de l'ensemble de leurs revenus._"
+
+Et le [2° de l'article 4
+bis](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302202/2024-01-05) de rajouter
+"_Les personnes de nationalité française ou étrangère, ayant ou non leur domicile fiscal en
+France, qui recueillent des bénéfices ou revenus dont l'imposition est attribuée à la France par
+une convention internationale relative aux doubles impositions._"
+
+Les conventions internationales fixent deux méthodes d'élimination de la double imposition :
+
+- La méthode de l'exemption ([article 23 A du modèle de convention fiscale concernant le revenu et
+  la fortune
+  2017](https://read.oecd-ilibrary.org/taxation/modele-de-convention-fiscale-concernant-le-revenu-et-la-fortune-2017-version-complete_bad97129-fr#page1)).
+  Cette méthode est appliquée en France via la règle dite du taux effectif. Cette règle est prévue
+  aux articles [81
+  A](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036426166/2018-01-01/) et [197
+  C](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036432022) du CGI.
+- La méthode dite de l'imputation ( prévue par [l'article 23 du modèle de convention fiscale
+  concernant le revenu et la fortune
+  2017](https://read.oecd-ilibrary.org/taxation/modele-de-convention-fiscale-concernant-le-revenu-et-la-fortune-2017-version-complete_bad97129-fr#page1)).
+  Ici deux méthodes sont
+  [envisagées](https://bofip.impots.gouv.fr/bofip/4877-PGP.html/identifiant%3DBOI-INT-DG-20-20-100-20200219#La_methode_de_limputation_11)
+  :
+
+--> "_l'octroi d'un crédit d'impôt égal au montant de l'impôt payé dans l'autre État à raison des
+revenus de source étrangère dont le résident de France est le bénéficiaire. Dans ce cas, l'impôt
+étranger doit avoir été établi conformément aux principes de la convention applicable et le crédit
+d'impôt sera limité au montant de l'impôt français calculé à raison des mêmes revenus ;_"
+
+--> "_l'octroi d'un crédit d'impôt égal au montant de l'impôt français correspondant aux revenus
+de source étrangère dont le résident de France est le bénéficiaire, sous réserve que le revenu ait
+été effectivement imposé dans l'autre État, quel que soit toutefois le montant de l'impôt
+effectivement perçu dans l’État étranger concerné. Dans ce cas, la méthode de l'imputation conduit
+à l'exemption des revenus de source étrangère._"
+
+Dans le cas de la seconde méthode, le calcul du crédit d'impôt est le
+[suivant](https://bofip.impots.gouv.fr/bofip/4877-PGP.html/identifiant%3DBOI-INT-DG-20-20-100-20200219#La_methode_de_limputation_11)
+: "_crédit d'impôt = impôt sur les revenus mondiaux  x (revenu net catégoriel de source étrangère
+/ revenu net imposable)._"
+
+Cependant, le calcul du crédit d'impôt intervient après le calcul du revenu brut global et donc
+après le revenu net catégoriel ([article 193 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036432022)).
+
+Le revenu net catégoriel du déclarant 2 est donc : 8 000 + 2 000 = 10 0000
+
+10 000 *0.1 = 1 000 10 000- 1000 = 9 000.
+
+**Le revenu net catégoriel du déclarant 2 est de 9 000€**
+
+#### Déclarant 3
+
+Le déclarant 3 a déclaré en case 1 CZ 350 €.
+
+La case 1 CZ correspond aux revenus issus des pensions d'invalidité.
+
+Comme les traitements et salaires, les revenus issus des pensions retraites et rentes sont régis
+par les règles de [l'article 79 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Comme pour les contribuables percevant les traitements et salaires, les contribuables pensionnés,
+retraités ou rentiers peuvent soustraire de leurs revenus bruts les dépenses afférentes à
+l'acquisition et à la conservation du revenu. Cette possibilité se traduit par un abattement de
+10% sur le revenu. Cet abattement est prévu par les [deuxième et troisième alinéa du a du 5 de
+l'article 158 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/).
+
+L'abattement de 10% est encadré par :
+- Un montant minimal de 422€ (pour les revenus de 2022) : ce montant minimal "_s'applique au
+  montant des pensions ou retraites perçu par chaque retraité ou pensionné membre du foyer
+  fiscal._" et ne peut avoir pour conséquence d'aboutir à un déficit ([troisième alinéa du a du 5
+  de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+- Un montant maximal de  4123€ (également pour les revenus de 2022) : contrairement au montant
+  minimal de l'abattement, le montant maximal trouve à s'appliquer "_au montant total des pensions
+  et retraites perçues par l'ensemble des membres du foyer fiscal._" ([deuxième alinéa du a du 5
+  de l'article 158 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/)).
+
+En l'espèce le déclarant 3 a perçu 350€ de pension d'invalidité. Parce que cela aboutirai à un
+déficit le montant minimal de l'abattement ne trouve pas à s'appliquer.
+
+**En conséquence le revenu net catégoriel du déclarant 3 est de 350-350 = 0€**
+
+#### Déclarant 4
+
+Le déclarant 4 a perçu, en 2022, 3 800€ de salaires exonérés retenus pour le calcul du taux
+effectif.
+
+Posée par [l'article 23A du modèle de convention fiscale concernant le revenu et la fortune
+2017](https://read.oecd-ilibrary.org/taxation/modele-de-convention-fiscale-concernant-le-revenu-et-la-fortune-2017-version-complete_bad97129-fr#page1)
+et [les articles 81
+A](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036426166/2018-01-01/) et [197 C du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036432022); la règle du taux
+[effectif](https://bofip.impots.gouv.fr/bofip/4616-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-30-20120912#Exemple_dapplication_210)
+"_a pour objet de maintenir intégralement la progressivité de l'impôt acquitté dans un État malgré
+les exonérations que cet État accorde en application des accords internationaux qu'il a conclus ou
+auxquels il est partie ou, exceptionnellement, compte tenu des dispositions de son droit
+interne_".
+
+Afin de mettre en oeuvre cette règle du taux effectif, il convient de calculer l'impôt applicable
+aux seuls revenus
+[français](https://bofip.impots.gouv.fr/bofip/4616-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-30-20120912#Exemple_dapplication_210)
+"_en utilisant le taux moyen de l'impôt exigible à raison de l'ensemble des revenus qui auraient
+été imposables en l'absence de disposition spéciale exonérant certains d'entre eux_".
+
+Et le
+[BOFIP](https://bofip.impots.gouv.fr/bofip/4616-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-30-20120912#Exemple_dapplication_210)
+de rajouter que l'impôt au taux effectif se calcule en trois temps :
+
+- En premier lieu il convient de calculer l'impôt qui correspondrait à l'ensemble des
+  [revenus](https://bofip.impots.gouv.fr/bofip/4616-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-30-20120912#Modalites_dapplication_prat_12)"_qui
+  seraient imposables en France en l'absence de disposition spéciale exonérant certains d'entre
+  eux_" -"_Ensuite, liquidation de l'impôt exigible en multipliant la cotisation de base par le
+  rapport existant entre le montant des revenus effectivement imposables en France et le montant
+  total des revenus sur lesquels la cotisation de base a été calculée_" -"_Enfin, calcul de
+  l'impôt effectivement dû après imputation éventuelle de la décote, des réductions d'impôt, des
+  retenues à la source non libératoires, ou des crédits d'impôt._"
+
+Il faut donc calculer le revenu net catégoriel du déclarant 4. Soit (comme il s'agit d'un salaire
+et que le contribuable n'a pas opté pour les frais réels, la déduction forfaitaire de 10% sera
+appliquée) : 3 800*0.1 = 380. Ici il faut appliquer le montant minimum de la déduction (472€).
+
+**Le revenu net catégoriel du déclarant 4 est donc de 3 800- 472 = 3 328€**
+
+#### Déclarant 5
+
+En 2022, le déclarant 5 a perçu un traitement/salaire de 500€ et a opté pour les frais réels.
+Frais réels pour un montant de 850€.
+
+Les règles relatives aux revenus issus des traitements et salaires sont régies par [l'article 79
+du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000023412114).
+
+Les contribuables ont la possibilité de soustraire de leur revenu brut les dépenses afférentes à
+l'acquisition et à la conservation du revenu. Cette possibilité se traduit par une déduction pour
+frais professionnels. Cette déduction est prévue au [3 de l'article 83 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/).
+
+La déduction prend deux formes :
+
+- Une déduction forfaitaire de 10% ([deuxième et troisième alinéa du 3 de l'article 83 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/)) : Cette déduction
+  est encadrée par un montant maximal de 13 522€ (pour les revenus de 2022) et un montant minimal
+  de 422€ (également pour les revenus de 2022). L'application du montant minimal de la déduction
+  forfaitaire de 10% ne saurait par contre avoir pour conséquence d'aboutir à un déficit.
+- La déduction des frais réels ([quatrième alinéa et suivants du 3 de l'article 83  du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/): il s'agit par
+  exemple des frais kilométriques).
+
+Contrairement au montant minimal de la déduction forfaitaire, l'option pour les frais réels peut
+avoir pour conséquence d'aboutir à un
+[déficit](https://www.impots.gouv.fr/particulier/questions/en-formation-non-remuneree-puis-je-deduire-les-frais-reels).
+
+En l'espèce, la déclaration des revenus du déclarant 5 aboutit à un déficit de 350€ (500-850).
+
+Aux termes du [I de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622626), ce déficit sera imputé
+sur le revenu brut global. En conséquence, **le revenu net catégoriel du déclarant 5 est de -
+350€**
+
+#### Revenus communs au foyer
+
+Même si les revenus communs aux foyer appartiennent tous à la catégories des traitements et
+salaires, pensions et rentes viagères, il faut distinguer entre :
+
+- Les revenus issus des rentes viagères.
+- Les revenus issus de l'actionnariat salarié.
+
+##### Revenus issus des rentes viagères à titre onéreux
+
+###### Rentes viagères à titre onéreux d'origine française
+
+[L'article 79 du CGI] dispose que les rentes viagères "_concourent à la formation du revenu global
+servant de base à l'impôt sur le revenu._"
+
+Les rentes viagères à titre onéreux perçues par le crédit rentier sont considérées comme un revenu
+au titre du [6 de l'article 158 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909707/) mais uniquement "_pour
+une fraction de leur montant. Cette fraction, déterminée d'après l'âge du crédirentier lors de
+l'entrée en jouissance de la rente, est fixée à :
+
+– 70 % si l'intéressé est âgé de moins de 50 ans ;
+
+– 50 % s'il est âgé de 50 à 59 ans inclus ;
+
+– 40 % s'il est âgé de 60 à 69 ans inclus ;
+
+– 30 % s'il est âgé de plus de 69 ans._"
+
+En l'espèce, le crédit rentier a entre 60 et 69 ans lors de l'entrée en jouissance de la rente.
+Ainsi, la fraction imposable sera de 40%.
+
+Soit : 2 500*0.4= 1 000.
+
+**La fraction imposable de la rente viagère à titre onéreux d'origine française sera donc de 1
+000€**
+
+###### Rentes viagères d'origine étrangère
+
+Le montant de la rente viagère à titre onéreux étrangère est de 1 500€. Sans précision
+complémentaire, cette rente bénéficie d'un crédit d'impôt égal à l'impôt français.
+
+Comme vu précédemment, afin de pouvoir bénéficier du crédit d'impôt, le revenu net catégoriel doit
+être calculé.
+
+Ici le crédit rentier a moins de 50 ans lors de l'entrée en jouissance de la rente. La fraction
+imposable de cette rente sera donc de 70%.
+
+**Soit : 1 500/0.7 = 1 050. La fraction imposable de la rente viagère à titre onéreux d'origine
+étrangère  sera donc de 1 050€**
+
+##### Gains d'acquisition d'actions gratuites
+
+###### Gains d'acquisition d'actions gratuites dont  l'attribution a été autorisée par une décision de l'AGE prise du 08/08/2015 au 30/12/2016
+
+Aux termes des articles [80
+quaterdecies](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031011153/2015-08-08/) et
+[200 A du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031011083/2015-08-08/)du
+CGI dans leurs versions allant du 08/08/2015 au 01/01/2017, le gain d'acquisition conserve sa
+nature salariale, peut se voir diminué des abattements pour durée de détention prévus par les
+articles [150-0
+D](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000031011110/2015-08-08/) et [150-0 D
+ter](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000029355011/2015-08-08) de ce même
+code.
+
+Cependant, malgré sa nature salariale, le gain d'acquisition issu d'actions attribuées par une
+décision de l'AGE prise entre le 08/08/2015 et le 30/12/2016, ne saurait se voir soustraire [la
+déduction forfaitaire de 10% ou les frais
+réels](https://bofip.impots.gouv.fr/bofip/5654-PGP.html/identifiant%3DBOI-RSA-ES-20-20-20-20170724).
+
+###### Gains d'acquisition issu d'actions gratuites attribuées par une décision de l'AGE postérieure au 31/12/2016
+
+Aux termes de l'[article 80 quaterdecies du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042340496/2021-01-01/) la fraction
+du gain supérieure à 300 000€ est imposable selon les règles de droit commun des traitements et
+salaires.
+
+Pour sa fraction inférieure à 300 000€, le gain conserve sa nature salariale mais peut être
+diminué des abattements pour durée de détentions prévus aux articles
+[150-0D](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046860223/2023-01-01/) et
+[150-0 D ter](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036427840/2023-01-01) du
+CGI ([article 200
+A](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042909847/2020-12-31/) du CGI). En
+revanche, il ne se verra pas appliquer la déduction pour frais professionnels prévue au [3 de
+l'article 83](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159036/) de ce même
+code.
+
+**En conséquence, le revenu net issu du gain d'acquisition est de 4 000€**
+
+### Détermination du revenu brut global du foyer fiscal
+
+Même si le revenu brut global est égal à la somme des revenus nets catégoriels du foyer fiscal,
+certains revenus doivent être exclus du calcul du revenu brut global:
+
+#### Revenus de source française : revenus exceptionnels taxés selon le système du quotient
+
+les revenus taxés au quotient n'entrent pas dans le calcul du revenu brut global "ordinaire". En
+effet, afin de pouvoir calculer ensuite l'impôt global il convient de suivre la méthode suivante :
+"
+
+- calcul des droits simples résultant de l'application du barème progressif au seul revenu net
+  global « ordinaire » imposable (DS1) ;
+
+- calcul des droits simples par application du même barème au total formé par le revenu net global
+  « ordinaire » imposable et la fraction appropriée (quotient) bénéficiant du système du quotient
+  (..) ;
+
+- calcul de la différence entre les deux résultats précédents et multiplication par le diviseur
+  utilisé pour calculer le quotient (...)
+  ;
+
+- addition de la somme ainsi obtenue et des droits simples calculés sur le seul revenu net global
+  « ordinaire »
+  [imposable](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720#Modalites_d%E2%80%99application_du__12)."
+
+**Le montant net des revenus taxés au quotient est donc à exclure du calcul du revenu brut global
+"ordinaire".**
+
+#### Revenus de source étrangère pris en compte pour le calcul du taux effectif
+
+Aux termes de [l'article 197 C du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036432022) du
+[BOFIP](https://bofip.impots.gouv.fr/bofip/4616-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-30-20120912#Modalites_dapplication_prat_12)
+l'impôt est calculé "_au taux correspondant à l'ensemble de ses revenus, imposables et exonérés_".
+
+Cependant, afin de procéder à ce calcul il convient de  :
+
+-Déterminer de la cotisation de base soit "_l'impôt correspondant à l'ensemble des revenus qui
+seraient imposables en France en l'absence de disposition spéciale exonérant certains d'entre
+eux_".
+
+-Puis liquider cet impôt "_exigible en multipliant la cotisation de base par le rapport existant
+entre le montant des revenus effectivement imposables en France et le montant total des revenus
+sur lesquels la cotisation de base a été calculée_"
+
+-"_Enfin, calcul de l'impôt effectivement dû après imputation éventuelle de la décote, des
+réductions d'impôt, des retenues à la source non libératoires, ou des crédits d'impôt_"
+
+En conséquence, il faut exclure du calcul du revenu brut global les revenus exonérés pris en
+compte pour le calcul du taux effectif.
+
+**En conséquence le revenu brut global du foyer fiscal sera de 140 612€** :
+
+- Déclarant 1 : 125 912
+- Déclarant 2 :   9 000
+- Déclarant 3 :       0
+- Déclarant 4 : revenus exonérés pris en compte pour le calcul du taux effectif, non comptabilisés
+  ici.
+- Déclarant 5 : - 350
+- Revenus pour le foyer : 2050 (rentes viagères à titre onéreux 1 000+ 1050), 4 000.
+
+```catala
+déclaration champ d'application TraitementsSalaires11:
+  déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant3 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant4 champ d'application Interface.TraitementsSalairesDéclarant
+  déclarant5 champ d'application Interface.TraitementsSalairesDéclarant
+
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+
+  résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
+
+champ d'application TraitementsSalaires11:
+  définition déclarant1.traitements_salaires égal à 130 000 €
+  définition déclarant1.heures_supplémentaires_et_rtt_exonérées égal à 11 000 €
+  définition déclarant1.prime_partage_valeur_exonérée égal à 6 200 €
+  définition déclarant1.revenus_exceptionnels_ou_différés égal à
+    [IR.RevenuExceptionnelOuDifféré {
+      -- valeur : 4 123 €
+      -- régime : Article163_0_A
+      -- échéance : RevenuDifféréÉchéanceNormale contenu 2018
+      -- catégorie : TraitementsSalaires
+    }]
+  définition déclarant1.gains_de_levee_doptions égal à 2 345 €
+  définition déclarant2.autres_revenus_imposables_chômage_préretraite égal à
+    8 000 €
+  définition déclarant2.salaires_étrangers_impôt_imputé égal à 2 000 €
+
+  définition déclarant3.pensions_invalidité égal à 350 €
+
+  # définition déclarant4.salaires_taux_effectif égal à 3 800 €
+
+  définition déclarant5.traitements_salaires égal à 500 €
+  définition déclarant5.frais_réels égal à IR.FraisRéels.Oui contenu 850 €
+
+  définition foyer.rentes_percues_60_69ans égal à 2 500 €
+  définition foyer.rentes_étrangères_imputables_percues_49moins_ans égal à
+    1 500 €
+  définition foyer.acquisition_d_actions_gratuites_gain_imposable égal à
+    4 000 €
+  # définition foyer.acquisition_d_actions_gratuites_abattement_duree égal à
+  #   1 234 €
+
+
+  définition sortie égal à
+    résultat de IR.TraitementsSalairesFoyerFiscal avec {
+      -- déclarant1 : déclarant1.sortie
+      -- déclarant2 : Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge : [
+        déclarant3.sortie;
+        déclarant4.sortie;
+        déclarant5.sortie
+      ]
+      -- année_revenus  : 2022
+      -- revenus: foyer.sortie
+    }
+```
+
+```catala-test-inline
+$ catala test-scope TraitementsSalaires11 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│     -- déclarations_avec_résultats_traitements_salaires:
+│       [
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             13 133,00 €
+│           -- exonérations_81_quater: 7 500,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             139 045,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 125 912,00 €
+│           -- revenus_quotientés:
+│             [
+│               Impot_revenu.RevenuQuotienté {
+│                 -- valeur_nette: 3 734,00 €
+│                 -- déduction: 389,00 €
+│                 -- coefficient: 5
+│                 -- catégorie: TraitementsSalaires ()
+│               }
+│             ]
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             1 000,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             10 000,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 9 000,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 350,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 0,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 0,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             0,00 €
+│           -- revenu_brut_déclarant_hors_quotient: 0,00 €
+│           -- revenus_quotientés: []
+│         };
+│         Impot_revenu.TraitementsSalairesDéclarant {
+│           -- abattement_pensions_retraites_rentes: 0,00 €
+│           -- déduction_frais_professionnels_traitements_salaires:
+│             850,00 €
+│           -- exonérations_81_quater: 0,00 €
+│           -- prélèvement_libératoire: 0,00 €
+│           -- traitements_salaires_avec_déduction_frais_professionnels:
+│             500,00 €
+│           -- revenu_brut_déclarant_hors_quotient: -350,00 €
+│           -- revenus_quotientés: []
+│         }
+│       ]
+│     -- rentes_viagères_titre_onéreux: 2 050,00 €
+│     -- revenu_brut_global: 140 612,00 €
+│     -- déficit_brut_global: 0,00 €
+│     -- revenus_quotientés: []
+│   }
+└─
+```

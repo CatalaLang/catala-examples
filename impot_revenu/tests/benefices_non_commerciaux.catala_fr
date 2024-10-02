@@ -1,0 +1,753 @@
+> Usage de Interface
+> Usage de Impot_revenu en tant que IR
+> Usage de Oracles
+
+
+# Tests calcul revenu global sur bénéfices non commerciaux
+
+## Cas test bénéfices non commerciaux n°1
+
+Composition du foyer fiscal : un couple pacsé et un enfant à charge.
+
+Déclaration de revenus pour 2022 :
+
+Déclarant 1 :
+
+- 5JG :  1 000
+- 5JJ : 15 000
+
+Déclarant 2 :
+
+- 5LU :  3 000
+
+
+### Calcul du revenu net
+
+#### Déclarant 1
+
+Régis par [l'article 92 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039382326/) et
+suivants, les revenus issus des bénéfices non commerciaux (BNC) nets, une fois
+déterminés, sont une composante du revenu brut global ([article 13
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036428268/2018-01-01)).
+
+Dans le cas des BNC, deux régimes d'imposition existent :
+- Le régime déclaratif spécial ou "_micro-BNC_" : ce régime encadre les
+  revenus des contribuables dont les revenus de l'année civile précédente ou
+  de la pénultième année sont inférieurs ou égaux au montant de [l'article 102
+  ter du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159018/).
+- Le régime de la déclaration contrôlée : qui encadre les revenus des
+  contribuables dont les revenus de l'année civile précédente ou de la
+  pénultième année sont supérieurs au montant fixé par le même texte.
+
+En l'espèce, le déclarant 1 relève du régime de la déclaration contrôlée.
+
+Il a déclaré avoir perçu en 2022 :
+
+##### Bénéfices et déficits du déclarant 1
+
+Le bénéfice imposable correspond au bénéfice net réalisé par le contribuable
+lors de l'année d'imposition. Ce bénéfice
+[net](https://bofip.impots.gouv.fr/bofip/2809-PGP.html/identifiant=BOI-BNC-BASE-10-10-20210512)
+est "_égal à l'excédent des recettes totales (produit brut) sur les dépenses
+nécessitées par l'exercice de la profession, prévu par le 1 de l'article
+93 du code général des impôts (CGI)_".
+
+Ces bénéfices peuvent être tirés d'activités :
+- Professionnelles;
+- Non professionnelles.
+
+La nature de l'activité a son importance si le contribuable déclare un déficit.
+En effet, l'imputation de ce dernier sur les revenus du foyer variera
+en fonction de la nature de l'activité exercée.
+
+En l'espèce, le déclarant 1 a perçu :
+
+- Un bénéfice non professionnel d'un montant de 1 000€;
+- Un déficit non professionnel d'un montant de 15 000€.
+
+Aux termes du [2 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000022334816/2010-05-08),
+les déficits non commerciaux non professionnels ne peuvent s'imputer que sur
+des activités de même nature et ce jusqu'à la sixième année.
+
+Soit : 1 000 - 15 000 = - 14 000
+
+**Le revenu net du déclarant 1 est de 0€ avec 14 000€ de déficit à reporter.**
+
+#### Déclarant 2
+
+En 2022, le déclarant 2 a également perçu des bénéfices non commerciaux
+non professionnels.
+
+Cependant, il relève du régime déclaratif spécial ("micro-BNC") prévu à
+[l'article 102 ter du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159018/).
+
+Aux termes de cet article, le montant des bénéfices imposables
+se voit appliquer un abattement forfaitaire de 34%.
+
+Soit : 3 000*34% = 1 020, 3 000- 1020 = 1 980.
+
+**Le revenu net du déclarant 2 est de 1 980€**
+
+#### Calcul du revenu brut global
+
+[L'article 12 du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214/)
+dispose que "_L'impôt est dû chaque année à raison des bénéfices ou revenus que
+le contribuable réalise ou dont il dispose au cours de la même année_".
+Et le [1 de l'article 13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-04-16)
+de préciser "_Le bénéfice ou revenu imposable est constitué par l'excédent du
+produit brut, y compris la valeur des profits et avantages en nature, sur les
+dépenses effectuées en vue de l'acquisition et de la conservation du revenu_".
+
+Le 2 de ce même article 13 fixe les modalités de détermination du revenu global
+net annuel. Ce revenu global net annuel sert de base à l'impôt sur le revenu.
+Afin de pouvoir le calculer, il faut commencer par calculer le revenu brut
+global.
+
+Celui-ci est déterminé par la somme des revenus nets catégoriels des différents
+membres du foyer fiscal, mais aussi par la soustraction des déficits.
+
+Ici, la question de l'imputation des déficits se pose. La question est réglée
+par le [2 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000022334816/2010-05-08)
+qui dispose : "_Des déficits provenant d'activités non commerciales au sens
+de l'article 92, autres que ceux qui proviennent de l'exercice d'une profession
+libérale ou des charges et offices dont les titulaires n'ont pas la qualité de
+commerçants ; ces déficits peuvent cependant être imputés sur les bénéfices
+tirés d'activités semblables durant la même année ou les six années suivantes_".
+
+Soit : - 14 000 + 1 980 = - 12 020.
+
+**Le revenu brut global du foyer fiscal sera donc de 0€. Il faudra également
+reporter 12 020€ de déficit sur les six années suivantes.**
+
+
+```catala
+déclaration champ d'application BénéficesNonCommerciaux1:
+  déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+  déclarant2 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesNonCommerciauxFoyerFiscal
+
+champ d'application BénéficesNonCommerciaux1:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables: 1 000 €
+        -- déficit_réel : 15 000 €
+      }).sortie
+    }).sortie
+
+  définition déclarant2.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro: 3000€
+      }).sortie
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels: []
+    -- revenus: [déclarant1.sortie; déclarant2.sortie]
+    -- année_revenus : 2022
+  }
+```
+
+
+```catala-test-inline
+$ catala test-scope BénéficesNonCommerciaux1
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_non_commerciaux:
+│       [
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: -14 000,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         };
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 1 020,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: 1 980,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés: [[]; []]
+│     -- revenu_brut_global: 0,00 €
+│     -- déficit_brut_global_non_professionnel: 12 020,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
+│   }
+└─
+```
+
+## Cas test bénéfices non commerciaux n°2
+
+Déclarant 1 :
+
+- 5JG : 15 798
+- 5KT :  5 000
+- 5LT :  2 000
+- 5MT : 15 000
+
+Calcul du revenu brut global et des déficits à imputer sur les années suivantes.
+
+Régis par [l'article 92 et suivants du CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983291),
+les revenus issus des bénéfices non commerciaux net, une fois déterminés, sont
+une composante du revenu brut global ([article 13 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201)).
+
+Dans le cas des BNC, deux régimes d'imposition existent :
+
+- le régime déclaratif spécial ou "micro-BNC" : ce régime encadre les revenus
+  des contribuables dont les revenus de l'année civile précédente ou de la
+  pénultième année sont inférieurs ou égaux au montant de [l'article 102 ter
+  du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622381).
+- le régime de la déclaration contrôlée : qui encadre les revenus de l'année
+  civile précédente ou de la pénultième année sont supérieurs au montant prévu
+  par ce même texte.
+
+En l'espèce, le contribuable relève du régime de la déclaration contrôlée.
+
+En 2022, il déclare avoir perçu un bénéfice net de 15 798€.
+
+Le bénéfice imposable correspond au bénéfice net réalisé par le contribuable
+lors de l'année d'imposition. Ce bénéfice
+[net](https://bofip.impots.gouv.fr/bofip/2809-PGP.html/identifiant=BOI-BNC-BASE-10-10-20210512)
+est "_égal à l'excédent des recettes totales (produit brut) sur les dépenses
+nécessitées par l'exercice de la profession, prévu par le 1 de l'article 93 du
+code général des impôts (CGI)_".
+
+Ces bénéfices peuvent être de nature :
+
+- Professionnelle
+- Non professionnelle
+
+La nature de l'activité a son importance si le contribuable déclare un
+déficit. En effet, l'imputation de ce dernier sur les revenus du contribuables
+dépend de leurs natures respectives.
+
+Le contribuable a déclaré ici des déficits non commerciaux au titre des années
+:
+
+- 2019 :  5 000€
+- 2020 :  2 000€
+- 2021 : 15 000€
+
+Aux termes du [2 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622626),
+les déficits non commerciaux non professionnels ne peuvent être imputés que
+sur "_les bénéfices tirés d'activités semblables durant la même année ou les
+six années suivantes_".
+
+Et le I de ce même article de préciser concernant l'ordre d'imputation si le
+contribuable déclare plusieurs déficits antérieurs de même nature :
+"_l'excédent du déficit est reporté successivement sur le revenu global des
+années suivantes jusqu'à la sixième année inclusivement_".
+
+Autrement dit, il faut d'abord imputer sur les revenus de l'année d'imposition
+du contribuable le déficit le plus ancien et ce jusqu'au plus récent.
+
+Soit :
+
+15 798 (revenu année N)- 5 000 (déficit de l'année 2019) = 10 978
+
+Imputation du déficit de l'année 2020 :
+
+10 798 - 2 000 = 8 798
+
+Imputation du déficit de l'année 2021 :
+
+8 798 - 15 000 = - 6020.
+
+**En conséquence, le revenu brut global du contribuable sera de 0€. De plus il
+lui restera à imputer 6 020€ de déficit**
+
+```catala
+déclaration champ d'application BénéficesNonCommerciaux2:
+  déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesNonCommerciauxFoyerFiscal
+
+champ d'application BénéficesNonCommerciaux2:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables: 15 798 €
+      }).sortie
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels: [
+      Oracles.DéficitAntérieur {
+        -- année: 2019
+        -- valeur: 5000 €
+      };
+      Oracles.DéficitAntérieur {
+        -- année: 2020
+        -- valeur: 2000 €
+      };
+      Oracles.DéficitAntérieur {
+        -- année: 2021
+        -- valeur: 15 000 €
+      }
+    ]
+    -- revenus: [déclarant1.sortie]
+    -- année_revenus : 2022
+  }
+```
+
+```catala-test-inline
+$ catala test-scope BénéficesNonCommerciaux2
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_non_commerciaux:
+│       [
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: 15 798,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés: [[]]
+│     -- revenu_brut_global: 0,00 €
+│     -- déficit_brut_global_non_professionnel: 0,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour:
+│       [
+│         Oracles.DéficitAntérieur { -- année: 2 021 -- valeur: 6 202,00 € }
+│       ]
+│   }
+└─
+```
+
+## Cas de test bénéfices non commerciaux n°3
+
+Déclarant 1 :
+- 5JG : 22 540
+- 5JJ :  4 000
+
+Déclarant 2 :
+- 5RF : 10 000
+
+Déclarant 3 :
+- 5MU :  1 000
+- 5MY :    200
+- 5MD :    500
+
+Déficits antérieurs :
+
+- 2020 (5LT) :  1 000
+- 2021 (5MT) : 25 000
+
+Calcul du revenu brut global et imputation des déficits.
+
+### Analyse
+
+#### Déclarant 1
+
+Régis par [l'article 92 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000039382326/) et
+suivants, les revenus issus des bénéfices non commerciaux (BNC) nets , une
+fois déterminés, sont une composante du revenu brut global ([article 13
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036428268/2018-01-01)).
+
+Dans le cas des BNC, deux régimes d'imposition existent :
+- Le régime déclaratif spécial ou "_micro-BNC_" : ce régime encadre les
+  revenus des contribuables dont les revenus de l'année civile précédente ou
+  de la pénultième année sont inférieurs ou égaux au montant de [l'article 102
+  ter du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159018/).
+- Le régime de la déclaration contrôlée : qui encadre les revenus des
+  contribuables dont les revenus de l'année civile précédente ou de la
+  pénultième année sont supérieurs au montant fixé par le même texte.
+
+En l'espèce, le déclarant 1 relève du régime de la déclaration contrôlée.
+
+Il a déclaré avoir perçu en 2022 :
+
+##### Bénéfices et déficits du déclarant 1
+
+Le bénéfice imposable correspond au bénéfice net réalisé par le contribuable
+lors de l'année d'imposition. Ce bénéfice
+[net](https://bofip.impots.gouv.fr/bofip/2809-PGP.html/identifiant=BOI-BNC-BASE-10-10-20210512)
+est "_égal à l'excédent des recettes totales (produit brut) sur les dépenses
+nécessitées par l'exercice de la profession, prévu par le 1 de l'article 93 du
+code général des impôts (CGI)_".
+
+Ces bénéfices peuvent être tirés d'activités :
+- Professionnelles;
+- Non professionnelles.
+
+La nature de l'activité a son importance si le contribuable déclare un
+déficit. En effet, l'imputation de ce dernier sur les revenus du foyer variera
+en fonction de la nature de l'activité exercée.
+
+En l'espèce, le déclarant 1 a déclaré avoir perçu en 2022 :
+
+- Un bénéfice non commercial non professionnel de 22 540€
+- Un déficit non commercial non professionnel de 4 000€.
+
+Aux termes du [2 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000022334816/2010-05-08),
+les déficits non commerciaux non professionnels ne peuvent s'imputer que sur
+des activités de même nature et ce  jusqu'à la sixième année.
+
+Soit pour le déclarant 1 :
+
+22 540 - 4 000 = 18 540
+
+**Le déclarant 1 a un revenu net de 18 540€**
+
+#### Déclarant 2
+
+Il s'agit des revenus de même nature et du même régime que ceux du déclarant
+1.
+
+**Le revenu net du déclarant 2 est de 10 000€**
+
+#### Déclarant 3
+
+En 2022, le déclarant 3 a également perçu des bénéfices non commerciaux non
+professionnels.
+
+Cependant, il relève du régime déclaratif spécial ("micro-BNC") prévu à
+[l'article 102 ter du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159018/).
+
+Aux termes de cet article, le montant des bénéfices imposables se voit
+appliquer un abattement forfaitaire de 34%.
+
+soit 1 000 * 34% = 660
+
+En outre, le déclarant 3 a également déclaré une plus-value à court  terme
+d'un montant de 200€  et une moins value à court terme de 500€.
+
+La compensation de ces deux éléments fait apparaitre une moins-value nette à
+court terme de 300€.
+
+Aux termes du [3 de l'article 39 quaterdecies du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000027654286/2014-06-28)
+: "_l'excédent des moins-values à court terme constaté au cours d'un exercice
+est déduit des bénéfices de cet exercice_".
+
+Soit 660 - 300 = 360.
+
+**Le revenu net du déclarant 3 est de 360€**
+
+### Calcul du revenu brut global
+
+[L'article 12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214/)
+dispose que : "_L'impôt est dû chaque année à raison des bénéfices ou revenus
+que le contribuable réalise ou dont il dispose au cours de la même année_".
+
+Et le [1 de l'article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-04-22)
+de préciser : "_Le bénéfice ou revenu imposable est constitué par l'excédent
+du produit brut, y compris la valeur des profits et avantages en nature, sur
+les dépenses effectuées en vue de l'acquisition et de la conservation du
+revenu_".
+
+Le 2 de ce même article 13 fixe les modalités de détermination du revenu net
+global annuel. Ce revenu global net annuel sert de base à l'impôt sur le
+revenu. Afin de pouvoir le calculer, il faut commencer par calculer le revenu
+brut global. Celui-ci est déterminé par la somme des revenus nets catégoriels
+des différents membres du foyer fiscal soit :
+
+18 540 + 10 000 + 360 = 28 900.
+
+Mais le revenu brut global est aussi déterminé après l'imputation des
+déficits.
+
+En l'espèce, le foyer fiscal a déclaré des déficits au titre des années :
+- 2020 :  1 000€
+- 2021 : 25 000€
+
+Aux termes du [2 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000022334816/2010-05-08),
+les déficits non commerciaux non professionnels ne peuvent être imputés que
+sur "_les bénéfices tirés d'activités semblables durant la même année ou les
+six années suivantes_".
+
+En l'espèce, tous les déclarants du foyer fiscal ont perçu des bénéfices non
+commerciaux non professionnels, les déficits antérieurs étant de même nature,
+ils peuvent donc être déduits de ces revenus.
+
+Le [premier alinéa du I de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000022334816/2010-05-08)
+précise l'ordre d'imputation des déficits des années antérieures sur les
+revenus de l'année d'imposition : "_l'excédent du déficit est reporté
+successivement sur le revenu global des années suivantes jusqu'à la sixième
+année inclusivement_".
+
+Autrement dit, il faut d'abord imputer sur les revenus de l'année d'imposition
+le déficit le plus ancien et remonter jusqu'au plus récent.
+
+Soit :
+
+- Imputation du déficit de l'année 2020 : 28 900 - 1 000 = 27 900
+- Imputation du déficit de l'année 2021 : 27 900 - 25 000 = 2 900
+
+**Le revenu brut global du foyer fiscal sera de 2 900€**
+
+```catala
+déclaration champ d'application BénéficesNonCommerciaux3:
+  déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+  déclarant2 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+  déclarant3 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesNonCommerciauxFoyerFiscal
+
+champ d'application BénéficesNonCommerciaux3:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables: 22 540 €
+        -- déficit_réel : 4 000 €
+      }).sortie
+    }).sortie
+
+  définition déclarant2.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables: 10 000 €
+      }).sortie
+    }).sortie
+
+  définition déclarant3.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro: 1 000 €
+        -- plus_values_nettes_court_terme_micro: 200 €
+        -- moins_values_nettes_court_terme_micro: 500 €
+      }).sortie
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels: [
+      Oracles.DéficitAntérieur {
+        -- année: 2020
+        -- valeur: 1 000 €
+      };
+      Oracles.DéficitAntérieur {
+        -- année: 2021
+        -- valeur: 25 000 €
+      }
+    ]
+    -- revenus: [déclarant1.sortie; déclarant2.sortie; déclarant3.sortie]
+    -- année_revenus : 2022
+  }
+```
+
+```catala-test-inline
+$ catala test-scope BénéficesNonCommerciaux3
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_non_commerciaux:
+│       [
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: 18 540,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         };
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: 10 000,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         };
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 340,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: 360,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés: [[]; []; []]
+│     -- revenu_brut_global: 2 900,00 €
+│     -- déficit_brut_global_non_professionnel: 0,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
+│   }
+└─
+```
+
+## Case de test n°4
+
+En 2023, le foyer fiscal a déclaré des revenus comme suit :
+
+- BNC non professionnels régime micro :
+
+-> 5KU : 12 399
+
+- BNC non professionnels régime réel :
+
+-> 5JG : 52 676€
+
+-> 5JJ : 76 988€
+
+-> 5SO :  1 374€
+
+```catala
+déclaration champ d'application BénéficesNonCommerciaux4:
+  déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesNonCommerciauxFoyerFiscal
+
+champ d'application BénéficesNonCommerciaux4:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro: 12 399 €
+        -- revenus_imposables: 52 676 €
+        -- déficit_réel : 76 988 €
+        -- plus_values_nettes_long_terme_réel: 1374 €
+      }).sortie
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels: []
+    -- revenus: [déclarant1.sortie]
+    -- année_revenus : 2023
+  }
+```
+
+### Calcul du revenu brut global :
+
+#### Calcul du revenu net catégoriel
+
+##### BNC non professionnels
+
+- Revenus imposables régime micro : 12 399 * 0.34 = 4 215.6 arr 4 216; 12 399 - 4 216 = 8 183
+- Revenus nets : (8 183 + 52 676) - 76 988 = - 16 129 (montant déficits à reporter) soit revenu net 0.
+- Plus-values nettes à long terme : 1 374 * 12.8% = 176
+
+##### Calcul du revenu brut global
+
+- 0 de revenu et 16 129 de déficit à reporter
+- Prélèvement forfaitaire de 10% sur les revenus de brevets : 50
+- Prélèvement forfaitaire sur les plus-value : 176
+
+### Analyse
+
+##### Calcul du revenu net catégoriel
+
+
+###### Bénéfices Non Commerciaux non professionnels
+
+Le bénéfice imposable correspond au bénéfice net réalisé par le contribuable
+lors de l'année d'imposition. Ce bénéfice
+[net](https://bofip.impots.gouv.fr/bofip/2809-PGP.html/identifiant=BOI-BNC-BASE-10-10-20210512)
+est "_égal à l'excédent des recettes totales (produit brut) sur les dépenses
+nécessitées par l'exercice de la profession, prévu par le 1 de l'article 93 du
+code général des impôts (CGI)_".
+
+Ces bénéfices peuvent être également tirés d'activités :
+
+* Professionnelles;
+* Non professionnelles.
+
+La nature de l'activité a son importance si le contribuable déclare un
+déficit. En effet, l'imputation de ce dernier sur les revenus du foyer variera
+en fonction de la nature de l'activité exercée.
+
+En l'espèce, le contribuable  a déclaré avoir perçu en 2022 :
+
+* Un bénéfice non commercial non professionnel de 52 67€
+* Un déficit non commercial non professionnel de 76 988€
+
+De plus  le déclarant  a également perçu des bénéfices non commerciaux non
+professionnels.
+
+Cependant, ces bénéfices relèvent  du régime déclaratif spécial ("micro-BNC")
+prévu à [l'article 102 ter du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159018/).
+
+Aux termes de cet article, le montant des bénéfices imposables se voit
+appliquer un abattement forfaitaire de 34%.
+
+soit 12 399 * 0.34 = 4 215.6 arr 4 216; 12 399 - 4 216 = 8 183
+
+Néanmoins, aux termes du [2 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622626#:~:text=Le%20contribuable%20ne%20peut%20opérer,par%20l'article%20196%20B),
+les déficits non commerciaux non professionnels ne peuvent s'imputer que sur
+des activités de même nature et ce jusqu'à la sixième année.
+
+Soit : (8 183 + 52 676) - 76 988 = - 16 129. Le revenu net non commercial non
+professionnel sera donc de 0€ avec un déficit de 16 039€ à reporter sur des
+activités de même nature durant les six années suivantes.
+
+Enfin, ce même contribuable a déclaré une plus value nette à long terme de
+1374€. Aux termes de [l'article 39 quindecies  du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036428314),
+cette plus value fait l'objet d'une imposition au taux forfaitaire de 12,8%.
+Ce prélèvement est également libératoire de l'impôt.
+
+Soit : 1 374 * 12.8% = 176
+
+
+```catala-test-inline
+$ catala test-scope BénéficesNonCommerciaux4
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_non_commerciaux:
+│       [
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel: 4 216,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 176,00 €
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel: -16 129,00 €
+│           -- impôt_taux_forfaitaire: 0,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés: [[]]
+│     -- revenu_brut_global: 0,00 €
+│     -- déficit_brut_global_non_professionnel: 16 129,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
+│   }
+└─
+```
