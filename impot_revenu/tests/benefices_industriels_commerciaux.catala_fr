@@ -1,0 +1,896 @@
+> Usage de Interface
+> Usage de Impot_revenu en tant que IR
+> Usage de Oracles
+
+
+# Tests calcul revenu global sur bénéfices industriels et commerciaux
+
+## Cas de test n°1
+
+En 2023, le foyer fiscal a déclaré des revenus comme suit :
+
+- BIC pro :
+
+-> 5KC : 60 000€
+
+-> 5UI :    500€
+
+-> 5KF : 10 000€
+
+- BIC non pro régime micro :
+
+-> 5NO :  7 514€
+
+-> 5NP :  3 859€
+
+-> 5NC : 11 225€
+
+- Locations meublées non professionnelles régime micro :
+
+-> 5NG :  1 000€
+
+-> 5QS :  3 000€
+
+Calcul du revenu brut global.
+
+
+```catala
+déclaration champ d'application BénéficesIndustrielsCommerciaux1:
+  déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesIndustrielsCommerciauxFoyerFiscal
+
+champ d'application BénéficesIndustrielsCommerciaux1:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro_marchandises: 7514 €
+        -- revenus_imposables_micro_services: 3859 €
+        -- revenus_imposables_réel: 11 225 €
+      }).sortie
+      -- locations_meublées_micro_hôtes_classées: 1000 €
+      -- locations_meublées_micro_classées_rurales_spéciales: 3000 €
+    }).sortie
+
+  définition déclarant1.professionnels égal à
+    (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_réel: 60 000 €
+        -- revenus_concession_brevets: 500 €
+        -- déficit_réel: 10 000 €
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
+    -- déficits_réels_années_antérieures_non_professionnels: []
+    -- revenus: [déclarant1.sortie]
+    -- année_revenus : 2023
+  }
+```
+
+
+### Calcul du revenu brut global :
+
+##### Calcul du revenu net catégoriel
+
+##### BIC pro
+
+- Revenus nets  : 60 000 - 10 000 = 50 000
+- Produits taxables à 10% : 500 * 0.1 = 50
+
+##### BIC non pro régime micro :
+
+- Vente de marchandises : 7 154 * 0.71 = 5 334,9 arr 5 335; 7154- 5 335 = 2 179
+- Prestation de services : 3 859 * 0.5 = 1929.5 arr 1930; 3 859 -1930 = 1929
+- Revenus imposables réels : 11 225
+
+##### Locations meublées non pro régime micro :
+
+- Locations meublées hôtes classées : 1 000 * 0.71 = 710; 1 000 - 710 = 290
+- Locations super abattement : 3 000 * 0.92 = 2 760; 3 000 - 2 760 = 240
+
+##### Calcul du revenu brut global
+
+- 2 179 + 1 929 + 11 225 + 290 + 240 + 50 000 = 65 863
+- Prélèvement forfaitaire de 10% : 50
+- Plus-Value : 176
+
+### Analyse
+
+##### Calcul du revenu net catégoriel
+
+###### Bénéfices Industriels et Commerciaux
+
+Régis par [l'article 34 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000024188625) et
+suivants, les revenus issus des bénéfices industriels et  commerciaux (BIC)
+nets , une fois déterminés, sont une composante du revenu brut global
+([article 13
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036428268/2018-01-01)).
+
+Dans le cas des BIC, trois  régimes d'imposition existent :
+
+* Le régime des micros entreprises ou "_micro-BIC_" : ce régime encadre les
+  revenus des contribuables dont les revenus de l'année civile précédente ou
+  de la pénultième année sont inférieurs ou égaux au montant de [l'article
+  50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220/).
+* Le régime simplifié d'imposition : qui recouvre le chiffre d'affaires de
+  l'année antérieure des entreprises industrielles, commerciales ou
+  artisanales dont le montant excède celui de l'article 50-0 du CGI mais n'est
+  pas supérieur à celui fixé à[l'article 302 septies  A bis du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047623096/2023-06-03/).
+* Le régime réel normal d'imposition : Recouvre le chiffre d'affaires de
+  l'année précédente des entreprises industrielles, commerciales et
+  artisanales dont le montant est supérieur aux seuls cités précédemment. Il
+  est également possible pour le contribuable relevant du régime micro BIC
+  d'opter pour ce régime.
+
+De plus, les chiffres d'affaires des contribuables peuvent être tirés de deux
+types d'activités:
+
+- Professionnelles,
+- Non professionnelles.
+
+####### BIC professionnels
+
+La nature de l'activité a son importance si le contribuable déclare un
+déficit. En effet, l'imputation de ce dernier sur les revenus du foyer variera
+en fonction de la nature de l'activité exercée.
+
+En l'espèce, le déclarant 1 a déclaré avoir perçu en 2022 :
+
+* Un bénéfice industriel et commercial professionnel de 60 000€
+* Un déficit industriel et commercial professionnel professionnel de 50 000 €.
+
+Aux termes du [1 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622626#:~:text=Le%20contribuable%20ne%20peut%20opérer,par%20l'article%20196%20B),
+les déficits industriels et commerciaux professionnels peuvent s'imputer  sur
+des activités de même nature et ce jusqu'à la sixième année ou, sur le revenu
+brut global du foyer fiscal.
+
+Ici le déficit est imputable entièrement sur le revenu de même nature soit :
+60 000- 50 000 = 10 000.
+
+**Le revenu net est donc de 10 000€**
+
+De plus, le contribuable a déclaré des revenus issus de la propriété
+industrielle d'un montant de 500€. Aux termes du [deuxième alinéa du a du 1 de
+l'article 219 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041467753/2020-01-01),
+ces revenus sont taxés au taux forfaitaire de 10%. Ce prélèvement est
+libératoire de l'impôt.
+
+Soit : 500 * 0.1 = 50; 500-50 = 450
+
+####### BIC non professionnels
+
+En 2022, le contribuable a également perçu des revenus issus des bénéfices
+industriels et commerciaux non professionnels. Cependant, ils relèvent du
+régime déclaratif des micro-BIC prévu à [l'article 50-0 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220).
+
+Aux termes de cet article, le montant des bénéfices imposables se voit
+appliquer:
+
+- Un abattement forfaitaire de 71% pour les entreprises "_dont le commerce
+  principal est de vendre des marchandises, objets, fournitures et denrées à
+  emporter ou à consommer sur place ou de fournir le logement, à l'exclusion
+  de la location directe ou indirecte de locaux d'habitation meublés ou
+  destinés à être loués meublés, autres que ceux mentionnés aux 2° et 3° du
+  III de l'article 1407_". ([1° du 1 del'article 50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220)).
+
+- Un abattement forfaitaire de 50% pour les autres entreprises([2° du 1
+  del'article 50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220)).
+
+Soit :
+- Vente de marchandises : 7 154 * 0.71 = 5 334,9 arr 5 335; 7154- 5 335 = 2
+  179
+- Prestation de services : 3 859 * 0.5 = 1929.5 arr 1930; 3 859 -1930 = 1929
+
+De plus, au termes de l'article 38 du même code, les revenus nets non
+professionnels imposés au régime réel sont de 11 225€.
+
+###### Locations meublées non professionnelles.
+
+Aux termes de ce même article 50-0 les locations meublées non professionnelles
+imposées au régime micro bénéficient d'un abattement :
+
+- De 71% pour les locations meublées classées autres que "_ceux mentionnés aux
+  2° et 3° du III de l'article 1407_"
+- 50% pour les locations meublées "_mentionnés aux 2° et 3° du III de
+  l'article 1407_"
+- Un abattement de 21% supplémentaire à celui des 71% pour "_Les entreprises
+  qui relèvent du présent régime bénéficient d'un abattement supplémentaire de
+  21 % pour le chiffre d'affaires afférent à leur activité de location de
+  locaux classés meublés de tourisme mentionnés au 2° du III de l'article
+  1407, lorsque ces derniers ne sont pas situés dans des zones géographiques
+  se caractérisant par un déséquilibre important entre l'offre et la demande
+  de logements, sous réserve que le chiffre d'affaires hors taxes, ajusté s'il
+  y a lieu au prorata du temps d'exploitation au cours de l'année de
+  référence, afférent à l'ensemble des activités de location de locaux meublés
+  mentionnées au présent 1 n'excède pas au cours de l'année civile précédente
+  15 000 €. Le bénéfice de cet abattement supplémentaire est subordonné au
+  respect du règlement (UE) n° 1407/2013 de la Commission du 18 décembre 2013
+  relatif à l'application des articles 107 et 108 du traité sur le
+  fonctionnement de l'Union européenne aux aides de minimis_".
+
+Soit pour le contribuable :
+
+- Locations meublées hôtes classées : 1 000 * 0.71 = 710; 1 000 - 710 = 290
+- Locations super abattement : 3 000 * 0.92 = 2 760; 3 000 - 2 760 = 240
+
+##### Calcul du revenu brut global
+
+[L'article 12 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006302214/)
+dispose que : "_L'impôt est dû chaque année à raison des bénéfices ou revenus
+que le contribuable réalise ou dont il dispose au cours de la même année_".
+
+Et le [1 de l'article
+13](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044983201/2024-04-22)
+de préciser : "_Le bénéfice ou revenu imposable est constitué par l'excédent
+du produit brut, y compris la valeur des profits et avantages en nature, sur
+les dépenses effectuées en vue de l'acquisition et de la conservation du
+revenu_".
+
+Le 2 de ce même article 13 fixe les modalités de détermination du revenu net
+global annuel. Ce revenu global net annuel sert de base à l'impôt sur le
+revenu. Afin de pouvoir le calculer, il faut commencer par calculer le revenu
+brut global. Celui-ci est déterminé par la somme des revenus nets catégoriels
+des différents membres du foyer fiscal soit :
+
+- 2 179 + 1 929 + 11 225 + 290 + 240 + 50 000 = 65 863
+- Prélèvement forfaitaire de 10% : 50
+- Plus-Value : 176
+
+```catala-test-inline
+$ catala test-scope BénéficesIndustrielsCommerciaux1
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_industriels_commerciaux:
+│       [
+│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
+│             630,00 €
+│           -- abattement_forfaitaire_micro_professionnel_marchandises:
+│             0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_marchandises:
+│             5 335,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées:
+│             2 840,00 €
+│           -- abattement_forfaitaire_micro_professionnel_services: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_services:
+│             1 930,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées:
+│             0,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels: []
+│           -- solde_net_professionnel: 50 000,00 €
+│           -- solde_net_non_professionnel_hors_locations_meublées:
+│             15 333,00 €
+│           -- solde_net_non_professionnel_locations_meublées: 530,00 €
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- prélèvement_libératoire_revenus_concession_brevets: 50,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés: [[]; []]
+│     -- revenu_brut_global: 65 863,00 €
+│     -- déficit_brut_global_non_professionnel_hors_locations_meublées:
+│       0,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficit_brut_global_non_professionnel_locations_meublées: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
+│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour:
+│       []
+│   }
+└─
+```
+
+## Cas de test n°2
+
+En 2022, contribuable a perçu :
+
+- 5QS (super abattement) : 3 500€
+- 0XX locations meublées super abattement, revenu exceptionnel  : 40 000€
+- 5ND locations meublées générales : 25 000€
+- 5NO micro BIC vente de marchandises : 30 000€
+
+```catala
+déclaration champ d'application BénéficesIndustrielsCommerciaux2:
+  déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesIndustrielsCommerciauxFoyerFiscal
+
+champ d'application BénéficesIndustrielsCommerciaux2:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro_marchandises: 30 000 €
+        -- revenus_exceptionnels_ou_différés: [
+          IR.RevenuExceptionnelOuDifféré {
+            -- valeur : 40 000 €
+            -- régime: Article163_0_A
+            -- échéance : RevenuExceptionnel
+            -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+          }
+        ]
+      }).sortie
+      -- locations_meublées_micro_général: 25 000 €
+      -- locations_meublées_micro_classées_rurales_spéciales: 3500 €
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
+    -- déficits_réels_années_antérieures_non_professionnels: []
+    -- revenus: [déclarant1.sortie]
+    -- année_revenus : 2023
+  }
+```
+
+## Calcul du revenu net
+
+### Bénéfices industriels et commerciaux
+
+Régis par [l'article 34 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000024188625) et
+suivants, les revenus issus des bénéfices industriels et commerciaux (BIC)
+nets , une fois déterminés, sont une composante du revenu brut global
+([article 13
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036428268/2018-01-01)).
+
+Dans le cas des BIC, trois régimes d'imposition existent :
+
+* Le régime des micros entreprises ou "_micro-BIC_" : ce régime encadre les
+  revenus des contribuables dont les revenus de l'année civile précédente ou
+  de la pénultième année sont inférieurs ou égaux au montant de [l'article
+  50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220/).
+* Le régime simplifié d'imposition : qui recouvre le chiffre d'affaires de
+  l'année antérieure des entreprises industrielles, commerciales ou
+  artisanales dont le montant excède celui de l'article 50-0 du CGI mais n'est
+  pas supérieur à celui fixé à[l'article 302 septies A bis du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047623096/2023-06-03/).
+* Le régime réel normal d'imposition : Recouvre le chiffre d'affaires de
+  l'année précédente des entreprises industrielles, commerciales et
+  artisanales dont le montant est supérieur aux seuls cités précédemment. Il
+  est également possible pour le contribuable relevant du régime micro BIC
+  d'opter pour ce régime.
+
+De plus, les chiffres d'affaires des contribuables peuvent être tirés de deux
+types d'activités:
+
+* Professionnelles,
+* Non professionnelles.
+
+En 2022, le contribuable a perçu des revenus issus des BIC non professionnels
+relevant du régime micro- BIC prévu à l'article 50-0 du CGI. Aux termes de cet
+article le montant des bénéfices imposables se voit appliquer :
+
+* Un abattement forfaitaire de 71% pour les entreprises "_dont le commerce
+  principal est de vendre des marchandises, objets, fournitures et denrées à
+  emporter ou à consommer sur place ou de fournir le logement, à l'exclusion
+  de la location directe ou indirecte de locaux d'habitation meublés ou
+  destinés à être loués meublés, autres que ceux mentionnés aux 2° et 3° du
+  III de l'article 1407_". ([1° du 1 del'article 50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220)).
+* Un abattement forfaitaire de 50% pour les autres entreprises([2° du 1
+  del'article 50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220)).
+
+Soit : 30 000 * 0.71 = 21 300. 30 000- 21 300= 8 700
+
+**Le bénéfice industriel, commercial, artisanal net du contribuable sera de 8
+700€**.
+
+### Régime des locations meublées non professionnelles
+
+Aux termes de ce même article 50-0 les locations meublées non professionnelles
+imposées au régime micro bénéficient d'un abattement :
+
+* De 71% pour les locations meublées classées autres que "_ceux mentionnés aux
+  2° et 3° du III de l'article 1407_"
+* 50% pour les locations meublées "_mentionnés aux 2° et 3° du III de
+  l'article 1407_"
+* Un abattement de 21% supplémentaire à celui des 71% pour "_Les entreprises
+  qui relèvent du présent régime bénéficient d'un abattement supplémentaire de
+  21 % pour le chiffre d'affaires afférent à leur activité de location de
+  locaux classés meublés de tourisme mentionnés au 2° du III de l'article
+  1407, lorsque ces derniers ne sont pas situés dans des zones géographiques
+  se caractérisant par un déséquilibre important entre l'offre et la demande
+  de logements, sous réserve que le chiffre d'affaires hors taxes, ajusté s'il
+  y a lieu au prorata du temps d'exploitation au cours de l'année de
+  référence, afférent à l'ensemble des activités de location de locaux meublés
+  mentionnées au présent 1 n'excède pas au cours de l'année civile précédente
+  15 000 €. Le bénéfice de cet abattement supplémentaire est subordonné au
+  respect du règlement (UE) n° 1407/2013 de la Commission du 18 décembre 2013
+  relatif à l'application des articles 107 et 108 du traité sur le
+  fonctionnement de l'Union européenne aux aides de minimis_".
+
+Soit pour le contribuable :
+
+- Locations meublées générales : 25 000/2 = 12 500
+- Locations meublées super abattement : 3 500 * 0.92 = 3 220 soit 3 500 -3 220
+  = 280.
+
+Mais le contribuable a également demandé à ce que des revenus issus de
+locations meublées non professionnelles éligibles à l'abattement de 92% soient
+taxés selon le système du quotient.
+
+Dans le but d’éviter que le barème progressif de l’impôt sur le revenu
+n’entraîne une imposition excessive, [l’article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)
+prévoit un système particulier d’imposition : le système du quotient.
+
+Le système du quotient s’applique aux revenus exceptionnels ou différés perçus
+par le contribuable. Il “_consiste, après avoir calculé l’impôt d’après le
+barème progressif sur le revenu net global « ordinaire » imposable du
+contribuable, à calculer l’impôt par l’application du même barème au total
+formé par le revenu net global « ordinaire » imposable et une fraction du
+revenu exceptionnel ou différé. La différence entre ces deux résultats est
+multipliée par le coefficient utilisé (diviseur) pour calculer cette fraction,
+et cette somme est additionnée aux droits simples calculés sur le seul revenu
+net global « ordinaire »
+\[imposable_\]"(https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720).
+
+Concernant les revenus différés le coefficient correspond au _“nombre d’années
+civiles correspondant aux échéances normales de versement augmenté de un_”
+([II de l’article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Pour les revenus exceptionnels, le coefficient est de quatre ([I de l’article
+163 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Néanmoins, avant de procéder au calcul de l’impôt avec la fraction des revenus
+taxés au quotient, il faut d’abord déterminer le revenu net selon les règles
+propres à la catégorie à laquelle appartient le revenu au quotient.
+
+En l’espèce, il s’agit de revenus issus des locations meublées non
+professionelles éligibles à l'abattement de 92% (revenus exceptionnels).
+
+Dans l’hypothèse où le revenu exceptionnel ou différé appartient à la même
+catégorie que les revenus “ordinaires” perçus par le contribuables, alors il
+faut déterminer le revenu net de la catégorie. Le
+[résultat](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720)
+“_est ensuite ventilé au prorata des revenus nets de frais professionnels pour
+obtenir le revenu catégoriel net « ordinaire » et le revenu catégoriel net à
+taxer selon le système du quotient_”.
+
+
+### Calcul du revenu brut global
+
+Le revenu brut global étant la somme des revenus nets catégoriels, tous les
+revenus du foyer fiscal devraient être ajoutés entre eux.
+
+Néanmoins, les revenus taxés au quotient n’entrent pas dans le calcul du
+revenu brut global “ordinaire”. En effet, afin de pouvoir calculer ensuite
+l’impôt global il convient de suivre la [méthode
+suivante](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720)
+:
+
+— "\_calcul des droits simples résultant de l’application du barème progressif
+au seul revenu net global « ordinaire » imposable (DS1) ;
+
+— calcul des droits simples par application du même barème au total formé par
+le revenu net global « ordinaire » imposable et la fraction appropriée
+(quotient) bénéficiant du système du quotient (DS2) ;
+
+— calcul de la différence entre les deux résultats précédents et
+multiplication par le diviseur utilisé pour calculer le quotient (DS2 - DS1) ×
+N = DS3 ;
+
+— addition de la somme ainsi obtenue et des droits simples calculés sur le
+seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
+
+**Aussi le revenu brut global du foyer fiscal sera**:
+ 12 500 + 280 + 8700 = 21480
+
+
+```catala-test-inline
+$ catala test-scope BénéficesIndustrielsCommerciaux2
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_industriels_commerciaux:
+│       [
+│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
+│             735,00 €
+│           -- abattement_forfaitaire_micro_professionnel_marchandises:
+│             0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_marchandises:
+│             21 300,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées:
+│             2 485,00 €
+│           -- abattement_forfaitaire_micro_professionnel_services: 0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_services:
+│             0,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées:
+│             12 500,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels:
+│             [
+│               Impot_revenu.RevenuQuotienté {
+│                 -- valeur_nette: 3 200,00 €
+│                 -- déduction: 36 800,00 €
+│                 -- coefficient: 4
+│                 -- catégorie:
+│                   MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+│                     ()
+│               }
+│             ]
+│           -- solde_net_professionnel: 0,00 €
+│           -- solde_net_non_professionnel_hors_locations_meublées:
+│             8 700,00 €
+│           -- solde_net_non_professionnel_locations_meublées: 12 780,00 €
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- prélèvement_libératoire_revenus_concession_brevets: 0,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés:
+│       [
+│         [];
+│         [
+│           Impot_revenu.RevenuQuotienté {
+│             -- valeur_nette: 3 200,00 €
+│             -- déduction: 36 800,00 €
+│             -- coefficient: 4
+│             -- catégorie:
+│               MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+│                 ()
+│           }
+│         ]
+│       ]
+│     -- revenu_brut_global: 21 480,00 €
+│     -- déficit_brut_global_non_professionnel_hors_locations_meublées:
+│       0,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficit_brut_global_non_professionnel_locations_meublées: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
+│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour:
+│       []
+│   }
+└─
+```
+
+## Cas de test n°3
+
+En 2023, le foyer fiscal, composé d'un seul contribuable a déclaré ses revenus
+comme suit :
+
+- BIC  pro régime micro :
+
+--> 5KO (ventes de marchandises) : 7 847€
+
+--> 5KP (prestations de services) : 12 444€
+
+- BIC pro régime régime réel :
+
+--> 5KC (revenus imposables) : 29 353€
+
+--> 5KF (déficits) : 5 222€
+
+- Locations meublées non pro régime micro :
+
+--> 5ND (locations meublées générales) : 645€
+
+--> 5QS ( locations meublées super abattement) :  1 328€
+
+- BIC non pro régime micro :
+
+--> 5NO (ventes de marchandises) : 43 789€
+
+--> 5NP (prestations de services) : 9 888€
+
+--> 0XX (prestations de services, revenus exceptionnels) : 57 843€
+
+```catala
+déclaration champ d'application BénéficesIndustrielsCommerciaux3:
+  déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
+
+  résultat sortie contenu IR.BénéficesIndustrielsCommerciauxFoyerFiscal
+
+champ d'application BénéficesIndustrielsCommerciaux3:
+  définition déclarant1.non_professionnels égal à
+    (résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
+      -- généraux: (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro_marchandises: 43 789€
+        -- revenus_imposables_micro_services: 9 888€
+        -- revenus_exceptionnels_ou_différés: [IR.RevenuExceptionnelOuDifféré {
+          -- valeur : 57843 €
+          -- régime: Article163_0_A
+          -- échéance: RevenuExceptionnel
+          -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
+        }]
+      }).sortie
+      -- locations_meublées_micro_général: 645€
+      -- locations_meublées_micro_classées_rurales_spéciales: 1 328€
+    }).sortie
+
+  définition déclarant1.professionnels égal à
+    (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+        -- revenus_imposables_micro_marchandises: 7847 €
+        -- revenus_imposables_micro_services: 12444 €
+        -- revenus_imposables_réel: 29 353€
+        -- déficit_réel:  5 222 €
+    }).sortie
+
+  définition sortie égal à résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
+    -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
+    -- déficits_réels_années_antérieures_non_professionnels: []
+    -- revenus: [déclarant1.sortie]
+    -- année_revenus : 2023
+  }
+```
+
+### Calcul du revenu brut global
+
+Régis par [l'article 34 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000024188625) et
+suivants, les revenus issus des bénéfices industriels et commerciaux (BIC)
+nets , une fois déterminés, sont une composante du revenu brut global
+([article 13
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000036428268/2018-01-01)).
+
+Dans le cas des BIC, trois régimes d'imposition existent :
+
+* Le régime des micros entreprises ou "_micro-BIC_" : ce régime encadre les
+  revenus des contribuables dont les revenus de l'année civile précédente ou
+  de la pénultième année sont inférieurs ou égaux au montant de [l'article
+  50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220/).
+* Le régime simplifié d'imposition : qui recouvre le chiffre d'affaires de
+  l'année antérieure des entreprises industrielles, commerciales ou
+  artisanales dont le montant excède celui de l'article 50-0 du CGI mais n'est
+  pas supérieur à celui fixé à[l'article 302 septies A bis du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047623096/2023-06-03/).
+* Le régime réel normal d'imposition : Recouvre le chiffre d'affaires de
+  l'année précédente des entreprises industrielles, commerciales et
+  artisanales dont le montant est supérieur aux seuls cités précédemment. Il
+  est également possible pour le contribuable relevant du régime micro BIC
+  d'opter pour ce régime.
+
+De plus, les chiffres d'affaires des contribuables peuvent être tirés de deux
+types d'activités:
+
+* Professionnelles,
+* Non professionnelles.
+
+#### BIC professionnels régime micro
+
+En 2022, le contribuable a  perçu des revenus issus des bénéfices industriels
+et commerciaux professionnels. Cependant, ils relèvent du régime déclaratif
+des micro-BIC prévu à [l'article 50-0 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220).
+
+Aux termes de cet article, le montant des bénéfices imposables se voit
+appliquer:
+
+* Un abattement forfaitaire de 71% pour les entreprises "_dont le commerce
+  principal est de vendre des marchandises, objets, fournitures et denrées à
+  emporter ou à consommer sur place ou de fournir le logement, à l'exclusion
+  de la location directe ou indirecte de locaux d'habitation meublés ou
+  destinés à être loués meublés, autres que ceux mentionnés aux 2° et 3° du
+  III de l'article 1407_". ([1° du 1 del'article 50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220)).
+* Un abattement forfaitaire de 50% pour les autres entreprises([2° du 1
+  del'article 50-0 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042159220)).
+
+Soit :
+
+- Ventes de marchandises : 7 847 * 0.71 = 5 571, donc 7 847 - 5 571 = 2 276
+- Prestations de services : 12 444 * 0.5 = 6 222
+
+#### BIC professionnels régime réel
+
+La nature de l'activité a son importance si le contribuable déclare un
+déficit. En effet, l'imputation de ce dernier sur les revenus du foyer variera
+en fonction de la nature de l'activité exercée.
+
+En l'espèce, le déclarant 1 a déclaré avoir perçu en 2022 :
+
+* Un bénéfice industriel et commercial professionnel de 29 353 €
+* Un déficit industriel et commercial professionnel professionnel de 5 222 €.
+
+Aux termes du [1 de l'article 156 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047622626#:\~:text=Le%20contribuable%20ne%20peut%20op%C3%A9rer,par%20l'article%20196%20B),
+les déficits industriels et commerciaux professionnels peuvent s'imputer sur
+des activités de même nature et ce jusqu'à la sixième année ou, sur le revenu
+brut global du foyer fiscal.
+
+Ici le déficit est imputable entièrement sur le revenu de même nature soit :
+
+(2 276 + 6 222 + 29 353) - 5 222 = 32 629.
+
+** Le bénéfice industriel et commercial net du contribuable est de 32 629€**
+
+#### Locations meublées non professionnelles
+
+Aux termes de ce même article 50-0 les locations meublées non professionnelles
+imposées au régime micro bénéficient d'un abattement :
+
+* De 71% pour les locations meublées classées autres que "_ceux mentionnés aux
+  2° et 3° du III de l'article 1407_"
+* 50% pour les locations meublées "_mentionnés aux 2° et 3° du III de
+  l'article 1407_"
+* Un abattement de 21% supplémentaire à celui des 71% pour "_Les entreprises
+  qui relèvent du présent régime bénéficient d'un abattement supplémentaire de
+  21 % pour le chiffre d'affaires afférent à leur activité de location de
+  locaux classés meublés de tourisme mentionnés au 2° du III de l'article
+  1407, lorsque ces derniers ne sont pas situés dans des zones géographiques
+  se caractérisant par un déséquilibre important entre l'offre et la demande
+  de logements, sous réserve que le chiffre d'affaires hors taxes, ajusté s'il
+  y a lieu au prorata du temps d'exploitation au cours de l'année de
+  référence, afférent à l'ensemble des activités de location de locaux meublés
+  mentionnées au présent 1 n'excède pas au cours de l'année civile précédente
+  15 000 €. Le bénéfice de cet abattement supplémentaire est subordonné au
+  respect du règlement (UE) n° 1407/2013 de la Commission du 18 décembre 2013
+  relatif à l'application des articles 107 et 108 du traité sur le
+  fonctionnement de l'Union européenne aux aides de minimis_".
+
+Soit pour le contribuable :
+
+- Locations meublées 50 % : 645 * 0.5 = 322.5 arrondi à 323
+- Locations meublées super abattement : 1 328 *0.92 = 1 221.7 arrondi à 1 222
+  donc 1 328 - 1 222 = 106.
+
+** les revenus des locations meublées non professionnelles nettes du
+contribuables lui ont procuré des revenus nets de 323 et 106€**
+
+#### BIC non professionnels régime micro
+
+L'explication juridique est la même soit :
+
+- Ventes de marchandises : 43 789 *0.71 = 31090.1 arr. 31 090 donc le revenu
+  net est : 43 789 - 31 090 = 12 699.
+
+- Prestations de services : 9 888 *0.5 = 4 9444.
+
+Mais le contribuable a également demandé à ce que des revenus issus des
+bénéfices industriels et commerciaux non professionnels (prestations de
+service) soient taxés selon le système du quotient.
+
+Dans le but d’éviter que le barème progressif de l’impôt sur le revenu
+n’entraîne une imposition excessive, [l’article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)
+prévoit un système particulier d’imposition : le système du quotient.
+
+Le système du quotient s’applique aux revenus exceptionnels ou différés perçus
+par le contribuable. Il “_consiste, après avoir calculé l’impôt d’après le
+barème progressif sur le revenu net global « ordinaire » imposable du
+contribuable, à calculer l’impôt par l’application du même barème au total
+formé par le revenu net global « ordinaire » imposable et une fraction du
+revenu exceptionnel ou différé. La différence entre ces deux résultats est
+multipliée par le coefficient utilisé (diviseur) pour calculer cette fraction,
+et cette somme est additionnée aux droits simples calculés sur le seul revenu
+net global « ordinaire »
+\[imposable_\]"(https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720).
+
+Concernant les revenus différés le coefficient correspond au _“nombre d’années
+civiles correspondant aux échéances normales de versement augmenté de un_”
+([II de l’article 163-0 A du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Pour les revenus exceptionnels, le coefficient est de quatre ([I de l’article
+163 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000044978385)).
+
+Néanmoins, avant de procéder au calcul de l’impôt avec la fraction des revenus
+taxés au quotient, il faut d’abord déterminer le revenu net selon les règles
+propres à la catégorie à laquelle appartient le revenu au quotient.
+
+En l’espèce, il s’agit de revenus issus des prestations de services imposables
+en bénéfices industriels et commerciaux non professionnels (revenus
+exceptionnels).
+
+Dans l’hypothèse où le revenu exceptionnel ou différé appartient à la même
+catégorie que les revenus “ordinaires” perçus par le contribuables, alors il
+faut déterminer le revenu net de la catégorie. Le
+[résultat](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720)
+“_est ensuite ventilé au prorata des revenus nets de frais professionnels pour
+obtenir le revenu catégoriel net « ordinaire » et le revenu catégoriel net à
+taxer selon le système du quotient_”.
+
+Soit pour le contribuable : 57 843 * 0.5 = 28 921.5 soit 28 922.
+
+** En conséquence les revenus nets sont : 12 699 pour le solde et 28 922 pour les revenus au quotient **
+
+#### Calcul du revenu brut global
+
+Le revenu brut global étant la somme des revenus nets catégoriels, tous les
+revenus du foyer fiscal devraient être ajoutés entre eux.
+
+Néanmoins, les revenus taxés au quotient n’entrent pas dans le calcul du
+revenu brut global “ordinaire”. En effet, afin de pouvoir calculer ensuite
+l’impôt global il convient de suivre la [méthode
+suivante](https://bofip.impots.gouv.fr/bofip/4620-PGP.html/identifiant%3DBOI-IR-LIQ-20-30-20-20160720)
+:
+
+— "\_calcul des droits simples résultant de l’application du barème progressif
+au seul revenu net global « ordinaire » imposable (DS1) ;
+
+— calcul des droits simples par application du même barème au total formé par
+le revenu net global « ordinaire » imposable et la fraction appropriée
+(quotient) bénéficiant du système du quotient (DS2) ;
+
+— calcul de la différence entre les deux résultats précédents et
+multiplication par le diviseur utilisé pour calculer le quotient (DS2 - DS1) ×
+N = DS3 ;
+
+— addition de la somme ainsi obtenue et des droits simples calculés sur le
+seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
+
+**Aussi le revenu brut global du foyer fiscal sera : 32 629+ 428 + 12
+699 + 4 944 = 50 700**
+
+
+```catala-test-inline
+$ catala test-scope BénéficesIndustrielsCommerciaux3
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
+│     -- résultats_liquidation_bénéfices_industriels_commerciaux:
+│       [
+│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
+│             279,00 €
+│           -- abattement_forfaitaire_micro_professionnel_marchandises:
+│             5 571,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_marchandises:
+│             31 090,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées:
+│             943,00 €
+│           -- abattement_forfaitaire_micro_professionnel_services:
+│             6 222,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_services:
+│             4 944,00 €
+│           -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées:
+│             323,00 €
+│           -- revenus_quotientés_professionnels: []
+│           -- revenus_quotientés_non_professionnels:
+│             [
+│               Impot_revenu.RevenuQuotienté {
+│                 -- valeur_nette: 28 922,00 €
+│                 -- déduction: 28 921,00 €
+│                 -- coefficient: 4
+│                 -- catégorie:
+│                   MicroBénéficesIndustrielsCommerciauxServices ()
+│               }
+│             ]
+│           -- solde_net_professionnel: 32 629,00 €
+│           -- solde_net_non_professionnel_hors_locations_meublées:
+│             17 643,00 €
+│           -- solde_net_non_professionnel_locations_meublées: 428,00 €
+│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│           -- prélèvement_libératoire_revenus_concession_brevets: 0,00 €
+│         }
+│       ]
+│     -- revenus_non_professionnels_quotientés_imputés:
+│       [
+│         [
+│           Impot_revenu.RevenuQuotienté {
+│             -- valeur_nette: 28 922,00 €
+│             -- déduction: 28 921,00 €
+│             -- coefficient: 4
+│             -- catégorie: MicroBénéficesIndustrielsCommerciauxServices ()
+│           }
+│         ]; []
+│       ]
+│     -- revenu_brut_global: 50 700,00 €
+│     -- déficit_brut_global_non_professionnel_hors_locations_meublées:
+│       0,00 €
+│     -- déficit_brut_global_professionnel: 0,00 €
+│     -- déficit_brut_global_non_professionnel_locations_meublées: 0,00 €
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
+│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour:
+│       []
+│   }
+└─
+```

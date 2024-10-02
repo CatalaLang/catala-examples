@@ -1,0 +1,4 @@
+(library
+ (public_name ir_catala.oracles)
+ (name oracles)
+ (libraries catala.runtime_ocaml))

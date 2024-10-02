@@ -1,0 +1,841 @@
+# Prologue
+
+## Conventions et explications
+
+### Déficits, revenus, solde
+
+Pour le choix du nommage de nos variables, nous posons la convention suivante :
+- un solde est un nombre algébrique positif ou négatif ;
+- un revenu est toujours positif ou nul ;
+- un déficit est toujours positif ou nul.
+
+## Détermination du revenu fiscal de référence
+
+### Traitements et salaires
+
+### Pour un déclarant
+
+```catala-metadata
+déclaration énumération FraisRéels:
+  -- Non
+  -- Oui contenu argent
+
+déclaration plafond contenu argent
+  dépend de valeur contenu argent,
+            plafond contenu argent
+  égal à
+  si valeur > plafond alors plafond
+  sinon valeur
+
+déclaration plancher contenu argent
+  dépend de valeur contenu argent,
+            plancher contenu argent
+  égal à
+  si valeur < plancher alors plancher
+  sinon valeur
+
+déclaration énumération TypePensionRetraiteRente:
+  -- PensionsRetraitesRentes
+  -- PensionEnCapital_7_5pct
+  -- PensionInvalidité
+  -- PensionEnCapitalPlansÉpargneRetraite
+  -- PensionAlimentairePercue
+  # -- PensionNonRésident_etc # Non encore utilisé
+  # -- AutrePensionImposableSourceÉtrangère # Non encore utilisé
+
+déclaration structure PensionRetraiteRente:
+  donnée valeur_initiale contenu argent
+  donnée type contenu TypePensionRetraiteRente
+
+déclaration énumération SélecteurPlafondAbattementPensionsRetraitesRentes79:
+  -- Déplafonné
+  -- PlafondStandardOuProratisé contenu argent
+
+déclaration énumération RégimeRevenuExceptionnelOuDifféré:
+  -- Article163_0_A
+  -- Article163_0_A_bis
+
+déclaration énumération ÉchéanceRevenuExceptionnelOuDifféré:
+  -- RevenuExceptionnel
+  -- RevenuDifféréÉchéanceNormale contenu entier
+
+déclaration énumération CatégorieRenteViagèreOnéreux:
+  -- RenteViagèreOnéreuxMoins49Ans
+  -- RenteViagèreOnéreuxEntre50Et59Ans
+  -- RenteViagèreOnéreuxEntre60Et69Ans
+  -- RenteViagèreOnéreuxPlus70Ans
+
+# Les revenus exceptionnels ou différés peuvent concerner quasiment toutes
+# les cases de la déclaration de revenu. Cependant, il n'est pas nécessaire
+# pour nous de qualifier dans l'entrée du programme la catégorie de
+# revenus exceptionnels ou différés aussi finement que l'ensemble des
+# cases de la 2042 (-C, etc). En effet, nous avons juste besoin de l'information
+# pour savoir comment calculer la déduction sur ces revenus. C'est le travail
+# du déclarant que de fournir une valeur d'entrée pour ces revenus qui soit
+# compatible avec les règles d'exonération et de déclaration relative à la
+# catégorie fine et précise des revenus exceptionnels ou différés.
+déclaration énumération CatégorieRevenuExceptionnelOuDifféré:
+  -- TraitementsSalaires
+  -- RenteViagèreOnéreux contenu CatégorieRenteViagèreOnéreux
+  -- PensionsRetraitesRentes
+  -- BénéficesNonCommerciaux
+  -- MicroBénéficesNonCommerciaux
+  -- BénéficesIndustrielsCommerciaux
+  -- BénéficesIndustrielsCommerciauxLocationMeublées
+  -- MicroBénéficesIndustrielsCommerciauxMarchandises
+  -- MicroBénéficesIndustrielsCommerciauxServices
+  -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral
+  -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées
+  -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+
+déclaration structure RevenuExceptionnelOuDifféré:
+  donnée valeur contenu argent
+  donnée régime contenu RégimeRevenuExceptionnelOuDifféré
+  donnée échéance contenu ÉchéanceRevenuExceptionnelOuDifféré
+  donnée catégorie contenu CatégorieRevenuExceptionnelOuDifféré
+
+déclaration structure DéclarationTraitementsSalaires:
+  # Déclaration principale (2042)
+  # Case 1AA/...
+  donnée revenu_assistants_maternels_familiaux contenu argent
+  # Case 1GA/...
+  # donnée abattement_assistants_maternels_familiaux_journalistes contenu argent
+  # Case 1GB/...
+  donnée revenus_associés_gérants contenu argent
+  # Case 1GF/...
+  donnée droits_dauteurs_fonctionnaires_chercheurs contenu argent
+  # Case 1GH/...
+  donnée heures_supplémentaires_et_rtt_exonérées contenu argent
+  # Case 1AK/...
+  donnée frais_réels contenu FraisRéels
+  # Case 1AS/...
+  donnée pensions_retraites_rentes contenu argent
+  # Case 1AT/...
+  donnée pensions_retraites_en_capital_7_5pct contenu argent
+  # Case 1AI/...
+  donnée pensions_en_capital_plans_épargne_retraite contenu argent
+  # Case 1AZ/...
+  donnée pensions_invalidité contenu argent
+  # Case 1AO/...
+  donnée pensions_alimentaires_perçues contenu argent
+  # Case 1AJ/...
+  donnée traitements_salaires contenu argent
+  # Case 1PB/...
+  donnée pourboires_exonérés contenu argent
+  # Case 1AD/...
+  donnée prime_partage_valeur_exonérée contenu argent
+  # Case 1AV/...
+  donnée majoration_seuil_exonération contenu booléen
+  # Case 1AP/...
+  donnée autres_revenus_imposables_chômage_préretraite contenu argent
+  # Déclaration complémentaire (2042C)
+  # Case 1TP/...
+  donnée rabais_excédentaire_options_sur_titres contenu argent
+  # Case 1TT/...
+  donnée gains_de_levee_doptions contenu argent
+  # Case 1GG/...
+  donnée salaires_imposables_agent_assurance contenu argent
+  # Case 1AQ/..
+  # donnée salaires_exonérés_agent_assurance contenu argent
+  # Case 1PM/...
+  donnée indemnités_préjudice_moral_fraction_supérieure_million contenu argent
+  # Case 1NX/...
+  donnée gains_et_distributions_carried_interest contenu argent
+  # Case 1NY/...
+  donnée gains_et_distributions_carried_interest_soumis_contribution_salariale
+    contenu argent
+  # Case 1DY/...
+  # donnée salaires_primes_impatriés_exonérées contenu argent
+  # Case 1SM/1DN
+  # donnée sommes_exonérées_cet_jours_congés_non_pris contenu argent
+  # Case 0XX
+  donnée revenus_exceptionnels_ou_différés contenu
+    liste de RevenuExceptionnelOuDifféré
+  # Case 1AC/...
+  # donnée salaires_taux_effectif contenu argent
+  # Case 1GE/... (utile pour le prélèvement à la source)
+  # donnée marin_pêcheur contenu booléen
+  # Case 1AE/..
+  # donnée frais_réels_taux_effectif contenu argent
+  # Case 1AH/..
+  # donnée pensions_étrangères_taux_effectif contenu argent
+  # Case 1AF/...
+  donnée salaires_étrangers_impôt_imputé contenu argent
+  # Case 1AL/...
+  donnée pensions_étrangères_impôts_imputé contenu argent
+  # Case 1AG/...
+  donnée autre_salaires_imposables_source_étrangère contenu argent
+  # Case 1AM/...
+  donnée autre_pensions_imposables_source_étrangère contenu argent
+
+déclaration structure DéclarationTraitementsSalairesFoyerFiscal:
+  # Case 1AW
+  donnée rentes_percues_49moins_ans contenu argent
+  # Case 1BW
+  donnée rentes_percues_50_59ans contenu argent
+  # Case 1CW
+  donnée rentes_percues_60_69ans contenu argent
+  # Case 1DW
+  donnée rentes_percues_70plus_ans contenu argent
+  # Case 1AR
+  donnée rentes_étrangères_imputables_percues_49moins_ans contenu argent
+  # Case 1BR
+  donnée rentes_étrangères_imputables_percues_50_59ans contenu argent
+  # Case 1CR
+  donnée rentes_étrangères_imputables_percues_60_69ans contenu argent
+  # Case 1DR
+  donnée rentes_étrangères_imputables_percues_70plus_ans contenu argent
+  # Case 0XX
+  donnée revenus_exceptionnels_ou_différés contenu
+    liste de RevenuExceptionnelOuDifféré
+  # Case 1TZ
+  donnée acquisition_d_actions_gratuites_gain_imposable contenu argent
+  # Case 1UZ
+  # donnée acquisition_d_actions_gratuites_abattement_duree contenu argent
+  # Case 1WZ
+  # donnée acquisition_d_actions_gratuites_abattement_50 contenu argent
+  # Case 1VZ
+  # donnée acquisition_d_actions_gratuites_abattement_retraite contenu argent
+
+déclaration structure RevenuQuotienté:
+  # Les revenus quotientés sont des résultats du champ d'application
+  # TraitementsSalairesDéclarant, parce qu'ils seront nécessaires à la
+  # liquidation multiple pour le calcul de l'imposition (BOI-IR-LIQ-20-30-20).
+  donnée valeur_nette contenu argent # La déduction a déjà été soustraite ici
+  donnée déduction contenu argent # Déduction des frais réels au prorata
+  donnée coefficient contenu entier
+  donnée catégorie contenu CatégorieRevenuExceptionnelOuDifféré
+
+déclaration champ d'application TraitementsSalairesDéclarant:
+  entrée revenus contenu DéclarationTraitementsSalaires
+  entrée année_revenus contenu entier
+  entrée selecteur_plafond_abattement_pensions_retraites_rentes
+    contenu SélecteurPlafondAbattementPensionsRetraitesRentes79
+
+  # La variable suivante n'est pas encore utilisée :
+  # interne abattement_assistants_maternels_familiaux_journalistes
+  #   contenu argent
+  #   état base
+  #   état plafonné
+  interne exonération_prime_partage_valeur contenu argent
+  interne plafond_déduction_frais_professionnels contenu argent
+  interne minimum_déduction_frais_professionnels contenu argent
+
+  interne pensions_retraites_rentes_79 contenu
+    liste de PensionRetraiteRente
+    état art79
+    état convention_internationale
+    état art204c
+  interne abattement_selon_158_5_a contenu booléen
+    dépend de type_retraite contenu TypePensionRetraiteRente
+  interne minimum_abattement_pensions_retraites_rentes contenu argent
+
+  interne calcul_abattement_pensions_retraites_rentes contenu argent
+    dépend de pension_retraite_rente contenu argent
+    état base
+    état arrondissement
+    état plancher
+    état maximisation
+  interne abattement_pensions_retraites_rentes_total_non_plafonné
+    contenu argent
+  interne abattement_pensions_retraites_rentes_total_plafonné
+    contenu argent
+  interne calcul_abattement_proratisé_revenus_quotienté_pensions_retraites
+    contenu argent
+    dépend de revenu_quotienté contenu argent
+    état base
+    état arrondissement
+  résultat abattement_pensions_retraites_rentes contenu argent
+  interne calcul_déduction_frais_professionnels
+    contenu argent dépend de assiette contenu argent
+  interne calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
+    contenu argent
+    dépend de revenu_quotienté contenu argent
+    état base
+    état arrondissement
+  interne déduction_frais_professionnels_traitements_salaires_avant_prorata
+    contenu argent
+    état forfaitaire
+    état arrondissement
+    état plancher_83_3_3
+  interne application_frais_réels contenu FraisRéels
+  interne déduction_frais_professionnels_totale contenu argent
+    état non_plafonnée_83_3_2
+    état plafonnée_83_3_2
+    état plafonnée_83_3_2_avec_frais_réels
+  résultat déduction_frais_professionnels_traitements_salaires contenu argent
+  interne assiette_exonérations_81_quater contenu argent
+    état art_81_quater
+    état art_5_lfr_2022
+  résultat exonérations_81_quater contenu argent
+  résultat prélèvement_libératoire contenu argent
+  résultat traitements_salaires_avec_déduction_frais_professionnels
+    contenu argent
+    état base
+    état art62
+    état art93_1bis
+    état art158_5_a_b
+    état art_81_quater
+    état loi_2022_1158
+    état art80
+    état art80_bis_1
+    état art80_bis_2
+    état art80_sexies
+    état art80_quindecies
+    état art93_1ter
+    état convention_internationale
+    état art204c
+  résultat revenu_brut_déclarant_hors_quotient contenu argent
+  résultat revenus_quotientés contenu liste de RevenuQuotienté
+
+```
+
+### Pour l'ensemble du foyer fiscal
+
+```catala-metadata
+déclaration structure RenteViagèreOnéreux:
+  donnée valeur contenu argent
+  donnée catégorie contenu CatégorieRenteViagèreOnéreux
+
+déclaration énumération DéclarationTraitementsSalaires2:
+  -- PasDeDéclaration
+  -- Déclaration contenu DéclarationTraitementsSalaires
+
+déclaration structure RésultatsLiquidationPlafondPensionRetraitesRentes:
+  donnée abattement_pensions_retraites_rentes contenu argent
+  donnée revenus contenu DéclarationTraitementsSalaires
+
+déclaration structure DéclarationAvecPlafondPensionRetraitesRentesCorrect:
+  donnée revenus contenu DéclarationTraitementsSalaires
+  donnée plafond_abattement_pensions_retraites_rentes contenu argent
+
+déclaration champ d'application TraitementsSalairesFoyerFiscal:
+  entrée déclarant1 contenu DéclarationTraitementsSalaires
+  entrée déclarant2 contenu DéclarationTraitementsSalaires2
+  entrée déclarations_personnes_à_charge
+    contenu liste de DéclarationTraitementsSalaires
+  entrée année_revenus contenu entier
+  entrée revenus contenu DéclarationTraitementsSalairesFoyerFiscal
+
+  interne plafond_abattement_pensions_retraites_rentes contenu argent
+  interne résultats_liquidations_plafond_pensions_retraites_rentes
+    contenu liste de RésultatsLiquidationPlafondPensionRetraitesRentes
+  interne abbattement_total_déplafonné_pensions_retraites_rentes
+    contenu argent
+
+  # Début des liquidations successives pour obtenir les montants corrects
+  # de revenus et abattements
+  interne déclarations_revenus contenu liste de DéclarationTraitementsSalaires
+  interne déclarations_avec_plafond_pensions_retraites_rentes_correct
+    contenu liste de DéclarationAvecPlafondPensionRetraitesRentesCorrect
+  résultat
+    déclarations_avec_résultats_traitements_salaires
+    contenu liste de TraitementsSalairesDéclarant
+  # Fin des liquidations successives
+
+  interne solde_revenu_brut_global_hors_quotient_avant_déficit_quotient
+    contenu argent
+  interne calcul_déduction_rente_viagères_titre_onéreux contenu argent
+    dépend de rente_viagère contenu RenteViagèreOnéreux
+  résultat rentes_viagères_titre_onéreux contenu argent
+    état base
+    état étrangères_imputables
+  résultat revenu_brut_global contenu argent
+  résultat déficit_brut_global contenu argent
+  résultat revenus_quotientés contenu liste de RevenuQuotienté
+
+champ d'application TraitementsSalairesFoyerFiscal:
+  définition déclarations_revenus égal à
+    [déclarant1] ++ (selon déclarant2 sous forme
+      -- PasDeDéclaration: []
+      -- Déclaration de déclarant2: [déclarant2]) ++
+    déclarations_personnes_à_charge
+```
+
+### Bénéfices non commerciaux
+
+#### Pour chaque déclarant
+
+```catala-metadata
+déclaration structure DéclarationBénéficesNonCommerciauxGénéraux:
+  # Case 5HQ/... et 5KU/...
+  donnée revenus_imposables_micro contenu argent
+  # Case 5TH/... et 5HP/...
+  # donnée revenus_net_exonérés_régimes_zonés contenu argent
+  # Case 5HV/... et 5KY/...
+  donnée plus_values_nettes_court_terme_micro contenu argent
+  # Case 5KZ/... et 5JU/...
+  donnée moins_values_nettes_court_terme_micro contenu argent
+  # Case 5HR/... et 5KV/...
+  donnée plus_values_nettes_long_terme_micro contenu argent
+  # Case 5HS/... et 5KW/...
+  donnée moins_values_nettes_long_terme_micro contenu argent
+  # Case 5QD/... et 5SO/...
+  donnée plus_values_nettes_long_terme_réel contenu argent
+  # Case 5SV/... et 5QL/...
+  # donnée abattement_jeunes_créateurs contenu argent
+  # Case 5QC/... et 5JG/...
+  donnée revenus_imposables contenu argent
+  # Case 5QE/... et 5JJ/...
+  donnée déficit_réel contenu argent
+  # Case 5XP/... et 5XY/...
+  # donnée plus_values_court_terme_réel contenu argent
+  # Case 5XH/... et 5VM/...
+  # donnée moins_values_court_terme_réel contenu argent
+  # Case 5XJ/... et 5XS/...
+  donnée revenus_imposables_source_étrangère_imputés contenu argent
+  # Case 0XX
+  donnée revenus_exceptionnels_ou_différés contenu
+    liste de RevenuExceptionnelOuDifféré
+
+déclaration structure DéclarationBénéficesNonCommerciauxProfessionnels:
+  donnée généraux contenu DéclarationBénéficesNonCommerciauxGénéraux
+  # Case 5QJ/...
+  donnée produits_inventeurs_logiciel_taxables contenu argent
+  # Case 5TC/...
+  donnée produits_inventeurs_logiciel_taxables_soumis_cotisations contenu argent
+
+déclaration structure DéclarationBénéficesNonCommerciauxNonProfessionnels:
+  donnée généraux contenu DéclarationBénéficesNonCommerciauxGénéraux
+
+déclaration structure DéclarationBénéficesNonCommerciaux:
+  donnée professionnels contenu DéclarationBénéficesNonCommerciauxProfessionnels
+  donnée non_professionnels contenu
+    DéclarationBénéficesNonCommerciauxNonProfessionnels
+  # Case 5TE/...
+  # donnée total_recettes_prélèvement_libératoire contenu argent
+  # Case 5TL/...
+  donnée recettes_prélèvement_libératoire_éxonérées_cotisations contenu argent
+
+déclaration champ d'application BénéficesNonCommerciauxDéclarant:
+  entrée revenus contenu DéclarationBénéficesNonCommerciaux
+  entrée année_revenus contenu entier
+
+  interne revenus_imposables_réel_professionnels contenu argent
+    état base
+    état étrangers
+  interne revenus_imposables_réel_non_professionnels contenu argent
+    état base
+    état étrangers
+  interne assiette_abattement_forfaitaire_micro_total contenu argent
+  interne abattement_forfaitaire_micro_total contenu argent
+    état base
+    état arrondissement
+    état plancher
+
+  interne revenus_exceptionnels_professionnels_abattement_micro
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne revenus_exceptionnels_professionnels_sans_abattement
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne revenus_exceptionnels_non_professionnels_abattement_micro
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne revenus_exceptionnels_non_professionnels_sans_abattement
+    contenu liste de RevenuExceptionnelOuDifféré
+  pro_rata_abattement_forfaitaire_micro champ d'application
+    Oracles.ProRataArrondiEuroBranchement
+
+  résultat abattement_forfaitaire_micro_professionnel contenu argent
+  résultat abattement_forfaitaire_micro_non_professionnel contenu argent
+  résultat revenus_quotientés_professionnels contenu liste de RevenuQuotienté
+  résultat revenus_quotientés_non_professionnels contenu
+    liste de RevenuQuotienté
+  résultat prélèvement_libératoire_auto_entreprise contenu argent
+    état base
+    état arrondissement
+  résultat prélèvement_libératoire_plus_values_long_terme contenu argent
+  résultat solde_net_professionnel contenu argent
+    état revenus_imposables_réel
+    état revenus_imposables_micro
+    état plus_moins_value_court_terme_micro
+  résultat solde_net_non_professionnel contenu argent
+    état revenus_imposables_réel
+    état revenus_imposables_micro
+    état plus_moins_value_court_terme_micro
+  résultat impôt_taux_forfaitaire contenu argent
+    état art93quaterI
+```
+
+#### Pour le foyer fiscal
+
+```catala-metadata
+déclaration champ d'application BénéficesNonCommerciauxFoyerFiscal:
+  entrée année_revenus contenu entier
+  entrée revenus contenu liste de DéclarationBénéficesNonCommerciaux
+  # Case 5HT/...
+  entrée déficits_réels_années_antérieures_non_professionnels contenu
+    liste de Oracles.DéficitAntérieur
+  résultat résultats_liquidation_bénéfices_non_commerciaux contenu
+    liste de BénéficesNonCommerciauxDéclarant
+  interne solde_net_global_non_professionnel contenu argent
+    état agrégation
+    état imputation_déficit_revenus_quotient
+    état imputation_déficits_années_antérieures_non_professionnels
+  interne solde_net_global_professionnel contenu argent
+
+  imputation_déficit_sur_revenu_quotientés_non_professionnels
+    champ d'application ImputationDéficitSurRevenusQuotientés
+
+  imputation_aux_déficits_les_plus_anciens champ d'application
+    Oracles.ImputationAuxDéficitsLesPlusAnciens
+
+  résultat revenus_non_professionnels_quotientés_imputés
+    contenu liste de (liste de RevenuQuotienté)
+  résultat revenu_brut_global contenu argent
+  résultat déficit_brut_global_non_professionnel contenu argent
+  résultat déficit_brut_global_professionnel contenu argent
+
+  résultat déficits_réels_années_antérieures_non_professionnels_mis_à_jour
+    contenu liste de Oracles.DéficitAntérieur
+```
+
+### Bénéfices Industriels et Commerciaux
+
+```catala-metadata
+déclaration structure DéclarationBénéficesIndustrielsCommerciauxGénéraux:
+  # Case 5UI/... et 5TF/...
+  donnée revenus_concession_brevets contenu argent
+  # Case 5KX/... et 5NX/...
+  donnée plus_values_nettes_court_terme_micro contenu argent
+  # Case 5KJ/... et 5IU/...
+  donnée moins_values_nettes_court_terme_micro contenu argent
+  # Case 5KQ/... et 5NQ/...
+  donnée plus_values_nettes_long_terme_micro contenu argent
+  # Case 5KR/... et 5NR/...
+  donnée moins_values_nettes_long_terme_micro contenu argent
+  # Case 5KE/... et 5NE/...
+  donnée plus_values_nettes_long_terme_réel contenu argent
+  # Case 5KO/... et 5NO/...
+  donnée revenus_imposables_micro_marchandises contenu argent
+  # Case 5KP/... et 5NP/...
+  donnée revenus_imposables_micro_services contenu argent
+  # Case 5KC/... et 5NC/...
+  donnée revenus_imposables_réel contenu argent
+  # Case 5KF/... et 5NF/...
+  donnée déficit_réel contenu argent
+  # Case 5DF/... et 5UR/...
+  donnée revenus_imposables_réel_source_étrangère_imputés contenu argent
+  # Cette case n'existe pas dans les formulaires 2042
+  # donnée revenus_imposable_micro_marchandises_source_étrangère_imputés
+  #   contenu argent
+  # Cette case n'existe pas dans les formulaires 2042
+  # donnée revenus_imposable_micro_services_source_étrangère_imputés
+  #   contenu argent
+  # Case 0XX
+  donnée revenus_exceptionnels_ou_différés contenu
+    liste de RevenuExceptionnelOuDifféré
+
+déclaration structure
+  DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels:
+  donnée généraux contenu DéclarationBénéficesIndustrielsCommerciauxGénéraux
+  # Case 5ND/...
+  donnée locations_meublées_micro_général contenu argent
+  # Case 5NG/...
+  donnée locations_meublées_micro_hôtes_classées contenu argent
+  # Cette case n'existe pas dans les formulaires 2042
+  # donnée locations_meublées_micro_source_étrangère_imputée contenu argent
+  # Case 5QS/...
+  donnée locations_meublées_micro_classées_rurales_spéciales contenu argent
+  # Case 5NW/..
+  donnée locations_meublées_micro_cotisations_général contenu argent
+  # Case 5NJ/...
+  donnée locations_meublées_micro_cotisations_hôtes_classées contenu argent
+  # Case 5QT/...
+  donnée locations_meublées_micro_cotisations_classées_rurales_spéciales
+    contenu argent
+  # Case 5NA/...
+  donnée locations_meublées_réel_général contenu argent
+  # Case 5EY/...
+  donnée locations_meublées_réel_source_étrangère contenu argent
+  # Case 5NM/...
+  donnée locations_meublées_réel_cotisations contenu argent
+  # Case 5NY/...
+  donnée locations_meublées_déficit_général contenu argent
+  # Case 5WE/...
+  donnée locations_meublées_déficit_cotisations contenu argent
+
+déclaration structure DéclarationBénéficesIndustrielsCommerciaux:
+  donnée professionnels contenu
+    DéclarationBénéficesIndustrielsCommerciauxGénéraux
+  donnée non_professionnels contenu
+    DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
+  # Case 5TA/...
+  # donnée
+  #  total_chiffre_affaires_prélèvement_libératoire_marchandises
+  # contenu argent
+  # Case 5TJ/...
+  donnée
+   chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
+  contenu argent
+  # Case 5TB/...
+  # donnée
+  #  total_chiffre_affaires_prélèvement_libératoire_services
+  # contenu argent
+  # Case 5TK/...
+  donnée
+   chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
+  contenu argent
+
+
+déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
+  entrée revenus contenu DéclarationBénéficesIndustrielsCommerciaux
+  entrée année_revenus contenu entier
+
+  interne revenus_imposables_réel_professionnels contenu argent
+    état base
+    état étrangers
+  interne revenus_imposables_réel_non_professionnels contenu argent
+    état base
+    état étrangers
+  interne revenus_imposables_réel_non_professionnels_locations_meublées
+    contenu argent
+    état base
+    état étrangers
+  interne
+    revenus_exceptionnels_professionnels_abattement_micro_marchandises
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne
+    revenus_exceptionnels_non_professionnels_abattement_micro_marchandises
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne
+    revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne
+    revenus_exceptionnels_professionnels_abattement_micro_services
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne
+    revenus_exceptionnels_non_professionnels_abattement_micro_services
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne
+    revenus_exceptionnels_professionnels_sans_abattement
+    contenu liste de RevenuExceptionnelOuDifféré
+    interne
+    revenus_exceptionnels_non_professionnels_sans_abattement
+    contenu liste de RevenuExceptionnelOuDifféré
+  interne assiette_abattement_forfaitaire_micro_services contenu argent
+  interne abattement_forfaitaire_micro_total_services contenu argent
+    état base
+    état arrondissement
+    état plancher
+  pro_rata_abattement_forfaitaire_micro_services champ d'application
+    Oracles.ProRataArrondiEuroBranchement
+  interne assiette_abattement_forfaitaire_micro_marchandises contenu argent
+  interne abattement_forfaitaire_micro_total_marchandises contenu argent
+    état base
+    état arrondissement
+    état plancher
+  pro_rata_abattement_forfaitaire_micro_marchandises champ d'application
+    Oracles.ProRataArrondiEuroBranchement
+  interne assiette_abattement_spécial_micro_location_meublées_rurales_spéciales
+    contenu argent
+  interne abattement_spécial_micro_total_location_meublées_rurales_spéciales
+    contenu argent
+    état base
+    état arrondissement
+    état plancher
+  interne plancher_abattement_forfaitaire_micro_total contenu argent 
+  pro_rata_plancher_abattement_forfaitaire_total champ d'application 
+    Oracles.ProRataArrondiEuroBranchement
+  pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales
+    champ d'application Oracles.ProRataArrondiEuroBranchement
+  résultat abattement_spécial_micro_location_meublées_rurales_spéciales
+    contenu argent
+  résultat abattement_forfaitaire_micro_professionnel_marchandises
+    contenu argent
+  résultat abattement_forfaitaire_micro_non_professionnel_marchandises
+    contenu argent
+  résultat abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées
+    contenu argent
+  résultat abattement_forfaitaire_micro_professionnel_services contenu argent
+  résultat abattement_forfaitaire_micro_non_professionnel_services
+    contenu argent
+  résultat abattement_forfaitaire_micro_non_professionnel_services_locations_meublées
+    contenu argent
+  résultat revenus_quotientés_professionnels contenu liste de RevenuQuotienté
+  résultat revenus_quotientés_non_professionnels contenu
+    liste de RevenuQuotienté
+
+  résultat solde_net_professionnel contenu argent
+    état revenus_imposables_réel
+    état revenus_imposables_micro
+    état plus_moins_value_court_terme_micro
+  résultat solde_net_non_professionnel_hors_locations_meublées contenu argent
+    état revenus_imposables_réel
+    état revenus_imposables_micro
+    état plus_moins_value_court_terme_micro
+  résultat solde_net_non_professionnel_locations_meublées contenu argent
+    état revenus_imposables_réel
+    état revenus_imposables_micro
+
+  résultat prélèvement_libératoire_auto_entreprise contenu argent
+    état marchandises
+    état services
+    état arrondissement
+  résultat prélèvement_libératoire_plus_values_long_terme contenu argent
+  résultat prélèvement_libératoire_revenus_concession_brevets contenu argent
+
+déclaration champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
+  entrée année_revenus contenu entier
+  entrée revenus contenu liste de DéclarationBénéficesIndustrielsCommerciaux
+  # Case 5RN/...
+  entrée déficits_réels_années_antérieures_non_professionnels contenu
+    liste de Oracles.DéficitAntérieur
+  # Case 5GA/...
+  entrée déficits_réels_années_antérieures_non_professionnels_locations_meublées
+    contenu liste de Oracles.DéficitAntérieur
+  résultat résultats_liquidation_bénéfices_industriels_commerciaux contenu
+    liste de BénéficesIndustrielsCommerciauxDéclarant
+  interne solde_net_global_non_professionnel_hors_locations_meublées
+    contenu argent
+    état agrégation
+    état imputation_déficit_revenus_quotient
+    état imputation_déficits_années_antérieures_non_professionnels
+  interne solde_net_global_non_professionnel_locations_meublées contenu argent
+    état agrégation
+    état imputation_déficit_revenus_quotient
+    état imputation_déficits_années_antérieures_non_professionnels
+  interne solde_net_global_professionnel contenu argent
+
+  imputation_déficit_sur_revenu_quotientés_non_professionnels
+    champ d'application ImputationDéficitSurRevenusQuotientés
+  imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées
+    champ d'application ImputationDéficitSurRevenusQuotientés
+
+  imputation_aux_déficits_les_plus_anciens champ d'application
+    Oracles.ImputationAuxDéficitsLesPlusAnciens
+  imputation_aux_déficits_les_plus_anciens_locations_meublées
+    champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
+
+  résultat revenus_non_professionnels_quotientés_imputés
+    contenu liste de (liste de RevenuQuotienté)
+    état base
+    état locations_meublées
+  résultat revenu_brut_global contenu argent
+  résultat déficit_brut_global_non_professionnel_hors_locations_meublées
+    contenu argent
+  résultat déficit_brut_global_professionnel contenu argent
+  résultat déficit_brut_global_non_professionnel_locations_meublées contenu argent
+
+  résultat déficits_réels_années_antérieures_non_professionnels_mis_à_jour
+    contenu liste de Oracles.DéficitAntérieur
+  résultat déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour
+    contenu liste de Oracles.DéficitAntérieur
+
+déclaration champ d'application
+  PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux:
+  entrée plus_values_nettes contenu argent
+  entrée moins_values_nettes contenu argent
+
+  résultat solde_net contenu argent
+
+déclaration champ d'application
+  PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux:
+  entrée plus_values_nettes contenu argent
+  entrée moins_values_nettes contenu argent
+
+  résultat prélèvement_libératoire contenu argent
+    état base
+    état arrondissement
+```
+
+### Revenus quotientés
+
+```catala-metadata
+déclaration champ d'application CalculRevenuQuotienté:
+  entrée revenu contenu RevenuExceptionnelOuDifféré
+  entrée déduction contenu argent
+  entrée année_revenus contenu entier
+  interne décalage_échéance_prise_en_compte contenu entier
+
+  résultat revenu_quotienté contenu RevenuQuotienté
+
+déclaration champ d'application ImputationDéficitSurRevenusQuotientés:
+  entrée solde_catégoriel_à_imputer contenu argent
+  entrée revenus_quotientés_catégoriels contenu
+    liste de (liste de RevenuQuotienté)
+  # Cette liste de liste correspond aux listes de revenus catégoriels pour
+  # chaque déclarant.
+
+  interne base_d_imputation_déficit_catégoriel contenu argent
+
+  résultat revenus_quotientés_catégoriels_imputés contenu
+    liste de (liste de RevenuQuotienté)
+  résultat déficit_catégoriel_imputé contenu argent
+```
+
+## Calcul du nombre de parts
+
+```catala-metadata
+
+déclaration énumération SituationFamiliale:
+  -- Mariées
+  -- Pacsées
+  -- DivorcéeSéparées
+  -- Célibataire
+  -- Veuve
+
+déclaration structure DescriptionFoyerFiscal:
+  # Case CF
+  donnée nombre_enfants_à_charge_mineurs_et_non_mariés contenu entier
+  # Case CG
+  donnée nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
+    contenu entier
+  # Case CH
+  donnée nombre_enfants_à_charge_résidence_alternée contenu entier
+  # Case CI
+  donnée nombre_enfants_à_charge_résidence_alternée_invalides contenu entier
+  # Case CR
+  donnée nombre_autres_personnes_invalides_vivant_sous_toit contenu entier
+  # Case DJ
+  donnée nombre_enfants_majeurs_célibataires_sans_enfant contenu entier
+  # Case DN
+  donnée nombre_enfants_majeurs_mariés_ou_chargés_famille contenu décimal
+  # Case AM
+  donnée mariées contenu booléen
+  # Case AD
+  donnée célibataire contenu booléen
+  # Case AO
+  donnée pacsées contenu booléen
+  # Case AC
+  donnée divorcée_séparées contenu booléen
+  # Case AV
+  donnée veuve contenu booléen
+  # Case BT
+  donnée parent_isolé contenu booléen
+  # Case AL
+  donnée célibataire_divorcé_veuf_sans_enfant contenu booléen
+  # Case AP
+  donnée titulaire_carte_invalidité_CMI_invalidité_40_pourcent contenu booléen
+  # Case AF
+  donnée conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+    contenu booléen
+  # TODO juridique: vérifier que la case AF n'est pas cumulable avec AC/AV/AO et
+  # la case BT et les cases AG, AS, AP, AW ?
+  # Case AW
+  donnée pensionné_guerre_célibataire_veuf contenu booléen
+  # Case AS
+  donnée pensionné_guerre_marié_pacsé contenu booléen
+  # Case AG
+  donnée pensionné_veuve_de_guerre contenu booléen
+
+déclaration champ d'application NombreDeParts:
+  entrée foyer_fiscal contenu DescriptionFoyerFiscal
+  entrée année_revenus contenu entier
+
+  interne nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
+    contenu entier
+  interne situation_195_1_applicable condition
+  interne situation_familiale contenu SituationFamiliale
+
+  résultat nombre_de_parts contenu décimal
+    état base_194
+    état résidence_alternée_194
+    état parent_isolé_194
+    état paragraphe_2_195
+    état paragraphe_3_195
+    état paragraphe_4_195
+    état paragraphe_5_195
+    état paragraphe_6_195
+    état article_196_B
+
+  résultat abattement contenu argent
+```

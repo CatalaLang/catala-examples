@@ -1,0 +1,845 @@
+> Usage de Interface
+> Usage de Impot_revenu en tant que IR
+
+# Tests calcul nombre de parts
+
+## Cas de test 1
+
+### Énoncé
+
+Monsieur A et Madame B vivent à Paris depuis de nombreuses années. En 2019,
+ayant pour projet de fonder une famille, ils décident de se pacser à la mairie
+du IXe arrondissement. En 2022, le rêve du couple se réalise avec la
+naissance des jumeaux Paul et Louis. Le couple souhaite savoir de combien de
+parts sera composé son foyer en fiscal à partir de la naissance de ses
+enfants.
+
+### Rappel des faits
+
+Mr A et Mme B, liés par un pacte de solidarité active
+(PACS) et parents de deux enfants souhaitent savoir  de combien de parts se
+compose leur foyer fiscal.
+
+### Analyse
+
+#### Sur le couple AB
+
+Institué pat la loi du 15 novembre 1999 (Loi n°99-944 du 15 novembre 1999 relative au pacte civil
+de solidarité), le PACS est « un contrat conclu par deux personnes physiques majeures, de sexe
+différent ou de même sexe, pour organiser leur vie commune » ([article 515-1 du Code
+Civil](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006428463)).
+
+Les personnes liées par un pacte civile de solidarité sont soumis au principe de l’imposition
+commune posée par le troisième alinéa du 1 de l’article 6 du CGI : « Les partenaires liés par un
+pacte civil de solidarité définit par l’article 515-1 du Code Civil font l’objet pour les revenus
+du premier alinéa, d’une imposition commune. L’imposition est établie à leur deux noms ».
+
+Aux termes du troisième alinéa du 1 de l’article 6 du CGI, les contribuables partenaires de PACS
+sont imposés communément et ce dès l’année de la conclusion du PACS
+([BOI-IR-CHAMP-20-10](https://bofip.impots.gouv.fr/bofip/348-PGP.html/identifiant%3DBOI-IR-CHAMP-20-10-20170406)).
+Toutefois, ces partenaires peuvent opter pour l’imposition distincte dans les cas suivants :
+
+- Le  5 de l’article 6 du CGI prévoit que les partenaires de PACS peuvent opter pour l’imposition
+  distincte l’année de la conclusion du partenariat. Le cas échéant, ils seront imposés
+  distinctement sur leur revenus personnels ainsi que sur la quotte part de leur revenus communs.
+
+- Aux termes de la combinaison des 8 et 5 de l’article 6 du CGI, en cas de conclusion d’un PACS
+  par un conjoint survivant l’année même du décès du conjoint partenaire et d’option pour
+  l’imposition distincte, il faut établir trois impositions :
+
+  - La première sera l’imposition commune au nom du conjoint décédé et du conjoint survivant.
+
+  - La seconde imposition sera séparée sera au nom du conjoint survivant et comprendra les revenus
+    postérieurs à la période du décès.
+
+  - Enfin, une dernière imposition séparée au nom du conjoint survivant et de son nouveau
+    partenaire.
+
+#### Sur la question des jumeaux Paul et Louis
+
+Le couple A et B a accueilli les jumeaux Paul et Louis en 2021. En France, la majorité (et donc la
+capacité juridique) est fixée à 18 ans (article 414 du Code Civil). Avant leurs 18 ans, les
+enfants sont sous la garde de leurs parents, titulaires de l’autorité parentale. Cette minorité a
+également une incidence fiscale. En effet, le 1 de l’article 6 du CGI dispose que « chaque
+bénéficiaire est imposable à l’impôt sur le revenus tant en raison de ses bénéfices et revenus
+personnels que de ceux de ses enfants et des personnes considérés comme étant à sa charge au sens
+des articles 196 et 196 A Bis du CGI ». L’article 196 expliquant que les enfants de moins de 18
+ans sont à la  charge de leurs parents.
+
+#### Sur le nombre de parts du foyer fiscal AB
+
+Aussi, de combien de parts est composé le foyer fiscal A et B ?
+
+Le I de l’article 197 du CGI institue le barème progressif suivant lequel est
+calculé l’impôt sur le revenu. Ce barème est fixé en partant du postulat
+suivant : «  Le montant de l’impôt est proportionné aux facultés contributives
+des contribuables »
+([BOI-IR-LIQ-10](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant%3DBOI-IR-LIQ-10-20200206)).
+Néanmoins, pour l’imposition de leur foyer, cette faculté est variable. Afin
+de pallier cette variabilité, le système du quotient familial a été mis en
+place (article 193 du CGI). Ce système « consiste à diviser le revenu
+imposable en un certain nombre de parts »
+([BOI-IR-LIQ-10](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant%3DBOI-IR-LIQ-10-20200206)).
+Ce nombre de parts à calculer pour déterminer le quotient familial est
+précisément fixé aux articles 194 et 195 du CGI.
+
+### Application au cas d'espèce
+
+#### Sur le couple AB
+
+Monsieur A et Mme B sont partenaires de PACS depuis 2019 . Nous sommes en
+2022, comme ce n’est pas l’année de la conclusion de leur PACS, ils ne peuvent
+demander une imposition séparée. Ils sont donc imposés communément au regard
+des dispositions du troisème alinéa du 1 de l’article du CGI. Aux termes des
+dispositions de l’article 194, le nombre de parts qu’un couple marié ou pacsé
+représente est de deux. Donc le couple AB = 2 parts.
+
+#### Sur les enfants
+
+Pour ce qui est des enfants. L’article 196 du CGI dispose que les enfants de
+moins de 18 ans sont réputés être à la charge de leurs parents. Le premier
+alinéa du 1 de l’article 6 dispose qu’en tant qu’enfants à charge ils font
+partie du foyer  fiscal de leurs parents et donc doivent être imposés avec
+eux.
+
+### Résultat
+
+Aux termes de l’article 194 un couple pacsé avec 2 enfants représente 3 parts.
+
+```catala
+déclaration champ d'application NombreDeParts1:
+  résultat sortie contenu IR.NombreDeParts
+
+champ d'application NombreDeParts1:
+  définition sortie égal à
+    (résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
+        -- pacsées: vrai
+        -- nombre_enfants_à_charge_mineurs_et_non_mariés: 2
+      }).sortie
+      -- année_revenus : 2022
+    })
+```
+
+Le test ci-dessus doit donner le résultat suivant à l'exécution.
+
+```catala-test-inline
+$ catala test-scope NombreDeParts1 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.NombreDeParts {
+│     -- nombre_de_parts: 3,0
+│     -- abattement: 0,00 €
+│   }
+└─
+```
+
+## Cas de test 2
+
+### Énoncé
+
+Monsieur et Madame B sont mariés. Monsieur B est titulaire de la carte
+mobilité inclusion mention «invalidité», Madame B reçoit une pension pour
+invalidité pour accident du travail de 10%. Le couple a trois enfants
+mineurs.
+
+```catala
+déclaration champ d'application NombreDeParts2:
+  résultat sortie contenu IR.NombreDeParts
+
+champ d'application NombreDeParts2:
+  définition sortie égal à
+    (résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
+        -- mariées: vrai
+        -- nombre_enfants_à_charge_mineurs_et_non_mariés: 3
+        -- titulaire_carte_invalidité_CMI_invalidité_40_pourcent: vrai
+      }).sortie
+      -- année_revenus : 2022
+    })
+```
+
+### Analyse
+
+#### Sur la question des époux B
+
+Le mariage est régi par le titre V du Code Civil. Afin de pouvoir se marier, les deux époux
+doivent être des personnes physiques, majeures (sauf cas particuliers), capables et consentants.
+
+Dans le mariage B, les deux époux sont réputés invalides.
+
+##### Monsieur B
+
+Monsieur B est titulaire de la carte
+mobilité inclusion (CMI) mention «invalidité». Prévue par l’article L 241-3 du code de l’action
+sociale et des familles, elle est délivrée par le Président du Conseil Départemental. Lorsque la
+mention «invalidité» figure sur la CMI,  Cela signifie que le titulaire présente un taux
+d’incapacité d’au moins 80% ou qu’il est «absolument incapable d’exercer une profession» et est
+«dans l’obligation d’avoir recours à l’assistance d’une tierce personne pour effectuer les actes
+ordinaires de la vie» (3° de l’[article L 341-1 du Code de la Sécurité Sociale](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006742597)).
+
+##### Madame B
+
+ Madame B perçoit quant à
+elle une pension pour accident du travail de 10%. Le 1er alinéa de l’article L 434-1 du Code de la
+Sécurité Sociale dispose qu’ «une indemnité en capital est attribuée à la victime d’un accident du
+travail atteinte d’une incapacité permanente inférieure à un pourcentage déterminé». Aux termes de
+l’article L 434-2 ce taux d’incapacité «permanente est déterminé d’après la nature de l’infirmité,
+l’état général, les facultés physiques et mentales de la victime ainsi que d’après ses aptitudes
+et sa qualification professionnelle». Et l’article d’ajouter que le taux est déterminé en fonction
+d’un barème. Ce taux va de 10% ([articles R 434-1-1 à R 434-1-3 du Code de la Sécurité Sociale](https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006173455/)) à 80%
+([article R 434-3](https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006173455/)) en passant par 50%
+([article R 434-2-1](https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006173455/)).
+
+####  Sur les enfants B
+
+Enfin Monsieur
+et Madame B ont trois enfants mineurs. Le premier alinéa de l’article 388 du Code Civil  fixe la
+majorité à dix-huit ans : «Le mineur est l'individu de l'un ou l'autre sexe qui n'a point encore
+l'âge de dix-huit ans accomplis.». Avant cet âge, les mineurs (sauf émancipation) ne sont pas
+capables. Leurs parents, en tant que responsables légaux, sont titulaire de l’autorité parentale.
+
+#### Sur la question de l’imposition du foyer fiscal B.
+
+L’INSEE [définit le foyer fiscal](https://www.insee.fr/fr/metadonnees/definition/c1735) comme «
+l’ensemble des personnes inscrites sur une même déclaration de revenus ».
+
+Considérant que si le 1 de l’article 6 du CGI pose le principe d’imposition commune tant pour les
+couples mariés que pour leurs enfants, le 5 et le 8 de l’article 6 du CGI atténuent ce principe.
+En effet, les époux peuvent opter pour l’imposition distincte de leurs revenus perçus l’année du
+mariage.
+
+Ainsi, chacun des époux sera distinctement imposé sur ses revenus personnels mais également sur «
+la quote-part des revenus communs lui revenant »
+([BOI-IR-CHAMP-20-20-20](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=BOI-IR-CHAMP-20-20-20-20170621)).
+De plus en cas de mariage du conjoint survivant l’année même du décès de son ex-conjoint et
+d’option pour l’imposition distincte trois impositions seront établies
+([BOI-IR-CHAMP-20-20-20](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=-20170621)).
+Enfin, du fait des dispositions combinées du 1 de l’article 6 du CGI et de l’article 196 du même
+code, les enfants de moins de dix-huit ans sont considérés comme à charge de leurs parents et donc
+imposés avec eux. Néanmoins, conformément aux dispositions du 2 de l’article 6 du CGI, le
+contribuable peut, sur option expresse
+([BOI-IR-CHAMP-20-20-20](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=BOI-IR-CHAMP-20-20-20-20170621#Imposition_distincte_des_en_11)
+paragraphes 140 et suivants), demander une imposition distincte pour ses enfants mineurs. Il peut
+le faire lorsque ces derniers perçoivent des revenus issus de leur travail ou disposent d’une
+fortune propre. En cas d’option pour l’imposition distincte des enfants mineurs, le foyer fiscal
+parental perd son droit de « comprendre son enfant au nombre des personnes à charge à retenir pour
+la détermination du quotient familial »
+([BOI-IR-CHAMP-20-20-20](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=BOI-IR-CHAMP-20-20-20-20170621#Imposition_distincte_des_en_11)
+paragraphes 140 et suivants). Ce système du quotient familial permet de répondre au postulat selon
+lequel le montant de l’impôt est « proportionné aux facultés contributives des contribuables »
+([BOI-IR-LIQ-10](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant%3DBOI-IR-LIQ-10-20200206)).
+Ce système se matérialise par la division du revenu imposable de chaque contribuable par un
+certain nombre de parts. Ce nombre de parts à prendre en compte pour le calcul du quotient
+familial est fixé par les articles 194 et 195 du CGI.
+
+### Sur l’application du droit aux faits
+
+
+#### La question du nombre de parts du couple marié et des enfants.
+
+Sans précisions supplémentaires, le couple ne s’est pas marié au cours de l’année 2022. Ainsi, aux
+termes du deuxième alinéa du 1 de l’article 6 du CGI (« Sauf application des dispositions du 4 et
+du second alinéa du 5, les personnes mariées sont soumises à une imposition commune pour les
+revenus perçus par chacune d’entre elles et ceux de leurs enfants et des personnes à charge
+mentionnées au premier alinéa ; cette imposition est établie au nom des époux »), les époux B sont
+imposés communément et ce avec leurs enfants.
+
+Donc, aux termes de l’article 194, le couple marié représente 2 parts. Les deux premiers enfants
+représentent 0,5 parts chacun. Le troisième et dernier enfant représente une part.
+
+#### La question des invalidités de Monsieur et Madame B.
+
+Concernant le cas de Monsieur B : Le 3  de l’article 195 dispose que si l’un des époux est
+titulaire de la carte mobilité inclusion mention « invalidité », le quotient familial du foyer est
+augmenté d’une demi part.
+
+Concernant le cas de Madame B : Le 4 de l’article 195 prévoit que si les deux époux sont invalides
+le quotient familial est augmenté d’une part. Le d. dispose que pour les contribuables touchant
+une pension d’invalidité pour accident du travail, le seuil pour bénéficier d’une demi-part
+supplémentaire ou pour répondre au critère du 4 de l’article 195,  le taux de la pension
+d’invalidité doit être de 40 %. Or, Madame B ne perçoit une pension d’invalidité pour accident du
+travail que de 10 %. Elle ne peut donc prétendre à une augmentation du quotient familial.
+
+Aussi le nombre de part du foyer fiscal est de :
+
+- Couple marié : + 2 parts
+
+- Invalidité de Monsieur B : +0,5 parts
+
+- Les deux premiers enfants mineurs : +(0,5x2) soit +1 part.
+
+- Le troisième enfant mineur : +1 part
+
+### Résultat
+
+Le nombre de parts du foyer est donc de 4,5 parts.
+
+Le test ci-dessus doit donner le résultat suivant à l'exécution.
+
+```catala-test-inline
+$ catala test-scope NombreDeParts2 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.NombreDeParts {
+│     -- nombre_de_parts: 4,5
+│     -- abattement: 0,00 €
+│   }
+└─
+```
+
+## Cas de test 3
+
+### Énoncé
+
+Madame R est veuve de guerre. Suite au décès de son mari, elle touche une
+pension de veuve de guerre. De plus, madame R est titulaire de la CMI mention
+invalidité. En outre, feu monsieur R et Madame R ont eu cinq enfants :
+
+- Amélie, 24 ans. Amélie est étudiante en astrophysique. Amélie est divorcée de
+  Casimir et ils ont un enfant, André, qui vit une semaine sur deux chez sa
+  mère. Amélie et son fils sont rattachés au foyer fiscal de Madame R.
+
+- Gaspard, 22 ans. Gaspard travaille depuis deux ans dans une librairie
+  bordelaise.
+
+- Appia, 20 ans étudiante en droit.
+
+- Etienne, 18 ans le 10 mai 2022.
+
+- Matthias, 3 ans, vient de rentrer en maternelle.
+
+
+```catala
+déclaration champ d'application NombreDeParts3:
+  résultat sortie contenu IR.NombreDeParts
+
+champ d'application NombreDeParts3:
+  définition sortie égal à
+    (résultat de Interface.IR.NombreDeParts avec {
+      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
+        -- veuve: vrai
+        -- pensionné_veuve_de_guerre: vrai
+        -- nombre_enfants_à_charge_mineurs_et_non_mariés: 1
+        -- nombre_enfants_majeurs_célibataires_sans_enfant: 2
+        -- nombre_enfants_majeurs_mariés_ou_chargés_famille: 1,5
+      }).sortie
+      -- année_revenus : 2022
+    })
+```
+
+### Analyse
+
+#### Sur la question des enfants majeurs du foyer R
+
+Sur la question des enfants majeurs célibataires sans charges de famille.
+
+
+L'article [414 du Code
+Civil](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006427400)
+fixe la majorité à dix-huit ans. A partir de cet âge, le majeur est "_capable
+d'exercer les droits dont il a la jouissance_".
+
+le 3 de l'article 6 du CGI pose le principe de l'imposition propre à partir de
+la majorité. Ce même texte permet néanmoins aux enfants majeurs de demander
+leur rattachement aux foyer fiscal de leurs parents. Afin de pouvoir
+bénéficier de ce rattachement, l'enfant majeur doit satisfaire certaines
+conditions: soit avoir moins de 21 ans, soit moins de 25 ans et poursuivant
+des études, soit effectuer un service national.
+
+Au cas particuliers des enfants devenus majeurs durant l'année
+([BOI-IR-LIQ-10-10-10-20](https://bofip.impots.gouv.fr/bofip/2175-PGP.html/identifiant%3DBOI-IR-LIQ-10-10-10-20-20140502),
+paragraphes 190 à 200). Si l'enfant ne demande pas sont rattachement au foyer
+fiscal de ses parents, alors deux impositions seront établies:
+
+- Une première allant du 01/01/N au jour de la majorité: l'enfant étant mineur
+  il est rattaché au foyer fiscal de ses parents.
+
+- Une seconde allant du jour de sa majorité au 31/12/N: il est "_tenu de
+  déclarer les revenus qu'il a perçus depuis la date de sa majorité_"
+  ([BOI-IR-LIQ-10-10-10-20](https://bofip.impots.gouv.fr/bofip/2175-PGP.html/identifiant%3DBOI-IR-LIQ-10-10-10-20-20140502),
+  paragraphe 190 alinéa 2).
+
+Lorsque l'enfant majeur célibataire sans charges de famille est rattaché au
+foyer fiscal parental, il "_ouvre droit aux mêmes majorations de quotient
+familial que les mineurs_"
+([BOI-IR-LIQ-10-10-10-20](https://bofip.impots.gouv.fr/bofip/2175-PGP.html/identifiant%3DBOI-IR-LIQ-10-10-10-20-20140502),
+paragraphe 160 alinéa 2).
+
+Sur le cas des enfants majeurs avec charges de famille.
+
+Par principe ces enfants sont vus comme ayant fondé leur propre foyer. Aussi,
+ils sont imposables "_sous leur propre responsabilité à hauteur des revenus
+qu'ils perçoivent_"
+([BOI-IR-LIQ-10-10-10-20](https://bofip.impots.gouv.fr/bofip/2175-PGP.html/identifiant=BOI-IR-LIQ-10-10-10-20-20140502#Contribuables_ayant_des_enf_11),
+paragraphe 270). Afin de bénéficier du rattachement au foyer fiscal de leurs
+parents, les majeurs chargés de famille doivent satisfaire eux aussi plusieurs
+conditions:
+
+- Une condition d'âge. C'est la même que celle requise pour les majeurs
+  célibataires sans charges de famille.
+
+- Une condition tenant à leur situation de famille: le majeur doit être:
+
+- -> Soit marié ou pacsé avec ou sans enfants.
+
+- -> Soit célibataire, veuf ou divorcé avec des enfants à charge.
+
+Aux termes de l'article 196B du CGI, le rattachement de l'enfant majeur chargé
+de famille n'entraîne pas de majoration du quotient familial mais un
+abattement de 6368 euros par personne rattachée.
+
+Si les enfants du majeur rattaché vivent en résidence alternée, alors
+l'abattement de l'enfant sera divisé par deux.
+
+
+#### Sur la question des enfants mineurs.
+
+L'[article 388 du Code
+Civil](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032207650/2023-06-30)
+dispose que le mineur est la personne qui n'a pas encore dix-huit ans. Du fait
+de cette qualité, le mineur est réputé incapable. Cette minorité emporte
+également des conséquences fiscales.
+
+Le 1 de l'article 6 du CGI (combiné avec les dispositions de l'article 196),
+dispose que les enfants mineurs sont pas principes rattachés au foyer fiscal
+de leurs parents.
+
+Il est cependant possible que l'enfant mineur soit imposé distinctement de ses
+parents. Le 2 de l'article 6 du CGI le permet lorsque soit l'enfant tire des
+revenus de son travail soit dispose d'une fortune personnelle.
+
+L'imposition distincte du mineur doit se faire sur demande expresse de ses
+parents. Sur ce point, le Conseil d'Etat (CE 25 juillet 1924 n°64245) précise
+que la demande doit se faire "_dans une note jointe à sa déclaration et
+déisgner nommément les personnes concernées_"
+([BOI-IR-CHAMP-20-20-20](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=BOI-IR-CHAMP-20-20-20-20170621#Imposition_distincte_des_en_11),
+paragraphe 150).
+
+#### Sur la question de la veuve R.
+
+Sur la question du veuvage de guerre.
+
+le c du 1 de l'article 195 du code général des impôts accorde une majoration
+d'une demi part de quotient familial aux personnes qui disposent "_à titre de
+veuve d'une pension prévue par les dispositions du code des pensions
+militaires d'invalidité et des victimes de guerre reproduisant les lois du 31
+mars et du 24 juin 1919_".
+
+Et le BOFIP de préciser que la majoration du quotient familial instituée par
+le c du 1 de l'article 195 du CGI bénéficie aussi aux "_veuves de guerre des
+fonctionnaires ayant opté pour la pension civile exceptionnelle_"
+([BOI-IR-LIQ-10-20-20-20](https://bofip.impots.gouv.fr/bofip/2136-PGP.html/identifiant%3DBOI-IR-LIQ-10-20-20-20-20210701#IV._Majoration_pour_les_titu_18),
+paragraphe 40).
+
+Sur le cas du régime d'imposition des veufs et veuves.
+
+L'article 194 du CGI dispose que les contribuables veufs ou veuves avec au
+moins un enfant à charge bénéficient d'une majoration de quotient familial
+d'1.5 parts.
+
+### Application au cas d’espèce
+
+L’[INSEE définit le foyer
+fiscal](https://www.insee.fr/fr/metadonnees/definition/c1735) comme étant
+«_l’ensemble des personnes figurant sur une même déclaration de revenus_».
+
+Les contribuables souscrivant une même déclaration de revenus permettent une
+majoration du quotient familial de leur foyer fiscal. Le quotient familial est
+la démonstration du postulat selon lequel l’impôt sur le revenu est calculé
+proportionnellement « _aux facultés contributives des contribuables_ »
+([BOI-IR-LIQ-10](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant%3DBOI-IR-LIQ-10-20200206)).
+
+Ce système se matérialise par la division du revenu imposable de chaque
+contribuable par un certain nombre de parts. Ce nombre de parts à prendre en
+compte est fixé aux articles 194 et 195 du CGI :
+
+#### Nombre de parts pour Madame R et son enfant mineur
+
+Madame R veuve avec au moins un enfant à charge, l’article 194 dispose que dans
+ce cas le nombre de parts est de 2,5.
+
+Madame R veuve, percevant une pension de veuve de guerre : aux termes du c du 1
+de l’article 195 du CGI, le quotient familial du foyer R est majoré de 0,5
+parts.
+
+#### Aussi, Madame R et Matthias, enfant mineur de 3 ans représentent une majoration de quotient familial de 3 parts.
+
+#### Sur le cas d’Etienne, majeur au cours de l’année 2022.
+
+En partant du postulat, qu’en tant que lycéen Etienne souhaite être rattaché au
+foyer fiscal de sa mère, alors il rentre dans la condition d’âge posée au 3 du
+CGI.
+En conséquence, il est compté comme un enfant mineur et a donc droit aux mêmes
+majoration de quotient familial. Aux termes de l’article 194 du CGI, étant
+rattaché au foyer fiscal de sa mère, **Etienne majore le quotient familial de
+0,5 parts.**
+
+#### Sur le cas d’Appia, 20 ans étudiante en droit.
+
+Voir le cas d’Etienne.
+
+#### En rajoutant Appia, le foyer fiscal R compte 0,5 parts de plus.
+
+
+#### Sur le cas de Gaspard, 22 ans et travaillant dans une librairie.
+
+Aux termes du 3 de l’article 6 du CGI, seuls les enfants de moins de 21 ans ou
+de moins de 25 ans poursuivant des études ou effectuant un service national
+peuvent demander leur rattachement au foyer fiscal de leur parents.
+
+Or, Gaspard a plus de 21 ans et il travaille, il ne remplit donc pas les
+conditions requises et ne saurait donc être rattaché au foyer fiscal de sa mère.
+
+#### Il ne faut donc pas compter Gaspard dans le calcul du nombre de parts.
+
+#### Sur le cas d’Amélie, 24 ans étudiante, divorcée et mère d’un enfant en résidence alternée.
+
+Aux termes du 3 de l’article 6 du CGI précédement énoncés, Amélie peut
+demander son rattachement au foyer fiscal de sa mère.
+
+Néanmoins, par application des dispositions du deuxième alinéa de l’[article
+196B du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046860788), si
+elle peut demander son rattachement au foyer fiscal de sa mère pour elle et
+son fils, cela ne majore pas le quotient familial mais donne lieu à un
+abattement de 6 368€ « _par personne ainsi prise en charge _».
+
+L’article précise en outre que si l’enfant de la personne rattaché est réputé
+« être à la charge égale de l’un et l’autre de leurs parents », l’abattement
+auquel il a droit doit être divisé de moitié.
+
+#### Ainsi l’abattement pour amélie et son fils est de 6 368 + (6368/2) soit  9 552 euros.
+
+#### En conséquence le foyer fiscal R se compose de 4 parts et d’un abattement de 9 552 €.
+
+### Résultat
+
+Le nombre de parts du foyer est donc de 4,5 parts.
+
+```catala-test-inline
+$ catala test-scope NombreDeParts3 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.NombreDeParts {
+│     -- nombre_de_parts: 4,0
+│     -- abattement: 9 552,00 €
+│   }
+└─
+```
+
+## Cas de test 4 (n°1 du POC 2023)
+
+Un couple pacsé avec un enfant en résidence alternée (foyer fiscal P).
+
+```catala
+déclaration champ d'application NombreDeParts4:
+  résultat sortie contenu IR.NombreDeParts
+
+champ d'application NombreDeParts4:
+  définition sortie égal à
+    (résultat de Interface.IR.NombreDeParts avec {
+      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
+        -- pacsées: vrai
+        -- nombre_enfants_à_charge_résidence_alternée: 1
+      }).sortie
+      -- année_revenus : 2022
+    })
+```
+
+### A - Sur le couple pacsé.
+
+Institué par la [loi du 15 novembre 1999 relative au pacte civil de
+solidarité](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000761717), le
+PACS  " _est un contrat conclu par deux personnes physiques majeures, de sexe
+différent ou de même sexe, pour organiser leur vie commune. _" ([article 515-1
+du Code
+Civil](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006428463)).
+
+Les personnes liées par un pacte civil de solidarité sont soumises au principe
+de l'imposition commune posé par le troisième alinéa du 1 de l'[article 6 du
+Code Général des
+Impôts](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369) :
+"_Les partenaires liés par un pacte civil de solidarité défini à l'article 515-1
+du code civil font l'objet, pour les revenus visés au premier alinéa, d'une
+imposition commune. L'imposition est établie à leurs deux noms._". De plus les
+partenaires de pacs connaissent cette imposition commune dès l'année de la
+conclusion du PACS
+([BOI-IR-CHAMP-20-10](https://bofip.impots.gouv.fr/bofip/348-PGP.html/identifiant=BOI-IR-CHAMP-20-10-20170406#Principe_de_limposition_com_20),
+paragraphe 30).
+
+Toutefois, ces derniers peuvent opter pour une imposition distincte dans les cas
+suivants:
+
+* Le 5 de l'article 6 du CGI prévoit que les partenaires de PACS peuvent opter
+  pour l'imposition distincte l'année de la conclusion du PACS. Le cas échéant,
+  ils seront imposés distinctement sur leurs revenus personnels ainsi que sur la
+  quote-part de leurs revenus communs.
+* Aux termes de la combinaison des 8 et 5 de l'article 6 du même code, en cas de
+  conclusion d'un PACS par un conjoint survivant l'année même du décès du
+  conjoint partenaire et d'option pour l'imposition distincte. Dans ce cas, il
+  faut établir trois impositions:
+    * La première sera l'imposition commune au nom du conjoint décédé et du
+      conjoint survivant.
+    * La seconde imposition sera séparée et sera au nom du conjoint décédé et du
+      conjoint survivant. Elle comprendra les revenus postérieurs à la période
+      du décès.
+    * Enfin, une dernière imposition séparée au nom du conjoint survivant et de
+      son nouveau partenaire.
+
+### B - Sur la question de l'enfant à charge en résidence alternée.
+
+Ici, deux cas de figure se présentent:
+
+* Soit l'enfant est mineur: En France, la majorité est fixée à dix-huit ans
+  ([article 414 du Code
+  Civil](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006136230/)).
+  Avant leurs dix-huit ans, les mineurs sont sous la responsabilité de leurs
+  parents, titulaires de l'autorité parentale. Cette minorité a une incidence
+  fiscale: en effet, le [1 de l'article 6 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+  dispose que "_Chaque contribuable est imposable à l'impôt sur le revenu, tant
+  en raison de ses bénéfices et revenus personnels que de ceux de ses enfants et
+  des personnes considérés comme étant à sa charge au sens des articles 196 et
+  196 A bis_ ". L'[article
+  196](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006303122)
+  expliquant que les enfants mineurs sont à la charge de leurs parents.
+* Soit l'enfant est majeur: le 3 de l'article 6 du CGI pose le principe de
+  l'imposition propre à partir de la majorité. Cependant, ce même texte permet
+  aux enfants majeurs de demander leur rattachement au foyer fiscal de leurs
+  parents. Afin de pouvoir bénéficier de ce rattachement, l'enfant majeur doit
+  satisfaire certaines conditions:
+    * Soit avoir moins de vingt et un ans.
+    * Soit avoir moins de vingt cinq ans et poursuivre des études.
+    * Soit, quelque soit l'âge, effectuer un service national. Dans tous les
+cas, la loi permet une majoration du quotient familial du fait de l'enfant à
+charge. Cette majoration sera cependant atténuée du fait de la résidence
+alternée de l'enfant.
+
+### C - Application au cas d'espèce
+
+L'[INSEE définit le foyer
+fiscal](https://www.insee.fr/fr/metadonnees/definition/c1735) comme étant "
+l'ensemble des personnes inscrites sur une même déclaration de revenus".
+
+Les contribuables souscrivant une même déclaration de revenus bénéficient d'une
+majoration du quotient familial de leur foyer fiscal. Le quotient familial est
+la démonstration du postulat selon lequel l'impôt sur le revenu est calculé
+proportionnellement "aux facultés contributives des contribuables"
+([BOI-IR-LIQ-10](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant=BOI-IR-LIQ-10-20200206,
+paragraphe 1)).
+
+ce système se matérialise par la division du revenu imposable par un certain
+nombre de parts. Ce nombre de parts à prendre en compte est fixé aux articles
+194 et 195 du CGI.
+
+#### 1 - Sur le couple pacsé.
+
+A défaut de précisions contraires, le postulat sera que le couple ne s'est pas
+pacsé en 2022. Ainsi, ils ne peuvent pas demander d'imposition séparée.
+
+Aux termes des dispositions du [I de l'article 194 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781/2023-10-03),
+le nombre de parts qu'un couple marié ou pacsé représente est de deux.
+
+#### 2 - Sur la question de l'enfant à charge en résidence alternée.
+
+Ici, la question de la majorité de l'enfant à charge importe peu. En effet, un
+enfant majeur sans charge de famille ouvre "_droit aux mêmes majorations de
+quotient familial que les enfants mineurs_ "
+([BOI-IR-LIQ-10-10-10-20](https://bofip.impots.gouv.fr/bofip/2175-PGP.html/identifiant=BOI-IR-LIQ-10-10-10-20-20140502),
+paragraphe 160).
+
+Aussi, aux termes du [I de l'article 194 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781/2023-10-03)
+: "_Lorsque les enfants sont réputés être à la charge égale de chacun des
+parents, ils ouvrent droit à une majoration de :
+
+a) 0,25 part pour chacun des deux premiers et 0,5 part à compter du troisième,
+lorsque par ailleurs le contribuable n'assume la charge exclusive ou principale
+d'aucun enfant ;_".
+
+Soit une majoration de 0.25 par pour l'enfant à charge.
+
+**Aussi, le quotient familial du foyer fiscal P sera de 2.25 parts.**
+
+```catala-test-inline
+$ catala test-scope NombreDeParts4 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.NombreDeParts {
+│     -- nombre_de_parts: 2,25
+│     -- abattement: 0,00 €
+│   }
+└─
+```
+
+## Cas de test 5 (n°2 du POC)
+
+Un couple marié avec trois enfants à charge dont l'un est handicapé et en
+résidence alternée.
+
+```catala
+déclaration champ d'application NombreDeParts5:
+  résultat sortie contenu IR.NombreDeParts
+
+champ d'application NombreDeParts5:
+  définition sortie égal à
+    (résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
+        -- mariées: vrai
+        -- nombre_enfants_à_charge_mineurs_et_non_mariés: 2
+        # Attention ici il faut compter l'enfant 2 fois parce que la case
+        # CI dit "alternée DONT invalides"...
+        -- nombre_enfants_à_charge_résidence_alternée: 1
+        -- nombre_enfants_à_charge_résidence_alternée_invalides: 1
+      }).sortie
+      -- année_revenus : 2022
+    })
+```
+
+
+## Calcul du nombre de parts du foyer fiscal
+
+### Sur le couple marié
+
+Le mariage est régi par le [titre
+V](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006117710/)
+du Code Civil. Afin de pouvoir se marier, les deux époux doivent être des
+personnes physiques, majeures, capables et consentants.
+
+Le mariage emporte des conséquences sur l'imposition du couple.
+
+le 1 de l’[article 6 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+pose le principe d’imposition commune pour les couples mariés, le 5 et le 8 de
+l’article 6 du CGI atténuent ce principe.
+
+En effet, les époux peuvent opter pour l’imposition distincte de leurs revenus
+perçus l’année du mariage.
+
+Ainsi, chacun des époux sera distinctement imposé sur ses revenus personnels
+mais également
+[sur](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=BOI-IR-CHAMP-20-20-20-2017062)
+«_la quote-part des revenus communs lui revenant_ ».
+
+De plus en cas de mariage du conjoint survivant l’année même du décès de son
+ex-conjoint et d’option pour l’imposition distincte trois impositions seront
+[établies](https://bofip.impots.gouv.fr/bofip/504-PGP.html/identifiant=-20170621).
+
+### Sur la question des deux enfants à charge en résidence principale
+
+Ici, deux cas de figure se présentent:
+
+* Soit le(s) enfants sont mineurs: En France, la majorité est fixée à dix-huit
+  ans ([article 414 du Code
+  civil](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006136230/).
+  La minorité a une incidence fiscale: en effet, le [1 de l'article 6 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369))
+  dispose que "*Chaque contribuable est imposable à l'impôt sur le revenu,
+  tant en raison de ses bénéfices et revenus personnels que de ceux de ses
+  enfants et des personnes considérés comme étant à sa charge au sens des
+  articles 196 et 196 A bis.* ". L'[article
+  196](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006303122)
+  expliquant que les enfants mineurs sont à la charge de leurs parents.
+* Soit le(s) enfant(s) sont majeurs: le [3 de l'article 6 du
+  CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000041471369)
+  pose le principe de l'imposition propre à partir de la majorité. Cependant,
+  ce même texte permet aux enfants majeurs de demander leur rattachement au
+  foyer fiscal de leurs parents. Afin de pouvoir bénéficier de ce
+  rattachement, l'enfant majeur doit satisfaire certaines conditions:
+  * Soit avoir moins de vingt et un ans.
+  * Soit avoir moins de vingt cinq ans et poursuivre des études.
+  * Soit, quelque soit l'âge, effectuer un service national.
+
+Dans tous les cas, la loi permet une majoration du quotient familial du fait
+des enfants à charge.
+
+### Sur la question de l'enfant à charge handicapé et en résidence alternée
+
+Aux termes de l'article [196 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006303122),
+les enfants infirmes sont considérés comme étant à la charge de leurs parents
+quelque soit leur âge. Cependant, le fait que l'enfant soit en résidence
+alternée atténue les effets de cette charge sur l'imposition des parents.
+
+### Application du droit au faits
+
+L'[INSEE](https://www.insee.fr/fr/metadonnees/definition/c1735) définit le
+foyer fiscal comme étant " _l'ensemble des personnes inscrites sur une même
+déclaration de revenus._"
+
+Les contribuables souscrivant une même déclaration de revenus bénéficient
+d'une majoration du quotient familial de leur foyer fiscal. Le quotient
+familial est la démonstration du postulat selon lequel l'impôt sur le revenu
+est calculé
+[proportionnellement](https://bofip.impots.gouv.fr/bofip/6516-PGP.html/identifiant=BOI-IR-LIQ-10-20200206)
+"_aux facultés contributives des contribuables_".
+
+ce système se matérialise par la division du revenu imposable par un certain
+nombre de parts. Ce nombre de parts à prendre en compte est fixé aux articles
+194 et 195 du CGI.
+
+#### Sur le couple marié
+
+A défaut de précisions contraires, le postulat sera que le couple ne s'est pas
+marié en 2022. Ainsi, ils ne peuvent pas demander d'imposition séparée.
+
+Aux termes des dispositions du [I de l'article 194 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781/2023-10-03),
+le nombre de parts qu'un couple marié ou pacsé représente est de deux.
+
+#### Sur la question des deux enfants en résidence principale
+
+Ici, la question de la majorité des enfants à charge importe peu. En effet, un
+enfant majeur sans charge de famille
+[ouvre](https://bofip.impots.gouv.fr/bofip/2175-PGP.html/identifiant=BOI-IR-LIQ-10-10-10-20-20140502)
+"_droit aux mêmes majorations de quotient familial que les enfants mineurs_".
+
+Ainsi, aux termes de l'[article 194 du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000033817781),
+chaque enfant à charge en résidence principale représente une demi-part de
+quotient familial.
+
+#### Sur la question de l'enfant handicapé en résidence alternée
+
+Sans précision supplémentaire, il sera considéré que l'enfant est mineur et
+titulaire de la carte mobilité inclusion.
+
+Aux termes de l'article 194 du CGI, : "Lorsque les enfants sont réputés être à
+la charge égale de chacun des parents, ils ouvrent droit à une majoration de :
+
+a) 0,25 part pour chacun des deux premiers et 0,5 part à compter du troisième,
+lorsque par ailleurs le contribuable n'assume la charge exclusive ou
+principale d'aucun enfant ;
+
+b) 0,25 part pour le premier et 0,5 part à compter du deuxième, lorsque par
+ailleurs le contribuable assume la charge exclusive ou principale d'un enfant
+;
+
+c) 0,5 part pour chacun des enfants, lorsque par ailleurs le contribuable
+assume la charge exclusive ou principale d'au moins deux enfants.
+"_Considérant que l'enfant en résidence alternée doit être pris en compte dans
+le calcul du quotient familial après les enfants à charge en résidence
+principale_",
+[l'enfant](https://bofip.impots.gouv.fr/bofip/2028-PGP.html/identifiant%3DBOI-IR)
+en résidence alternée représente 0.5 parts.
+
+De plus, étant titulaire de la CMI mention invalidité, le [2 de l'article 195
+du
+CGI](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046860994/2023-12-07)
+prévoit une majoration supplémentaire d'un quart de part.
+
+**Aussi, le nombre de parts du quotient familial est de 2 + (0.5x2)+0.5+0.25 =
+3.75 parts**
+
+```catala-test-inline
+$ catala test-scope NombreDeParts5 --disable-warnings
+┌─[RESULT]─
+│ sortie =
+│   Impot_revenu.NombreDeParts {
+│     -- nombre_de_parts: 3,75
+│     -- abattement: 0,00 €
+│   }
+└─
+```

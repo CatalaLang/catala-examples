@@ -1,0 +1,123 @@
+> Module Oracles externe
+
+# Imputation des déficits antérieurs
+
+```catala-metadata
+déclaration structure DéficitAntérieur:
+  donnée année contenu entier
+  donnée valeur contenu argent
+
+# Cette fonction prend en argument un revenu déclaré et une liste de déficits
+# antérieurs et va moralement imputer les déficits antérieurs sur le revenu
+# déclaré. ELle le fait fait avec la procédure suivante :
+# 1° si la liste des déficits antérieurs est vide, on renvoie le revenu
+#    déclaré et la liste vide.
+# 2° prendre le déficit antérieur le plus ancien, et l'imputer sur le revenu
+#    déclaré.
+#   a) si le déficit le plus ancien est inférieur ou égal au revenu déclaré,
+#      alors on renvoie le revenu déclaré moins le déficit le plus ancien,
+#      et on recommence récursivement la procédure à partir de 1° en supprimant
+#      de la liste le déficit le plus ancien (déjà imputé).
+#   b) si le déficit le plus ancien est strictement supérieur au revenu déclaré,
+#      alors on renvoie un revenu imputé final de 0 € et une liste de déficits
+#      antérieurs identique à celle en  entrée sauf le déficit le plus ancien
+#      où l'on a diminué le déficit du montant imputé sur le revenu.
+déclaration champ d'application ImputationAuxDéficitsLesPlusAnciens:
+   entrée revenu_déclaré contenu argent
+   entrée déficits_antérieurs contenu liste de DéficitAntérieur
+
+   résultat revenu_imputé contenu argent
+   résultat déficits_antérieurs_restants contenu liste de DéficitAntérieur
+```
+
+# Calcul de pro-rata
+
+```catala-metadata
+# Ce champ d'application prend en argument un montant à distribuer et une liste
+# de bases qui vont servir à pro-ratiser le montant à distribuer. On suppose
+# que :
+#   - le montant à distribuer ainsi que les bases de pro-rata sont toutes
+#     positives ou nulles ;
+#   - les bases de pro-rata ne sont pas toutes nulles ;
+#   - le montant à distribuer est déjà arrondi à l'euro près.
+#
+# La spécificité de ce calcul est que la règle de trois du pro-rata est ici
+# arrondie à l'euro près (conformément à l'article 193 du code général des
+# impôts). Cependant, l'arrondi peut provoquer un décalage entre la somme des
+# montants pro-ratisés et ce qui était à distribuer au départ. Pour éviter ce
+# décalage, un mécanisme de solde est à prévoir. Traditionnellement, on fait le
+# solde avec le dernier élément de la liste, c'est à dire qu'on attribue au
+# dernier élément ce qui reste du montant à distribuer après avoir calculé la
+# règle de trois avec arrondi sur les éléments précédents. Cependant, ce
+# mécanisme du solde au dernier élément asymétrise le calcul sans bonne raison
+# et peut mener à une situation où le dernier élément de la liste reçoit un
+# montant significativement différent (écart de plus de 1 €) de ce qu'il aurait
+# reçu si on lui avait appliqué la règle de trois. Pour éviter cet écueil, nous
+# proposons le mécanisme de calcul plus sophistiqué suivant :
+#
+# 1° On calcule d'abord la règle de trois avec arrondi pour tous les éléments
+#    de la liste, et on se souvient dans quelle direction (haut ou bas)
+#    l'arrondi a été fait.
+# 2° On mesure l'écart entre le montant à distribuer et la somme des résultats
+#    des règles de trois arrondies. Cet écart ne peut dépasser le nombre de fois
+#    où l'on a arrondi dans une direction donnée (haut ou bas).
+# 3° Ainsi, pour corriger l'écart, il suffit d'inverser la direction des
+#    arrondis de certains éléments de la liste. Ceci a pour conséquence qu'il
+#    n'y aura jamais un écart plus grand que 1€ entre la règle de trois sans
+#    arrondi et ce que notre calcule retourne finalement.
+# 4° Les inversions des directions d'arrondis sont réparties le plus
+#    uniformément possible dans la liste d'éléments.
+déclaration champ d'application ProRataArrondiEuro:
+  entrée montant_à_distribuer contenu argent
+  entrée bases_prorata contenu liste de argent
+  résultat valeurs_proratisées contenu liste de argent
+```
+
+```catala-metadata
+déclaration champ d'application ProRataArrondiEuroListes:
+  entrée montant_à_distribuer contenu argent
+  entrée bases_prorata contenu liste de (liste de argent)
+  résultat valeurs_proratisées contenu liste de (liste de argent)
+```
+
+```catala-metadata
+déclaration champ d'application ProRataArrondiEuroBranchement:
+  entrée montant_à_distribuer contenu argent
+  contexte base_prorata_1 contenu argent
+  contexte base_prorata_2 contenu argent
+  contexte base_prorata_3 contenu argent
+  contexte base_prorata_4 contenu argent
+  contexte base_prorata_5 contenu argent
+  contexte base_prorata_6 contenu argent
+  contexte base_prorata_7 contenu argent
+  contexte base_prorata_8 contenu argent
+  contexte base_prorata_9 contenu argent
+  contexte bases_prorata_liste_1 contenu liste de argent
+  contexte bases_prorata_liste_2 contenu liste de argent
+  contexte bases_prorata_liste_3 contenu liste de argent
+  contexte bases_prorata_liste_4 contenu liste de argent
+  contexte bases_prorata_liste_5 contenu liste de argent
+  contexte bases_prorata_liste_6 contenu liste de argent
+  contexte bases_prorata_liste_7 contenu liste de argent
+  contexte bases_prorata_liste_8 contenu liste de argent
+  contexte bases_prorata_liste_9 contenu liste de argent
+
+  résultat valeur_proratisée_1 contenu argent
+  résultat valeur_proratisée_2 contenu argent
+  résultat valeur_proratisée_3 contenu argent
+  résultat valeur_proratisée_4 contenu argent
+  résultat valeur_proratisée_5 contenu argent
+  résultat valeur_proratisée_6 contenu argent
+  résultat valeur_proratisée_7 contenu argent
+  résultat valeur_proratisée_8 contenu argent
+  résultat valeur_proratisée_9 contenu argent
+  résultat valeurs_proratisées_liste_1 contenu liste de argent
+  résultat valeurs_proratisées_liste_2 contenu liste de argent
+  résultat valeurs_proratisées_liste_3 contenu liste de argent
+  résultat valeurs_proratisées_liste_4 contenu liste de argent
+  résultat valeurs_proratisées_liste_5 contenu liste de argent
+  résultat valeurs_proratisées_liste_6 contenu liste de argent
+  résultat valeurs_proratisées_liste_7 contenu liste de argent
+  résultat valeurs_proratisées_liste_8 contenu liste de argent
+  résultat valeurs_proratisées_liste_9 contenu liste de argent
+```
