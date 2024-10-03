@@ -193,24 +193,24 @@ let embed_pro_rata_arrondi_euro_branchement
 module ProRataArrondiEuroBranchement_in = struct
   type t = {
     montant_a_distribuer_in : money;
-    base_prorata_1_in : unit -> money Eoption.t;
-    base_prorata_2_in : unit -> money Eoption.t;
-    base_prorata_3_in : unit -> money Eoption.t;
-    base_prorata_4_in : unit -> money Eoption.t;
-    base_prorata_5_in : unit -> money Eoption.t;
-    base_prorata_6_in : unit -> money Eoption.t;
-    base_prorata_7_in : unit -> money Eoption.t;
-    base_prorata_8_in : unit -> money Eoption.t;
-    base_prorata_9_in : unit -> money Eoption.t;
-    bases_prorata_liste_1_in : unit -> money array Eoption.t;
-    bases_prorata_liste_2_in : unit -> money array Eoption.t;
-    bases_prorata_liste_3_in : unit -> money array Eoption.t;
-    bases_prorata_liste_4_in : unit -> money array Eoption.t;
-    bases_prorata_liste_5_in : unit -> money array Eoption.t;
-    bases_prorata_liste_6_in : unit -> money array Eoption.t;
-    bases_prorata_liste_7_in : unit -> money array Eoption.t;
-    bases_prorata_liste_8_in : unit -> money array Eoption.t;
-    bases_prorata_liste_9_in : unit -> money array Eoption.t;
+    base_prorata_1_in : money Eoption.t;
+    base_prorata_2_in : money Eoption.t;
+    base_prorata_3_in : money Eoption.t;
+    base_prorata_4_in : money Eoption.t;
+    base_prorata_5_in : money Eoption.t;
+    base_prorata_6_in : money Eoption.t;
+    base_prorata_7_in : money Eoption.t;
+    base_prorata_8_in : money Eoption.t;
+    base_prorata_9_in : money Eoption.t;
+    bases_prorata_liste_1_in : money array Eoption.t;
+    bases_prorata_liste_2_in : money array Eoption.t;
+    bases_prorata_liste_3_in : money array Eoption.t;
+    bases_prorata_liste_4_in : money array Eoption.t;
+    bases_prorata_liste_5_in : money array Eoption.t;
+    bases_prorata_liste_6_in : money array Eoption.t;
+    bases_prorata_liste_7_in : money array Eoption.t;
+    bases_prorata_liste_8_in : money array Eoption.t;
+    bases_prorata_liste_9_in : money array Eoption.t;
   }
 end
 
@@ -621,7 +621,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_1_ () |]
+        [| base_prorata_1_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -639,7 +639,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_2_ () |]
+        [| base_prorata_2_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -657,7 +657,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_3_ () |]
+        [| base_prorata_3_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -675,7 +675,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_4_ () |]
+        [| base_prorata_4_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -693,7 +693,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_5_ () |]
+        [| base_prorata_5_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -711,7 +711,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_6_ () |]
+        [| base_prorata_6_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -729,7 +729,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_7_ () |]
+        [| base_prorata_7_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -747,7 +747,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_8_ () |]
+        [| base_prorata_8_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -765,7 +765,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| base_prorata_9_ () |]
+        [| base_prorata_9_ |]
     with
     | ENone _ -> money_of_units_int 0
     | ESome x -> x
@@ -783,7 +783,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_1_ () |]
+        [| bases_prorata_liste_1_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -801,7 +801,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_2_ () |]
+        [| bases_prorata_liste_2_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -819,7 +819,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_3_ () |]
+        [| bases_prorata_liste_3_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -837,7 +837,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_4_ () |]
+        [| bases_prorata_liste_4_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -855,7 +855,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_5_ () |]
+        [| bases_prorata_liste_5_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -873,7 +873,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_6_ () |]
+        [| bases_prorata_liste_6_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -891,7 +891,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_7_ () |]
+        [| bases_prorata_liste_7_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -909,7 +909,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_8_ () |]
+        [| bases_prorata_liste_8_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
@@ -927,7 +927,7 @@ let pro_rata_arrondi_euro_branchement
             law_headings = ["Calcul de pro-rata"];
           };
         |]
-        [| bases_prorata_liste_9_ () |]
+        [| bases_prorata_liste_9_ |]
     with
     | ENone _ -> Array.make 0 (money_of_units_int 0)
     | ESome x -> x
