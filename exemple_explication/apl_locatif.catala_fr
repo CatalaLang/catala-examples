@@ -49,13 +49,13 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   # pour lesquelles les textes en vigueur n'ont pas été formalisés.
   assertion date_courante >= |2020-10-01|
   assertion nombre_personnes_à_charge >= 0
-  # Lors d'un entretien le 23/05/2022 avec DGALN/DHUP/FE4, nous avons
-  # demandé quel barème spécial avait priorité entre celui du logement
-  # chambre et de la colocation. Il nous a été répondu que la situation
-  # d'un logement chambre partagé en colocation n'avait pas été considéré.
-  # Aussi, nous supposons que ce cas n'arrive pas via cette assertion ci-
-  # dessous.
-  assertion non (logement_est_chambre et colocation)
+# Lors d'un entretien le 23/05/2022 avec DGALN/DHUP/FE4, nous avons
+# demandé quel barème spécial avait priorité entre celui du logement
+# chambre et de la colocation. Il nous a été répondu que la situation
+# d'un logement chambre partagé en colocation n'avait pas été considéré.
+# Aussi, nous supposons que ce cas n'arrive pas via cette assertion ci-
+# dessous.
+# assertion non (logement_est_chambre et colocation)
 
 déclaration énumération SituationFamilialeCalculAPL:
   -- PersonneSeule
@@ -417,7 +417,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone2 : 250,45€
     -- Zone3 : 234,74€
 
-  exception chambre
+  étiquette chambre_âge_handicap_particulier exception chambre
   définition plafond_loyer_d823_16_2 sous condition
     âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
@@ -766,7 +766,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
   # qu'on ne peut pas être en colocation dans un logement constitué
   # d'une seule chambre.
 
-  exception base
+  étiquette colocation exception chambre
   définition plafond_loyer_d823_16_2 sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
@@ -776,7 +776,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone2 : 208,71€
     -- Zone3 : 195,62€
 
-  exception base
+  étiquette colocation exception chambre
   définition plafond_loyer_d823_16_2 sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
@@ -786,7 +786,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone2 : 255,47€
     -- Zone3 : 237,13€
 
-  exception base
+  étiquette colocation exception chambre
   définition plafond_loyer_d823_16_2 sous condition
     nombre_personnes_à_charge >= 1
   conséquence égal à
@@ -829,32 +829,25 @@ compter du 1er octobre 2023.
 # Tests
 
 ```catala
+# Scénario : "Le service Valid vous contacte sur un dossier dans lequel la
+# personne est en situation de handicap et hébergée à tire onéreux dans une
+# chambre chez un particulier, mais elle touche moins d'APL que prévu. Son loyer
+# est de 400 € et elle touche 10 000 € par an de ressources prises en compte."
 déclaration champ d'application Exemple1:
   résultat calcul champ d'application CalculAidePersonnaliséeLogementLocatif
 
 champ d'application Exemple1:
-  définition calcul.loyer_principal égal à 700 €
-  définition calcul.date_courante égal à |2024-09-10|
-  définition calcul.logement_est_chambre égal à faux
+  définition calcul.loyer_principal égal à 400 €
+  définition calcul.date_courante égal à |2024-09-16|
+  définition calcul.logement_est_chambre égal à vrai
   définition
     calcul.âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
-  égal à faux
+  égal à vrai
   définition calcul.zone égal à Zone1
-  définition calcul.situation_familiale_calcul_apl égal à Couple
-  définition calcul.nombre_personnes_à_charge égal à 3
-  définition calcul.colocation égal à faux
+  définition calcul.situation_familiale_calcul_apl égal à PersonneSeule
+  définition calcul.nombre_personnes_à_charge égal à 0
+  définition calcul.colocation égal à vrai
   définition calcul.réduction_loyer_solidarité égal à 0 €
-  définition calcul.ressources_ménage_arrondies égal à 15 000 €
-  définition calcul.bénéficiaire_aide_adulte_ou_enfant_handicapés égal à faux
-  assertion calcul.aide_finale = 463,32 €
-```
-
-```catala-test-inline
-$ catala test-scope Exemple1 --disable-warnings
-┌─[RESULT]─
-│ calcul =
-│   CalculAidePersonnaliséeLogementLocatif {
-│     -- aide_finale: 463,32 €
-│   }
-└─
+  définition calcul.ressources_ménage_arrondies égal à 10 000 €
+  définition calcul.bénéficiaire_aide_adulte_ou_enfant_handicapés égal à vrai
 ```
