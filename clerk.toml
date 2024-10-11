@@ -7,4 +7,68 @@ include_dirs = [
   "allocations_familiales",
   "aides_logement",
   "droit_successions",
+  "impot_revenu"
+]
+
+[[module]]
+name = "Aides_logement"
+module_uses = [
+  "France",
+  "Bmaf",
+  "Prestations_familiales",
+  "Allocations_familiales",
+]
+includes = [
+  "aides_logement/archives.catala_fr",
+  "aides_logement/arrete_2019-09-27.catala_fr",
+  "aides_logement/autres_sources.catala_fr",
+  "aides_logement/code_construction_legislatif.catala_fr",
+  "aides_logement/code_construction_reglementaire.catala_fr",
+  "aides_logement/code_sécurité_sociale.catala_fr",
+  "aides_logement/prologue.catala_fr",
+]
+
+[[module]]
+name = "Allocations_familiales"
+module_uses = [
+  "France",
+  "Bmaf",
+  "Smic",
+  "Prestations_familiales"
+]
+includes = [
+  "allocations_familiales/prologue.catala_fr",
+  "allocations_familiales/autres_codes.catala_fr",
+  "allocations_familiales/securite_sociale_L.catala_fr",
+  "allocations_familiales/securite_sociale_R.catala_fr",
+  "allocations_familiales/securite_sociale_D.catala_fr",
+  "allocations_familiales/decrets_divers.catala_fr",
+  "allocations_familiales/epilogue.catala_fr",
+]
+
+[[module]]
+name = "Prestations_familiales"
+module_uses = [
+  "France",
+  "Smic",
+]
+includes = [
+  "prestations_familiales/prologue.catala_fr",
+  "prestations_familiales/sécurité_sociale_L.catala_fr",
+  "prestations_familiales/securite_sociale_R.catala_fr",
+]
+
+[[module]]
+name = "Impot_revenu"
+module_uses = [
+  "Oracles"
+]
+includes = [
+  "impot_revenu/prologue.catala_fr",
+  "impot_revenu/vérifications.catala_fr",
+  "impot_revenu/cgi_revenus.catala_fr",
+  "impot_revenu/lfr_2022.catala_fr",
+  "impot_revenu/loi_2022-1158.catala_fr",
+  "impot_revenu/archives_cgi.catala_fr",
+  "impot_revenu/modèle_convention_fiscale_ocde.catala_fr"
 ]

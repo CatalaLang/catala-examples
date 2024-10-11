@@ -966,10 +966,18 @@ scope AmbiguousDate:
 $ catala interpret --scope AmbiguousDate --disable-warnings
 ┌─[ERROR]─
 │
-│  Unexpected error: Dates_calc.Dates.AmbiguousComputation
+│  During evaluation: ambiguous date computation, and rounding mode was not
+│  specified.
 │
-└─
-#return code 125#
+├─➤ tutorial_en/tutorial_en.catala_en:962.41-962.42:
+│     │
+│ 962 │   definition result equals |2000-02-29| + 1 year
+│     │                                         ‾
+└─ The Catala language tutorial
+   └┬ Catala values
+    └┬ Dates and durations
+     └─ Ambiguities
+#return code 123#
 ```
 
 Indeed, there are two possible answers to this, and none is canonically better
@@ -1010,9 +1018,9 @@ $ catala interpret --scope AmbiguousDate3 --disable-warnings
 │  During evaluation: ambiguous comparison between durations in different
 │  units (e.g. months vs. days).
 │
-├─➤ tutorial_en/tutorial_en.catala_en:1003.35-1003.36:
+├─➤ tutorial_en/tutorial_en.catala_en:1011.35-1011.36:
 │      │
-│ 1003 │   definition result equals 30 day < 1 month
+│ 1011 │   definition result equals 30 day < 1 month
 │      │                                   ‾
 └─ The Catala language tutorial
    └┬ Catala values
