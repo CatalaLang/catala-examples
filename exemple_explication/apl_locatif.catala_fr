@@ -422,7 +422,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 239,48€
+    -- Zone1 : 139,48€
     -- Zone2 : 208,71€
     -- Zone3 : 195,62€
 ```
@@ -766,7 +766,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
   # qu'on ne peut pas être en colocation dans un logement constitué
   # d'une seule chambre.
 
-  étiquette colocation exception chambre
+  étiquette colocation exception base
   définition plafond_loyer_d823_16_2 sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
@@ -776,7 +776,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone2 : 208,71€
     -- Zone3 : 195,62€
 
-  étiquette colocation exception chambre
+  étiquette colocation exception base
   définition plafond_loyer_d823_16_2 sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
@@ -786,7 +786,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone2 : 255,47€
     -- Zone3 : 237,13€
 
-  étiquette colocation exception chambre
+  étiquette colocation exception base
   définition plafond_loyer_d823_16_2 sous condition
     nombre_personnes_à_charge >= 1
   conséquence égal à
