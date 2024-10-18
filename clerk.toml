@@ -55,7 +55,7 @@ module_uses = [
 includes = [
   "prestations_familiales/prologue.catala_fr",
   "prestations_familiales/sécurité_sociale_L.catala_fr",
-  "prestations_familiales/securite_sociale_R.catala_fr",
+  "prestations_familiales/sécurité_sociale_R.catala_fr",
 ]
 
 [[module]]
