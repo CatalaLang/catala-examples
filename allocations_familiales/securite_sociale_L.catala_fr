@@ -131,8 +131,6 @@ celles de l'âge pour l'ouverture du droit aux allocations familiales.
 
 ```catala
 champ d'application AllocationsFamiliales :
-  assertion fixé montant_versé par décret
-
   règle droit_ouvert_forfaitaire de enfant sous condition
     # nombre_enfants_alinéa_2_l521_3 sera défini dans l'article R521-3
     (nombre de enfants_à_charge >= nombre_enfants_alinéa_2_l521_1) et
@@ -151,22 +149,8 @@ article, ainsi que celui des majorations mentionnées à l'article L. 521-3
 varient en fonction des ressources du ménage ou de la personne qui a la charge
 des enfants, selon un barème défini par décret.
 
-```catala
-champ d'application AllocationsFamiliales :
-  assertion fixé montant_versé_base  par décret
-  assertion varie montant_versé_base avec ressources_ménage
-  assertion fixé montant_versé_majorations par décret
-  assertion varie montant_versé_majorations avec ressources_ménage
-```
-
 Le montant des allocations familiales varie en fonction du nombre d'enfants
 à charge.
-
-```catala
-champ d'application AllocationsFamiliales :
-  assertion varie montant_versé_base.montant_versé avec
-     nombre de enfants_à_charge_droit_ouvert_prestation_familiale
-```
 
 Les niveaux des plafonds de ressources, qui varient en fonction du nombre
 d'enfants à charge, sont révisés conformément à l'évolution annuelle de
@@ -183,15 +167,6 @@ Un complément dégressif est versé lorsque les ressources du bénéficiaire
 dépassent l'un des plafonds, dans la limite de montants définis par décret.
 Les modalités de calcul de ces montants et celles du complément dégressif
 sont définies par décret.
-
-```catala
-# Ditto, le volume du code à inclure pour formaliser cette assertion
-# est assez important et nous avons choisi de ne pas l'inclure dans ce
-# document.
-
-champ d'application AllocationsFamiliales :
-  assertion fixé montant_versé_complément par décret
-```
 
 ###### Article L521-2|LEGIARTI000039099826
 
@@ -357,8 +332,6 @@ du coefficient mentionné à l'article L. 161-25 .
 
 ```catala
 # Idem que L521-1, on ne formalise pas ici l'évolution de la BMPA
-champ d'application PrestationsFamiliales :
-  assertion fixé prestations_familiales.base_mensuelle par décret
 ```
 
 ### Livre 7 : Régimes divers - Dispositions diverses
