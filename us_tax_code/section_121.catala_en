@@ -46,8 +46,7 @@ declaration scope Section121SinglePerson:
   context output section_121_c_2_A condition
   output income_excluded_from_gross_income_uncapped content money
   output income_excluded_from_gross_income content money
-#  internal section_121_b_3_applies_disregarding_121c condition
-  context output section_121_b_3_applies_disregarding_121c condition
+  output condition_for_section_121_b_3 condition
   output section_121_b_3_applies condition
 
 declaration structure PersonalData:
@@ -271,10 +270,10 @@ scope Section121TwoPersons:
      section121Person2.requirements_usage_met)
   # iii)
   and
-  (not (section121Person1.section_121_b_3_applies_disregarding_121c))
-    # before or after 121c ?
+  (not (section121Person1.condition_for_section_121_b_3))
+    # this uses the raw condition for 121_b_3, i.e. before subsection c applies
   and
-  (not (section121Person2.section_121_b_3_applies_disregarding_121c))
+  (not (section121Person2.condition_for_section_121_b_3))
   consequence fulfilled
 
 #  exception
@@ -332,12 +331,15 @@ was any other sale or exchange by the taxpayer to which subsection (a) applied.
 
 ```catala
 scope Section121SinglePerson:
-  rule section_121_b_3_applies_disregarding_121c
+  rule condition_for_section_121_b_3
     under condition
     person.other_section_121a_sale with pattern
        MostRecentSaleWhereSection121aApplied of other_sale and
     date_of_sale_or_exchange - other_sale.date_of_sale_or_exchange <= 2 year
   consequence fulfilled
+
+  definition section_121_b_3_applies equals
+      condition_for_section_121_b_3
 
   exception
   definition income_excluded_from_gross_income_uncapped under condition
@@ -450,9 +452,6 @@ not apply; but the dollar limitation under paragraph (1) or (2) of subsection
 
 ```catala
 scope Section121SinglePerson:
-  definition section_121_b_3_applies equals
-      section_121_b_3_applies_disregarding_121c
-
   exception rule section_121_b_3_applies
     under condition section_121_c_applies
     consequence not fulfilled
@@ -539,7 +538,7 @@ scope Section121SinglePerson:
   rule section_121_c_2_A under condition
       (not (requirements_ownership_met and
             requirements_usage_met)
-       or section_121_b_3_applies_disregarding_121c)
+       or condition_for_section_121_b_3)
     consequence fulfilled
 
   rule section_121_c_applies under condition
