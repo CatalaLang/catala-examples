@@ -1,0 +1,164 @@
+# Conditions d’éligibilité et de financement : Soutien aux investissements pour le Réemploi-Réutilisation et la Réparation (RRR) Hors emballages
+
+```catala-metadata
+déclaration énumération TypeActivité:
+  -- Économique
+  -- NonÉconomique
+
+déclaration énumération TailleEntreprise:
+  -- PetiteEntreprise
+  -- MoyenneEntreprise
+  -- GrandeEntreprise
+
+déclaration énumération TypeOpération:
+  -- CasGénéral
+  -- InvestissementsCorse
+  -- InvestissementsOutreMer
+
+déclaration champ d'application AideRéemploiRéutilisationRéparation:
+  entrée dépenses_liées_bâtiments_locaux_concernés_utiles_opération
+    contenu booléen
+  entrée type_activité contenu TypeActivité
+  entrée taille_entreprise contenu TailleEntreprise
+  entrée type_opération contenu TypeOpération
+  entrée montant_dépense contenu argent
+
+  résultat intensité_maximale_aide_ademe contenu décimal
+  résultat montant_maximal_aide_ademe contenu argent
+```
+
+## Modalités de calcul de l’aide
+
+Les taux maximums de l’aide aux investissements de
+réemploi-réutilisation-réparation sont les suivants :
+
+
+------------------------- --------------------- ------------------ ----------------- ---------------------
+Type d’opérations         Intensité maximale de
+                          l’aide ADEME
+
+                          Bénéficiaires dans le                                      Bénéficiaires dans le
+                          cadre d'une activité                                       cadre d'une activité
+                          économique                                                 non-économique
+
+                          Grande entreprise     Moyenne entreprise Petite entreprise
+
+Cas général               40 %                  50 %               60 %              60 %
+
+Investissements Corse     45 %                  55 %               65 %              65 %
+
+Investissements Outre-Mer 55 %                  65 %               75 %              75%
+------------------------- --------------------- ------------------ ----------------- ---------------------
+
+```catala
+champ d'application AideRéemploiRéutilisationRéparation:
+  définition intensité_maximale_aide_ademe égal à
+    selon type_opération sous forme
+    -- CasGénéral :
+      (
+        selon type_activité sous forme
+        -- Économique :
+          (
+            selon taille_entreprise sous forme
+            -- GrandeEntreprise : 40%
+            -- MoyenneEntreprise : 50%
+            -- PetiteEntreprise : 60%
+          )
+        -- NonÉconomique : 60%
+      )
+    -- InvestissementsCorse :
+        (
+          selon type_activité sous forme
+          -- Économique :
+            (
+              selon taille_entreprise sous forme
+              -- GrandeEntreprise : 45%
+              -- MoyenneEntreprise : 55%
+              -- PetiteEntreprise : 65%
+            )
+          -- NonÉconomique : 65%
+        )
+    -- InvestissementsOutreMer :
+          (
+            selon type_activité sous forme
+            -- Économique :
+              (
+                selon taille_entreprise sous forme
+                -- GrandeEntreprise : 55%
+                -- MoyenneEntreprise : 65%
+                -- PetiteEntreprise : 75%
+              )
+            -- NonÉconomique : 75%
+          )
+```
+
+Le montant de l’aide est calculé de manière à respecter le cumul des aides
+publiques autorisé par l’encadrement européen des aides d’Etat aux activités
+économiques applicable et par la règlementation nationale des aides aux activités
+non-économiques.
+
+```catala
+# TODO: veut-on/comment modéliser cet alinéa ?
+```
+
+Ces taux sont maximums et indicatifs ; la valeur du taux d’aide n’est définitive
+qu’après instruction de la demande d’aide et reste à l’appréciation de
+l’instructeur au regard d’un certain nombre de critères d’instruction dont
+l’incitativité de l’aide, le contexte et la pertinence de l’opération sur
+son territoire, l’ambition et la performance globale du projet, etc.
+
+À NOTER que :
+
+* Le taux d’aide est plafonné à 30 % maximum pour les dépenses liées aux
+  bâtiments et locaux concernés et utiles à l’opération (achat, construction
+  neuve, rénovation, aménagement), y compris pour les départements d’outre-mer
+  et la Corse ;
+
+```catala
+champ d'application AideRéemploiRéutilisationRéparation:
+  exception
+  définition intensité_maximale_aide_ademe sous condition
+    dépenses_liées_bâtiments_locaux_concernés_utiles_opération
+  conséquence égal à 30%
+```
+
+* Le montant d’aide par opération, quelle qu’elle soit, est plafonné à
+  200 000 € maximum (il s’agit bien d’un plafond maximum et pas d’un montant
+  accordé forfaitairement).
+
+```catala
+champ d'application AideRéemploiRéutilisationRéparation:
+  définition montant_maximal_aide_ademe égal à
+    si montant_dépense * intensité_maximale_aide_ademe > 200 000 € alors
+      200 000 €
+    sinon
+      montant_dépense * intensité_maximale_aide_ademe
+```
+
+## Tests
+
+```catala
+déclaration champ d'application Test1:
+  résultat calcul contenu AideRéemploiRéutilisationRéparation
+
+champ d'application Test1:
+  définition calcul égal à
+    résultat de AideRéemploiRéutilisationRéparation avec {
+      -- montant_dépense: 40 000 €
+      -- type_opération: CasGénéral
+      -- taille_entreprise: PetiteEntreprise
+      -- type_activité: Économique
+      -- dépenses_liées_bâtiments_locaux_concernés_utiles_opération: faux
+    }
+```
+
+```catala-test-inline
+$ catala test-scope Test1
+┌─[RESULT]─
+│ calcul =
+│   AideRéemploiRéutilisationRéparation {
+│     -- intensité_maximale_aide_ademe: 0,6
+│     -- montant_maximal_aide_ademe: 24 000,00 €
+│   }
+└─
+```
