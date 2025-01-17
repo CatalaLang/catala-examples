@@ -77,10 +77,10 @@ $(BUILD):
 # run `catala latex $(catala depends $^)` to include all dependencies.
 
 $(BUILD)/%.tex: %.catala_??
-	$(CATALA) latex $(CATALA_FLAGS) $^ -o $@ --wrap
+	$(CATALA) latex $^ $(CATALA_FLAGS) -o $@ --wrap
 
 $(BUILD)/%.html: %.catala_??
-	$(CATALA) html $(CATALA_FLAGS) $^ -o $@ --wrap
+	$(CATALA) html $^ $(CATALA_FLAGS) -o $@ --wrap
 
 ##########################
 # Rules: OCaml compilation
@@ -114,7 +114,7 @@ $(BUILD)/%.cmxa: $(BUILD)/%.cmi
 ###############################################
 
 $(BUILD)/%_api_web.ml: %.catala_?? | $(BUILD)/%.cmo
-	$(CATALA) api_web -I $(CATALA_INCLUDE) $(CATALA_FLAGS) $^ -o $@
+	$(CATALA) api_web -I $(CATALA_INCLUDE) $^ $(CATALA_FLAGS) -o $@
 
 $(BUILD)/%-web.bc:
 	$(if $^,,$(error Building a js bundle ($@) requires expliciting the expected contents))
