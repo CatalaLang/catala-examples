@@ -43,7 +43,7 @@ definition minimumProceeds equals (artUnion.proceedsToBenefitingOrg >= artUnion.
 definition benefitingOrg equals artUnion.typeOrg with pattern BenefitingOrganisation.Charitable or
  artUnion.typeOrg with pattern BenefitingOrganisation.NonProfit or artUnion.typeOrg with pattern BenefitingOrganisation.ObjectOfPublicOrCharitableCharacter
 
-  ```
+```
 (b) the total value of all the prizes exceeds $30,000,
 ```catala
 scope GamingAuthorized:
