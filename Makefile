@@ -19,6 +19,7 @@ CATALA_FLAGS ?= --trace
 CLERK_FLAGS ?= --exe=$(CATALA)
 
 CLERK_BUILD = $(CLERK) build --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts='$(CATALA_FLAGS)',) $(CLERK_FLAGS)
+CLERK_RUN = $(CLERK) run --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts='$(CATALA_FLAGS)',) $(CLERK_FLAGS)
 
 CLERK_TEST = $(CLERK) test $(CLERK_FLAGS) --build-dir=$(BUILD_TESTS)
 
@@ -94,8 +95,8 @@ $(BUILD)/%.cmx: %.catala_??
 	$(CLERK_BUILD) $@
 $(BUILD)/%.cmxs: %.catala_??
 	$(CLERK_BUILD) $@
-$(BUILD)/%.exe: %.catala_??
-	$(CLERK_BUILD) $@
+# $(BUILD)/%.exe: %.catala_??
+# 	$(CLERK_BUILD) $@
 
 $(BUILD)/%.cma: $(BUILD)/%.cmi
 	$(OCAMLC) $(OCAML_FLAGS) \
@@ -268,10 +269,10 @@ clean: .FORCE
 # Running legislation unit tests
 ################################
 
-binary-tests: \
-  $(BUILD)/allocations_familiales/tests/tests_allocations_familiales.exe \
-  $(BUILD)/aides_logement/tests/tests_calculette_globale.exe
-	$(^:= && ) echo "$(CURDIR): all binary tests passed"
+binary-tests:
+	$(CLERK_RUN) allocations_familiales/tests/tests_allocations_familiales.catala_fr --backend ocaml --autotest
+	$(CLERK_RUN) aides_logement/tests/tests_calculette_globale.catala_fr --backend ocaml --autotest
+	@echo "$(CURDIR): all binary tests passed"
 
 test: .FORCE binary-tests
 	$(CLERK_TEST)
