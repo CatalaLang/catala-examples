@@ -270,8 +270,8 @@ clean: .FORCE
 ################################
 
 binary-tests:
-	$(CLERK_RUN) allocations_familiales/tests/tests_allocations_familiales.catala_fr --backend ocaml --autotest
-	$(CLERK_RUN) aides_logement/tests/tests_calculette_globale.catala_fr --backend ocaml --autotest
+	$(CLERK_RUN) allocations_familiales/tests --backend ocaml --autotest
+	$(CLERK_RUN) aides_logement/tests --backend ocaml --autotest
 	@echo "$(CURDIR): all binary tests passed"
 
 test: .FORCE binary-tests
@@ -279,7 +279,7 @@ test: .FORCE binary-tests
 
 TEST_FLAGS_LIST = "" --lcalc,-O
 
-testsuite: .FORCE binary-tests
+testsuite1: .FORCE
 	@for F in $(TEST_FLAGS_LIST); do \
 	  echo >&2; \
 	  [ -z "$$F" ] || echo ">> RE-RUNNING TESTS WITH FLAGS: $$F" >&2; \
@@ -287,6 +287,7 @@ testsuite: .FORCE binary-tests
 	  $(CLERK_TEST) --test-flags="$$F" || exit 1; \
 	done
 
+testsuite: testsuite1 binary-tests
 pass_all_tests: testsuite
 
 reset_all_tests:
