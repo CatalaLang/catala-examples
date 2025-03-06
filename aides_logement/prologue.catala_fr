@@ -331,7 +331,7 @@ déclaration champ d'application ÉligibilitéAidesPersonnelleLogement:
 
   résultat éligibilité condition
   résultat nombre_personnes_à_charge_prises_en_compte contenu entier
-  résultat coefficents_enfants_garde_alternée_pris_en_compte contenu
+  résultat coefficients_enfants_garde_alternée_pris_en_compte contenu
    liste de décimal
   résultat condition_2_r823_4 condition
     dépend de personne_à_charge contenu PersonneÀCharge
@@ -346,7 +346,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   conséquence rempli
   définition nombre_personnes_à_charge_prises_en_compte égal à
     nombre de personnes_à_charge_prises_en_compte
-  définition coefficents_enfants_garde_alternée_pris_en_compte égal à
+  définition coefficients_enfants_garde_alternée_pris_en_compte égal à
     ((selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: 0,0
         -- EnfantÀCharge de enfant: (
@@ -389,7 +389,7 @@ déclaration champ d'application ÉligibilitéAidePersonnaliséeLogement:
 
   résultat éligibilité condition
   résultat nombre_personnes_à_charge_prises_en_compte contenu entier
-  résultat coefficents_enfants_garde_alternée_pris_en_compte contenu
+  résultat coefficients_enfants_garde_alternée_pris_en_compte contenu
    liste de décimal
 
 
@@ -400,8 +400,8 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
     date_courante
   définition nombre_personnes_à_charge_prises_en_compte égal à
     éligibilité_commune.nombre_personnes_à_charge_prises_en_compte
-  définition coefficents_enfants_garde_alternée_pris_en_compte égal à
-    éligibilité_commune.coefficents_enfants_garde_alternée_pris_en_compte
+  définition coefficients_enfants_garde_alternée_pris_en_compte égal à
+    éligibilité_commune.coefficients_enfants_garde_alternée_pris_en_compte
 ```
 
 ### Éligibilité aux allocations de logement
@@ -439,7 +439,7 @@ déclaration champ d'application ÉligibilitéAllocationLogement:
     état dispositions_communes
     état l841_2
   résultat nombre_personnes_à_charge_prises_en_compte contenu entier
-  résultat coefficents_enfants_garde_alternée_pris_en_compte contenu
+  résultat coefficients_enfants_garde_alternée_pris_en_compte contenu
     liste de décimal
 
 champ d'application ÉligibilitéAllocationLogement:
@@ -454,8 +454,8 @@ champ d'application ÉligibilitéAllocationLogement:
     date_courante
   définition nombre_personnes_à_charge_prises_en_compte égal à
     éligibilité_commune.nombre_personnes_à_charge_prises_en_compte
-  définition coefficents_enfants_garde_alternée_pris_en_compte égal à
-    éligibilité_commune.coefficents_enfants_garde_alternée_pris_en_compte
+  définition coefficients_enfants_garde_alternée_pris_en_compte égal à
+    éligibilité_commune.coefficients_enfants_garde_alternée_pris_en_compte
 ```
 
 ### Éligibilité à la prime de déménagement
@@ -1140,7 +1140,7 @@ déclaration champ d'application CalculetteAidesAuLogement:
   résultat aide_finale_formule contenu argent
   résultat traitement_aide_finale contenu argent
     dépend de aide_finale contenu argent
-  résultat coefficents_enfants_garde_alternée_pris_en_compte contenu
+  résultat coefficients_enfants_garde_alternée_pris_en_compte contenu
    liste de décimal
 
 champ d'application CalculetteAidesAuLogement:
@@ -1188,9 +1188,9 @@ champ d'application CalculetteAidesAuLogement:
   définition calcul_allocation_logement.résidence égal à
     ménage.résidence
 
-  définition coefficents_enfants_garde_alternée_pris_en_compte égal à
+  définition coefficients_enfants_garde_alternée_pris_en_compte égal à
     éligibilité_aide_personnalisée_logement.
-      coefficents_enfants_garde_alternée_pris_en_compte
+      coefficients_enfants_garde_alternée_pris_en_compte
 ```
 
 ### Calculette avec garde alternée
@@ -1208,7 +1208,7 @@ déclaration champ d'application CalculetteAidesAuLogementGardeAlternée:
   entrée ressources_ménage_prises_en_compte contenu argent
 
   interne ménage_sans_enfants_garde_alternée contenu Ménage
-  interne coefficents_enfants_garde_alternée_pris_en_compte contenu
+  interne coefficients_enfants_garde_alternée_pris_en_compte contenu
    liste de décimal
 
   calculette champ d'application CalculetteAidesAuLogement
@@ -1237,8 +1237,8 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
   égal à
     ressources_ménage_prises_en_compte
 
-  définition coefficents_enfants_garde_alternée_pris_en_compte égal à
-    calculette.coefficents_enfants_garde_alternée_pris_en_compte
+  définition coefficients_enfants_garde_alternée_pris_en_compte égal à
+    calculette.coefficients_enfants_garde_alternée_pris_en_compte
   définition ménage_sans_enfants_garde_alternée égal à
     Ménage {
       # TODO informatique: syntaxe OCaml { ... with foo = bar} ?
