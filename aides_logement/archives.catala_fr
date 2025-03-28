@@ -139,6 +139,135 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
 # relatif au calcul des aides personnelles au logement pour l'année
 # 2020.
 ```
+
+## Articles en vigueur à partir 1er janvier 2024 - Arrêté du 15 décembre 2023 relatif au calcul des aides personnelles au logement pour l'année 2025
+
+
+### Article 15 | LEGIARTI000048656246 [archive]
+
+Pour l'application du 5° de l'article D. 823-17 du même code, le forfait " R0 " est fixé selon
+le tableau suivant (en euros) :
+
+Composition du foyer	                     MONTANT  (en euros)
+-----------------------------------------  -------------------
+Personne seule sans personne à charge	     5 186
+Couple sans personne à charge	             7 430
+Personne seule ou couple ayant :
+    -une personne à charge	               8 862
+    -deux personnes à charge	             9 061
+    -trois personnes à charge	             9 408
+    -quatre personnes à charge	           9 758
+    -cinq personnes à charge	             10 105
+    -six personnes à charge                10 454
+    -par personne à charge supplémentaire  343
+
+```catala
+champ d'application CalculAidePersonnaliséeLogementLocatif sous condition
+  date_courante >= |2024-01-01| et date_courante < |2025-01-01|: 
+
+  étiquette métropole
+  définition multiplicateur_majoration_r0 égal à
+    décimal de (nombre_personnes_à_charge - 6)
+
+  étiquette métropole
+  définition abattement_forfaitaire_d823_17 égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 5186 €
+      -- Couple:  7 430 €
+    sinon si nombre_personnes_à_charge = 1 alors
+      8 862 €
+    sinon si nombre_personnes_à_charge = 2 alors
+      9 061 €
+    sinon si nombre_personnes_à_charge = 3 alors
+      9 408 €
+    sinon si nombre_personnes_à_charge = 4 alors
+      9 758 €
+    sinon si nombre_personnes_à_charge = 5 alors
+      10 105 €
+    sinon si nombre_personnes_à_charge = 6 alors
+      10 454 €
+    sinon
+      10 454 € + 343 € * multiplicateur_majoration_r0
+```
+
+NOTA :
+
+Conformément à l’article 2 de l’arrêté du 15 décembre 2023 (NOR : TREL2328932A),
+ces dispositions sont applicables aux prestations dues à compter du
+1er janvier 2024.
+
+
+### Article 47 | LEGIARTI000048656240
+
+Pour l'application du chapitre VII du présent arrêté à Saint-Pierre-et-Miquelon,
+le calcul de l'allocation de logement pour les logements-foyers repose sur les
+valeurs fixées au chapitre III relatif au calcul des aides personnelles au
+logement en secteur locatif.
+
+```catala
+# Cet alinéa est une recette de D863-7 où nous avons déjà codé ce changement
+# de mode de calcul.
+```
+
+Pour l'application du 5° de l'article D. 823-17 à Saint-Pierre-et-Miquelon,
+le forfait “ R0 ” est fixé selon le tableau suivant :
+
+
+Composition du foyer                                MONTANT (en euros)
+--------------------------------------------------- -------------------
+Personne seule sans personne à charge               5 335
+Couple sans personne à charge                       7 643
+Personne seule ou couple ayant :
+-une personne à charge                              9 116
+-deux personnes à charge                            9 322
+-trois personnes à charge                           9 678
+-quatre personnes à charge                          10 039
+-cinq personnes à charge                            10 395
+-six personnes à charge                             10 754
+-par personne à charge supplémentaire               354
+
+NOTA :
+
+Conformément à l’article 2 de l’arrêté du 15 décembre 2023 (NOR : TREL2328932A),
+ces dispositions sont applicables aux prestations dues à compter du 1er janvier 2024.
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre RO est défini
+# dans le calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif sous condition
+  date_courante >= |2024-01-01|  et date_courante < |2025-01-01|:
+  exception métropole
+  définition abattement_forfaitaire_d823_17 sous condition
+    selon résidence sous forme
+    -- SaintPierreEtMiquelon: vrai
+    -- n'importe quel: faux
+  conséquence égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 5 335 €
+      -- Couple:  7 643 €
+    sinon si nombre_personnes_à_charge = 1 alors
+      9 116 €
+    sinon si nombre_personnes_à_charge = 2 alors
+      9 322 €
+    sinon si nombre_personnes_à_charge = 3 alors
+      9 678 €
+    sinon si nombre_personnes_à_charge = 4 alors
+      10 039 €
+    sinon si nombre_personnes_à_charge = 5 alors
+      10 395 €
+    sinon si nombre_personnes_à_charge = 6 alors
+      10 754 €
+    sinon
+      10 754 € + 354 € * (décimal de (nombre_personnes_à_charge - 6))
+```
+
 ## Articles en vigueur à partir du 1er octobre 2023 - Arrêté du 22 septembre 2023 relatif au calcul des aides personnelles au logement et de l'aide à l'accession sociale et à la sortie de l'insalubrité spécifique à l'outre-mer NOR : TREL2321292A
 
 
