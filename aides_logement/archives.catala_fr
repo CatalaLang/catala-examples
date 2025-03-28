@@ -869,6 +869,254 @@ Conformément à l’article 3 de l’arrêté du 22 septembre 2023 (NOR :
 TREL2321292A), ces dispositions sont applicables aux prestations dues à
 compter du 1er octobre 2023.
 
+
+### Article 46 | LEGIARTI000050286587 [archive]
+
+Pour l'application en Guadeloupe, en Guyane, en Martinique, à La Réunion, à
+Mayotte, à Saint-Barthélemy et à Saint-Martin des dispositions des chapitres
+III, VI et VII du présent arrêté :
+
+1° La valeur fixée à l'article 15 du forfait
+" R0 ", visé au 5° de l'article D. 823-17 du même code, pour un ménage ayant un
+enfant à charge, est remplacée par " 8 574 euros " ;
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
+# pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  exception métropole
+  définition abattement_forfaitaire_d823_17
+  sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux) et
+    nombre_personnes_à_charge = 1
+  conséquence égal à
+    8 574 €
+```
+
+2° Les montants forfaitaires au titre des charges sont modifiés ainsi :
+
+a) Les montants visés au 3° de l'article D. 823-16, au 4° des articles
+D. 842-6 et D. 842-15 du même code, dont les valeurs sont fixées aux articles 9,
+34 et 40, sont remplacés par les valeurs suivantes (en euros) :
+
+
+Désignation                                         Toutes zones
+--------------------------------------------------- ------------
+Bénéficiaire isolé ou couple sans personne à charge 40,26
+Par personne supplémentaire à charge                10,36
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre du montant des charges est défini dans le
+# calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  étiquette base_outre_mer exception base_métropole
+  définition montant_forfaitaire_charges_d823_16 sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    40,26€ + 10,36€ * multiplicateur_majoration_charges_d823_16
+
+champ d'application CalculAllocationLogementAccessionPropriété
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  étiquette outre_mer exception copropriété
+  définition montant_forfaitaire_charges sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    40,26 € + 10,36 € * multiplicateur_majoration_charges
+
+champ d'application CalculAllocationLogementFoyer
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  exception base définition montant_forfaitaire_charges sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    40,26 € + 10,36 € * multiplicateur_majoration_charges
+```
+
+b) Les montants des colocataires et des copropriétaires prévus respectivement
+aux articles D. 823-18 et D. 842-10 du même code, dont les valeurs sont fixées
+aux articles 16 et 37, sont remplacés par les valeurs suivantes (en euros) :
+
+Composition du ménage            Montant
+-------------------------------- -------
+Bénéficiaire isolé               20,71
+Couple sans personne à charge    40,26
+Majoration par personne à charge 10,36
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre du montant des charges colocation est défini
+# dans le calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  exception colocation_métropole
+  définition montant_forfaitaire_charges_d823_16 sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux) et
+    colocation
+  conséquence égal à
+    (selon situation_familiale_calcul_apl sous forme
+     -- PersonneSeule: 20,71€
+     -- Couple: 40,26€) +
+    10,36€ * multiplicateur_majoration_charges_d823_16
+
+champ d'application CalculAllocationLogementAccessionPropriété
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  exception outre_mer
+  définition montant_forfaitaire_charges sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux) et
+    copropriété
+  conséquence égal à
+    (selon situation_familiale_calcul_apl sous forme
+     -- PersonneSeule: 20,71€
+     -- Couple: 40,26€) +
+    10,36€ * multiplicateur_majoration_charges
+```
+
+3° Les valeurs du taux " TF " fixées à l'article 14, taux fonction de la taille
+de la famille visé au 3° de l'article D. 823-17 du même code, sont
+remplacées par les valeurs suivantes :
+
+VALEURS DE TF
+
+Bénéficiaires                                       TF
+--------------------------------------------------- ------
+Isolé                                               2,81 %
+Couple sans enfant                                  2,99 %
+Personne seule ou couple ayant 1 personne à charge  2,38 %
+Personne seule ou couple ayant 2 personnes à charge 2,17 %
+Personne seule ou couple ayant 3 personnes à charge 1,94 %
+Personne seule ou couple ayant 4 personnes à charge 1,80 %
+Personne seule ou couple ayant 5 personnes à charge 1,69 %
+Personne seule ou couple ayant 6 personnes à charge 1,62 %
+Personne seule ou couple ayant 7 personnes à charge 1,67 %
+Majoration par personne à charge supplémentaire     -0,06 %
+
+```catala
+# Ici bizarrerie, à la ligne pour 7 personnes on a un TF plus grand que la
+# ligne à 6 personnes alors que partout ailleurs on a une décroissance.
+# Cette bizarrerie a été introduite avec la dernière version de l'arrêté de 2019
+# (arrêté du 26 décembre 2022). Une justification nous en a été donnée par
+# DGALN/DHUP/FE4 dans un mail en date du 21/04/2023 :
+# "Le calcul du TF est plus avantageux en outre-mer par rapport à la métropole.
+# Si la limite de 6 enfants a été supprimée, le barème applicable à l’outre-mer
+# n’a pas été modifié pour les six premiers enfants. Par contre, à compter du
+# 7ème enfant à charge, le barème applicable est identique à celui applicable en
+# métropole (voir l’article 14 de l’arrêté : TF pour 6 personnes à charge de
+# 1,73%, majoration par personne supplémentaire : -0,06% - TF applicable pour 7
+# personnes à charge : 1,73 – 0,06 = 1,67%). Il ne s’agit donc pas d’un
+# incohérence numérique mais d’un alignement avec le barème métropolitain."
+
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre TF est défini
+# dans le calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+  exception base définition taux_composition_familiale sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 2,81%
+      -- Couple: 2,99%
+    sinon si nombre_personnes_à_charge = 1 alors
+      2,38%
+    sinon si nombre_personnes_à_charge = 2 alors
+      2,17%
+    sinon si nombre_personnes_à_charge = 3 alors
+      1,94%
+    sinon si nombre_personnes_à_charge = 4 alors
+      1,80%
+    sinon si nombre_personnes_à_charge = 5 alors
+      1,69%
+    sinon si nombre_personnes_à_charge = 6 alors
+      1,62%
+    sinon si nombre_personnes_à_charge = 7 alors
+      1,67%
+    sinon (
+      1,67% - 0,06% * (décimal de (nombre_personnes_à_charge - 7)))
+```
+
+4° A compter du 1er janvier 2022, pour l'application du 5° de l'article
+D. 823-17 du même code, le forfait “ R0 ” applicable à Mayotte est identique
+à celui applicable en outre-mer.
+
+```catala
+# Rien à coder.
+```
+
+NOTA :
+
+Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR :
+LRUL2420421A), ces dispositions sont applicables aux prestations dues à
+compter du 1er octobre 2024.
+
 ## Articles en vigueur à partir 1er janvier 2024 - Arrêté du 15 décembre 2023 relatif au calcul des aides personnelles au logement pour l'année 2025
 
 ### Article 15 | LEGIARTI000048656246 [archive]
@@ -924,6 +1172,253 @@ NOTA :
 Conformément à l’article 2 de l’arrêté du 15 décembre 2023 (NOR : TREL2328932A),
 ces dispositions sont applicables aux prestations dues à compter du
 1er janvier 2024.
+
+
+### Article 46 | LEGIARTI000048656243
+
+Pour l'application en Guadeloupe, en Guyane, en Martinique, à La Réunion, à
+Mayotte, à Saint-Barthélemy et à Saint-Martin des dispositions des chapitres
+III, VI et VII du présent arrêté :
+
+1° La valeur fixée à l'article 15 du forfait
+" R0 ", visé au 5° de l'article D. 823-17 du même code, pour un ménage ayant un
+enfant à charge, est remplacée par " 8 574 euros " ;
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
+# pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  exception métropole
+  définition abattement_forfaitaire_d823_17
+  sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux) et
+    nombre_personnes_à_charge = 1
+  conséquence égal à
+    8 574 €
+```
+
+2° Les montants forfaitaires au titre des charges sont modifiés ainsi :
+
+a) Les montants visés au 3° de l'article D. 823-16, au 4° des articles
+D. 842-6 et D. 842-15 du même code, dont les valeurs sont fixées aux articles 9,
+34 et 40, sont remplacés par les valeurs suivantes (en euros) :
+
+
+Désignation                                         Toutes zones
+--------------------------------------------------- ------------
+Bénéficiaire isolé ou couple sans personne à charge 38,99
+Par personne supplémentaire à charge                10,03
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre du montant des charges est défini dans le
+# calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  étiquette base_outre_mer exception base_métropole
+  définition montant_forfaitaire_charges_d823_16 sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    38,99€ + 10,03€ * multiplicateur_majoration_charges_d823_16
+
+champ d'application CalculAllocationLogementAccessionPropriété
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  étiquette outre_mer exception copropriété
+  définition montant_forfaitaire_charges sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    38,99 € + 10,03 € * multiplicateur_majoration_charges
+
+champ d'application CalculAllocationLogementFoyer
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  exception base définition montant_forfaitaire_charges sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    38,99 € + 10,03 € * multiplicateur_majoration_charges
+```
+
+b) Les montants des colocataires et des copropriétaires prévus respectivement
+aux articles D. 823-18 et D. 842-10 du même code, dont les valeurs sont fixées
+aux articles 16 et 37, sont remplacés par les valeurs suivantes (en euros) :
+
+Composition du ménage            Montant
+-------------------------------- -------
+Bénéficiaire isolé               20,06
+Couple sans personne à charge    38,99
+Majoration par personne à charge 10,03
+
+```catala
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre du montant des charges colocation est défini
+# dans le calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  exception colocation_métropole
+  définition montant_forfaitaire_charges_d823_16 sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux) et
+    colocation
+  conséquence égal à
+    (selon situation_familiale_calcul_apl sous forme
+     -- PersonneSeule: 20,06€
+     -- Couple: 38,99€) +
+    10,03€ * multiplicateur_majoration_charges_d823_16
+
+champ d'application CalculAllocationLogementAccessionPropriété
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  exception outre_mer
+  définition montant_forfaitaire_charges sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux) et
+    copropriété
+  conséquence égal à
+    (selon situation_familiale_calcul_apl sous forme
+     -- PersonneSeule: 20,06€
+     -- Couple: 38,99€) +
+    10,03€ * multiplicateur_majoration_charges
+```
+
+3° Les valeurs du taux " TF " fixées à l'article 14, taux fonction de la taille
+de la famille visé au 3° de l'article D. 823-17 du même code, sont
+remplacées par les valeurs suivantes :
+
+VALEURS DE TF
+
+Bénéficiaires                                       TF
+--------------------------------------------------- ------
+Isolé                                               2,81 %
+Couple sans enfant                                  2,99 %
+Personne seule ou couple ayant 1 personne à charge  2,38 %
+Personne seule ou couple ayant 2 personnes à charge 2,17 %
+Personne seule ou couple ayant 3 personnes à charge 1,94 %
+Personne seule ou couple ayant 4 personnes à charge 1,80 %
+Personne seule ou couple ayant 5 personnes à charge 1,69 %
+Personne seule ou couple ayant 6 personnes à charge 1,62 %
+Personne seule ou couple ayant 7 personnes à charge 1,67 %
+Majoration par personne à charge supplémentaire     -0,06 %
+
+```catala
+# Ici bizarrerie, à la ligne pour 7 personnes on a un TF plus grand que la
+# ligne à 6 personnes alors que partout ailleurs on a une décroissance.
+# Cette bizarrerie a été introduite avec la dernière version de l'arrêté de 2019
+# (arrêté du 26 décembre 2022). Une justification nous en a été donnée par
+# DGALN/DHUP/FE4 dans un mail en date du 21/04/2023 :
+# "Le calcul du TF est plus avantageux en outre-mer par rapport à la métropole.
+# Si la limite de 6 enfants a été supprimée, le barème applicable à l’outre-mer
+# n’a pas été modifié pour les six premiers enfants. Par contre, à compter du
+# 7ème enfant à charge, le barème applicable est identique à celui applicable en
+# métropole (voir l’article 14 de l’arrêté : TF pour 6 personnes à charge de
+# 1,73%, majoration par personne supplémentaire : -0,06% - TF applicable pour 7
+# personnes à charge : 1,73 – 0,06 = 1,67%). Il ne s’agit donc pas d’un
+# incohérence numérique mais d’un alignement avec le barème métropolitain."
+
+# Ici nous modifions le champ d'application
+# "CalculAidePersonnaliséeLogementLocatif" au lieu de
+# "CalculAllocationLogementLocatif", même si il n'existe pas de convention-
+# nement locatif pour les APL dans les DROM. En effet le calcul des AL
+# en secteur locatif repose essentiellement sur la formue des APL en secteur
+# locatif. Notamment le paramètre TF est défini
+# dans le calcul des APL pas celui des AL.
+champ d'application CalculAidePersonnaliséeLogementLocatif
+  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+  exception base définition taux_composition_familiale sous condition
+    (selon résidence sous forme
+    -- Guadeloupe: vrai
+    -- Martinique: vrai
+    -- LaRéunion: vrai
+    -- Mayotte: vrai
+    -- SaintBarthélemy: vrai
+    -- SaintMartin: vrai
+    -- n'importe quel: faux)
+  conséquence égal à
+    si nombre_personnes_à_charge = 0 alors
+      selon situation_familiale_calcul_apl sous forme
+      -- PersonneSeule: 2,81%
+      -- Couple: 2,99%
+    sinon si nombre_personnes_à_charge = 1 alors
+      2,38%
+    sinon si nombre_personnes_à_charge = 2 alors
+      2,17%
+    sinon si nombre_personnes_à_charge = 3 alors
+      1,94%
+    sinon si nombre_personnes_à_charge = 4 alors
+      1,80%
+    sinon si nombre_personnes_à_charge = 5 alors
+      1,69%
+    sinon si nombre_personnes_à_charge = 6 alors
+      1,62%
+    sinon si nombre_personnes_à_charge = 7 alors
+      1,67%
+    sinon (
+      1,67% - 0,06% * (décimal de (nombre_personnes_à_charge - 7)))
+```
+
+4° A compter du 1er janvier 2022, pour l'application du 5° de l'article
+D. 823-17 du même code, le forfait “ R0 ” applicable à Mayotte est identique
+à celui applicable en outre-mer.
+
+```catala
+# Rien à coder.
+```
+
+NOTA :
+
+Conformément à l’article 2 de l’arrêté du 15 décembre 2023 (NOR : TREL2328932A),
+ces dispositions sont applicables aux prestations dues à compter du 1er janvier 2024.
 
 
 ### Article 47 | LEGIARTI000048656240
