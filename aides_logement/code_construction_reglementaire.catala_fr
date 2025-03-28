@@ -5316,7 +5316,7 @@ pris par le ministre chargé de l'outre-mer.
 # Rien à coder.
 ```
 
-###### Article R861-5 | LEGIARTI000047985786
+###### Article R861-5 | LEGIARTI000050811209
 
 Pour leur application à Mayotte :
 
@@ -5341,12 +5341,51 @@ mots : " l'allocation spéciale pour les personnes âgées prévue par l'article
 # code donc rien ici.
 ```
 
-3° L'article R. 822-25 est complété par un alinéa ainsi rédigé :
+3° L'article R. 822-25 est remplacé par l'article suivant : 
 
-" Toutefois, lorsqu'en cours de droit, le logement ne répond plus à ces normes de peuplement,
-l'allocation de logement est maintenue pour une durée d'un an, à condition que la surface
-habitable globale soit d'au moins treize mètres carrés, augmentée de six mètres carrés par
-personne en plus, dans la limite de cinquante-quatre mètres carrés pour neuf personnes et plus. " ;
+" Art. R. 822-25.-Le logement au titre duquel le droit à l'aide personnelle
+au logement est ouvert doit présenter une surface habitable globale au moins
+égale à neuf mètres carrés pour une personne seule, treize mètres carrés pour
+un ménage sans enfant ou de deux personnes, augmentée de six mètres carrés par
+personne en plus, dans la limite de cinquante-quatre mètres carrés pour neuf
+personnes et plus. 
+
+
+```catala
+champ d'application ÉligibilitéAidesPersonnelleLogement:
+  exception base
+  règle condition_logement_surface sous condition
+    ménage.résidence sous forme Mayotte et 
+    soit condition_logement_surface_minimale_sans_seuil_m_carrés égal à
+      (selon ménage.situation_familiale sous forme
+      -- Célibataire: 9
+      -- Mariés: 13
+      -- Pacsés: 13
+      -- Concubins: 13
+      -- CélibataireSéparéDeFait: 9
+      -- ConcubinageDontSéparéDeFait: 13) +
+      (ménage.nombre_autres_occupants_logement +
+      nombre de ménage.personnes_à_charge) * 9
+    dans si
+      condition_logement_surface_minimale_sans_seuil_m_carrés >= 54 et
+      nombre_personnes_logement >= 9
+    alors
+      (ménage.logement.surface_m_carrés >= 54)
+    sinon
+      (ménage.logement.surface_m_carrés >=
+        condition_logement_surface_minimale_sans_seuil_m_carrés)
+  conséquence rempli
+```
+
+Toutefois, lorsqu'en cours de droit, le logement ne répond plus à ces normes
+de peuplement, l'allocation de logement est maintenue pour une durée d'un an,
+à titre dérogatoire, le cas échéant prolongée par une période d'un an sur
+décision de l'organisme payeur dans les conditions prévues au premier alinéa
+de l' article R. 844-1 , après enquête sociale et au vu d'une attestation
+motivée certifiant que l'allocataire ne peut être logé conformément aux
+conditions de l'alinéa précédent.
+
+En cas de refus de dérogation, le deuxième alinéa de l'article R. 844-1 est applicable. "
 
 ```catala
 # Nous choississons ici de ne pas coder informatiquement ces dispositions
