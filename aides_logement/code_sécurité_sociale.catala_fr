@@ -105,16 +105,19 @@ certaines structures sur le territoire français.
 
 ######## Paragraphe 1 : Information et simplification des démarches des assurés.
 
-######### Article L161-17-2 | LEGIARTI000047452768
+######### Article L161-17-2 | LEGIARTI000051289659
 
-L'âge d'ouverture du droit à une pension de retraite mentionné au premier alinéa
-de l'article L. 351-1 du présent code, à l'article L. 732-18 du code rural
-et de la pêche maritime, au 1° du I de l'article L. 24 et au 1° de l'article
-L. 25 du code des pensions civiles et militaires de retraite est fixé à
-soixante-quatre ans pour les assurés nés à compter du 1er janvier 1968.
+L'âge d'ouverture du droit à une pension de retraite mentionné au premier
+alinéa de l'article L. 351-1 du présent code, au 1° du I de l'article L. 24 et
+au 1° de l'article L. 25 du code des pensions civiles et militaires de
+retraite est fixé à soixante-quatre ans pour les assurés nés à compter du 1er
+janvier 1968.
 
 ```catala
 champ d'application OuvertureDroitsRetraite sous condition
+  # Cette version de l'article est en vigueur depuis février 2025 seulement 
+  # mais la version précédente emporte les mêmes effets et était en vigueur 
+  # depuis le 1er septembre 2023. 
   date_courante >= |2023-09-01|:
   définition âge_ouverture_droit sous condition
     date_naissance_assuré >= |1968-01-01|
@@ -135,8 +138,11 @@ de trois mois par génération.
 
 NOTA :
 
-Conformément au B du XXX de l'article 10 de la loi n° 2023-270 du 14 avril 2023,
-ces dispositions s'appliquent aux pensions prenant effet à compter du 1er septembre 2023.
+Conformément au C du VIII de l'article 87 de la loi n° 2025-199 du 28 février
+2025, les F et İ, les 1°, 2°, 5°, 8°, 9°, 12° et 17° du L et les M et N du I,
+les 3° à 6°, 10°, 12°, 14°, 18°, 19° et 23° du II et les IV à VII de l'article
+précité s'appliquent aux pensions prenant effet à compter du 1er janvier 2026.
+
 
 ### Livre III : Dispositions relatives aux assurances sociales et à diverses catégories de personnes rattachées au régime générale
 
@@ -198,7 +204,7 @@ du 1er septembre 2023.
 
 ###### Section 5 : Taux et montant de la pension
 
-####### Article L351-8 | LEGIARTI000047452736
+####### Article L351-8 | LEGIARTI000051289852
 
 Bénéficient du taux plein même s'ils ne justifient pas de la durée requise
 d'assurance ou de périodes équivalentes dans le régime général et un ou
@@ -243,6 +249,13 @@ des conditions prévues à l'article L. 351-1-1 ;
 5° Les anciens prisonniers de guerre lorsque, sur leur demande, leur pension est
 liquidée à un âge variant suivant la durée de captivité dans des conditions
 fixées par décret.
+
+6° Les assurés atteignant l'âge de soixante-cinq ans qui bénéficient d'un
+nombre minimal de trimestres fixé par décret au titre de la majoration de
+durée d'assurance prévue à l'article L. 351-4-1 ou qui, pendant une durée et
+dans des conditions fixées par décret, ont apporté une aide effective à leur
+enfant bénéficiaire de l'élément de la prestation relevant du 1° de l'article
+L. 245-3 du code de l'action sociale et des familles.
 
 Les anciens prisonniers de guerre évadés de guerre, au-delà d'un certain temps
 de captivité, et les anciens prisonniers rapatriés pour maladie peuvent choisir
