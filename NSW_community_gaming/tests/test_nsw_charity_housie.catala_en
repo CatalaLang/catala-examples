@@ -8,6 +8,7 @@
 
 ```catala
 
+#[test]
 declaration scope Test1:
   my_gaming scope GamingAuthorized
 
@@ -37,6 +38,7 @@ $ catala test-scope Test1
 
 ```catala
 
+#[test]
 declaration scope Test2:
   my_gaming scope GamingAuthorized
 
@@ -65,6 +67,7 @@ $ catala test-scope Test2
 
 ```catala
 
+#[test]
 declaration scope Test3:
   my_gaming scope GamingAuthorized
 
@@ -93,6 +96,7 @@ $ catala test-scope Test3
 
 ```catala
 
+#[test]
 declaration scope Test4:
   my_gaming scope GamingAuthorized
 

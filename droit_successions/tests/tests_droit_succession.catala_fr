@@ -17,6 +17,7 @@ champ d'application Enfants:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Test1:
   réserve_héréditaire champ d'application DS.RéserveHéréditaire
 
@@ -28,6 +29,7 @@ champ d'application Test1:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Test2:
   réserve_héréditaire champ d'application DS.RéserveHéréditaire
   enfants champ d'application Enfants
@@ -40,6 +42,7 @@ champ d'application Test2:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Test3:
   réserve_héréditaire champ d'application DS.RéserveHéréditaire
   enfants champ d'application Enfants
@@ -53,6 +56,7 @@ champ d'application Test3:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Test4:
   réserve_héréditaire champ d'application DS.RéserveHéréditaire
   enfants champ d'application Enfants

@@ -6,6 +6,7 @@
 ```catala
 # Tiré de la page 54 de
 # https://www.ecologie.gouv.fr/sites/default/files/les_aides_personnelles_au_logement_element_de_calcul_septembre_2021.pdf#page=45
+#[test]
 déclaration champ d'application Exemple1:
   calcul champ d'application AL.CalculAllocationLogementAccessionPropriété
   résultat montant contenu argent
@@ -40,6 +41,7 @@ champ d'application Exemple1:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple2:
   calcul champ d'application AL.CalculAllocationLogementAccessionPropriété
   résultat montant contenu argent

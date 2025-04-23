@@ -4,6 +4,7 @@
 # Tests
 
 ```catala
+#[test]
 déclaration champ d'application Exemple1 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -34,6 +35,7 @@ champ d'application Exemple1:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple2 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -65,6 +67,7 @@ champ d'application Exemple2:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple3 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -96,6 +99,7 @@ champ d'application Exemple3:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple4 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -127,6 +131,7 @@ champ d'application Exemple4:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple5 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -158,6 +163,7 @@ champ d'application Exemple5:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple6 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -189,6 +195,7 @@ champ d'application Exemple6:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple7 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -220,6 +227,7 @@ champ d'application Exemple7:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple8 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent
@@ -251,6 +259,7 @@ champ d'application Exemple8:
 ```
 
 ```catala
+#[test]
 déclaration champ d'application Exemple9 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementLocatif
   résultat montant contenu argent

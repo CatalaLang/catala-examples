@@ -3,6 +3,7 @@
 ## Test - Art. 7 ustęp 1 punkt 3
 
 ```catala
+#[test]
 deklaracja zakres Test_A7_U1_P3:
   sprzedaż zakres OdpłatneUżytkowanie
 

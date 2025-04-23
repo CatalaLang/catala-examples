@@ -59,6 +59,7 @@ scope Data:
 
 ####################### Testing Section121SinglePerson #########################
 
+#[test]
 declaration scope Test1:
   scope121a scope Section121SinglePerson
   data_ scope Data
@@ -73,6 +74,7 @@ scope Test1:
   definition scope121a.other_section_121a_sale equals NoOtherSaleWhereSection121aApplied
   assertion scope121a.requirements_met
 
+#[test]
 declaration scope Test2:
   scope121a scope Section121SinglePerson
   data_ scope Data
@@ -87,6 +89,7 @@ scope Test2:
   definition scope121a.other_section_121a_sale equals NoOtherSaleWhereSection121aApplied
   assertion not scope121a.requirements_met
 
+#[test]
 declaration scope Test3:
   scope121a scope Section121SinglePerson
   data_ scope Data
@@ -101,6 +104,7 @@ scope Test3:
   definition scope121a.other_section_121a_sale equals NoOtherSaleWhereSection121aApplied
   assertion not scope121a.requirements_met
 
+#[test]
 declaration scope Test4:
   scope121a scope Section121SinglePerson
   data_ scope Data
@@ -117,6 +121,7 @@ scope Test4:
 
 ###################### Testing Section121TwoPersons ############################
 
+#[test]
 declaration scope Test5:
     scope121 scope Section121TwoPersons
     data_ scope Data
@@ -129,6 +134,7 @@ scope Test5:
    definition scope121.return_type equals SingleReturn content data_.person_ok_1
    assertion scope121.income_excluded_from_gross_income = $250,000
 
+#[test]
 declaration scope Test6:
     scope121 scope Section121TwoPersons
     data_ scope Data

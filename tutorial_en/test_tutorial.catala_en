@@ -3,6 +3,7 @@
 ## Test
 
 ```catala
+#[test]
 declaration scope UnitTest1:
   tax_computation scope T.NewIncomeTaxComputation
 
@@ -16,6 +17,7 @@ scope UnitTest1:
     }
   assertion tax_computation.income_tax = $72,000
 
+#[test]
 declaration scope UnitTest2:
   tax_computation scope T.NewIncomeTaxComputationFixed
 

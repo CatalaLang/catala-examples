@@ -49,6 +49,7 @@ champ d'application Données:
     -- bénéficie_titre_personnel_aide_personnelle_logement: faux
   }
 
+#[test]
 déclaration champ d'application Test1:
   données champ d'application Données
   f champ d'application AF.PrestationsFamiliales

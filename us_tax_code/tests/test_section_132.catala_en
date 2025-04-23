@@ -3,6 +3,7 @@
 ### Test
 
 ```catala
+#[test]
 declaration scope TestSection132_1:
   section_132 scope QualifiedEmployeeDiscount
 
@@ -17,6 +18,7 @@ scope TestSection132_1:
 ```
 
 ```catala
+#[test]
 declaration scope TestSection132_2:
   section_132 scope QualifiedEmployeeDiscount
 
@@ -31,6 +33,7 @@ scope TestSection132_2:
 ```
 
 ```catala
+#[test]
 declaration scope TestSection132_3:
   section_132 scope QualifiedEmployeeDiscount
 

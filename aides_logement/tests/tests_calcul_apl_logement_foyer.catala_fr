@@ -4,6 +4,7 @@
 # Test
 
 ```catala
+#[test]
 déclaration champ d'application CasTest1 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementFoyer
   résultat montant contenu argent
@@ -28,6 +29,7 @@ champ d'application CasTest1:
   définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule
   assertion montant = 12,06 €
 
+#[test]
 déclaration champ d'application CasTest2 :
   calcul champ d'application AL.CalculAllocationLogementFoyer
   résultat montant contenu argent
@@ -58,6 +60,7 @@ champ d'application CasTest2:
 ```catala
 # Tiré de la page 34 de
 # https://www.ecologie.gouv.fr/sites/default/files/les_aides_personnelles_au_logement_element_de_calcul_septembre_2021.pdf#page=34
+#[test]
 déclaration champ d'application CasTest3 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementFoyer
   résultat montant contenu argent
@@ -84,6 +87,7 @@ champ d'application CasTest3:
 
 ```catala
 # Transmis par DGALN/DHUP/FE4 le 14/07/2022
+#[test]
 déclaration champ d'application CasTest4 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementFoyer
   résultat montant contenu argent
@@ -111,6 +115,7 @@ champ d'application CasTest4:
 
 ```catala
 # Transmis par DGALN/DHUP/FE4 le 14/07/2022
+#[test]
 déclaration champ d'application CasTest5 :
   calcul champ d'application AL.CalculAidePersonnaliséeLogementFoyer
   résultat montant contenu argent

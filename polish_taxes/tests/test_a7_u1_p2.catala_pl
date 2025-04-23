@@ -3,6 +3,7 @@
 ## Test - Art. 7 ustęp 1 punkt 2
 
 ```catala
+#[test]
 deklaracja zakres Test_A7_U1_P2_PPa:
   sprzedaż zakres UmowaZamianyLubDarowizny
 
@@ -12,6 +13,7 @@ zakres Test_A7_U1_P2_PPa:
   asercja sprzedaż.podatek = 2 PLN
 
 
+#[test]
 deklaracja zakres Test_A7_U1_P2_PPb:
   sprzedaż zakres UmowaZamianyLubDarowizny
 
