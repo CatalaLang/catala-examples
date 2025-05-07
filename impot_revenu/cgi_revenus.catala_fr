@@ -37,11 +37,12 @@ sociétés de capitaux ;
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition traitements_salaires_avec_déduction_frais_professionnels état base
+  définition traitements_salaires_avec_déduction_frais_professionnels
+    état base
   égal à
     revenus.traitements_salaires
-  # Les traitements et salaires comprennent aussi d'autres revenus qui seront
-  # ajoutés dans les articles correspondants.
+# Les traitements et salaires comprennent aussi d'autres revenus qui seront
+# ajoutés dans les articles correspondants.
 ```
 
 – Bénéfices des professions non commerciales et revenus y assimilés ;
@@ -111,11 +112,15 @@ champ d'application TraitementsSalairesDéclarant:
     - déduction_frais_professionnels_traitements_salaires
 
 champ d'application TraitementsSalairesFoyerFiscal:
-  définition solde_revenu_brut_global_hors_quotient_avant_déficit_quotient
+  définition
+    solde_revenu_brut_global_hors_quotient_avant_déficit_quotient
   égal à
-    (somme argent de résultats.revenu_brut_déclarant_hors_quotient
-      pour résultats parmi
-      déclarations_avec_résultats_traitements_salaires)
+    (
+      somme argent
+        de transforme chaque résultats
+      parmi déclarations_avec_résultats_traitements_salaires en
+        résultats.revenu_brut_déclarant_hors_quotient
+    )
     + rentes_viagères_titre_onéreux
     # Gain d'acquisition d'action gratuites postérieures à 2016 pour
     # fraction inférieure à 300 000 € (article 80 quaterdecies)
@@ -128,50 +133,64 @@ champ d'application TraitementsSalairesFoyerFiscal:
 
 champ d'application BénéficesNonCommerciauxDéclarant:
   # Régime de l'article 93
-  définition revenus_imposables_réel_professionnels état base égal à
+  définition revenus_imposables_réel_professionnels
+    état base
+  égal à
     revenus.professionnels.généraux.revenus_imposables
 
-  définition solde_net_professionnel état revenus_imposables_réel égal à
-    revenus_imposables_réel_professionnels -
-    revenus.professionnels.généraux.déficit_réel
+  définition solde_net_professionnel
+    état revenus_imposables_réel
+  égal à
+    revenus_imposables_réel_professionnels
+    - revenus.professionnels.généraux.déficit_réel
 
-  définition revenus_imposables_réel_non_professionnels état base égal à
+  définition revenus_imposables_réel_non_professionnels
+    état base
+  égal à
     revenus.non_professionnels.généraux.revenus_imposables
 
   définition solde_net_non_professionnel
-  état revenus_imposables_réel égal à
-    revenus_imposables_réel_non_professionnels -
-    revenus.non_professionnels.généraux.déficit_réel
+    état revenus_imposables_réel
+  égal à
+    revenus_imposables_réel_non_professionnels
+    - revenus.non_professionnels.généraux.déficit_réel
 
   # Régime de l'article 102 ter
   définition solde_net_professionnel
-  état revenus_imposables_micro égal à
-    solde_net_professionnel  +
-    revenus.professionnels.généraux.revenus_imposables_micro
+    état revenus_imposables_micro
+  égal à
+    solde_net_professionnel
+    + revenus.professionnels.généraux.revenus_imposables_micro
     - abattement_forfaitaire_micro_professionnel
 
   définition solde_net_non_professionnel
-  état revenus_imposables_micro égal à
-    solde_net_non_professionnel  +
-    revenus.non_professionnels.généraux.revenus_imposables_micro
+    état revenus_imposables_micro
+  égal à
+    solde_net_non_professionnel
+    + revenus.non_professionnels.généraux.revenus_imposables_micro
     - abattement_forfaitaire_micro_non_professionnel
 
 champ d'application BénéficesNonCommerciauxFoyerFiscal:
   définition résultats_liquidation_bénéfices_non_commerciaux égal à
-    résultat de BénéficesNonCommerciauxDéclarant avec {
-      -- année_revenus: année_revenus
-      -- revenus: revenus_déclarant
-    } pour revenus_déclarant parmi revenus
+    transforme chaque revenus_déclarant parmi revenus en
+      résultat de BénéficesNonCommerciauxDéclarant avec {
+        -- année_revenus: année_revenus
+        -- revenus: revenus_déclarant
+      }
 
-  définition solde_net_global_non_professionnel état agrégation égal à
-    somme argent de résultat_liquidation.solde_net_non_professionnel
-    pour résultat_liquidation parmi
-      résultats_liquidation_bénéfices_non_commerciaux
+  définition solde_net_global_non_professionnel
+    état agrégation
+  égal à
+    somme argent
+      de transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_non_commerciaux en
+      résultat_liquidation.solde_net_non_professionnel
 
   définition solde_net_global_professionnel égal à
-    somme argent de résultat_liquidation.solde_net_professionnel
-    pour résultat_liquidation parmi
-      résultats_liquidation_bénéfices_non_commerciaux
+    somme argent
+      de transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_non_commerciaux en
+      résultat_liquidation.solde_net_professionnel
 
   définition revenu_brut_global égal à
     # Le 2° du I de l'article 156 précise que les déficits non-professionnels
@@ -181,36 +200,38 @@ champ d'application BénéficesNonCommerciauxFoyerFiscal:
     # global défini ci-dessous n'a pas besoin de faire l'objet d'une telle
     # distinction, donc nous mélangeons les revenus positifs professionnels
     # et non-professionnels.
-    plancher de (solde_net_global_non_professionnel, 0 €) +
-    plancher de (solde_net_global_professionnel, 0 €)
+    plancher de (solde_net_global_non_professionnel, 0 €)
+    + plancher de (solde_net_global_professionnel, 0 €)
 
 champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   définition résultats_liquidation_bénéfices_industriels_commerciaux égal à
-    résultat de BénéficesIndustrielsCommerciauxDéclarant avec {
-      -- année_revenus: année_revenus
-      -- revenus: revenus_déclarant
-    } pour revenus_déclarant parmi revenus
+    transforme chaque revenus_déclarant parmi revenus en
+      résultat de BénéficesIndustrielsCommerciauxDéclarant avec {
+        -- année_revenus: année_revenus
+        -- revenus: revenus_déclarant
+      }
 
   définition solde_net_global_non_professionnel_hors_locations_meublées
     état agrégation
   égal à
-    somme argent de
+    somme argent
+      de transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_industriels_commerciaux en
       résultat_liquidation.solde_net_non_professionnel_hors_locations_meublées
-    pour résultat_liquidation parmi
-      résultats_liquidation_bénéfices_industriels_commerciaux
 
   définition solde_net_global_professionnel égal à
-    somme argent de résultat_liquidation.solde_net_professionnel
-    pour résultat_liquidation parmi
-      résultats_liquidation_bénéfices_industriels_commerciaux
+    somme argent
+      de transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_industriels_commerciaux en
+      résultat_liquidation.solde_net_professionnel
 
   définition solde_net_global_non_professionnel_locations_meublées
     état agrégation
   égal à
-    somme argent de
+    somme argent
+      de transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_industriels_commerciaux en
       résultat_liquidation.solde_net_non_professionnel_locations_meublées
-    pour résultat_liquidation parmi
-      résultats_liquidation_bénéfices_industriels_commerciaux
 
   définition revenu_brut_global égal à
     # Le 1°bis du I de l'article 156 précise que les déficits non-professionnels
@@ -220,10 +241,10 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
     # défini ci-dessous n'a pas besoin de faire l'objet d'une telle distinction,
     # donc nous mélangeons les revenus positifs professionnels et
     # non-professionnels.
-    plancher de (solde_net_global_professionnel, 0 €) +
-    plancher de
-      (solde_net_global_non_professionnel_hors_locations_meublées, 0 €) +
-    plancher de (solde_net_global_non_professionnel_locations_meublées, 0 €)
+    plancher de (solde_net_global_professionnel, 0 €)
+    + plancher de
+      (solde_net_global_non_professionnel_hors_locations_meublées, 0 €)
+    + plancher de (solde_net_global_non_professionnel_locations_meublées, 0 €)
 ```
 
 3. Le bénéfice ou revenu net de chacune des catégories de revenus visées au 2
@@ -312,14 +333,20 @@ n° 2010-462 du 6 mai 2010.
 
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition revenus_imposables_réel_professionnels état base égal à
+  définition revenus_imposables_réel_professionnels
+    état base
+  égal à
     revenus.professionnels.revenus_imposables_réel
 
-  définition solde_net_professionnel état revenus_imposables_réel égal à
+  définition solde_net_professionnel
+    état revenus_imposables_réel
+  égal à
     revenus_imposables_réel_professionnels
     - revenus.professionnels.déficit_réel
 
-  définition revenus_imposables_réel_non_professionnels état base égal à
+  définition revenus_imposables_réel_non_professionnels
+    état base
+  égal à
     revenus.non_professionnels.généraux.revenus_imposables_réel
 
   définition solde_net_non_professionnel_hors_locations_meublées
@@ -457,27 +484,31 @@ champ d'application PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux:
     plus_values_nettes - moins_values_nettes
 
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition solde_net_professionnel état plus_moins_value_court_terme_micro
+  définition solde_net_professionnel
+    état plus_moins_value_court_terme_micro
   égal à
-    solde_net_professionnel +
-    (résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec {
-      -- plus_values_nettes:
-        revenus.professionnels.plus_values_nettes_court_terme_micro
-      -- moins_values_nettes:
-        revenus.professionnels.moins_values_nettes_court_terme_micro
-    }).solde_net
+    solde_net_professionnel
+    + (
+      résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.professionnels.plus_values_nettes_court_terme_micro
+        -- moins_values_nettes:
+          revenus.professionnels.moins_values_nettes_court_terme_micro
+      }
+    ).solde_net
 
   définition solde_net_non_professionnel_hors_locations_meublées
     état plus_moins_value_court_terme_micro
   égal à
-    solde_net_non_professionnel_hors_locations_meublées +
-    (résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec {
-      -- plus_values_nettes:
-        revenus.non_professionnels.généraux.plus_values_nettes_court_terme_micro
-      -- moins_values_nettes:
-        revenus.non_professionnels.généraux.
-          moins_values_nettes_court_terme_micro
-    }).solde_net
+    solde_net_non_professionnel_hors_locations_meublées
+    + (
+      résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.non_professionnels.généraux.plus_values_nettes_court_terme_micro
+        -- moins_values_nettes:
+          revenus.non_professionnels.généraux.moins_values_nettes_court_terme_micro
+      }
+    ).solde_net
 ```
 
 ########## Article 39 quindecies | LEGIARTI000036428314
@@ -488,8 +519,10 @@ séparée au taux de 12,8 %.
 
 ```catala
 champ d'application PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux:
-  définition prélèvement_libératoire état base égal à
-    (plancher de (plus_values_nettes - moins_values_nettes), 0 €) * 12,8 %
+  définition prélèvement_libératoire
+    état base
+  égal à
+    (plancher de (plus_values_nettes - moins_values_nettes), 0 €) * 12,8%
 
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition prélèvement_libératoire_plus_values_long_terme égal à
@@ -501,45 +534,52 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     # est possible de les faire se compenser globalement puisque le prélèvement
     # libératoire ne sera assis que sur une plus-value nette professionnelle et
     # non-professionnelle totale positive.
-    (résultat de
-      PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
-      -- plus_values_nettes:
-        revenus.professionnels.plus_values_nettes_long_terme_micro +
-        revenus.non_professionnels.généraux.plus_values_nettes_long_terme_micro
-      -- moins_values_nettes:
-        revenus.professionnels.moins_values_nettes_long_terme_micro +
-        revenus.non_professionnels.généraux.moins_values_nettes_long_terme_micro
-    }).prélèvement_libératoire +
+    (
+      résultat de PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.professionnels.plus_values_nettes_long_terme_micro
+          + revenus.non_professionnels.généraux.plus_values_nettes_long_terme_micro
+        -- moins_values_nettes:
+          revenus.professionnels.moins_values_nettes_long_terme_micro
+          + revenus.non_professionnels.généraux.moins_values_nettes_long_terme_micro
+      }
+    ).prélèvement_libératoire
+    +
     # En régime réel, d'après le premier alinéa du I de l'article 93 du CGI,
     # les plus-values nettes à court terme sont comprises dans le revenu
     # imposable et par conséquent ne font pas l'objet du prélèvement libératoire
     # à 12,8%. Elles sont donc omises ci-dessous.
-    (résultat de
-      PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
-      -- plus_values_nettes:
-        revenus.non_professionnels.généraux.plus_values_nettes_long_terme_réel +
-        revenus.professionnels.plus_values_nettes_long_terme_réel
-      -- moins_values_nettes: 0 €
-    }).prélèvement_libératoire
+    (
+      résultat de PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.non_professionnels.généraux.plus_values_nettes_long_terme_réel
+          + revenus.professionnels.plus_values_nettes_long_terme_réel
+        -- moins_values_nettes: 0 €
+      }
+    ).prélèvement_libératoire
 
 # D'après BOI-BNC-BASE-30-30-10 paragraphe 150, ce prélèvement libératoire
 # s'applique aussi aux plus-values nettes à long terme des bénéfices non
 # commerciaux (BNC).
 champ d'application BénéficesNonCommerciauxDéclarant:
   définition prélèvement_libératoire_plus_values_long_terme égal à
-    (résultat de PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
-      -- plus_values_nettes:
-        revenus.professionnels.généraux.plus_values_nettes_long_terme_micro +
-        revenus.non_professionnels.généraux.plus_values_nettes_long_terme_micro
-      -- moins_values_nettes:
-        revenus.professionnels.généraux.moins_values_nettes_long_terme_micro +
-        revenus.non_professionnels.généraux.moins_values_nettes_long_terme_micro
-    }).prélèvement_libératoire +
-    (résultat de PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
-      -- plus_values_nettes:
-        revenus.non_professionnels.généraux.plus_values_nettes_long_terme_réel
-      -- moins_values_nettes: 0 €
-    }).prélèvement_libératoire
+    (
+      résultat de PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.professionnels.généraux.plus_values_nettes_long_terme_micro
+          + revenus.non_professionnels.généraux.plus_values_nettes_long_terme_micro
+        -- moins_values_nettes:
+          revenus.professionnels.généraux.moins_values_nettes_long_terme_micro
+          + revenus.non_professionnels.généraux.moins_values_nettes_long_terme_micro
+      }
+    ).prélèvement_libératoire
+    + (
+      résultat de PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.non_professionnels.généraux.plus_values_nettes_long_terme_réel
+        -- moins_values_nettes: 0 €
+      }
+    ).prélèvement_libératoire
 ```
 
 Il s'entend de l'excédent de ces plus-values sur les moins-values de même nature
@@ -760,7 +800,6 @@ NOTA :
 Conformément au D du XX de l’article 73 de la loi n° 2023-1322 du 29 décembre
 2023, ces dispositions s'appliquent à compter du 1er juillet 2024.
 
-
 ```catala
 # TODO juridique et informatique : les salaires exonérés des agents
 # d'assurance seront à inclure dans le calcul du revenu fiscal de référence
@@ -809,62 +848,64 @@ inférieur à 305 €, de :
 
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  # Ici, nous considérons que le plancher s'applique globalement à l'ensemble 
-  # de l'abattement sur tous les revenus micro BIC du déclarant. Il nous faut 
-  # donc sommer les différentes composantes de l'abattement pour avoir 
+  # Ici, nous considérons que le plancher s'applique globalement à l'ensemble
+  # de l'abattement sur tous les revenus micro BIC du déclarant. Il nous faut
+  # donc sommer les différentes composantes de l'abattement pour avoir
   # l'assiette du plancher.
-  définition plancher_abattement_forfaitaire_micro_total égal à 
-    soit abattement_total égal à 
-       abattement_forfaitaire_micro_total_marchandises état arrondissement + 
-       abattement_forfaitaire_micro_total_services état arrondissement +
-       abattement_spécial_micro_total_location_meublées_rurales_spéciales 
-         état arrondissement
+  définition plancher_abattement_forfaitaire_micro_total égal à
+    soit abattement_total égal à abattement_forfaitaire_micro_total_marchandises état arrondissement
+    + abattement_forfaitaire_micro_total_services état arrondissement
+    + abattement_spécial_micro_total_location_meublées_rurales_spéciales
+      état arrondissement
     dans
     # Ici, nous plafonnons l'abattement minimal par le montant des revenus micro
     # pour marchandises et services car ces revenus évalués forfaitairement ne
     # sauraient aboutir à un déficit à cause de l'abattement
     # (BOI-IR-BASE-10-20-10, paragraphe 30 mais aussi CE, arrêt du 14 octobre
     # 1966, n° 66190 et CE, arrêt du 27 février 1974, n° 90438).
-    plafond de 
+    plafond de
       (plancher de abattement_total, 305 €),
       abattement_total
-  
-  # Nous avons donc obtenu l'abattement total avec son plancher. Cependant,
-  # il nous faut maintenant pro-ratiser cet abattement total envers les 
-  # différentes catégories de revenus qui le composent puisque ces catégories 
-  # vont ensuite faire l'objet d'un pro-rata avec les revenus au quotient.
- 
-  définition 
-    pro_rata_plancher_abattement_forfaitaire_total.montant_à_distribuer
-  égal à 
-    plancher_abattement_forfaitaire_micro_total 
 
-  définition 
+  # Nous avons donc obtenu l'abattement total avec son plancher. Cependant,
+  # il nous faut maintenant pro-ratiser cet abattement total envers les
+  # différentes catégories de revenus qui le composent puisque ces catégories
+  # vont ensuite faire l'objet d'un pro-rata avec les revenus au quotient.
+
+  définition
+    pro_rata_plancher_abattement_forfaitaire_total.montant_à_distribuer
+  égal à
+    plancher_abattement_forfaitaire_micro_total
+
+  définition
     pro_rata_plancher_abattement_forfaitaire_total.base_prorata_1
-  égal à 
+  égal à
     abattement_forfaitaire_micro_total_marchandises état arrondissement
 
-  définition 
+  définition
     pro_rata_plancher_abattement_forfaitaire_total.base_prorata_2
-  égal à 
+  égal à
     abattement_forfaitaire_micro_total_services état arrondissement
 
-  définition 
+  définition
     pro_rata_plancher_abattement_forfaitaire_total.base_prorata_3
-  égal à 
+  égal à
     abattement_spécial_micro_total_location_meublées_rurales_spéciales
       état arrondissement
 
-  définition abattement_forfaitaire_micro_total_marchandises état plancher 
+  définition abattement_forfaitaire_micro_total_marchandises
+    état plancher
   égal à
     pro_rata_plancher_abattement_forfaitaire_total.valeur_proratisée_1
 
-  définition abattement_forfaitaire_micro_total_services état plancher égal à
+  définition abattement_forfaitaire_micro_total_services
+    état plancher
+  égal à
     pro_rata_plancher_abattement_forfaitaire_total.valeur_proratisée_2
 
   définition abattement_spécial_micro_total_location_meublées_rurales_spéciales
     état plancher
-  égal à 
+  égal à
     pro_rata_plancher_abattement_forfaitaire_total.valeur_proratisée_3
 ```
 
@@ -880,24 +921,20 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition
     revenus_exceptionnels_professionnels_abattement_micro_marchandises
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.professionnels.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxMarchandises: vrai
-      -- n'importe quel: faux
+    liste de revenu_exceptionnel_ou_différé parmi revenus.professionnels.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxMarchandises : vrai
+      -- n'importe quel : faux
 
   définition
     revenus_exceptionnels_non_professionnels_abattement_micro_marchandises
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxMarchandises: vrai
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées:
+    liste de revenu_exceptionnel_ou_différé parmi revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxMarchandises : vrai
+      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées :
         vrai
-      -- n'importe quel: faux
+      -- n'importe quel : faux
 
   # Les locations rurales spéciales recevant à la fois l'abattement micro sur
   # les marchandises et l'abattement spécial de 21%, il nous faut les isoler du
@@ -906,35 +943,40 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition
     revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales:
+    liste de revenu_exceptionnel_ou_différé parmi revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales :
         vrai
-      -- n'importe quel: faux
+      -- n'importe quel : faux
 
   définition assiette_abattement_forfaitaire_micro_marchandises égal à
-    revenus.professionnels.revenus_imposables_micro_marchandises +
-    (somme argent de revenu_exceptionnel_ou_différé.valeur
-      pour revenu_exceptionnel_ou_différé parmi
-        revenus_exceptionnels_professionnels_abattement_micro_marchandises) +
-    revenus.non_professionnels.généraux.revenus_imposables_micro_marchandises +
-    (somme argent de revenu_exceptionnel_ou_différé.valeur
-      pour revenu_exceptionnel_ou_différé parmi
-        revenus_exceptionnels_non_professionnels_abattement_micro_marchandises) +
-    (somme argent de revenu_exceptionnel_ou_différé.valeur
-      pour revenu_exceptionnel_ou_différé parmi
-        revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales) +
-    revenus.non_professionnels.locations_meublées_micro_hôtes_classées +
-    revenus.non_professionnels.
-      locations_meublées_micro_classées_rurales_spéciales +
-    revenus.non_professionnels.
-      locations_meublées_micro_cotisations_hôtes_classées +
-    revenus.non_professionnels.
-      locations_meublées_micro_cotisations_classées_rurales_spéciales
+    revenus.professionnels.revenus_imposables_micro_marchandises
+    + (
+      somme argent
+        de transforme chaque revenu_exceptionnel_ou_différé
+      parmi revenus_exceptionnels_professionnels_abattement_micro_marchandises en
+        revenu_exceptionnel_ou_différé.valeur
+    )
+    + revenus.non_professionnels.généraux.revenus_imposables_micro_marchandises
+    + (
+      somme argent
+        de transforme chaque revenu_exceptionnel_ou_différé
+      parmi revenus_exceptionnels_non_professionnels_abattement_micro_marchandises en
+        revenu_exceptionnel_ou_différé.valeur
+    )
+    + (
+      somme argent de transforme chaque revenu_exceptionnel_ou_différé
+      parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
+        revenu_exceptionnel_ou_différé.valeur
+    )
+    + revenus.non_professionnels.locations_meublées_micro_hôtes_classées
+    + revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_hôtes_classées
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
 
-  définition abattement_forfaitaire_micro_total_marchandises état base égal à
+  définition abattement_forfaitaire_micro_total_marchandises
+    état base
+  égal à
     assiette_abattement_forfaitaire_micro_marchandises * 71%
 
   # Ensuite, on pro-ratise cet abattement sur les revenus quotientés,
@@ -956,13 +998,10 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition
     pro_rata_abattement_forfaitaire_micro_marchandises.base_prorata_2
   égal à
-    revenus.non_professionnels.locations_meublées_micro_hôtes_classées +
-    revenus.non_professionnels.
-      locations_meublées_micro_classées_rurales_spéciales +
-    revenus.non_professionnels.
-      locations_meublées_micro_cotisations_hôtes_classées +
-    revenus.non_professionnels.
-      locations_meublées_micro_cotisations_classées_rurales_spéciales
+    revenus.non_professionnels.locations_meublées_micro_hôtes_classées
+    + revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_hôtes_classées
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
   définition
     abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées
   égal à
@@ -994,39 +1033,44 @@ mentionnée au 2°.
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
 
-  définition revenus_exceptionnels_professionnels_abattement_micro_services
+  définition
+    revenus_exceptionnels_professionnels_abattement_micro_services
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.professionnels.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxServices: vrai
-      -- n'importe quel: faux
+    liste de revenu_exceptionnel_ou_différé parmi revenus.professionnels.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxServices : vrai
+      -- n'importe quel : faux
 
-  définition revenus_exceptionnels_non_professionnels_abattement_micro_services
+  définition
+    revenus_exceptionnels_non_professionnels_abattement_micro_services
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxServices: vrai
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral: vrai
-      -- n'importe quel: faux
+    liste de revenu_exceptionnel_ou_différé parmi revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxServices : vrai
+      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral : vrai
+      -- n'importe quel : faux
 
   définition assiette_abattement_forfaitaire_micro_services égal à
-    revenus.professionnels.revenus_imposables_micro_services +
-    (somme argent de revenu_exceptionnel_ou_différé.valeur
-      pour revenu_exceptionnel_ou_différé parmi
-        revenus_exceptionnels_professionnels_abattement_micro_services) +
-    revenus.non_professionnels.généraux.revenus_imposables_micro_services +
-    somme argent de revenu_exceptionnel_ou_différé.valeur
-      pour revenu_exceptionnel_ou_différé parmi
-        revenus_exceptionnels_non_professionnels_abattement_micro_services +
-    revenus.non_professionnels.locations_meublées_micro_général +
-    revenus.non_professionnels.locations_meublées_micro_cotisations_général
+    revenus.professionnels.revenus_imposables_micro_services
+    + (
+      somme argent
+        de transforme chaque revenu_exceptionnel_ou_différé
+      parmi revenus_exceptionnels_professionnels_abattement_micro_services en
+        revenu_exceptionnel_ou_différé.valeur
+    )
+    + revenus.non_professionnels.généraux.revenus_imposables_micro_services
+    + (
+      somme argent de transforme chaque revenu_exceptionnel_ou_différé
+      parmi revenus_exceptionnels_non_professionnels_abattement_micro_services en
+        revenu_exceptionnel_ou_différé.valeur
+    )
+    + revenus.non_professionnels.locations_meublées_micro_général
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_général
 
-  définition abattement_forfaitaire_micro_total_services état base égal à
-     assiette_abattement_forfaitaire_micro_services * 50%
+  définition abattement_forfaitaire_micro_total_services
+    état base
+  égal à
+    assiette_abattement_forfaitaire_micro_services * 50%
 
   # Ensuite, on pro-ratise cet abattement sur les revenus quotientés, et les BIC
   # professionnels et non-professionnels. Voir le calcul pour les revenus
@@ -1037,22 +1081,25 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   égal à
     abattement_forfaitaire_micro_total_services
 
-  définition pro_rata_abattement_forfaitaire_micro_services.base_prorata_1
+  définition
+    pro_rata_abattement_forfaitaire_micro_services.base_prorata_1
   égal à
     revenus.professionnels.revenus_imposables_micro_services
   définition abattement_forfaitaire_micro_professionnel_services égal à
     pro_rata_abattement_forfaitaire_micro_services.valeur_proratisée_1
 
-  définition pro_rata_abattement_forfaitaire_micro_services.base_prorata_2
+  définition
+    pro_rata_abattement_forfaitaire_micro_services.base_prorata_2
   égal à
-    revenus.non_professionnels.locations_meublées_micro_général +
-    revenus.non_professionnels.locations_meublées_micro_cotisations_général
+    revenus.non_professionnels.locations_meublées_micro_général
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_général
   définition
     abattement_forfaitaire_micro_non_professionnel_services_locations_meublées
   égal à
-     pro_rata_abattement_forfaitaire_micro_services.valeur_proratisée_2
+    pro_rata_abattement_forfaitaire_micro_services.valeur_proratisée_2
 
-  définition pro_rata_abattement_forfaitaire_micro_services.base_prorata_3
+  définition
+    pro_rata_abattement_forfaitaire_micro_services.base_prorata_3
   égal à
     revenus.non_professionnels.généraux.revenus_imposables_micro_services
   définition abattement_forfaitaire_micro_non_professionnel_services égal à
@@ -1085,29 +1132,28 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition
     assiette_abattement_spécial_micro_location_meublées_rurales_spéciales
   égal à
-    revenus.non_professionnels.
-      locations_meublées_micro_classées_rurales_spéciales +
-    revenus.non_professionnels.
-      locations_meublées_micro_cotisations_classées_rurales_spéciales +
-    somme argent de revenu_exceptionnel_ou_différé.valeur
-      pour revenu_exceptionnel_ou_différé parmi
-        revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
-    # L'assiette de cet abattement ne comprend pas les revenus de locations
-    # meublées professionnelles qui pourrait également rentrer dans le régime
-    # de cet alinéa. En effet, il est impossible pour un revenu de locations
-    # meublées professionnel de qualifier pour cet abattement spécial : en
-    # effet, le 2° du 2. du IV de l'article 155 du CGI dispose qu'un revenu
-    # BIC de locations meublées est professionnel s'il dépasse le seuil
-    # de 23 000 €. Or, l'abattement spécial ne s'applique qu'aux revenus
-    # inférieurs à 15 000 €. 23 000 € > 15 000 € donc les revenus ne peuvent
-    # jamais rentrer dans les deux cases. Attention, cette hypothèse est
-    # susceptible de changer si les plafonds et planchers de ces deux régimes
-    # changent dans le futur.
+    revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
+    + somme argent de transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
+      revenu_exceptionnel_ou_différé.valeur
+
+  # L'assiette de cet abattement ne comprend pas les revenus de locations
+  # meublées professionnelles qui pourrait également rentrer dans le régime
+  # de cet alinéa. En effet, il est impossible pour un revenu de locations
+  # meublées professionnel de qualifier pour cet abattement spécial : en
+  # effet, le 2° du 2. du IV de l'article 155 du CGI dispose qu'un revenu
+  # BIC de locations meublées est professionnel s'il dépasse le seuil
+  # de 23 000 €. Or, l'abattement spécial ne s'applique qu'aux revenus
+  # inférieurs à 15 000 €. 23 000 € > 15 000 € donc les revenus ne peuvent
+  # jamais rentrer dans les deux cases. Attention, cette hypothèse est
+  # susceptible de changer si les plafonds et planchers de ces deux régimes
+  # changent dans le futur.
 
   définition abattement_spécial_micro_total_location_meublées_rurales_spéciales
     état base
   égal à
-    assiette_abattement_spécial_micro_location_meublées_rurales_spéciales * 21 %
+    assiette_abattement_spécial_micro_location_meublées_rurales_spéciales * 21%
 
   # Ensuite, il faut pro-ratiser cet abattement sur les différentes composantes
   # de l'assiette. Voir l'article 163-0 A pour la pro-ratisation sur les
@@ -1123,10 +1169,8 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
       base_prorata_1
   égal à
-    revenus.non_professionnels.
-      locations_meublées_micro_classées_rurales_spéciales +
-    revenus.non_professionnels.
-      locations_meublées_micro_cotisations_classées_rurales_spéciales
+    revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
 
   définition abattement_spécial_micro_location_meublées_rurales_spéciales égal à
     pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
@@ -1137,28 +1181,24 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition
     revenus_exceptionnels_professionnels_sans_abattement
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.professionnels.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxMarchandises: faux
-      -- MicroBénéficesIndustrielsCommerciauxServices: faux
-      -- n'importe quel: vrai
+    liste de revenu_exceptionnel_ou_différé parmi revenus.professionnels.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxMarchandises : faux
+      -- MicroBénéficesIndustrielsCommerciauxServices : faux
+      -- n'importe quel : vrai
 
   définition
     revenus_exceptionnels_non_professionnels_sans_abattement
   égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-      revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesIndustrielsCommerciauxMarchandises: faux
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées:
+    liste de revenu_exceptionnel_ou_différé parmi revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesIndustrielsCommerciauxMarchandises : faux
+      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées :
         faux
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral: faux
-      -- MicroBénéficesIndustrielsCommerciauxServices: faux
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales: faux
-      -- n'importe quel: vrai
+      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral : faux
+      -- MicroBénéficesIndustrielsCommerciauxServices : faux
+      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales : faux
+      -- n'importe quel : vrai
 ```
 
 Les seuils mentionnés au présent 1 sont actualisés tous les trois ans dans la
@@ -1167,7 +1207,9 @@ l'impôt sur le revenu et arrondis à la centaine d'euros la plus proche.
 
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition solde_net_professionnel état revenus_imposables_micro égal à
+  définition solde_net_professionnel
+    état revenus_imposables_micro
+  égal à
     solde_net_professionnel
     + revenus.professionnels.revenus_imposables_micro_marchandises
     - abattement_forfaitaire_micro_professionnel_marchandises
@@ -1184,17 +1226,14 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     - abattement_forfaitaire_micro_non_professionnel_services
 
   définition solde_net_non_professionnel_locations_meublées
-     état revenus_imposables_micro
+    état revenus_imposables_micro
   égal à
     solde_net_non_professionnel_locations_meublées
     + revenus.non_professionnels.locations_meublées_micro_hôtes_classées
-    + revenus.non_professionnels.
-      locations_meublées_micro_classées_rurales_spéciales
+    + revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
     + revenus.non_professionnels.locations_meublées_micro_cotisations_général
-    + revenus.non_professionnels.
-      locations_meublées_micro_cotisations_hôtes_classées
-    + revenus.non_professionnels.
-      locations_meublées_micro_cotisations_classées_rurales_spéciales
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_hôtes_classées
+    + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
     - abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées
     - abattement_spécial_micro_location_meublées_rurales_spéciales
     + revenus.non_professionnels.locations_meublées_micro_général
@@ -1298,12 +1337,11 @@ les règles prévues en matière de traitements et salaires.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art62
+    état art62
   égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.revenus_associés_gérants
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.revenus_associés_gérants
 ```
-
 
 ######## V : Traitements, salaires, pensions et rentes viagères
 
@@ -1319,29 +1357,29 @@ Il en est de même des prestations de retraite servies sous forme de capital.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition pensions_retraites_rentes_79 état art79 égal à
-      [
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.pensions_retraites_rentes
-          -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
-        };
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.pensions_retraites_en_capital_7_5pct
-          -- type: PensionEnCapital_7_5pct
-        };
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.pensions_en_capital_plans_épargne_retraite
-          -- type: PensionEnCapitalPlansÉpargneRetraite
-        };
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.pensions_invalidité
-          -- type: PensionInvalidité
-        };
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.pensions_alimentaires_perçues
-          -- type: PensionAlimentairePercue
-        }
-      ]
+  définition pensions_retraites_rentes_79
+    état art79
+  égal à
+    [ PensionRetraiteRente {
+        -- valeur_initiale: revenus.pensions_retraites_rentes
+        -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+      } ;
+      PensionRetraiteRente {
+        -- valeur_initiale: revenus.pensions_retraites_en_capital_7_5pct
+        -- type: PensionEnCapital_7_5pct
+      } ;
+      PensionRetraiteRente {
+        -- valeur_initiale: revenus.pensions_en_capital_plans_épargne_retraite
+        -- type: PensionEnCapitalPlansÉpargneRetraite
+      } ;
+      PensionRetraiteRente {
+        -- valeur_initiale: revenus.pensions_invalidité
+        -- type: PensionInvalidité
+      } ;
+      PensionRetraiteRente {
+        -- valeur_initiale: revenus.pensions_alimentaires_perçues
+        -- type: PensionAlimentairePercue
+      } ]
 # Ici on conserve une collection plutôt de calculer la somme, car les différents
 # types d'entrées vont nécessiter des calculs d'abattements différents par la
 # suite
@@ -1373,9 +1411,10 @@ décision de justice.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art80 égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.indemnités_préjudice_moral_fraction_supérieure_million
+    état art80
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.indemnités_préjudice_moral_fraction_supérieure_million
 ```
 
 ########## Article 80 bis | LEGIARTI000027518390
@@ -1389,9 +1428,10 @@ salaires.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art80_bis_1 égal à
-      traitements_salaires_avec_déduction_frais_professionnels +
-        revenus.gains_de_levee_doptions
+    état art80_bis_1
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.gains_de_levee_doptions
 ```
 
 II. Lorsque le prix d'acquisition des actions offertes dans les conditions
@@ -1403,9 +1443,10 @@ salaires au titre de l'année au cours de laquelle l'option est levée.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art80_bis_2 égal à
-      traitements_salaires_avec_déduction_frais_professionnels +
-        revenus.rabais_excédentaire_options_sur_titres
+    état art80_bis_2
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.rabais_excédentaire_options_sur_titres
 ```
 
 II bis.-L'avantage défini au I, le cas échéant diminué de la différence
@@ -1510,15 +1551,16 @@ champ d'application TraitementsSalairesDéclarant:
   # dans les traitements et salaires pour détermination de la déduction pour
   # frais professionnels.
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art80_sexies égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.revenu_assistants_maternels_familiaux
-  # Ici, nous ne déduisons pas l'abattement pourtant déclaré dans une autre
-  # case de la déclaration du montant des revenus des assistants maternels et
-  # familiaux. En effet, d'après BOI-IR-PAS-20-20-10 paragraphe 60, le
-  # contribuable est déjà censé avoir défalqué l'abattement de la case revenu,
-  # mais déclare quand même en supplément le montant de l'abattement défalqué
-  # afin de pouvoir calculer correctement le taux de prélèvement à la source.
+    état art80_sexies
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.revenu_assistants_maternels_familiaux
+# Ici, nous ne déduisons pas l'abattement pourtant déclaré dans une autre
+# case de la déclaration du montant des revenus des assistants maternels et
+# familiaux. En effet, d'après BOI-IR-PAS-20-20-10 paragraphe 60, le
+# contribuable est déjà censé avoir défalqué l'abattement de la case revenu,
+# mais déclare quand même en supplément le montant de l'abattement défalqué
+# afin de pouvoir calculer correctement le taux de prélèvement à la source.
 ```
 
 Les dispositions du présent article sont applicables aux revenus
@@ -1549,7 +1591,6 @@ NOTA :
 # Rien à coder ici, cela indique au contribuable comment remplir sa
 # déclaration.
 ```
-
 
 ########## Article 80 quaterdecies | LEGIARTI000042340496
 
@@ -1640,15 +1681,16 @@ perçues à compter du 1er janvier 2020.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art80_quindecies égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.gains_et_distributions_carried_interest +
-      revenus.
-        gains_et_distributions_carried_interest_soumis_contribution_salariale
-    # Ici gains_et_distributions_carried_interest_soumis_contribution_salariale
-    # font partie du revenu brut global mais ils seront aussi soumis à un
-    # certain type de prélèvement social prévu à l'article L137-18 du code
-    # de la sécurité sociale.
+    état art80_quindecies
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.gains_et_distributions_carried_interest
+    + revenus.
+      gains_et_distributions_carried_interest_soumis_contribution_salariale
+# Ici gains_et_distributions_carried_interest_soumis_contribution_salariale
+# font partie du revenu brut global mais ils seront aussi soumis à un
+# certain type de prélèvement social prévu à l'article L137-18 du code
+# de la sécurité sociale.
 ```
 
 ########## Article 81 | LEGIARTI000049641921
@@ -2110,22 +2152,25 @@ au même article L. 241-17 et dans une limite annuelle égale à 7 500 €.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition assiette_exonérations_81_quater état art_81_quater égal à
+  définition assiette_exonérations_81_quater
+    état art_81_quater
+  égal à
     revenus.heures_supplémentaires_et_rtt_exonérées
-  définition exonérations_81_quater
-    sous condition
-      année_revenus >= 2022
-    conséquence égal à
-      plafond de assiette_exonérations_81_quater, 7500€
+  définition exonérations_81_quater sous condition
+    année_revenus >= 2022
+  conséquence égal à
+    plafond de assiette_exonérations_81_quater, 7500€
   # Ce plafond n'est pas systématiquement revu chaque année donc pas de date
   # d'expiration prédéfinie. Il a été modifié pour la dernière fois par
   # l'article 4 de la loi n° 2022-1157 du 16 août 2022 de finances rectificative
   # pour 2022.
 
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art_81_quater égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      assiette_exonérations_81_quater - exonérations_81_quater
+    état art_81_quater
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + assiette_exonérations_81_quater
+    - exonérations_81_quater
 ```
 
 II.-(Abrogé).
@@ -2305,23 +2350,28 @@ champ d'application TraitementsSalairesDéclarant:
 
   # De cela, on déduit la déduction globale non plafonnée qui tient aussi
   # compte des déductions sur les revenus quotientés.
-  définition déduction_frais_professionnels_totale état non_plafonnée_83_3_2
+  définition déduction_frais_professionnels_totale
+    état non_plafonnée_83_3_2
   égal à
-    somme argent de
-      (selon r_quotienté.catégorie sous forme
-      -- TraitementsSalaires:
-         calcul_déduction_frais_professionnels de r_quotienté.valeur
-      -- n'importe quel: 0 €)
-    pour r_quotienté parmi revenus.revenus_exceptionnels_ou_différés +
-    déduction_frais_professionnels_traitements_salaires_avant_prorata
+    (
+      somme argent
+        de transforme chaque r_quotienté parmi revenus.revenus_exceptionnels_ou_différés en
+        (
+          selon r_quotienté.catégorie sous forme
+          -- TraitementsSalaires :
+            calcul_déduction_frais_professionnels de r_quotienté.valeur
+          -- n'importe quel : 0 €
+        )
+    )
+    + déduction_frais_professionnels_traitements_salaires_avant_prorata
 
   # Puis l'on plafonne le total trouvé précédemment.
   définition déduction_frais_professionnels_totale
-  état plafonnée_83_3_2
+    état plafonnée_83_3_2
   égal à
-    si déduction_frais_professionnels_totale >=
+    si déduction_frais_professionnels_totale
+      >= plafond_déduction_frais_professionnels alors
       plafond_déduction_frais_professionnels
-    alors plafond_déduction_frais_professionnels
     sinon déduction_frais_professionnels_totale
 
   définition plafond_déduction_frais_professionnels sous condition
@@ -2331,16 +2381,19 @@ champ d'application TraitementsSalairesDéclarant:
   # Enfin, on déduit le montant de la déduction pour les traitements et
   # salaires en faisant le solde des déductions déjà accordées pour
   # chacun des revenus quotientés.
-  définition déduction_frais_professionnels_traitements_salaires
+  définition
+    déduction_frais_professionnels_traitements_salaires
   égal à
     # Attention ici nous prenons la déduction totale plafonnée avec prise
     # en compte des frais réels pour prendre en compte la dernière étape
     # de calcul où l'on applique les frais réels.
-    déduction_frais_professionnels_totale -
-      (somme argent de (selon r_quotienté.catégorie sous forme
-        -- TraitementsSalaires: r_quotienté.déduction
-        -- n'importe quel: 0€)
-        pour r_quotienté parmi revenus_quotientés)
+    déduction_frais_professionnels_totale
+    - somme argent de transforme chaque r_quotienté parmi revenus_quotientés en
+      (
+        selon r_quotienté.catégorie sous forme
+        -- TraitementsSalaires : r_quotienté.déduction
+        -- n'importe quel : 0€
+      )
 ```
 
 Le montant de la déduction forfaitaire pour frais professionnels ne peut être inférieur à 495 €,
@@ -2360,10 +2413,10 @@ champ d'application TraitementsSalairesDéclarant:
   # de la pro-ratisation du plafond de la déduction en présence de revenus
   # quotientés.
   définition déduction_frais_professionnels_traitements_salaires_avant_prorata
-  état plancher_83_3_3 égal à
-    si déduction_frais_professionnels_traitements_salaires_avant_prorata <
-      minimum_déduction_frais_professionnels
-    alors
+    état plancher_83_3_3
+  égal à
+    si déduction_frais_professionnels_traitements_salaires_avant_prorata
+      < minimum_déduction_frais_professionnels alors
       # Ici nous allons maximiser la déduction des frais professionnels par le
       # "montant brut des traitements et salaires". Selon BOI-RSA-BASE-30-50-20,
       # paragraphe 40, il faut néanmoins défalcquer à ce montant brut les
@@ -2372,9 +2425,9 @@ champ d'application TraitementsSalairesDéclarant:
       # 154 quinquies du CGI". Au final, ce montant "brut" désigne en fait le
       # montant déclaré par le contribuable sur sa déclaration, comme exemplifié
       # par BOI-RSA-BASE-30-50-20, paragraphe 100.
-      si minimum_déduction_frais_professionnels >
+      si minimum_déduction_frais_professionnels
+        > traitements_salaires_avec_déduction_frais_professionnels alors
         traitements_salaires_avec_déduction_frais_professionnels
-      alors traitements_salaires_avec_déduction_frais_professionnels
       sinon minimum_déduction_frais_professionnels
     sinon déduction_frais_professionnels_traitements_salaires_avant_prorata
 
@@ -2459,33 +2512,31 @@ champ d'application TraitementsSalairesDéclarant:
     # réels, lorsqu'elle est activée, doit concerner l'ensemble des traitements
     # et salaires d'un déclarant.
     selon revenus.frais_réels sous forme
-      -- FraisRéels.Non : FraisRéels.Non
-      -- FraisRéels.Oui de montant_frais_réels :
-        # Ici, règle de gestion fiscale dans l'intérêt du contribuable :
-        # si le montant des frais réels est inférieur à la déduction
-        # forfaitaire, alors on applique quand même cette dernière même
-        # si le contribuable a coché la case frais réels.
-        si
-          montant_frais_réels <
-            déduction_frais_professionnels_totale état plafonnée_83_3_2
-        alors
-          FraisRéels.Non
-        sinon
-          FraisRéels.Oui contenu montant_frais_réels
+    -- FraisRéels.Non : FraisRéels.Non
+    -- FraisRéels.Oui de montant_frais_réels :
+      # Ici, règle de gestion fiscale dans l'intérêt du contribuable :
+      # si le montant des frais réels est inférieur à la déduction
+      # forfaitaire, alors on applique quand même cette dernière même
+      # si le contribuable a coché la case frais réels.
+      si montant_frais_réels
+        < déduction_frais_professionnels_totale état plafonnée_83_3_2 alors
+        FraisRéels.Non
+      sinon
+        FraisRéels.Oui contenu montant_frais_réels
 
   définition déduction_frais_professionnels_totale
-  état plafonnée_83_3_2_avec_frais_réels
+    état plafonnée_83_3_2_avec_frais_réels
   # D'après
   # https://www.impots.gouv.fr/particulier/questions/en-formation-non-remuneree-puis-je-deduire-les-frais-reels,
   # les frais réels peuvent créer un déficit de revenus donc ici on ne met pas
   # de limite au montant de frais réels pour le calcul de la déduction.
   égal à
     selon application_frais_réels sous forme
-    -- FraisRéels.Non:
+    -- FraisRéels.Non :
       # En l'absence de frais réels on prend juste la valeur plafonnée
       # calculée précédemment.
       déduction_frais_professionnels_totale
-    -- FraisRéels.Oui de montant_frais_réels:
+    -- FraisRéels.Oui de montant_frais_réels :
       montant_frais_réels
 
   # Donc pour l'instant nous avons calculé la déduction pour frais
@@ -2498,28 +2549,33 @@ champ d'application TraitementsSalairesDéclarant:
   # normaux. (issue #68)
   exception
   définition calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
-    de revenu_quotienté
-    état base
-  sous condition application_frais_réels sous forme FraisRéels.Oui
+    de revenu_quotienté état base
+  sous condition
+    application_frais_réels sous forme FraisRéels.Oui
   conséquence égal à
     selon application_frais_réels sous forme
     -- FraisRéels.Non : 0 € # Ne peut pas arriver
-    -- FraisRéels.Oui de montant_frais_réels:
+    -- FraisRéels.Oui de montant_frais_réels :
       # Nous allons imputer à un revenu quotienté donné un pro-rata de la
       # déduction aux frais réels qui s'applique à la fois aux traitements
       # salaires normaux, mais aussi aux revenus quotientés.
-      soit déduction_au_prorata égal à
-        arrondi de
-          (montant_frais_réels * (
-            revenu_quotienté / (
-              traitements_salaires_avec_déduction_frais_professionnels +
-              (somme argent de
-                 (selon autre_revenu_quotienté.catégorie sous forme
-                 -- CatégorieRevenuExceptionnelOuDifféré.TraitementsSalaires:
-                   autre_revenu_quotienté.valeur
-                  -- n'importe quel: 0 €)
-              pour autre_revenu_quotienté parmi
-                revenus.revenus_exceptionnels_ou_différés))))
+      soit déduction_au_prorata égal à arrondi de
+        montant_frais_réels
+      * (
+        revenu_quotienté
+        / (
+          traitements_salaires_avec_déduction_frais_professionnels
+          + somme argent
+            de transforme chaque autre_revenu_quotienté
+          parmi revenus.revenus_exceptionnels_ou_différés en
+            (
+              selon autre_revenu_quotienté.catégorie sous forme
+              -- CatégorieRevenuExceptionnelOuDifféré.TraitementsSalaires :
+                autre_revenu_quotienté.valeur
+              -- n'importe quel : 0 €
+            )
+        )
+      )
       dans
       # Cependant, cette imputation ne peut pas dépasser la valeur du revenu
       # quotienté ! Il nous faut donc plafonner la déduction. Ceci fausse le
@@ -2642,9 +2698,10 @@ dans les mêmes conditions.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art93_1bis égal à
-      traitements_salaires_avec_déduction_frais_professionnels +
-        revenus.droits_dauteurs_fonctionnaires_chercheurs
+    état art93_1bis
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.droits_dauteurs_fonctionnaires_chercheurs
 ```
 
 1 ter. Les agents généraux d'assurances et leurs sous-agents peuvent demander
@@ -2675,9 +2732,10 @@ suivant les parties versantes.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art93_1ter égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.salaires_imposables_agent_assurance
+    état art93_1ter
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.salaires_imposables_agent_assurance
 ```
 
 1 quater. Lorsqu'ils sont intégralement déclarés par les tiers, les produits de
@@ -2768,10 +2826,14 @@ présent alinéa est de 10 %.
 
 ```catala
 champ d'application BénéficesNonCommerciauxDéclarant:
-   définition impôt_taux_forfaitaire état art93quaterI égal à
-     (revenus.professionnels.produits_inventeurs_logiciel_taxables +
-     revenus.professionnels.
-       produits_inventeurs_logiciel_taxables_soumis_cotisations) * 10%
+  définition impôt_taux_forfaitaire
+    état art93quaterI
+  égal à
+    (
+      revenus.professionnels.produits_inventeurs_logiciel_taxables
+      + revenus.professionnels.produits_inventeurs_logiciel_taxables_soumis_cotisations
+    )
+    * 10%
 # Pour information, les cotisations sociales sur les produits de ce régime sont
 # définies par l'article L136-6 du code de la sécurité sociale.
 ```
@@ -2894,46 +2956,45 @@ champ d'application BénéficesNonCommerciauxDéclarant:
   # exister des revenus micro-BNC exceptionnels ou différés et donc soumis au
   # quotient.
   définition revenus_exceptionnels_professionnels_abattement_micro égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-        revenus.professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesNonCommerciaux: vrai
-      -- n'importe quel: faux
+    liste de revenu_exceptionnel_ou_différé parmi revenus.professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesNonCommerciaux : vrai
+      -- n'importe quel : faux
 
   définition revenus_exceptionnels_professionnels_sans_abattement égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-        revenus.professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesNonCommerciaux: faux
-      -- n'importe quel: vrai
+    liste de revenu_exceptionnel_ou_différé parmi revenus.professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesNonCommerciaux : faux
+      -- n'importe quel : vrai
 
   définition revenus_exceptionnels_non_professionnels_abattement_micro égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-        revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesNonCommerciaux: vrai
-      -- n'importe quel: faux
+    liste de revenu_exceptionnel_ou_différé parmi revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesNonCommerciaux : vrai
+      -- n'importe quel : faux
 
   définition revenus_exceptionnels_non_professionnels_sans_abattement égal à
-    liste de revenu_exceptionnel_ou_différé parmi
-        revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
-    tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- MicroBénéficesNonCommerciaux: faux
-      -- n'importe quel: vrai
+    liste de revenu_exceptionnel_ou_différé parmi revenus.non_professionnels.généraux.revenus_exceptionnels_ou_différés
+      tel que selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- MicroBénéficesNonCommerciaux : faux
+      -- n'importe quel : vrai
 
   définition assiette_abattement_forfaitaire_micro_total égal à
-    revenus.professionnels.généraux.revenus_imposables_micro +
-    somme argent de revenu.valeur
-      pour revenu parmi revenus_exceptionnels_professionnels_abattement_micro +
-    revenus.non_professionnels.généraux.revenus_imposables_micro +
-    somme argent de revenu.valeur
-      pour revenu parmi
-        revenus_exceptionnels_non_professionnels_abattement_micro
+    revenus.professionnels.généraux.revenus_imposables_micro
+    + (somme argent de transforme chaque revenu parmi revenus_exceptionnels_professionnels_abattement_micro en revenu.valeur)
+    + revenus.non_professionnels.généraux.revenus_imposables_micro
+    + somme argent de transforme chaque revenu
+    parmi revenus_exceptionnels_non_professionnels_abattement_micro en
+      revenu.valeur
 
-  définition abattement_forfaitaire_micro_total état base égal à
-     assiette_abattement_forfaitaire_micro_total * 34%
+  définition abattement_forfaitaire_micro_total
+    état base
+  égal à
+    assiette_abattement_forfaitaire_micro_total * 34%
 
-  définition abattement_forfaitaire_micro_total état plancher égal à
+  définition abattement_forfaitaire_micro_total
+    état plancher
+  égal à
     # Ici, nous plafonnons l'abattement minimal par le montant des revenus car
     # ces revenus évalués forfaitairement ne sauraient aboutir à un déficit à
     # cause de l'abattement (BOI-IR-BASE-10-20-10, paragraphe 30).
@@ -2973,27 +3034,30 @@ amortissements pratiqués selon le mode linéaire.
 # industriels et commerciaux.
 champ d'application BénéficesNonCommerciauxDéclarant:
   définition solde_net_professionnel
-  état plus_moins_value_court_terme_micro égal à
+    état plus_moins_value_court_terme_micro
+  égal à
     solde_net_professionnel
-    + (résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec
-    {
-      -- plus_values_nettes:
-        revenus.professionnels.généraux.plus_values_nettes_court_terme_micro
-      -- moins_values_nettes:
-        revenus.professionnels.généraux.moins_values_nettes_court_terme_micro
-    }).solde_net
+    + (
+      résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.professionnels.généraux.plus_values_nettes_court_terme_micro
+        -- moins_values_nettes:
+          revenus.professionnels.généraux.moins_values_nettes_court_terme_micro
+      }
+    ).solde_net
 
   définition solde_net_non_professionnel
-  état plus_moins_value_court_terme_micro égal à
+    état plus_moins_value_court_terme_micro
+  égal à
     solde_net_non_professionnel
-    + (résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec
-    {
-      -- plus_values_nettes:
-        revenus.non_professionnels.généraux.plus_values_nettes_court_terme_micro
-      -- moins_values_nettes:
-        revenus.non_professionnels.
-          généraux.moins_values_nettes_court_terme_micro
-    }).solde_net
+    + (
+      résultat de PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux avec {
+        -- plus_values_nettes:
+          revenus.non_professionnels.généraux.plus_values_nettes_court_terme_micro
+        -- moins_values_nettes:
+          revenus.non_professionnels.généraux.moins_values_nettes_court_terme_micro
+      }
+    ).solde_net
 ```
 
 Le premier seuil mentionné au premier alinéa est actualisé tous les trois ans
@@ -3107,11 +3171,12 @@ concernés par le seuil prévu au 1° du 1 du même article 50-0 ;
 
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition prélèvement_libératoire_auto_entreprise état marchandises
+  définition prélèvement_libératoire_auto_entreprise
+    état marchandises
   égal à
     revenus.
       chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
-      * 1,0%
+    * 1,0%
 ```
 
 2° 1,7 % pour les contribuables soumis au régime défini à l'article 50-0 et
@@ -3119,12 +3184,13 @@ concernés par le seuil prévu au 2° du 1 du même article 50-0 ;
 
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition prélèvement_libératoire_auto_entreprise état services
+  définition prélèvement_libératoire_auto_entreprise
+    état services
   égal à
-    prélèvement_libératoire_auto_entreprise +
-    revenus.
-      chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations *
-      1,7%
+    prélèvement_libératoire_auto_entreprise
+    + revenus.
+      chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
+    * 1,7%
 ```
 
 3° 2,2 % pour les contribuables soumis au régime défini à l'article 102 ter et
@@ -3132,7 +3198,8 @@ concernés par le seuil prévu au 1 du même article 102 ter.
 
 ```catala
 champ d'application BénéficesNonCommerciauxDéclarant:
-  définition prélèvement_libératoire_auto_entreprise état base
+  définition prélèvement_libératoire_auto_entreprise
+    état base
   égal à
     revenus.recettes_prélèvement_libératoire_éxonérées_cotisations * 2,2%
 ```
@@ -3318,56 +3385,69 @@ champ d'application ImputationDéficitSurRevenusQuotientés:
   # quotients au global prenant également les revenus au quotients nettement
   # négatifs ? [Denis : normalement pas de revenu négatif...]
   définition base_d_imputation_déficit_catégoriel égal à
-    somme argent de
-      (somme argent de revenu_quotienté_catégoriel.valeur_nette
-      pour revenu_quotienté_catégoriel parmi
-        revenus_quotientés_catégoriels_déclarant)
-    pour revenus_quotientés_catégoriels_déclarant parmi
-      revenus_quotientés_catégoriels
+    somme argent
+      de transforme chaque revenus_quotientés_catégoriels_déclarant
+    parmi revenus_quotientés_catégoriels en
+      (
+        somme argent de transforme chaque revenu_quotienté_catégoriel
+        parmi revenus_quotientés_catégoriels_déclarant en
+          revenu_quotienté_catégoriel.valeur_nette
+      )
 
   # Ensuite, nous déterminons le déficit à imputer : il s'agit du solde du
   # revenu brut global du foyer fiscal, hors revenus au quotient (puisque c'est
   # sur les revenus au quotient que nous allons imputer). Ce déficit à imputer
   # est plafonné par la base d'imputation, évidemment.
   définition déficit_catégoriel_imputé égal à
-    si solde_catégoriel_à_imputer < 0 €
-    alors
+    si solde_catégoriel_à_imputer < 0 € alors
       plafond de
-        (- solde_catégoriel_à_imputer, base_d_imputation_déficit_catégoriel)
+        (-solde_catégoriel_à_imputer, base_d_imputation_déficit_catégoriel)
     sinon 0 €
 
   # Maintenant, nous allons répartir le déficit à imputer sur chaque revenu
   # quotienté de chaque déclarant.
   définition revenus_quotientés_catégoriels_imputés égal à
-    soit déficits_à_imputer_aux_revenus_quotientés_catégoriels égal à
-      (résultat de Oracles.ProRataArrondiEuroListes avec {
+    soit déficits_à_imputer_aux_revenus_quotientés_catégoriels égal à (
+      résultat de Oracles.ProRataArrondiEuroListes avec {
         -- montant_à_distribuer: déficit_catégoriel_imputé
         -- bases_prorata:
-          (revenu_quotienté_catégoriel.valeur_nette
-          pour revenu_quotienté_catégoriel parmi
-          revenus_quotientés_catégoriels_déclarant)
-          pour revenus_quotientés_catégoriels_déclarant parmi
-          revenus_quotientés_catégoriels
-      }).valeurs_proratisées
+          transforme chaque revenus_quotientés_catégoriels_déclarant
+          parmi revenus_quotientés_catégoriels en
+            (
+              transforme chaque revenu_quotienté_catégoriel
+              parmi revenus_quotientés_catégoriels_déclarant en
+                revenu_quotienté_catégoriel.valeur_nette
+            )
+      }
+    ).valeurs_proratisées
     dans
-    ((# Le nouveau revenu quotienté ne diffère que par sa valeur nette.
-    RevenuQuotienté {
-      -- déduction : revenu_quotienté_catégoriel.déduction
-      -- coefficient : revenu_quotienté_catégoriel.coefficient
-      -- catégorie : revenu_quotienté_catégoriel.catégorie
-      -- valeur_nette : revenu_quotienté_catégoriel.valeur_nette -
-        déficit_à_imputer_au_revenu_quotienté_catégoriel
-    })
-    pour (revenu_quotienté_catégoriel,
-          déficit_à_imputer_au_revenu_quotienté_catégoriel)
-    parmi
-      (revenus_quotientés_catégoriels_déclarant,
-       déficits_à_imputer_aux_revenus_quotientés_catégoriels_déclarant))
-    pour (revenus_quotientés_catégoriels_déclarant,
-          déficits_à_imputer_aux_revenus_quotientés_catégoriels_déclarant)
-    parmi
-      (revenus_quotientés_catégoriels,
-       déficits_à_imputer_aux_revenus_quotientés_catégoriels)
+    # Le nouveau revenu quotienté ne diffère que par sa valeur nette.
+    transforme chaque (
+      revenus_quotientés_catégoriels_déclarant,
+      déficits_à_imputer_aux_revenus_quotientés_catégoriels_déclarant
+    )
+    parmi (
+      revenus_quotientés_catégoriels,
+      déficits_à_imputer_aux_revenus_quotientés_catégoriels
+    ) en
+      (
+        transforme chaque (
+          revenu_quotienté_catégoriel,
+          déficit_à_imputer_au_revenu_quotienté_catégoriel
+        )
+        parmi (
+          revenus_quotientés_catégoriels_déclarant,
+          déficits_à_imputer_aux_revenus_quotientés_catégoriels_déclarant
+        ) en
+          RevenuQuotienté {
+            -- déduction: revenu_quotienté_catégoriel.déduction
+            -- coefficient: revenu_quotienté_catégoriel.coefficient
+            -- catégorie: revenu_quotienté_catégoriel.catégorie
+            -- valeur_nette:
+              revenu_quotienté_catégoriel.valeur_nette
+              - déficit_à_imputer_au_revenu_quotienté_catégoriel
+          }
+      )
 
 # Maintenant que nous avons traité en généralité le problème des revenus
 # quotientés, il nous faut apprécier le déficit brut global au niveau du foyer
@@ -3376,19 +3456,21 @@ champ d'application ImputationDéficitSurRevenusQuotientés:
 # Nous commençons donc par les traitements et salaires.
 champ d'application TraitementsSalairesFoyerFiscal:
   définition déficit_brut_global égal à
-    - (plafond de
-      (solde_revenu_brut_global_hors_quotient_avant_déficit_quotient),
-      0 €)
+    -(
+      plafond de
+        (solde_revenu_brut_global_hors_quotient_avant_déficit_quotient),
+        0 €
+    )
 
 # Ensuite viennent les bénéfices non commerciaux professionnels.
 champ d'application BénéficesNonCommerciauxFoyerFiscal:
   définition déficit_brut_global_professionnel égal à
-    - (plafond de (solde_net_global_professionnel, 0 €))
+    -(plafond de (solde_net_global_professionnel, 0 €))
 
 # Ensuite viennent les bénéfices industriels et commerciaux professionnels.
 champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   définition déficit_brut_global_professionnel égal à
-    - (plafond de (solde_net_global_professionnel, 0 €))
+    -(plafond de (solde_net_global_professionnel, 0 €))
 ```
 
 Toutefois, n'est pas autorisée l'imputation :
@@ -3457,7 +3539,6 @@ b. de biens meubles corporels acquis à l'état neuf, non encore livrés au 1er
 janvier 1996 et ayant donné lieu avant cette date à une commande accompagnée du
 versement d'acomptes au moins égaux à 50 % de leur prix ;
 
-
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   # Ici on vient bien imputer les déficits sur le solde net global non
@@ -3472,31 +3553,33 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
       solde_catégoriel_à_imputer
   égal à
     solde_net_global_non_professionnel_hors_locations_meublées
-    état agrégation
+      état agrégation
 
   définition
     imputation_déficit_sur_revenu_quotientés_non_professionnels.
       revenus_quotientés_catégoriels
   égal à
-    (liste de revenu_quotienté parmi
-      résultat_liquidation.revenus_quotientés_non_professionnels
-    tel que selon revenu_quotienté.catégorie sous forme
-      # Attention on exclut de cette liste les revenus quotientés BIC
-      # de location meublées qui sont traités par le 1 ter de cet article.
-      -- BénéficesIndustrielsCommerciaux: vrai
-      -- MicroBénéficesIndustrielsCommerciauxMarchandises: vrai
-      -- MicroBénéficesIndustrielsCommerciauxServices: vrai
-      -- n'importe quel: faux) pour
-    résultat_liquidation parmi
-      résultats_liquidation_bénéfices_industriels_commerciaux
+    transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_industriels_commerciaux en
+      (
+        liste de revenu_quotienté parmi résultat_liquidation.revenus_quotientés_non_professionnels
+          tel que selon revenu_quotienté.catégorie sous forme
+          # Attention on exclut de cette liste les revenus quotientés BIC
+          # de location meublées qui sont traités par le 1 ter de cet article.
+          -- BénéficesIndustrielsCommerciaux : vrai
+          -- MicroBénéficesIndustrielsCommerciauxMarchandises : vrai
+          -- MicroBénéficesIndustrielsCommerciauxServices : vrai
+          -- n'importe quel : faux
+      )
 
-  définition revenus_non_professionnels_quotientés_imputés état base
+  définition revenus_non_professionnels_quotientés_imputés
+    état base
   égal à
     imputation_déficit_sur_revenu_quotientés_non_professionnels.
       revenus_quotientés_catégoriels_imputés
 
   définition solde_net_global_non_professionnel_hors_locations_meublées
-  état imputation_déficit_revenus_quotient
+    état imputation_déficit_revenus_quotient
   égal à
     # Dans cette étape, on va venir réduire un éventuel déficit en l'imputant
     # sur les revenus au quotient de même nature. Lorsque
@@ -3505,32 +3588,39 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
     # "imputation_déficit_sur_revenu_quotientés_non_professionnels", qui est lui
     # positif. Globalement, on va ajouter à un nombre négatif un nombre positif
     # pour réduire la valeur absolue du nombre négatif de départ.
-    solde_net_global_non_professionnel_hors_locations_meublées +
-    imputation_déficit_sur_revenu_quotientés_non_professionnels.
+    solde_net_global_non_professionnel_hors_locations_meublées
+    + imputation_déficit_sur_revenu_quotientés_non_professionnels.
       déficit_catégoriel_imputé
 
   définition imputation_aux_déficits_les_plus_anciens.revenu_déclaré égal à
     solde_net_global_non_professionnel_hors_locations_meublées
-    état imputation_déficit_revenus_quotient
+      état imputation_déficit_revenus_quotient
 
-  définition imputation_aux_déficits_les_plus_anciens.déficits_antérieurs
+  définition
+    imputation_aux_déficits_les_plus_anciens.déficits_antérieurs
   égal à
-    (liste de déficit parmi déficits_réels_années_antérieures_non_professionnels
-        tel que déficit.année >= année_revenus - 6)
+    (
+      liste de déficit parmi déficits_réels_années_antérieures_non_professionnels
+        tel que déficit.année >= année_revenus - 6
+    )
 
-  définition déficits_réels_années_antérieures_non_professionnels_mis_à_jour
+  définition
+    déficits_réels_années_antérieures_non_professionnels_mis_à_jour
   égal à
     imputation_aux_déficits_les_plus_anciens.déficits_antérieurs_restants
 
   définition solde_net_global_non_professionnel_hors_locations_meublées
-  état imputation_déficits_années_antérieures_non_professionnels
+    état imputation_déficits_années_antérieures_non_professionnels
   égal à
     imputation_aux_déficits_les_plus_anciens.revenu_imputé
 
-  définition déficit_brut_global_non_professionnel_hors_locations_meublées
-    égal à
-    - (plafond de
-      (solde_net_global_non_professionnel_hors_locations_meublées, 0 €))
+  définition
+    déficit_brut_global_non_professionnel_hors_locations_meublées
+  égal à
+    -(
+      plafond de
+        (solde_net_global_non_professionnel_hors_locations_meublées, 0 €)
+    )
 ```
 
 1° ter Des déficits du foyer fiscal provenant de l'activité de location directe
@@ -3562,34 +3652,34 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   définition
     imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées.
       solde_catégoriel_à_imputer
-  égal à solde_net_global_non_professionnel_locations_meublées état agrégation
+  égal à
+    solde_net_global_non_professionnel_locations_meublées état agrégation
 
   définition
     imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées.
       revenus_quotientés_catégoriels
   égal à
-    (liste de revenu_quotienté parmi
-      résultat_liquidation.revenus_quotientés_non_professionnels
-    tel que selon revenu_quotienté.catégorie sous forme
-      -- BénéficesIndustrielsCommerciauxLocationMeublées: vrai
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral: vrai
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées:
-        vrai
-      -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales:
-        vrai
-      -- n'importe quel: faux) pour
-    résultat_liquidation parmi
-      résultats_liquidation_bénéfices_industriels_commerciaux
+    transforme chaque résultat_liquidation
+    parmi résultats_liquidation_bénéfices_industriels_commerciaux en
+      liste de revenu_quotienté parmi résultat_liquidation.revenus_quotientés_non_professionnels
+        tel que selon revenu_quotienté.catégorie sous forme
+        -- BénéficesIndustrielsCommerciauxLocationMeublées : vrai
+        -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesGénéral : vrai
+        -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesHôtesClassées :
+          vrai
+        -- MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales :
+          vrai
+        -- n'importe quel : faux
 
   définition revenus_non_professionnels_quotientés_imputés
     état locations_meublées
   égal à
-    revenus_non_professionnels_quotientés_imputés ++
-    imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées.
+    revenus_non_professionnels_quotientés_imputés
+    ++ imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées.
       revenus_quotientés_catégoriels_imputés
 
   définition solde_net_global_non_professionnel_locations_meublées
-  état imputation_déficit_revenus_quotient
+    état imputation_déficit_revenus_quotient
   égal à
     # Dans cette étape, on va venir réduire un éventuel déficit en l'imputant
     # sur les revenus au quotient de même nature. Lorsque
@@ -3599,8 +3689,8 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
     # "imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées",
     # qui est lui positif. Globalement, on va ajouter à un nombre négatif un
     # nombre positif pour réduire la valeur absolue du nombre négatif de départ.
-    solde_net_global_non_professionnel_locations_meublées +
-    imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées.
+    solde_net_global_non_professionnel_locations_meublées
+    + imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées.
       déficit_catégoriel_imputé
 
   définition
@@ -3609,24 +3699,27 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
     solde_net_global_non_professionnel_locations_meublées
       état imputation_déficit_revenus_quotient
 
-  définition imputation_aux_déficits_les_plus_anciens_locations_meublées.déficits_antérieurs
+  définition
+    imputation_aux_déficits_les_plus_anciens_locations_meublées.déficits_antérieurs
   égal à
-    (liste de déficit parmi
-      déficits_réels_années_antérieures_non_professionnels_locations_meublées
-        tel que déficit.année >= année_revenus - 10)
+    (
+      liste de déficit parmi déficits_réels_années_antérieures_non_professionnels_locations_meublées
+        tel que déficit.année >= année_revenus - 10
+    )
 
-  définition déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour
+  définition
+    déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour
   égal à
     imputation_aux_déficits_les_plus_anciens_locations_meublées.
       déficits_antérieurs_restants
 
   définition solde_net_global_non_professionnel_locations_meublées
-  état imputation_déficits_années_antérieures_non_professionnels
+    état imputation_déficits_années_antérieures_non_professionnels
   égal à
     imputation_aux_déficits_les_plus_anciens_locations_meublées.revenu_imputé
 
   définition déficit_brut_global_non_professionnel_locations_meublées égal à
-    - (plafond de (solde_net_global_non_professionnel_locations_meublées, 0 €))
+    -(plafond de (solde_net_global_non_professionnel_locations_meublées, 0 €))
 ```
 
 2° Des déficits provenant d'activités non commerciales au sens de l'article 92 ,
@@ -3647,22 +3740,24 @@ champ d'application BénéficesNonCommerciauxFoyerFiscal:
   définition
     imputation_déficit_sur_revenu_quotientés_non_professionnels.
       solde_catégoriel_à_imputer
-  égal à solde_net_global_non_professionnel état agrégation
+  égal à
+    solde_net_global_non_professionnel état agrégation
 
   définition
     imputation_déficit_sur_revenu_quotientés_non_professionnels.
       revenus_quotientés_catégoriels
   égal à
-    résultat_liquidation.revenus_quotientés_non_professionnels pour
-    résultat_liquidation parmi résultats_liquidation_bénéfices_non_commerciaux
+    transforme chaque résultat_liquidation parmi résultats_liquidation_bénéfices_non_commerciaux en
+      résultat_liquidation.revenus_quotientés_non_professionnels
 
-  définition revenus_non_professionnels_quotientés_imputés
+  définition
+    revenus_non_professionnels_quotientés_imputés
   égal à
     imputation_déficit_sur_revenu_quotientés_non_professionnels.
       revenus_quotientés_catégoriels_imputés
 
   définition solde_net_global_non_professionnel
-  état imputation_déficit_revenus_quotient
+    état imputation_déficit_revenus_quotient
   égal à
     # Dans cette étape, on va venir réduire un éventuel déficit en l'imputant
     # sur les revenus au quotient de même nature. Lorsque
@@ -3671,29 +3766,33 @@ champ d'application BénéficesNonCommerciauxFoyerFiscal:
     # "imputation_déficit_sur_revenu_quotientés_non_professionnels", qui est lui
     # positif. Globalement, on va ajouter à un nombre négatif un nombre positif
     # pour réduire la valeur absolue du nombre négatif de départ.
-    solde_net_global_non_professionnel +
-    imputation_déficit_sur_revenu_quotientés_non_professionnels.
+    solde_net_global_non_professionnel
+    + imputation_déficit_sur_revenu_quotientés_non_professionnels.
       déficit_catégoriel_imputé
 
   définition imputation_aux_déficits_les_plus_anciens.revenu_déclaré égal à
     solde_net_global_non_professionnel état imputation_déficit_revenus_quotient
 
-  définition imputation_aux_déficits_les_plus_anciens.déficits_antérieurs
+  définition
+    imputation_aux_déficits_les_plus_anciens.déficits_antérieurs
   égal à
-    (liste de déficit parmi déficits_réels_années_antérieures_non_professionnels
-        tel que déficit.année >= année_revenus - 6)
+    (
+      liste de déficit parmi déficits_réels_années_antérieures_non_professionnels
+        tel que déficit.année >= année_revenus - 6
+    )
 
-  définition déficits_réels_années_antérieures_non_professionnels_mis_à_jour
+  définition
+    déficits_réels_années_antérieures_non_professionnels_mis_à_jour
   égal à
     imputation_aux_déficits_les_plus_anciens.déficits_antérieurs_restants
 
   définition solde_net_global_non_professionnel
-  état imputation_déficits_années_antérieures_non_professionnels
+    état imputation_déficits_années_antérieures_non_professionnels
   égal à
     imputation_aux_déficits_les_plus_anciens.revenu_imputé
 
   définition déficit_brut_global_non_professionnel égal à
-    - (plafond de (solde_net_global_non_professionnel, 0 €))
+    -(plafond de (solde_net_global_non_professionnel, 0 €))
 ```
 
 3° Des déficits fonciers, lesquels s'imputent exclusivement sur les revenus
@@ -4031,13 +4130,13 @@ champ d'application TraitementsSalairesFoyerFiscal:
   # Nous définissons le plafond dans le champ d'application au niveau
   # du foyer fiscal et non de l'individu car ce plafond s'applique bien
   # au niveau du foyer fiscal et non de l'individu.
-  définition plafond_abattement_pensions_retraites_rentes
-    sous condition année_revenus = 2023
-    # Ici, l'année des revenus est soumis à ce plafond est 2022 car le montant
-    # du plafond est remis à jour pour le millésime (N-1) en mai de l'année N
-    # suivant les évolutions du barème de l'IR votées à la fin de l'année (N-1)
-    # pour le millésime (N-1).
-    conséquence égal à 4 321€
+  définition plafond_abattement_pensions_retraites_rentes sous condition
+    année_revenus = 2023
+  # Ici, l'année des revenus est soumis à ce plafond est 2022 car le montant
+  # du plafond est remis à jour pour le millésime (N-1) en mai de l'année N
+  # suivant les évolutions du barème de l'IR votées à la fin de l'année (N-1)
+  # pour le millésime (N-1).
+  conséquence égal à 4 321€
 
 champ d'application TraitementsSalairesDéclarant:
   # D'après un exemple donné par BOI-RSA-PENS-30-10-10, paragraphe 180,
@@ -4047,25 +4146,28 @@ champ d'application TraitementsSalairesDéclarant:
   # le taux de 10%, le plancher forfaitaire et la maximisation par le revenu
   # abattu seront codés à l'alinéa suivant de l'article.
   définition calcul_abattement_pensions_retraites_rentes
-  de pension_retraite_rente état base
+    de pension_retraite_rente état base
   égal à
-      pension_retraite_rente * 10%
+    pension_retraite_rente * 10%
 
   # Ensuite, l'abattement total pour un déclarant est la somme des abattements
   # obtenus sur ces revenus, classiques ou exceptionnels ou différés.
-  définition abattement_pensions_retraites_rentes_total_non_plafonné
+  définition
+    abattement_pensions_retraites_rentes_total_non_plafonné
   égal à
-    somme argent de
-      (si abattement_selon_158_5_a de p.type
-        alors calcul_abattement_pensions_retraites_rentes de p.valeur_initiale
-        sinon 0 €)
-    pour p parmi pensions_retraites_rentes_79 +
-    somme argent de
-      (selon r_quotienté.catégorie sous forme
-      -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes:
-         calcul_abattement_pensions_retraites_rentes de r_quotienté.valeur
-      -- n'importe quel: 0 €)
-    pour r_quotienté parmi revenus.revenus_exceptionnels_ou_différés
+    somme argent de (
+      transforme chaque p parmi pensions_retraites_rentes_79 en
+        si abattement_selon_158_5_a de p.type alors
+          calcul_abattement_pensions_retraites_rentes de p.valeur_initiale
+        sinon 0 €
+    )
+    + somme argent de (
+      transforme chaque r_quotienté parmi revenus.revenus_exceptionnels_ou_différés en
+        selon r_quotienté.catégorie sous forme
+        -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes :
+          calcul_abattement_pensions_retraites_rentes de r_quotienté.valeur
+        -- n'importe quel : 0 €
+    )
 
   # Comment coder la cumulativité du plafond d'abbattement au global sur toutes
   # les pensions et retraites du foyer fiscal ? On pourrait sommer les
@@ -4086,12 +4188,13 @@ champ d'application TraitementsSalairesDéclarant:
   # Dans ce champ d'application TraitementsSalairesDéclarant, on distingue les
   # liquidations grâce à l'entrée
   # "selecteur_plafond_abattement_pensions_retraites_rentes".
-  définition abattement_pensions_retraites_rentes_total_plafonné
+  définition
+    abattement_pensions_retraites_rentes_total_plafonné
   égal à
     selon selecteur_plafond_abattement_pensions_retraites_rentes sous forme
-    -- Déplafonné:
+    -- Déplafonné :
       abattement_pensions_retraites_rentes_total_non_plafonné
-    -- PlafondStandardOuProratisé de plafond_standard_ou_proratisé:
+    -- PlafondStandardOuProratisé de plafond_standard_ou_proratisé :
       plafond de
         abattement_pensions_retraites_rentes_total_non_plafonné,
         plafond_standard_ou_proratisé
@@ -4100,86 +4203,101 @@ champ d'application TraitementsSalairesDéclarant:
   # sur les pensions retraites rentes classiques l'abattement déjà distribué
   # sur les pensions retraites rentes exceptionnelles ou différées qui seront
   # imposées au quotient.
-  définition abattement_pensions_retraites_rentes
+  définition
+    abattement_pensions_retraites_rentes
   égal à
-      abattement_pensions_retraites_rentes_total_plafonné -
-        (somme argent de (selon r_quotienté.catégorie sous forme
-          -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes:
+    abattement_pensions_retraites_rentes_total_plafonné
+    - (
+      somme argent
+        de transforme chaque r_quotienté parmi revenus_quotientés en
+        (
+          selon r_quotienté.catégorie sous forme
+          -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes :
             r_quotienté.déduction
-          -- n'importe quel: 0€)
-          pour r_quotienté parmi revenus_quotientés)
+          -- n'importe quel : 0€
+        )
+    )
 
 # Ensuite, il nous faut coder la logique qui lance la double liquidation
 # sur l'ensemble du foyer fiscal.
 champ d'application TraitementsSalairesFoyerFiscal:
   définition résultats_liquidations_plafond_pensions_retraites_rentes égal à
-    (soit résultats_liquidation égal à
-      résultat de TraitementsSalairesDéclarant avec {
-        # La première liquidation se fait en déplafonnant l'abattement!
-        -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
-        -- revenus : déclaration_revenus
-        -- année_revenus: année_revenus
-      }
-    dans
-    RésultatsLiquidationPlafondPensionRetraitesRentes {
-      -- abattement_pensions_retraites_rentes:
-        résultats_liquidation.abattement_pensions_retraites_rentes
-      -- revenus: déclaration_revenus
-    })
-    pour déclaration_revenus parmi déclarations_revenus
+    (
+      transforme chaque déclaration_revenus parmi déclarations_revenus en
+        soit résultats_liquidation égal à
+          résultat de TraitementsSalairesDéclarant avec {
+            # La première liquidation se fait en déplafonnant l'abattement!
+            -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
+            -- revenus: déclaration_revenus
+            -- année_revenus: année_revenus
+          }
+        dans
+        RésultatsLiquidationPlafondPensionRetraitesRentes {
+          -- abattement_pensions_retraites_rentes:
+            résultats_liquidation.abattement_pensions_retraites_rentes
+          -- revenus: déclaration_revenus
+        }
+    )
 
   # Une fois la liquidation faite, nous pouvons aggréger les abattements
   # sur tout le foyer fiscal.
   définition abbattement_total_déplafonné_pensions_retraites_rentes égal à
-    somme argent de
-      résultats.abattement_pensions_retraites_rentes pour résultats
-    parmi résultats_liquidations_plafond_pensions_retraites_rentes
+    somme argent
+      de transforme chaque résultats
+    parmi résultats_liquidations_plafond_pensions_retraites_rentes en
+      résultats.abattement_pensions_retraites_rentes
 
   définition déclarations_avec_plafond_pensions_retraites_rentes_correct égal à
-    si abbattement_total_déplafonné_pensions_retraites_rentes <
-      plafond_abattement_pensions_retraites_rentes
-    alors
+    si abbattement_total_déplafonné_pensions_retraites_rentes
+      < plafond_abattement_pensions_retraites_rentes alors
       # L'abattement total sur le foyer fiscal est en dessous du plafond ;
       # pour chaque déclarant, on met le plafond global (qui ne sera pas
       # atteint de toute façon).
-      (DéclarationAvecPlafondPensionRetraitesRentesCorrect {
-      -- revenus: résultats.revenus
-      -- plafond_abattement_pensions_retraites_rentes:
-        plafond_abattement_pensions_retraites_rentes
-      })
-      pour résultats parmi
-        résultats_liquidations_plafond_pensions_retraites_rentes
+      transforme chaque résultats
+      parmi résultats_liquidations_plafond_pensions_retraites_rentes en
+        DéclarationAvecPlafondPensionRetraitesRentesCorrect {
+          -- revenus: résultats.revenus
+          -- plafond_abattement_pensions_retraites_rentes:
+            plafond_abattement_pensions_retraites_rentes
+        }
     sinon
       # Il faut pro-ratiser les plafonds en fonction des abattements déplafonnés
       # de chaque déclarant.
       soit plafonds_proratisés égal à
-        (résultat de Oracles.ProRataArrondiEuro avec {
-          -- montant_à_distribuer : plafond_abattement_pensions_retraites_rentes
-          -- bases_prorata :
-            résultats.abattement_pensions_retraites_rentes pour résultats parmi
-              résultats_liquidations_plafond_pensions_retraites_rentes
-        }).valeurs_proratisées
+        (
+          résultat de Oracles.ProRataArrondiEuro avec {
+            -- montant_à_distribuer: plafond_abattement_pensions_retraites_rentes
+            -- bases_prorata:
+              transforme chaque résultats
+              parmi résultats_liquidations_plafond_pensions_retraites_rentes en
+                résultats.abattement_pensions_retraites_rentes
+          }
+        ).valeurs_proratisées
       dans
-      (DéclarationAvecPlafondPensionRetraitesRentesCorrect {
-        -- revenus: résultats.revenus
-        -- plafond_abattement_pensions_retraites_rentes:
-          plafond_proratisé
-      }) pour (résultats, plafond_proratisé) parmi
-      (résultats_liquidations_plafond_pensions_retraites_rentes,
-       plafonds_proratisés)
+      transforme chaque (résultats, plafond_proratisé)
+      parmi (
+        résultats_liquidations_plafond_pensions_retraites_rentes,
+        plafonds_proratisés
+      ) en
+        DéclarationAvecPlafondPensionRetraitesRentesCorrect {
+          -- revenus: résultats.revenus
+          -- plafond_abattement_pensions_retraites_rentes:
+            plafond_proratisé
+        }
 
   # Et enfin, on fait une deuxième liquidation avec le plafond correct.
   définition
     déclarations_avec_résultats_traitements_salaires
   égal à
-    résultat de TraitementsSalairesDéclarant avec {
-      -- revenus : déclaration_avec_plafond_correct.revenus
-      -- selecteur_plafond_abattement_pensions_retraites_rentes:
-        PlafondStandardOuProratisé contenu déclaration_avec_plafond_correct.
-          plafond_abattement_pensions_retraites_rentes
-      -- année_revenus: année_revenus
-    } pour déclaration_avec_plafond_correct parmi
-      déclarations_avec_plafond_pensions_retraites_rentes_correct
+    transforme chaque déclaration_avec_plafond_correct
+    parmi déclarations_avec_plafond_pensions_retraites_rentes_correct en
+      résultat de TraitementsSalairesDéclarant avec {
+        -- revenus: déclaration_avec_plafond_correct.revenus
+        -- selecteur_plafond_abattement_pensions_retraites_rentes:
+          PlafondStandardOuProratisé contenu déclaration_avec_plafond_correct.
+            plafond_abattement_pensions_retraites_rentes
+        -- année_revenus: année_revenus
+      }
 ```
 
 L'abattement indiqué au deuxième alinéa ne peut être inférieur à 442 €, sans
@@ -4191,10 +4309,10 @@ barème de l'impôt sur le revenu.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition minimum_abattement_pensions_retraites_rentes
-    sous condition année_revenus = 2023
-    # Voir commentaire sur le plafond ci-dessus.
-    conséquence égal à 442€
+  définition minimum_abattement_pensions_retraites_rentes sous condition
+    année_revenus = 2023
+  # Voir commentaire sur le plafond ci-dessus.
+  conséquence égal à 442€
 
   # Puisqu'on calcule "abattement_pensions_retraites_rentes" à partir de
   # "calcul_abattement_pensions_retraites_rentes", il suit de notre code que
@@ -4205,19 +4323,18 @@ champ d'application TraitementsSalairesDéclarant:
   # maximisation par le revenu abattu est justifié par BOI-RSA-PENS-30-10-10,
   # paragraphe 180.
   définition calcul_abattement_pensions_retraites_rentes
-  de pension_retraite_rente état plancher
+    de pension_retraite_rente état plancher
   égal à
     plancher de
       (calcul_abattement_pensions_retraites_rentes de pension_retraite_rente),
       minimum_abattement_pensions_retraites_rentes
 
   définition calcul_abattement_pensions_retraites_rentes
-  de pension_retraite_rente état maximisation
+    de pension_retraite_rente état maximisation
   égal à
     plafond de
       (calcul_abattement_pensions_retraites_rentes de pension_retraite_rente),
       pension_retraite_rente
-
 
   # Cas de base, exceptions à venir.
   définition abattement_selon_158_5_a de type_retraite égal à vrai
@@ -4236,9 +4353,10 @@ imposables.
 # déduction pour frais professionnels.
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art158_5_a_b égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.autres_revenus_imposables_chômage_préretraite
+    état art158_5_a_b
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.autres_revenus_imposables_chômage_préretraite
 ```
 
 Sous réserve de l'exonération prévue à l'article 163 bis AA, les dispositions du
@@ -4272,8 +4390,8 @@ précité ;
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   # Ici, pas d'abattement selon le 5° a)
-  exception définition abattement_selon_158_5_a de type_retraite
-  sous condition
+  exception
+  définition abattement_selon_158_5_a de type_retraite sous condition
     type_retraite = PensionEnCapitalPlansÉpargneRetraite
   conséquence égal à faux
 ```
@@ -4342,36 +4460,41 @@ champ d'application TraitementsSalairesFoyerFiscal:
   # rapport au droit (mais équivalent après inversion déduction/ce qu'on garde)
   # pour pouvoir mobiliser le même code dans le calcul de la déduction
   # des revenus au quotient de l'article 163-0 A.
-  définition calcul_déduction_rente_viagères_titre_onéreux de rente_viagère
-  égal à
-    rente_viagère.valeur * (selon rente_viagère.catégorie sous forme
-    -- RenteViagèreOnéreuxMoins49Ans: 100% - 70%
-    -- RenteViagèreOnéreuxEntre50Et59Ans: 100% - 50%
-    -- RenteViagèreOnéreuxEntre60Et69Ans: 100% - 40%
-    -- RenteViagèreOnéreuxPlus70Ans: 100% - 30%)
+  définition
+    calcul_déduction_rente_viagères_titre_onéreux
+    de rente_viagère égal à
+    rente_viagère.valeur
+    * (
+      selon rente_viagère.catégorie sous forme
+      -- RenteViagèreOnéreuxMoins49Ans : 100% - 70%
+      -- RenteViagèreOnéreuxEntre50Et59Ans : 100% - 50%
+      -- RenteViagèreOnéreuxEntre60Et69Ans : 100% - 40%
+      -- RenteViagèreOnéreuxPlus70Ans : 100% - 30%
+    )
 
-  définition rentes_viagères_titre_onéreux état base égal à
-    somme argent de
-      (rente_viagère.valeur -
-        calcul_déduction_rente_viagères_titre_onéreux de rente_viagère)
-      pour rente_viagère parmi [
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_percues_49moins_ans
-          -- catégorie: RenteViagèreOnéreuxMoins49Ans
-        };
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_percues_50_59ans
-          -- catégorie: RenteViagèreOnéreuxEntre50Et59Ans
-        };
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_percues_60_69ans
-          -- catégorie: RenteViagèreOnéreuxEntre60Et69Ans
-        };
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_percues_70plus_ans
-          -- catégorie: RenteViagèreOnéreuxPlus70Ans
-        }
-      ]
+  définition rentes_viagères_titre_onéreux
+    état base
+  égal à
+    somme argent
+      de transforme chaque rente_viagère
+    parmi [ RenteViagèreOnéreux {
+        -- valeur: revenus.rentes_percues_49moins_ans
+        -- catégorie: RenteViagèreOnéreuxMoins49Ans
+      } ;
+      RenteViagèreOnéreux {
+        -- valeur: revenus.rentes_percues_50_59ans
+        -- catégorie: RenteViagèreOnéreuxEntre50Et59Ans
+      } ;
+      RenteViagèreOnéreux {
+        -- valeur: revenus.rentes_percues_60_69ans
+        -- catégorie: RenteViagèreOnéreuxEntre60Et69Ans
+      } ;
+      RenteViagèreOnéreux {
+        -- valeur: revenus.rentes_percues_70plus_ans
+        -- catégorie: RenteViagèreOnéreuxPlus70Ans
+      } ] en
+      rente_viagère.valeur
+      - calcul_déduction_rente_viagères_titre_onéreux de rente_viagère
 ```
 
 6 bis. Lorsqu'ils sont pris en compte dans l'assiette du revenu net global dans
@@ -4471,10 +4594,10 @@ champ d'application CalculRevenuQuotienté:
       -- déduction: déduction
       -- coefficient:
         selon revenu.échéance sous forme
-        -- RevenuExceptionnel: 4
-        -- RevenuDifféréÉchéanceNormale de année_d_échéance_normale:
-          (année_revenus - année_d_échéance_normale) +
-          décalage_échéance_prise_en_compte
+        -- RevenuExceptionnel : 4
+        -- RevenuDifféréÉchéanceNormale de année_d_échéance_normale :
+          (année_revenus - année_d_échéance_normale)
+          + décalage_échéance_prise_en_compte
     }
 
   # Attention, cet article défini un décalage de 1 an pour l'échéance des
@@ -4492,22 +4615,24 @@ champ d'application TraitementsSalairesDéclarant:
   # chaque revenu quotientés et pour les traitements et salaires soit le
   # plafond.
   définition calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
-    de revenu_quotienté
-    état base
+    de revenu_quotienté état base
   égal à
     # TODO informatique : transformer ce pro-rata en utilisant Oracles.
-    calcul_déduction_frais_professionnels de revenu_quotienté *
-        (déduction_frais_professionnels_totale état plafonnée_83_3_2 /
-          déduction_frais_professionnels_totale état non_plafonnée_83_3_2)
+    calcul_déduction_frais_professionnels de revenu_quotienté
+    * (
+      déduction_frais_professionnels_totale état plafonnée_83_3_2
+      / déduction_frais_professionnels_totale état non_plafonnée_83_3_2
+    )
 
   définition calcul_abattement_proratisé_revenus_quotienté_pensions_retraites
-    de revenu_quotienté
-    état base
+    de revenu_quotienté état base
   égal à
     # TODO informatique : transformer ce pro-rata en utilisant Oracles.
-    calcul_abattement_pensions_retraites_rentes de revenu_quotienté *
-      (abattement_pensions_retraites_rentes_total_plafonné /
-        abattement_pensions_retraites_rentes_total_non_plafonné)
+    calcul_abattement_pensions_retraites_rentes de revenu_quotienté
+    * (
+      abattement_pensions_retraites_rentes_total_plafonné
+      / abattement_pensions_retraites_rentes_total_non_plafonné
+    )
 
   # Ici nous définissons la structure contenant toutes les informations
   # nécessaires à la future liquidation de l'impôt des revenus quotientés,
@@ -4515,44 +4640,53 @@ champ d'application TraitementsSalairesDéclarant:
   # la déduction, et le coefficient de quotientemment calculé à partir
   # de l'échéance du revenu.
   définition revenus_quotientés égal à
-    (soit déduction égal à
-      selon revenu.catégorie sous forme
-      -- TraitementsSalaires:
-        calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
-          de revenu.valeur
-      -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes:
-        calcul_abattement_proratisé_revenus_quotienté_pensions_retraites
-          de revenu.valeur
-      -- n'importe quel: 0 €
-      # Ce cas ne peut pas arriver, on vérifie qu'on déclare ici uniquement des
-      # revenus qui concernent un déclarant particulier.
-    dans
-    (résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté)
-    pour revenu parmi revenus.revenus_exceptionnels_ou_différés
+    (
+      transforme chaque revenu parmi revenus.revenus_exceptionnels_ou_différés en
+        (
+          soit déduction égal à
+            selon revenu.catégorie sous forme
+            -- TraitementsSalaires :
+              calcul_déduction_proratisée_revenus_quotientés_traitements_salaires de
+                revenu.valeur
+            -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes :
+              calcul_abattement_proratisé_revenus_quotienté_pensions_retraites de
+                revenu.valeur
+            -- n'importe quel : 0 €
+            # Ce cas ne peut pas arriver, on vérifie qu'on déclare ici uniquement des
+            # revenus qui concernent un déclarant particulier.
+          dans
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
 
 champ d'application TraitementsSalairesFoyerFiscal:
   définition revenus_quotientés égal à
-    (soit déduction égal à
-      selon revenu.catégorie sous forme
-      -- RenteViagèreOnéreux de catégorie_rente_viagère:
-        calcul_déduction_rente_viagères_titre_onéreux de RenteViagèreOnéreux {
-          -- valeur: revenu.valeur
-          -- catégorie: catégorie_rente_viagère
-        }
-      -- n'importe quel: 0 €
-      # Ce cas ne peut pas arriver, on vérifie qu'on déclare ici uniquement des
-      # revenus qui concernent l'ensemble du foyer fiscal.
-    dans
-    (résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté)
-    pour revenu parmi revenus.revenus_exceptionnels_ou_différés
+    (
+      transforme chaque revenu parmi revenus.revenus_exceptionnels_ou_différés en
+        (
+          soit déduction égal à
+            selon revenu.catégorie sous forme
+            -- RenteViagèreOnéreux de catégorie_rente_viagère :
+              calcul_déduction_rente_viagères_titre_onéreux de
+                RenteViagèreOnéreux {
+                  -- valeur: revenu.valeur
+                  -- catégorie: catégorie_rente_viagère
+                }
+            -- n'importe quel : 0 €
+            # Ce cas ne peut pas arriver, on vérifie qu'on déclare ici uniquement des
+            # revenus qui concernent l'ensemble du foyer fiscal.
+          dans
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
 
 champ d'application BénéficesNonCommerciauxDéclarant:
   # Ici, nous effectuons le pro-rata à la main et calculons le solde restant
@@ -4562,51 +4696,70 @@ champ d'application BénéficesNonCommerciauxDéclarant:
   définition
     pro_rata_abattement_forfaitaire_micro.bases_prorata_liste_1
   égal à
-    revenu.valeur pour revenu parmi
-      revenus_exceptionnels_professionnels_abattement_micro
+    transforme chaque revenu
+    parmi revenus_exceptionnels_professionnels_abattement_micro en
+      revenu.valeur
 
   définition
     pro_rata_abattement_forfaitaire_micro.bases_prorata_liste_2
   égal à
-    revenu.valeur pour revenu parmi
-      revenus_exceptionnels_non_professionnels_abattement_micro
-
+    transforme chaque revenu
+    parmi revenus_exceptionnels_non_professionnels_abattement_micro en
+      revenu.valeur
 
   définition revenus_quotientés_professionnels égal à
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction) parmi
-      (revenus_exceptionnels_professionnels_abattement_micro,
+    (
+      transforme chaque (revenu, déduction)
+      parmi (
+        revenus_exceptionnels_professionnels_abattement_micro,
         pro_rata_abattement_forfaitaire_micro.
-          valeurs_proratisées_liste_1)) ++
-    (résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : 0 €
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour revenu parmi
-      revenus_exceptionnels_professionnels_sans_abattement
+          valeurs_proratisées_liste_1
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ (
+      transforme chaque revenu
+      parmi revenus_exceptionnels_professionnels_sans_abattement en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: 0 €
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
 
   définition revenus_quotientés_non_professionnels égal à
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction) parmi
-      (revenus_exceptionnels_non_professionnels_abattement_micro,
+    (
+      transforme chaque (revenu, déduction)
+      parmi (
+        revenus_exceptionnels_non_professionnels_abattement_micro,
         pro_rata_abattement_forfaitaire_micro.
-          valeurs_proratisées_liste_2)) ++
-    (résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : 0 €
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour revenu parmi
-      revenus_exceptionnels_non_professionnels_sans_abattement
+          valeurs_proratisées_liste_2
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ transforme chaque revenu
+    parmi revenus_exceptionnels_non_professionnels_sans_abattement en
+      (
+        résultat de CalculRevenuQuotienté avec {
+          -- revenu: revenu
+          -- déduction: 0 €
+          -- année_revenus: année_revenus
+        }
+      ).revenu_quotienté
 
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   # Ici, nous effectuons le pro-rata et calculons le solde restant
@@ -4616,113 +4769,144 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition
     pro_rata_abattement_forfaitaire_micro_services.bases_prorata_liste_1
   égal à
-    revenu_exceptionnel_ou_différé.valeur pour
-    revenu_exceptionnel_ou_différé parmi
-    revenus_exceptionnels_professionnels_abattement_micro_services
+    transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_professionnels_abattement_micro_services en
+      revenu_exceptionnel_ou_différé.valeur
 
   définition
     pro_rata_abattement_forfaitaire_micro_services.bases_prorata_liste_2
   égal à
-    revenu_exceptionnel_ou_différé.valeur pour
-    revenu_exceptionnel_ou_différé parmi
-    revenus_exceptionnels_non_professionnels_abattement_micro_services
+    transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_non_professionnels_abattement_micro_services en
+      revenu_exceptionnel_ou_différé.valeur
 
   définition
     pro_rata_abattement_forfaitaire_micro_marchandises.bases_prorata_liste_1
   égal à
-    revenu_exceptionnel_ou_différé.valeur pour
-    revenu_exceptionnel_ou_différé parmi
-    revenus_exceptionnels_professionnels_abattement_micro_marchandises
+    transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_professionnels_abattement_micro_marchandises en
+      revenu_exceptionnel_ou_différé.valeur
 
   définition
     pro_rata_abattement_forfaitaire_micro_marchandises.bases_prorata_liste_2
   égal à
-    revenu_exceptionnel_ou_différé.valeur pour
-    revenu_exceptionnel_ou_différé parmi
-    revenus_exceptionnels_non_professionnels_abattement_micro_marchandises
+    transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_non_professionnels_abattement_micro_marchandises en
+      revenu_exceptionnel_ou_différé.valeur
 
   définition
     pro_rata_abattement_forfaitaire_micro_marchandises.bases_prorata_liste_3
   égal à
-    revenu_exceptionnel_ou_différé.valeur pour
-    revenu_exceptionnel_ou_différé parmi
-    revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
+    transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
+      revenu_exceptionnel_ou_différé.valeur
 
   définition
     pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
       bases_prorata_liste_1
   égal à
-    revenu_exceptionnel_ou_différé.valeur pour
-    revenu_exceptionnel_ou_différé parmi
-    revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
+    transforme chaque revenu_exceptionnel_ou_différé
+    parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
+      revenu_exceptionnel_ou_différé.valeur
 
   définition revenus_quotientés_professionnels égal à
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction) parmi
-      (revenus_exceptionnels_professionnels_abattement_micro_services,
+    (
+      transforme chaque (revenu, déduction)
+      parmi (
+        revenus_exceptionnels_professionnels_abattement_micro_services,
         pro_rata_abattement_forfaitaire_micro_services.
-          valeurs_proratisées_liste_1))
-    ++
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction) parmi
-      (revenus_exceptionnels_professionnels_abattement_micro_marchandises,
+          valeurs_proratisées_liste_1
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ (
+      transforme chaque (revenu, déduction)
+      parmi (
+        revenus_exceptionnels_professionnels_abattement_micro_marchandises,
         pro_rata_abattement_forfaitaire_micro_marchandises.
-          valeurs_proratisées_liste_1)) ++
-    (résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : 0 €
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour revenu parmi
-      revenus_exceptionnels_professionnels_sans_abattement
+          valeurs_proratisées_liste_1
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ transforme chaque revenu
+    parmi revenus_exceptionnels_professionnels_sans_abattement en
+      (
+        résultat de CalculRevenuQuotienté avec {
+          -- revenu: revenu
+          -- déduction: 0 €
+          -- année_revenus: année_revenus
+        }
+      ).revenu_quotienté
 
   définition revenus_quotientés_non_professionnels égal à
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction) parmi
-      (revenus_exceptionnels_non_professionnels_abattement_micro_services,
+    (
+      transforme chaque (revenu, déduction)
+      parmi (
+        revenus_exceptionnels_non_professionnels_abattement_micro_services,
         pro_rata_abattement_forfaitaire_micro_services.
-          valeurs_proratisées_liste_2))
-    ++
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction) parmi
-      (revenus_exceptionnels_non_professionnels_abattement_micro_marchandises,
+          valeurs_proratisées_liste_2
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ (
+      transforme chaque (revenu, déduction)
+      parmi (
+        revenus_exceptionnels_non_professionnels_abattement_micro_marchandises,
         pro_rata_abattement_forfaitaire_micro_marchandises.
-          valeurs_proratisées_liste_2))
-    ++
-    ((résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : déduction_micro + déduction_spéciale
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour (revenu, déduction_micro, déduction_spéciale) parmi
-      (revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales,
-        pro_rata_abattement_forfaitaire_micro_marchandises.
-          valeurs_proratisées_liste_3,
-        pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
-          valeurs_proratisées_liste_1)) ++
-    (résultat de CalculRevenuQuotienté avec {
-      -- revenu: revenu
-      -- déduction : 0 €
-      -- année_revenus: année_revenus
-    }).revenu_quotienté
-    pour revenu parmi
-      revenus_exceptionnels_non_professionnels_sans_abattement
+          valeurs_proratisées_liste_2
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ (
+      transforme chaque ( revenu, déduction_micro, déduction_spéciale )
+      parmi (
+          revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales,
+          pro_rata_abattement_forfaitaire_micro_marchandises.
+            valeurs_proratisées_liste_3,
+          pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
+            valeurs_proratisées_liste_1
+      ) en
+        (
+          résultat de CalculRevenuQuotienté avec {
+            -- revenu: revenu
+            -- déduction: déduction_micro + déduction_spéciale
+            -- année_revenus: année_revenus
+          }
+        ).revenu_quotienté
+    )
+    ++ transforme chaque revenu
+    parmi revenus_exceptionnels_non_professionnels_sans_abattement en
+      (
+        résultat de CalculRevenuQuotienté avec {
+          -- revenu: revenu
+          -- déduction: 0 €
+          -- année_revenus: année_revenus
+        }
+      ).revenu_quotienté
 ```
 
 III. – Les dispositions prévues aux I et II ne s'appliquent qu'aux seuls revenus
@@ -4753,8 +4937,8 @@ dix années.
 # précédent à l'exception du nombre d'années à prendre en compte pour définir
 # le quotient des revenus différés, où il n'y a pas de décalage de 1 an.
 champ d'application CalculRevenuQuotienté:
-  exception définition décalage_échéance_prise_en_compte
-  sous condition
+  exception
+  définition décalage_échéance_prise_en_compte sous condition
     revenu.régime sous forme Article163_0_A_bis
   conséquence égal à
     0
@@ -4779,15 +4963,15 @@ prélèvement est assis sur le montant du capital diminué d'un abattement de 10
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition prélèvement_libératoire égal à
-      soit abattement égal à
-        revenus.pensions_retraites_en_capital_7_5pct * 10%
-      dans
-      7,5% * (revenus.pensions_retraites_en_capital_7_5pct - abattement)
+    soit abattement égal à
+      revenus.pensions_retraites_en_capital_7_5pct * 10%
+    dans
+    7,5% * (revenus.pensions_retraites_en_capital_7_5pct - abattement)
   # L'abattement n'est ici pas plafonné (BOI-RSA-PENS-30-10-20 §200)
 
   # Ici donc pas d'abattement selon l'article 158 5° a)
-  exception définition abattement_selon_158_5_a de type_retraite
-  sous condition
+  exception
+  définition abattement_selon_158_5_a de type_retraite sous condition
     type_retraite = PensionEnCapital_7_5pct
   conséquence égal à faux
 
@@ -4843,39 +5027,50 @@ le plus proche. La fraction d'euro égale à 0,50 est comptée pour 1.
 
 champ d'application TraitementsSalairesDéclarant:
   définition déduction_frais_professionnels_traitements_salaires_avant_prorata
-  état arrondissement égal à
+    état arrondissement
+  égal à
     arrondi de déduction_frais_professionnels_traitements_salaires_avant_prorata
 
   définition calcul_abattement_pensions_retraites_rentes
-  de pension_retraite_rente état arrondissement égal à
-    arrondi de (calcul_abattement_pensions_retraites_rentes de
-      pension_retraite_rente)
+    de pension_retraite_rente état arrondissement
+  égal à
+    arrondi de
+      (
+        calcul_abattement_pensions_retraites_rentes de
+          pension_retraite_rente
+      )
 
   définition calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
-    de revenu_quotienté
-    état arrondissement
+    de revenu_quotienté état arrondissement
   égal à
     arrondi de
-      (calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
-        de revenu_quotienté)
+      (
+        calcul_déduction_proratisée_revenus_quotientés_traitements_salaires de
+          revenu_quotienté
+      )
 
   définition calcul_abattement_proratisé_revenus_quotienté_pensions_retraites
-    de revenu_quotienté
-    état arrondissement
+    de revenu_quotienté état arrondissement
   égal à
     arrondi de
-      (calcul_abattement_proratisé_revenus_quotienté_pensions_retraites
-        de revenu_quotienté)
+      (
+        calcul_abattement_proratisé_revenus_quotienté_pensions_retraites de
+          revenu_quotienté
+      )
 
 champ d'application BénéficesNonCommerciauxDéclarant:
-  définition abattement_forfaitaire_micro_total état arrondissement égal à
+  définition abattement_forfaitaire_micro_total
+    état arrondissement
+  égal à
     arrondi de abattement_forfaitaire_micro_total
 
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition abattement_forfaitaire_micro_total_marchandises état arrondissement
+  définition abattement_forfaitaire_micro_total_marchandises
+    état arrondissement
   égal à
     arrondi de abattement_forfaitaire_micro_total_marchandises
-  définition abattement_forfaitaire_micro_total_services état arrondissement
+  définition abattement_forfaitaire_micro_total_services
+    état arrondissement
   égal à
     arrondi de abattement_forfaitaire_micro_total_services
   définition abattement_spécial_micro_total_location_meublées_rurales_spéciales
@@ -4884,22 +5079,24 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     arrondi de
       abattement_spécial_micro_total_location_meublées_rurales_spéciales
 
-
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition prélèvement_libératoire_auto_entreprise état arrondissement
+  définition prélèvement_libératoire_auto_entreprise
+    état arrondissement
   égal à
     arrondi de prélèvement_libératoire_auto_entreprise
 
 champ d'application BénéficesNonCommerciauxDéclarant:
-  définition prélèvement_libératoire_auto_entreprise état arrondissement
+  définition prélèvement_libératoire_auto_entreprise
+    état arrondissement
   égal à
     arrondi de prélèvement_libératoire_auto_entreprise
 
 champ d'application PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux:
-  définition prélèvement_libératoire état arrondissement égal à
+  définition prélèvement_libératoire
+    état arrondissement
+  égal à
     arrondi de prélèvement_libératoire
 ```
-
 
 ######## Article 193 bis | LEGIARTI000006303119
 
@@ -4965,44 +5162,50 @@ champ d'application NombreDeParts sous condition année_revenus >= 2017:
   # en compte des enfants majeurs qui ont coché la case DN ou DJ.
   # Attention le cas des enfants en résidence alternée sera traitée
   # juste après.
-  définition nombre_de_parts état base_194 égal à
+  définition nombre_de_parts
+    état base_194
+  égal à
     si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 0 alors
       selon situation_familiale sous forme
-      -- Célibataire: 1,0
-      -- DivorcéeSéparées: 1,0
-      -- Veuve: 1,0
-      -- Mariées: 2,0
-      -- Pacsées: 2,0
-    sinon si
-      foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 1
-    alors
+      -- Célibataire : 1,0
+      -- DivorcéeSéparées : 1,0
+      -- Veuve : 1,0
+      -- Mariées : 2,0
+      -- Pacsées : 2,0
+    sinon si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 1 alors
       selon situation_familiale sous forme
-      -- Célibataire: 1,5
-      -- DivorcéeSéparées: 1,5
-      -- Veuve: 2,5
-      -- Mariées: 2,5
-      -- Pacsées: 2,5
-    sinon si
-      foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 2
-    alors
+      -- Célibataire : 1,5
+      -- DivorcéeSéparées : 1,5
+      -- Veuve : 2,5
+      -- Mariées : 2,5
+      -- Pacsées : 2,5
+    sinon si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 2 alors
       selon situation_familiale sous forme
-      -- Célibataire: 2,0
-      -- DivorcéeSéparées: 2,0
-      -- Veuve: 3,0
-      -- Mariées: 3,0
-      -- Pacsées: 3,0
-    sinon # si nombre_enfants_à_charge_mineurs_et_non_mariés >= 3 alors
+      -- Célibataire : 2,0
+      -- DivorcéeSéparées : 2,0
+      -- Veuve : 3,0
+      -- Mariées : 3,0
+      -- Pacsées : 3,0
+    sinon
+      # si nombre_enfants_à_charge_mineurs_et_non_mariés >= 3 alors
       selon situation_familiale sous forme
-      -- Célibataire: décimal de
-        foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
-      -- DivorcéeSéparées:
+      -- Célibataire :
+        décimal de
+          foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
+      -- DivorcéeSéparées :
         décimal de foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
-      -- Veuve: décimal de
-        foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés + 1,0
-      -- Mariées: décimal de
-        foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés + 1,0
-      -- Pacsées: décimal de
-        foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés + 1,0
+      -- Veuve :
+        décimal de
+          foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
+        + 1,0
+      -- Mariées :
+        décimal de
+          foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
+        + 1,0
+      -- Pacsées :
+        décimal de
+          foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
+        + 1,0
 ```
 
 Lorsque les époux font l'objet d'une imposition séparée en application du 4 de
@@ -5040,29 +5243,52 @@ champ d'application NombreDeParts sous condition année_revenus >= 2017:
   # des enfants pris en compte à ceux qui sont mineurs et non mariés ou
   # invalides : Si on ne fait pas cette restriction on risque de prendre
   # en compte des enfants majeurs qui ont coché la case DN ou DJ.
-  définition nombre_de_parts état résidence_alternée_194 égal à
-    nombre_de_parts + (
+  définition nombre_de_parts
+    état résidence_alternée_194
+  égal à
+    nombre_de_parts
+    + (
       si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 0 alors
         # a)
         si foyer_fiscal.nombre_enfants_à_charge_résidence_alternée <= 2 alors
-          0,25 * (décimal de
-            foyer_fiscal.nombre_enfants_à_charge_résidence_alternée)
+          0,25
+          * (
+            décimal de
+              foyer_fiscal.nombre_enfants_à_charge_résidence_alternée
+          )
         sinon
-          2,0 * 0,25 + (0,5 * (décimal de
-            (foyer_fiscal.nombre_enfants_à_charge_résidence_alternée - 2)))
-      sinon si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 1
-      alors
+          2,0 * 0,25
+          + (
+            0,5
+            * (
+              décimal de
+                (foyer_fiscal.nombre_enfants_à_charge_résidence_alternée - 2)
+            )
+          )
+      sinon si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 1 alors
         # b)
         si foyer_fiscal.nombre_enfants_à_charge_résidence_alternée <= 1 alors
-          0,25 * (décimal de
-            foyer_fiscal.nombre_enfants_à_charge_résidence_alternée)
+          0,25
+          * (
+            décimal de
+              foyer_fiscal.nombre_enfants_à_charge_résidence_alternée
+          )
         sinon
-          0,25 + (0,5 * (décimal de
-            (foyer_fiscal.nombre_enfants_à_charge_résidence_alternée - 1)))
+          0,25
+          + (
+            0,5
+            * (
+              décimal de
+                (foyer_fiscal.nombre_enfants_à_charge_résidence_alternée - 1)
+            )
+          )
       sinon
         # c)
-        0,5 * (décimal de
-          foyer_fiscal.nombre_enfants_à_charge_résidence_alternée)
+        0,5
+        * (
+          décimal de
+            foyer_fiscal.nombre_enfants_à_charge_résidence_alternée
+        )
     )
 ```
 
@@ -5083,28 +5309,29 @@ enfants.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2017:
-  définition nombre_de_parts état parent_isolé_194 égal à
-    nombre_de_parts + (
+  définition nombre_de_parts
+    état parent_isolé_194
+  égal à
+    nombre_de_parts
+    + (
       si foyer_fiscal.parent_isolé alors
         si foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés >= 1 alors
           0,5
-        sinon
-          si
-            foyer_fiscal.nombre_enfants_à_charge_résidence_alternée = 1
-          alors 0,25
-          sinon si foyer_fiscal.nombre_enfants_à_charge_résidence_alternée >= 2
-          alors 0,5
-          sinon 0,0
-          # Lorsque le contribuable célibataire vit avec au moins deux enfants à
-          # charge exclusivement en résidence alternée il bénéficie du "même
-          # avantage de quotient familial qu’un enfant dont la charge est
-          # assumée à titre exclusif ou principal." (BOI-IR-LIQ-10-20-20-10,
-          # paragraphes 390 et 400). "Dès lors que ces foyers assument la charge
-          # exclusive ou principale d’au moins un enfant, quel que soit par
-          # ailleurs le nombre d’enfants dont la charge est partagée avec
-          # l’ex-conjoint, la majoration de quotient familial à laquelle ils
-          # peuvent prétendre est dans tous les cas égale à une demi-part."
-          # (BOI-IR-LIQ-10-20-20-10, paragraphe 410)
+        sinon si foyer_fiscal.nombre_enfants_à_charge_résidence_alternée = 1 alors
+          0,25
+        sinon si foyer_fiscal.nombre_enfants_à_charge_résidence_alternée >= 2 alors
+          0,5
+        sinon 0,0
+      # Lorsque le contribuable célibataire vit avec au moins deux enfants à
+      # charge exclusivement en résidence alternée il bénéficie du "même
+      # avantage de quotient familial qu’un enfant dont la charge est
+      # assumée à titre exclusif ou principal." (BOI-IR-LIQ-10-20-20-10,
+      # paragraphes 390 et 400). "Dès lors que ces foyers assument la charge
+      # exclusive ou principale d’au moins un enfant, quel que soit par
+      # ailleurs le nombre d’enfants dont la charge est partagée avec
+      # l’ex-conjoint, la majoration de quotient familial à laquelle ils
+      # peuvent prétendre est dans tous les cas égale à une demi-part."
+      # (BOI-IR-LIQ-10-20-20-10, paragraphe 410)
       sinon 0,0
     )
 ```
@@ -5125,17 +5352,21 @@ parents, est divisé par 1,5 lorsque ces contribuables :
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-  exception définition nombre_de_parts état parent_isolé_194
+  exception
+  définition nombre_de_parts
+    état parent_isolé_194
   # Dernier état du calcul après application de l'article 194
   sous condition
-    (selon situation_familiale sous forme
-    -- Célibataire: vrai
-    -- DivorcéeSéparées: vrai
-    -- Veuve: vrai
-    -- n'importe quel: faux) et
-    foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 0 et
-    foyer_fiscal.nombre_enfants_à_charge_résidence_alternée = 0 et
-    situation_195_1_applicable
+    (
+      selon situation_familiale sous forme
+      -- Célibataire : vrai
+      -- DivorcéeSéparées : vrai
+      -- Veuve : vrai
+      -- n'importe quel : faux
+    )
+    et foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés = 0
+    et foyer_fiscal.nombre_enfants_à_charge_résidence_alternée = 0
+    et situation_195_1_applicable
   conséquence égal à
     1,5
 ```
@@ -5155,11 +5386,11 @@ vivaient seuls ;
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-   étiquette paragraphe_1_195
-   règle situation_195_1_applicable sous condition
-     foyer_fiscal.célibataire_divorcé_veuf_sans_enfant
-     # Case AL qui vaut pour a. et b.
-   conséquence rempli
+  étiquette paragraphe_1_195
+  règle situation_195_1_applicable sous condition
+    foyer_fiscal.célibataire_divorcé_veuf_sans_enfant
+  # Case AL qui vaut pour a. et b.
+  conséquence rempli
 ```
 
 c. Sont titulaires, soit pour une invalidité de 40 % ou au-dessus, soit à
@@ -5229,13 +5460,16 @@ champ d'application NombreDeParts sous condition année_revenus >= 2021:
   # Ici on pourrait se demander si la bonification n'intervient pas à cause de
   # la carte invalidité des parents mais le BOI-IR-LIQ-10-20-20-20 paragraphe 1
   # dit clairement que ce n'est pas le cas.
-  définition nombre_de_parts état paragraphe_2_195 égal à
-    nombre_de_parts +
-      décimal de nombre_enfants_à_charge_mineurs_et_non_mariés_invalides * 0,5 +
-      décimal de
-        foyer_fiscal.nombre_enfants_à_charge_résidence_alternée_invalides * 0,25
-      # Ici normalement chaque enfant en résidence alternée invalide est compté
-      # deux fois (cases CH et CI) donc 2*0,25=0,5.
+  définition nombre_de_parts
+    état paragraphe_2_195
+  égal à
+    nombre_de_parts
+    + décimal de nombre_enfants_à_charge_mineurs_et_non_mariés_invalides * 0,5
+    + décimal de
+      foyer_fiscal.nombre_enfants_à_charge_résidence_alternée_invalides
+    * 0,25
+# Ici normalement chaque enfant en résidence alternée invalide est compté
+# deux fois (cases CH et CI) donc 2*0,25=0,5.
 ```
 
 3. Le quotient familial prévu à l'article 194 est augmenté d'une demi-part
@@ -5244,16 +5478,23 @@ remplit l'une des conditions fixées aux c, d et d bis du 1.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-  définition nombre_de_parts état paragraphe_3_195 égal à
-    nombre_de_parts + (
-      si (selon situation_familiale sous forme
-        -- Mariées: vrai
-        -- Pacsées: vrai
-        -- n'importe quel: faux) et (
-        foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent ou
-        foyer_fiscal.
-          conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent)
-      alors 0,5
+  définition nombre_de_parts
+    état paragraphe_3_195
+  égal à
+    nombre_de_parts
+    + (
+      si (
+          selon situation_familiale sous forme
+          -- Mariées : vrai
+          -- Pacsées : vrai
+          -- n'importe quel : faux
+        )
+        et (
+          foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+          ou foyer_fiscal.
+            conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+        ) alors
+        0,5
       sinon 0,0
     )
 ```
@@ -5264,16 +5505,23 @@ des conditions fixées aux c, d et d bis du 1.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-  définition nombre_de_parts état paragraphe_4_195 égal à
-    nombre_de_parts + (
-      si (selon situation_familiale sous forme
-        -- Mariées: vrai
-        -- Pacsées: vrai
-        -- n'importe quel: faux) et (
-        foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent et
-        foyer_fiscal.
-          conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent)
-      alors 0,5
+  définition nombre_de_parts
+    état paragraphe_4_195
+  égal à
+    nombre_de_parts
+    + (
+      si (
+          selon situation_familiale sous forme
+          -- Mariées : vrai
+          -- Pacsées : vrai
+          -- n'importe quel : faux
+        )
+        et (
+          foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+          et foyer_fiscal.
+            conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+        ) alors
+        0,5
       sinon 0,0
     )
 ```
@@ -5286,18 +5534,28 @@ conditions d'invalidité fixées aux c, d ou d bis du 1.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-  définition nombre_de_parts état paragraphe_5_195 égal à
-    nombre_de_parts + (
-      si (selon situation_familiale sous forme
-        -- Célibataire: vrai
-        -- DivorcéeSéparées: vrai
-        -- Veuve: vrai
-        -- n'importe quel: faux) et
-        (foyer_fiscal.nombre_enfants_à_charge_résidence_alternée +
-          foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés >= 1) et
-        (foyer_fiscal.pensionné_veuve_de_guerre ou
-         foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent)
-      alors 0,5
+  définition nombre_de_parts
+    état paragraphe_5_195
+  égal à
+    nombre_de_parts
+    + (
+      si (
+          selon situation_familiale sous forme
+          -- Célibataire : vrai
+          -- DivorcéeSéparées : vrai
+          -- Veuve : vrai
+          -- n'importe quel : faux
+        )
+        et (
+          foyer_fiscal.nombre_enfants_à_charge_résidence_alternée
+          + foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés
+          >= 1
+        )
+        et (
+          foyer_fiscal.pensionné_veuve_de_guerre
+          ou foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+        ) alors
+        0,5
       sinon 0,0
     )
 ```
@@ -5310,8 +5568,11 @@ familial.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-  définition nombre_de_parts état paragraphe_6_195 égal à
-    nombre_de_parts + (
+  définition nombre_de_parts
+    état paragraphe_6_195
+  égal à
+    nombre_de_parts
+    + (
       si foyer_fiscal.pensionné_guerre_marié_pacsé alors 0,5 sinon 0,0
       # Règle de gestion fiscale : la case 1AS "pensionné_guerre_marié_pacsé" ne
       # peut pas se cumuler avec la case 1AW, même dans le cas où les deux
@@ -5326,13 +5587,18 @@ bénéficier des dispositions du premier alinéa.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus >= 2021:
-  exception paragraphe_1_195 règle situation_195_1_applicable sous condition
-    (selon situation_familiale sous forme
-        -- Mariées: vrai
-        -- Pacsées: vrai
-        -- n'importe quel: faux) et (
-    foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent ou
-    foyer_fiscal.conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent)
+  exception paragraphe_1_195
+  règle situation_195_1_applicable sous condition
+    (
+      selon situation_familiale sous forme
+      -- Mariées : vrai
+      -- Pacsées : vrai
+      -- n'importe quel : faux
+    )
+    et (
+      foyer_fiscal.titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+      ou foyer_fiscal.conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+    )
   conséquence non rempli
 ```
 
@@ -5377,12 +5643,12 @@ l'article L. 241-3 du code de l'action sociale et des familles.
 # mineur invalide, donc nous augmentons la case correspondante d'après
 # BOI-IR-LIQ-10-10-10-30, paragraphe 10.
 champ d'application NombreDeParts:
-  définition nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
+  définition
+    nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
   égal à
-    foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés_invalides +
-    foyer_fiscal.nombre_autres_personnes_invalides_vivant_sous_toit
+    foyer_fiscal.nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
+    + foyer_fiscal.nombre_autres_personnes_invalides_vivant_sous_toit
 ```
-
 
 ######## Article 196 B | LEGIARTI000048805464
 
@@ -5392,10 +5658,12 @@ personne ainsi rattachée.
 
 ```catala
 champ d'application NombreDeParts sous condition année_revenus = 2023:
-  définition nombre_de_parts état article_196_B égal à
-    nombre_de_parts +
-    décimal de foyer_fiscal.nombre_enfants_majeurs_célibataires_sans_enfant *
-      0,5
+  définition nombre_de_parts
+    état article_196_B
+  égal à
+    nombre_de_parts
+    + décimal de foyer_fiscal.nombre_enfants_majeurs_célibataires_sans_enfant
+    * 0,5
 ```
 
 Si la personne rattachée est mariée ou a des enfants à charge, l'avantage
@@ -5418,7 +5686,6 @@ champ d'application NombreDeParts sous condition année_revenus = 2023:
   définition abattement égal à
     6 674 € * foyer_fiscal.nombre_enfants_majeurs_mariés_ou_chargés_famille
 ```
-
 
 ######## Article 196 bis | LEGIARTI000023380674
 
@@ -5599,7 +5866,6 @@ premier alinéa du présent b retenues au 1° du présent b.
 # "Après abattement" donc pas de modifications supplémentaires à faire ici
 ```
 
-
 4. (Abrogé).
 
 5. Le gain net mentionné au 2 du II de l'article 150-0 A est imposé dans les
@@ -5661,18 +5927,19 @@ obligatoire français de sécurité sociale en application du I de l'article L.
 # nous les réintégrons au revenus classiques pour l'établissement de l'impôt.
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état art204c
+    état art204c
   égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.autre_salaires_imposables_source_étrangère
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.autre_salaires_imposables_source_étrangère
 
-  définition pensions_retraites_rentes_79 état art204c égal à
-    pensions_retraites_rentes_79 ++ [
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.autre_pensions_imposables_source_étrangère
-          -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
-        }
-    ]
+  définition pensions_retraites_rentes_79
+    état art204c
+  égal à
+    pensions_retraites_rentes_79
+    ++ [ PensionRetraiteRente {
+        -- valeur_initiale: revenus.autre_pensions_imposables_source_étrangère
+        -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+      } ]
 ```
 
 NOTA :
@@ -5709,9 +5976,12 @@ ultérieurs.
 
 ```catala
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-   définition prélèvement_libératoire_revenus_concession_brevets égal à
-     (revenus.professionnels.revenus_concession_brevets +
-     revenus.non_professionnels.généraux.revenus_concession_brevets) * 10 %
+  définition prélèvement_libératoire_revenus_concession_brevets égal à
+    (
+      revenus.professionnels.revenus_concession_brevets
+      + revenus.non_professionnels.généraux.revenus_concession_brevets
+    )
+    * 10%
 ```
 
 Pour les exercices ouverts à compter du 31 décembre 2007, le montant net des

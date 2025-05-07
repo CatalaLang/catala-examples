@@ -10,18 +10,17 @@ la fonction du bloc de code ci-dessous.
 ```catala-metadata
 champ d'application EnfantLePlusÂgé:
   définition le_plus_âgé égal à
-    contenu de potentiel_plus_âgé parmi enfants tel que
-      potentiel_plus_âgé.date_de_naissance est minimum
-    ou si liste vide alors Enfant {
-      -- identifiant: -1
-      -- obligation_scolaire: Pendant
-      -- rémuneration_mensuelle: 0€
-      -- date_de_naissance: |2999-12-31|
-      -- prise_en_charge: EffectiveEtPermanente
-      -- a_déjà_ouvert_droit_aux_allocations_familiales: faux
-      -- bénéficie_titre_personnel_aide_personnelle_logement: faux
-    }
-
+    contenu de potentiel_plus_âgé parmi enfants
+      tel que potentiel_plus_âgé.date_de_naissance est minimum
+      ou si liste vide alors Enfant {
+        -- identifiant: -1
+        -- obligation_scolaire: Pendant
+        -- rémuneration_mensuelle: 0€
+        -- date_de_naissance: |2999-12-31|
+        -- prise_en_charge: EffectiveEtPermanente
+        -- a_déjà_ouvert_droit_aux_allocations_familiales: faux
+        -- bénéficie_titre_personnel_aide_personnelle_logement: faux
+      }
 
 champ d'application AllocationsFamiliales:
   définition montant_initial_métropole_majoration de enfant sous condition
@@ -38,17 +37,17 @@ champ d'application AllocationsFamiliales:
     si droit_ouvert_base alors montant_avec_garde_alternée_base sinon 0€
   définition montant_versé_majoration égal à
     si droit_ouvert_base alors
-      somme argent de (montant_avec_garde_alternée_majoration de enfant)
-                   pour enfant parmi enfants_à_charge
+      somme argent
+        de transforme chaque enfant parmi enfants_à_charge en montant_avec_garde_alternée_majoration de enfant
     sinon 0€
 
   définition montant_versé égal à
     si droit_ouvert_base alors
-      montant_versé_base +
-      montant_versé_majoration +
-      montant_versé_forfaitaire +
-      montant_versé_complément_pour_base_et_majoration +
-      montant_versé_complément_pour_forfaitaire
+      montant_versé_base
+      + montant_versé_majoration
+      + montant_versé_forfaitaire
+      + montant_versé_complément_pour_base_et_majoration
+      + montant_versé_complément_pour_forfaitaire
     sinon 0€
 ```
 
@@ -88,17 +87,14 @@ champ d'application InterfaceAllocationsFamiliales:
   définition allocations_familiales.ressources_ménage égal à i_ressources_ménage
   définition allocations_familiales.résidence égal à i_résidence
   définition i_montant_versé égal à allocations_familiales.montant_versé
-  règle
-    allocations_familiales.personne_charge_effective_permanente_est_parent
-  sous condition i_personne_charge_effective_permanente_est_parent
+  règle allocations_familiales.personne_charge_effective_permanente_est_parent sous condition
+    i_personne_charge_effective_permanente_est_parent
   conséquence rempli
-  règle
-    allocations_familiales.personne_charge_effective_permanente_remplit_titre_I
-  sous condition i_personne_charge_effective_permanente_remplit_titre_I
+  règle allocations_familiales.personne_charge_effective_permanente_remplit_titre_I sous condition
+    i_personne_charge_effective_permanente_remplit_titre_I
   conséquence rempli
-  règle
-    allocations_familiales.avait_enfant_à_charge_avant_1er_janvier_2012
-  sous condition i_avait_enfant_à_charge_avant_1er_janvier_2012
+  règle allocations_familiales.avait_enfant_à_charge_avant_1er_janvier_2012 sous condition
+    i_avait_enfant_à_charge_avant_1er_janvier_2012
   conséquence rempli
 ```
 
@@ -115,23 +111,28 @@ particulières imposant une scolarité plus longue.
 ```catala
 champ d'application InterfaceAllocationsFamiliales:
   définition enfants_à_charge égal à
-    (Enfant {
-       -- identifiant : enfant.d_identifiant
-       -- rémuneration_mensuelle : enfant.d_rémuneration_mensuelle
-       -- date_de_naissance : enfant.d_date_de_naissance
-       -- prise_en_charge : enfant.d_prise_en_charge
-       -- obligation_scolaire :
-         (si enfant.d_date_de_naissance + 3 an >= i_date_courante alors
-           SituationObligationScolaire.Avant
-         sinon (si enfant.d_date_de_naissance + 16 an >= i_date_courante alors
-           SituationObligationScolaire.Pendant
-         sinon SituationObligationScolaire.Après))
-       -- a_déjà_ouvert_droit_aux_allocations_familiales:
-         enfant.d_a_déjà_ouvert_droit_aux_allocations_familiales
-       -- bénéficie_titre_personnel_aide_personnelle_logement:
-         enfant.d_bénéficie_titre_personnel_aide_personnelle_logement
-     }
-     pour enfant parmi i_enfants)
+    transforme chaque enfant parmi i_enfants en
+      Enfant {
+        -- identifiant: enfant.d_identifiant
+        -- rémuneration_mensuelle: enfant.d_rémuneration_mensuelle
+        -- date_de_naissance: enfant.d_date_de_naissance
+        -- prise_en_charge: enfant.d_prise_en_charge
+        -- obligation_scolaire:
+          (
+            si enfant.d_date_de_naissance + 3 an >= i_date_courante alors
+              SituationObligationScolaire.Avant
+            sinon
+              (
+                si enfant.d_date_de_naissance + 16 an >= i_date_courante alors
+                  SituationObligationScolaire.Pendant
+                sinon SituationObligationScolaire.Après
+              )
+          )
+        -- a_déjà_ouvert_droit_aux_allocations_familiales:
+          enfant.d_a_déjà_ouvert_droit_aux_allocations_familiales
+        -- bénéficie_titre_personnel_aide_personnelle_logement:
+          enfant.d_bénéficie_titre_personnel_aide_personnelle_logement
+      }
 ```
 
 NOTA :

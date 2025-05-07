@@ -129,7 +129,7 @@ déclaration énumération CréditImpôt:
 # Cette ligne indique, de manière alternative, que « CréditImpôt » peut aussi
 # être une situation « CréditImpôtEnfants ». Cette situation porte un contenu
 # de type entier qui correspond au nombre d’enfants concernés par le crédit
-# d’impôt. Cela signifie que si vous êtes dans la situation 
+# d’impôt. Cela signifie que si vous êtes dans la situation
 # « CréditImpôtEnfants », vous aurez aussi accès à ce nombre d’enfants.
 ```
 
@@ -875,8 +875,9 @@ déclaration champ d'application ValeursDeListe:
 
 champ d'application ValeursDeListe:
   définition valeur1 égal à [45;-6;3;4;0;2155]
-  définition valeur2 égal à somme entier de (i * i) pour i parmi valeur1
-  # somme de carré
+  définition valeur2 égal à
+    # somme de carré
+    somme entier de transforme chaque i parmi valeur1 en (i * i)
 ```
 
 ## Conclusion

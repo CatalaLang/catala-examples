@@ -81,13 +81,18 @@ déclaration champ d'application TraitementsSalaires1:
 
 champ d'application TraitementsSalaires1:
   définition sortie égal à
-    (résultat de IR.TraitementsSalairesDéclarant avec {
-      -- revenus: (résultat de Interface.TraitementsSalairesDéclarant avec {
-        -- traitements_salaires: 10 000 €
-        }).sortie
-      -- année_revenus : 2022
-      -- selecteur_plafond_abattement_pensions_retraites_rentes : Déplafonné
-    })
+    (
+      résultat de IR.TraitementsSalairesDéclarant avec {
+        -- revenus:
+          (
+            résultat de Interface.TraitementsSalairesDéclarant avec {
+              -- traitements_salaires: 10 000 €
+            }
+          ).sortie
+        -- année_revenus: 2022
+        -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
+      }
+    )
 ```
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
@@ -188,14 +193,19 @@ déclaration champ d'application TraitementsSalaires2:
 
 champ d'application TraitementsSalaires2:
   définition sortie égal à
-    (résultat de IR.TraitementsSalairesDéclarant avec {
-      -- revenus: (résultat de Interface.TraitementsSalairesDéclarant avec {
-        -- frais_réels: IR.FraisRéels.Oui contenu 2000 €
-        -- traitements_salaires: 10 000 €
-      }).sortie
-      -- année_revenus : 2022
-      -- selecteur_plafond_abattement_pensions_retraites_rentes : Déplafonné
-    })
+    (
+      résultat de IR.TraitementsSalairesDéclarant avec {
+        -- revenus:
+          (
+            résultat de Interface.TraitementsSalairesDéclarant avec {
+              -- frais_réels: IR.FraisRéels.Oui contenu 2000 €
+              -- traitements_salaires: 10 000 €
+            }
+          ).sortie
+        -- année_revenus: 2022
+        -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
+      }
+    )
 ```
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
@@ -216,7 +226,6 @@ $ catala test-scope TraitementsSalaires2 --disable-warnings
 │   }
 └─
 ```
-
 
 ## Cas de test 3
 
@@ -380,21 +389,31 @@ déclaration champ d'application TraitementsSalaires3:
 
 champ d'application TraitementsSalaires3:
   définition parts égal à
-    (résultat de IR.NombreDeParts avec {
-      -- foyer_fiscal: (résultat de Interface.DescriptionFoyerFiscal avec {
-        -- veuve: vrai
-      }).sortie
-      -- année_revenus : 2022
-    })
+    (
+      résultat de IR.NombreDeParts avec {
+        -- foyer_fiscal:
+          (
+            résultat de Interface.DescriptionFoyerFiscal avec {
+              -- veuve: vrai
+            }
+          ).sortie
+        -- année_revenus: 2022
+      }
+    )
   définition traitements_salaires égal à
-    (résultat de IR.TraitementsSalairesDéclarant avec {
-      -- revenus: (résultat de Interface.TraitementsSalairesDéclarant avec {
-        -- pensions_retraites_rentes: 20 000 €
-        -- pensions_retraites_en_capital_7_5pct: 30 000 €
-      }).sortie
-      -- année_revenus : 2022
-      -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
-    })
+    (
+      résultat de IR.TraitementsSalairesDéclarant avec {
+        -- revenus:
+          (
+            résultat de Interface.TraitementsSalairesDéclarant avec {
+              -- pensions_retraites_rentes: 20 000 €
+              -- pensions_retraites_en_capital_7_5pct: 30 000 €
+            }
+          ).sortie
+        -- année_revenus: 2022
+        -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
+      }
+    )
 ```
 
 ```catala-test-inline
@@ -433,10 +452,10 @@ champ d'application TraitementsSalaires4:
   définition déclarant2.pensions_retraites_rentes égal à 60 000 €
   définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : []
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge: []
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```
@@ -492,11 +511,12 @@ Ramené au prorata pour chaque déclarant cela donne :
 ```catala
 champ d'application TraitementsSalaires4:
   # Le total des abattements doit être le plafond
-  assertion
-    somme argent de résultats.abattement_pensions_retraites_rentes
-      pour résultats parmi
-        sortie.déclarations_avec_résultats_traitements_salaires
-    = 4123 €
+  assertion (
+    somme argent de transforme chaque résultats
+    parmi sortie.déclarations_avec_résultats_traitements_salaires en
+      résultats.abattement_pensions_retraites_rentes
+  )
+  = 4123 €
 ```
 
 ```catala-test-inline
@@ -660,10 +680,10 @@ champ d'application TraitementsSalaires5:
   définition déclarant3.pensions_retraites_en_capital_7_5pct égal à 100 000 €
   définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : [déclarant3.sortie]
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```
@@ -869,12 +889,12 @@ champ d'application TraitementsSalaires6:
   définition déclarant2.pensions_retraites_rentes égal à 42 000 €
   définition déclarant2.pensions_alimentaires_perçues égal à 3 500 €
   définition déclarant3.traitements_salaires égal à 3 000 €
-    définition sortie égal à
+  définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : [déclarant3.sortie]
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```
@@ -1319,25 +1339,24 @@ déclaration champ d'application TraitementsSalaires7:
   résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
 
 champ d'application TraitementsSalaires7:
- définition déclarant1.traitements_salaires égal à 48 650 €
-  définition déclarant1.revenus_exceptionnels_ou_différés égal à [
-    IR.RevenuExceptionnelOuDifféré {
-      -- valeur : 250 000€
-      -- régime : Article163_0_A
-      -- échéance : RevenuDifféréÉchéanceNormale contenu 2018
-      -- catégorie : TraitementsSalaires
-    }
-  ]
+  définition déclarant1.traitements_salaires égal à 48 650 €
+  définition déclarant1.revenus_exceptionnels_ou_différés égal à
+    [ IR.RevenuExceptionnelOuDifféré {
+        -- valeur: 250 000€
+        -- régime: Article163_0_A
+        -- échéance: RevenuDifféréÉchéanceNormale contenu 2018
+        -- catégorie: TraitementsSalaires
+      } ]
   définition déclarant2.autres_revenus_imposables_chômage_préretraite égal à
     8950 €
   définition déclarant3.pensions_retraites_rentes égal à 150 €
   définition foyer.rentes_percues_60_69ans égal à 75 000 €
-    définition sortie égal à
+  définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : [déclarant3.sortie]
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```
@@ -1632,23 +1651,23 @@ déclaration champ d'application TraitementsSalaires8:
   résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
 
 champ d'application TraitementsSalaires8:
- définition déclarant1.traitements_salaires égal à  72 360 €
+  définition déclarant1.traitements_salaires égal à 72 360 €
   définition déclarant1.revenus_exceptionnels_ou_différés égal à
-    [IR.RevenuExceptionnelOuDifféré {
-      -- valeur : 920 000 €
-      -- régime : Article163_0_A
-      -- échéance : RevenuDifféréÉchéanceNormale contenu 2017
-      -- catégorie : TraitementsSalaires
-    }]
-  définition déclarant2.traitements_salaires égal à  46 544 €
+    [ IR.RevenuExceptionnelOuDifféré {
+        -- valeur: 920 000 €
+        -- régime: Article163_0_A
+        -- échéance: RevenuDifféréÉchéanceNormale contenu 2017
+        -- catégorie: TraitementsSalaires
+      } ]
+  définition déclarant2.traitements_salaires égal à 46 544 €
   définition déclarant2.frais_réels égal à IR.FraisRéels.Oui contenu 5 000 €
   définition déclarant3.pensions_invalidité égal à 6 936 €
   définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : [déclarant3.sortie]
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 
@@ -1734,7 +1753,6 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 - Revenus ordinaires : 350 - 9 = 341
 - Revenus quotientés : 500 000 - 13 513 = 486 487
 
-
 ```catala
 déclaration champ d'application TraitementsSalaires9:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
@@ -1746,19 +1764,19 @@ déclaration champ d'application TraitementsSalaires9:
 champ d'application TraitementsSalaires9:
   définition déclarant1.traitements_salaires égal à 350 €
   définition déclarant1.revenus_exceptionnels_ou_différés égal à
-    [IR.RevenuExceptionnelOuDifféré {
-      -- valeur : 500 000 €
-      -- régime : Article163_0_A
-      -- échéance : RevenuDifféréÉchéanceNormale contenu 2017
-      -- catégorie : TraitementsSalaires
-    }]
+    [ IR.RevenuExceptionnelOuDifféré {
+        -- valeur: 500 000 €
+        -- régime: Article163_0_A
+        -- échéance: RevenuDifféréÉchéanceNormale contenu 2017
+        -- catégorie: TraitementsSalaires
+      } ]
 
   définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : PasDeDéclaration
-      -- déclarations_personnes_à_charge : []
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: PasDeDéclaration
+      -- déclarations_personnes_à_charge: []
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```
@@ -2730,12 +2748,12 @@ champ d'application TraitementsSalaires11:
   définition déclarant1.heures_supplémentaires_et_rtt_exonérées égal à 11 000 €
   définition déclarant1.prime_partage_valeur_exonérée égal à 6 200 €
   définition déclarant1.revenus_exceptionnels_ou_différés égal à
-    [IR.RevenuExceptionnelOuDifféré {
-      -- valeur : 4 123 €
-      -- régime : Article163_0_A
-      -- échéance : RevenuDifféréÉchéanceNormale contenu 2018
-      -- catégorie : TraitementsSalaires
-    }]
+    [ IR.RevenuExceptionnelOuDifféré {
+        -- valeur: 4 123 €
+        -- régime: Article163_0_A
+        -- échéance: RevenuDifféréÉchéanceNormale contenu 2018
+        -- catégorie: TraitementsSalaires
+      } ]
   définition déclarant1.gains_de_levee_doptions égal à 2 345 €
   définition déclarant2.autres_revenus_imposables_chômage_préretraite égal à
     8 000 €
@@ -2756,17 +2774,15 @@ champ d'application TraitementsSalaires11:
   # définition foyer.acquisition_d_actions_gratuites_abattement_duree égal à
   #   1 234 €
 
-
   définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : [
-        déclarant3.sortie;
-        déclarant4.sortie;
-        déclarant5.sortie
-      ]
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge:
+        [ déclarant3.sortie ;
+          déclarant4.sortie ;
+          déclarant5.sortie ]
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```

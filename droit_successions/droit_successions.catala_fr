@@ -34,8 +34,8 @@ déclaration structure BienUsufruitRenteViagère:
 déclaration champ d'application RéserveHéréditaire:
   résultat quotité_réserve_héréditaire contenu décimal
   entrée enfants contenu liste de Enfant
-  interne enfant_pris_en_compte_réserve_héréditaire contenu booléen
-    dépend de enfant contenu Enfant
+  interne enfant_pris_en_compte_réserve_héréditaire
+    contenu booléen dépend de enfant contenu Enfant
   interne enfants_réserve_héréditaire contenu liste de Enfant
   entrée conjoint_survivant_non_divorcé condition
 
@@ -54,17 +54,17 @@ ou un plus grand nombre.
 
 ```catala
 champ d'application RéserveHéréditaire:
-  définition quotité_réserve_héréditaire
-  sous condition nombre de enfants_réserve_héréditaire = 1 conséquence
-  égal à 1,0 / 2,0
+  définition quotité_réserve_héréditaire sous condition
+    nombre de enfants_réserve_héréditaire = 1
+  conséquence égal à 1,0 / 2,0
 
-  définition quotité_réserve_héréditaire
-  sous condition nombre de enfants_réserve_héréditaire = 2 conséquence
-  égal à 1,0 / 3,0
+  définition quotité_réserve_héréditaire sous condition
+    nombre de enfants_réserve_héréditaire = 2
+  conséquence égal à 1,0 / 3,0
 
-  définition quotité_réserve_héréditaire
-  sous condition nombre de enfants_réserve_héréditaire >= 3 conséquence
-  égal à 1,0 / 4,0
+  définition quotité_réserve_héréditaire sous condition
+    nombre de enfants_réserve_héréditaire >= 3
+  conséquence égal à 1,0 / 4,0
 ```
 
 L'enfant qui renonce à la succession n'est compris dans le nombre d'enfants
@@ -79,8 +79,8 @@ champ d'application RéserveHéréditaire:
     sinon vrai
 
   définition enfants_réserve_héréditaire égal à
-    liste de enfant parmi enfants tel que
-      (enfant_pris_en_compte_réserve_héréditaire de enfant)
+    liste de enfant parmi enfants
+      tel que (enfant_pris_en_compte_réserve_héréditaire de enfant)
 ```
 
 ######## Article 913-1 | LEGIARTI000006433705
@@ -101,8 +101,8 @@ conjoint survivant, non divorcé.
 
 ```catala
 champ d'application RéserveHéréditaire:
-  définition quotité_réserve_héréditaire
-  sous condition nombre de enfants_réserve_héréditaire = 0 et conjoint_survivant_non_divorcé
+  définition quotité_réserve_héréditaire sous condition
+    nombre de enfants_réserve_héréditaire = 0 et conjoint_survivant_non_divorcé
   conséquence égal à 1,0 - (3,0 / 4,0)
 ```
 
@@ -117,8 +117,8 @@ par actes entre vifs ou testamentaires pourront épuiser la totalité des biens.
 
 ```catala
 champ d'application RéserveHéréditaire:
-  définition quotité_réserve_héréditaire
-  sous condition nombre de enfants_réserve_héréditaire = 0 et (non conjoint_survivant_non_divorcé)
+  définition quotité_réserve_héréditaire sous condition
+    nombre de enfants_réserve_héréditaire = 0 et (non conjoint_survivant_non_divorcé)
   conséquence égal à 0,0
 ```
 
@@ -133,11 +133,14 @@ disponible.
 ```catala
 champ d'application RéserveHéréditaire:
   définition patrimoine_assiette_réserve_héréditaire égal à
-    patrimoine_total - (
-      somme argent de
-        (si bien.prise_en_compte_pour_réserve_héréditaire
-         alors 0 € sinon bien.valeur)
-        pour bien parmi biens_usufruit_rente_viagère)
+    patrimoine_total
+    - somme argent de (
+      transforme chaque bien parmi biens_usufruit_rente_viagère en
+        si bien.prise_en_compte_pour_réserve_héréditaire alors
+          0 €
+        sinon bien.valeur
+    )
+
   définition montant_réserve_héréditaire égal à
     patrimoine_assiette_réserve_héréditaire * quotité_réserve_héréditaire
 ```

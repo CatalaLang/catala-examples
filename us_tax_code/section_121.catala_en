@@ -23,11 +23,10 @@ scope PeriodMerge:
 declaration structure PreviousSaleWhereSection121aApplied:
   data date_of_sale_or_exchange content date
 
-
 declaration enumeration OtherSection121aSale:
   -- NoOtherSaleWhereSection121aApplied
-  -- MostRecentSaleWhereSection121aApplied content
-    PreviousSaleWhereSection121aApplied
+  -- MostRecentSaleWhereSection121aApplied
+    content PreviousSaleWhereSection121aApplied
 
 declaration scope Section121SinglePerson:
   output requirements_met condition
@@ -39,8 +38,8 @@ declaration scope Section121SinglePerson:
   input property_usage_as_principal_residence
     content list of Period
   # Invariant: the periods in the collection are disjoint
-  internal aggregate_periods_from_last_five_years content duration
-    depends on periods content list of Period
+  internal aggregate_periods_from_last_five_years
+    content duration depends on periods content list of Period
   context output gain_cap content money
   input gain_from_sale_or_exchange_of_property content money
   output income_excluded_from_gross_income_uncapped content money
@@ -93,15 +92,17 @@ scope Section121TwoPersons:
   definition section121Person1.date_of_sale_or_exchange equals
     date_of_sale_or_exchange
 
-  definition person1 equals match return_type with pattern
+  definition person1 equals
+    match return_type with pattern
     -- SingleReturn of data_person1 : data_person1
     -- JointReturn of data_couple : data_couple.person1
-    -- SingleReturnSurvivingSpouse of data_single: data_single.return
+    -- SingleReturnSurvivingSpouse of data_single : data_single.return
 
-  definition person2 equals match return_type with pattern
+  definition person2 equals
+    match return_type with pattern
     -- SingleReturn of data_person2 : data_person2
     -- JointReturn of data_couple : data_couple.person2
-    -- SingleReturnSurvivingSpouse of data_single: data_single.return
+    -- SingleReturnSurvivingSpouse of data_single : data_single.return
 
   definition section121Person1.property_ownage equals person1.property_ownage
 
@@ -177,13 +178,16 @@ scope Section121SinglePerson:
   #   cound the half after 5 years
   definition aggregate_periods_from_last_five_years of periods equals
     sum duration of (
-      if date_of_sale_or_exchange <= period.begin + 5 year then
-        period.end - period.begin
-      else (if date_of_sale_or_exchange >= period.end + 5 year then
-        0 day
-      else ((period.end + 5 year) - date_of_sale_or_exchange))
+      map each period among periods to
+        if date_of_sale_or_exchange <= period.begin + 5 year then
+          period.end - period.begin
+        else
+          (
+            if date_of_sale_or_exchange >= period.end + 5 year then
+              0 day
+            else ((period.end + 5 year) - date_of_sale_or_exchange)
+          )
     )
-    for period among periods
 
   # Regulation 1.121-1(c)(1): 2 years = 730 days
   # Regulation 1.121-1(c)(1): the periods of ownage and usage
@@ -194,7 +198,8 @@ scope Section121SinglePerson:
 
   rule requirements_usage_met under condition
     aggregate_periods_from_last_five_years of
-       property_usage_as_principal_residence >= 730 day
+      property_usage_as_principal_residence
+    >= 730 day
   consequence fulfilled
 
   rule requirements_met under condition
@@ -211,7 +216,6 @@ scope Section121TwoPersons:
 
   definition income_excluded_from_gross_income_uncapped equals
     section121Person1.income_excluded_from_gross_income_uncapped
-
 ```
 
 ### (b) Limitations
@@ -235,9 +239,9 @@ scope Section121SinglePerson:
       income_excluded_from_gross_income_uncapped
 
 scope Section121TwoPersons:
-    definition gain_cap equals section121Person1.gain_cap
+  definition gain_cap equals section121Person1.gain_cap
 
-    definition income_excluded_from_gross_income equals
+  definition income_excluded_from_gross_income equals
     if income_excluded_from_gross_income_uncapped >= gain_cap then
       gain_cap
     else
@@ -272,20 +276,22 @@ respect to such property by reason of paragraph (3).
 ```catala
 scope Section121TwoPersons:
   rule section_121_b_2_A_condition under condition
-  (return_type with pattern JointReturn)
-  and
-  # i)
-  (section121Person1.requirements_ownership_met or
-     section121Person2.requirements_ownership_met)
-  and
-  # ii)
-  (section121Person1.requirements_usage_met and
-     section121Person2.requirements_usage_met)
-  # iii)
-  and
-  (not (section121Person1.section_121_b_3_applies))
-  and
-  (not (section121Person2.section_121_b_3_applies))
+    (return_type with pattern JointReturn)
+    and
+    # i)
+    (
+      section121Person1.requirements_ownership_met
+      or section121Person2.requirements_ownership_met
+    )
+    and
+    # ii)
+    (
+      section121Person1.requirements_usage_met
+      and section121Person2.requirements_usage_met
+    )
+    # iii)
+    and (not (section121Person1.section_121_b_3_applies))
+    and (not (section121Person2.section_121_b_3_applies))
   consequence fulfilled
 
   exception
@@ -308,35 +314,41 @@ purposes of the preceding sentence, each spouse shall be treated as owning the
 property during the period that either spouse owned the property.
 
 ```catala
-scope Section121TwoPasses under condition
-  (return_type with pattern JointReturn) and
-  not (first_pass.section_121_b_2_A_condition):
+scope Section121TwoPasses
+  under condition (return_type with pattern JointReturn)
+  and not (first_pass.section_121_b_2_A_condition):
 
   definition second_pass.gain_cap equals
-    first_pass.gain_cap_person_1 +
-    first_pass.gain_cap_person_2
+    first_pass.gain_cap_person_1
+    + first_pass.gain_cap_person_2
 
-  definition period_merge.periods1 equals match return_type with pattern
-    -- JointReturn of joint_return: joint_return.person1.property_ownage
+  definition period_merge.periods1 equals
+    match return_type with pattern
+    -- JointReturn of joint_return : joint_return.person1.property_ownage
     -- SingleReturnSurvivingSpouse of dead_spouse_info : [] # does not happen
-    -- SingleReturn of return : [] # does not happen
-  definition period_merge.periods2 equals match return_type with pattern
-    -- JointReturn of joint_return: joint_return.person2.property_ownage
+    -- SingleReturn of return : []
+  # does not happen
+  definition period_merge.periods2 equals
+    match return_type with pattern
+    -- JointReturn of joint_return : joint_return.person2.property_ownage
     -- SingleReturnSurvivingSpouse of dead_spouse_info : [] # does not happen
-    -- SingleReturn of return : [] # does not happen
+    -- SingleReturn of return : []
+  # does not happen
 
-  definition second_pass.person1 equals PersonalData {
-    -- property_ownage: period_merge.output_periods
-    -- property_usage_as_principal_residence:
-      first_pass.person1.property_usage_as_principal_residence
-    -- other_section_121a_sale: first_pass.person1.other_section_121a_sale
-  }
-  definition second_pass.person2 equals PersonalData {
-    -- property_ownage: period_merge.output_periods
-    -- property_usage_as_principal_residence:
-      first_pass.person2.property_usage_as_principal_residence
-    -- other_section_121a_sale: first_pass.person2.other_section_121a_sale
-  }
+  definition second_pass.person1 equals
+    PersonalData {
+      -- property_ownage: period_merge.output_periods
+      -- property_usage_as_principal_residence:
+        first_pass.person1.property_usage_as_principal_residence
+      -- other_section_121a_sale: first_pass.person1.other_section_121a_sale
+    }
+  definition second_pass.person2 equals
+    PersonalData {
+      -- property_ownage: period_merge.output_periods
+      -- property_usage_as_principal_residence:
+        first_pass.person2.property_usage_as_principal_residence
+      -- other_section_121a_sale: first_pass.person2.other_section_121a_sale
+    }
 ```
 
 #### (3) Application to only 1 sale or exchange every 2 years
@@ -349,9 +361,8 @@ was any other sale or exchange by the taxpayer to which subsection (a) applied.
 ```catala
 scope Section121SinglePerson:
   rule section_121_b_3_applies under condition
-    other_section_121a_sale with pattern
-       MostRecentSaleWhereSection121aApplied of other_sale and
-    date_of_sale_or_exchange - other_sale.date_of_sale_or_exchange <= 2 year
+    other_section_121a_sale with pattern MostRecentSaleWhereSection121aApplied of other_sale
+    and date_of_sale_or_exchange - other_sale.date_of_sale_or_exchange <= 2 year
   consequence fulfilled
 
   exception
@@ -373,31 +384,34 @@ years after the date of death of such spouse and the requirements of paragraph
 (2)(A) were met immediately before such date of death.
 
 ```catala
-scope Section121TwoPasses under condition
-  return_type with pattern SingleReturnSurvivingSpouse of single_data and
-  single_data.date_of_spouse_death < date_of_sale_or_exchange and
-  date_of_sale_or_exchange <= single_data.date_of_spouse_death + 2 year
-  :
+scope Section121TwoPasses
+  under condition return_type with pattern SingleReturnSurvivingSpouse of single_data
+  and single_data.date_of_spouse_death < date_of_sale_or_exchange
+  and date_of_sale_or_exchange <= single_data.date_of_spouse_death + 2 year:
 
   definition first_pass.date_of_sale_or_exchange equals
     match return_type with pattern
-    -- SingleReturnSurvivingSpouse of single_data:
+    -- SingleReturnSurvivingSpouse of single_data :
       single_data.date_of_spouse_death
-    -- SingleReturn of return: date_of_sale_or_exchange # does not happen
-    -- JointReturn of return: date_of_sale_or_exchange # does not happen
+    -- SingleReturn of return : date_of_sale_or_exchange # does not happen
+    -- JointReturn of return : date_of_sale_or_exchange
+  # does not happen
 
   definition first_pass.return_type equals
     match return_type with pattern
-      -- SingleReturnSurvivingSpouse of single_data:
-        JointReturn content (JointReturn {
+    -- SingleReturnSurvivingSpouse of single_data :
+      JointReturn content (
+        JointReturn {
           -- person1: single_data.return
           -- person2: single_data.death_spouse_info_at_time_of_death
-        })
-      -- SingleReturn of return: SingleReturn content return # does not happen
-      -- JointReturn of return: JointReturn content return # does not happen
+        }
+      )
+    -- SingleReturn of return : SingleReturn content return # does not happen
+    -- JointReturn of return : JointReturn content return
+  # does not happen
 
   definition second_pass.gain_cap under condition
-     first_pass.section_121_b_2_A_condition
+    first_pass.section_121_b_2_A_condition
   consequence equals $500,000
 ```
 

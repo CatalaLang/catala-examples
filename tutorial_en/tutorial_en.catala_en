@@ -1058,7 +1058,7 @@ scope ListValues:
   definition positive_values equals
       list of x among values such that x >= 0
   definition relative_values equals
-      (x / total) for x among values
+      map each x among values to (x / total)
 ```
 
 ### Tuples
@@ -1098,7 +1098,7 @@ declaration scope ApplyRates:
 
 scope ApplyRates:
   definition result equals
-  (v * r) for (v, r) among (values, rates)
+  map each (v, r) among (values, rates) to (v * r)
 ```
 
 This will create a new list where the first element is the product of the first

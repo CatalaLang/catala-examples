@@ -63,71 +63,81 @@ Ce modèle de convention est disponible sur le [site de l'OCDE](https://www.oecd
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état convention_internationale égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.salaires_étrangers_impôt_imputé
+    état convention_internationale
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.salaires_étrangers_impôt_imputé
 
-  définition pensions_retraites_rentes_79 état convention_internationale égal à
-    pensions_retraites_rentes_79 ++ [
-        PensionRetraiteRente {
-          -- valeur_initiale: revenus.pensions_étrangères_impôts_imputé
-          -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
-        }
-    ]
+  définition pensions_retraites_rentes_79
+    état convention_internationale
+  égal à
+    pensions_retraites_rentes_79
+    ++ [ PensionRetraiteRente {
+        -- valeur_initiale: revenus.pensions_étrangères_impôts_imputé
+        -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+      } ]
 
 champ d'application TraitementsSalairesFoyerFiscal:
-  définition rentes_viagères_titre_onéreux état étrangères_imputables égal à
-    rentes_viagères_titre_onéreux +
-    somme argent de
-      (rente_viagère.valeur -
-        calcul_déduction_rente_viagères_titre_onéreux de rente_viagère)
-      pour rente_viagère parmi [
-        RenteViagèreOnéreux {
+  définition rentes_viagères_titre_onéreux
+    état étrangères_imputables
+  égal à
+    rentes_viagères_titre_onéreux
+    + somme argent de (
+      transforme chaque rente_viagère
+      parmi [ RenteViagèreOnéreux {
           -- valeur: revenus.rentes_étrangères_imputables_percues_49moins_ans
           -- catégorie: RenteViagèreOnéreuxMoins49Ans
-        };
+        } ;
         RenteViagèreOnéreux {
           -- valeur: revenus.rentes_étrangères_imputables_percues_50_59ans
           -- catégorie: RenteViagèreOnéreuxEntre50Et59Ans
-        };
+        } ;
         RenteViagèreOnéreux {
           -- valeur: revenus.rentes_étrangères_imputables_percues_60_69ans
           -- catégorie: RenteViagèreOnéreuxEntre60Et69Ans
-        };
+        } ;
         RenteViagèreOnéreux {
           -- valeur: revenus.rentes_étrangères_imputables_percues_70plus_ans
           -- catégorie: RenteViagèreOnéreuxPlus70Ans
-        }
-      ]
+        } ] en
+        rente_viagère.valeur
+        - calcul_déduction_rente_viagères_titre_onéreux de rente_viagère
+    )
 
-  # Voir article 193 du CGI pour la justification du fait que les crédits
-  # d'impôts sont calculés sur la base du revenu brut global ; il faut donc
-  # inclure dans le revenu brut global et les traitements salaires ces salaires
-  # étrangers.
+# Voir article 193 du CGI pour la justification du fait que les crédits
+# d'impôts sont calculés sur la base du revenu brut global ; il faut donc
+# inclure dans le revenu brut global et les traitements salaires ces salaires
+# étrangers.
 
 champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  définition revenus_imposables_réel_professionnels état étrangers égal à
-    revenus_imposables_réel_professionnels +
-    revenus.professionnels.revenus_imposables_réel_source_étrangère_imputés
+  définition revenus_imposables_réel_professionnels
+    état étrangers
+  égal à
+    revenus_imposables_réel_professionnels
+    + revenus.professionnels.revenus_imposables_réel_source_étrangère_imputés
 
-  définition revenus_imposables_réel_non_professionnels état étrangers égal à
-    revenus_imposables_réel_non_professionnels +
-    revenus.non_professionnels.généraux.
-      revenus_imposables_réel_source_étrangère_imputés
+  définition revenus_imposables_réel_non_professionnels
+    état étrangers
+  égal à
+    revenus_imposables_réel_non_professionnels
+    + revenus.non_professionnels.généraux.revenus_imposables_réel_source_étrangère_imputés
 
   définition revenus_imposables_réel_non_professionnels_locations_meublées
     état étrangers
   égal à
-    revenus_imposables_réel_non_professionnels_locations_meublées +
-    revenus.non_professionnels.locations_meublées_réel_source_étrangère
+    revenus_imposables_réel_non_professionnels_locations_meublées
+    + revenus.non_professionnels.locations_meublées_réel_source_étrangère
 
 champ d'application BénéficesNonCommerciauxDéclarant:
-  définition revenus_imposables_réel_professionnels état étrangers égal à
-    revenus_imposables_réel_professionnels +
-    revenus.professionnels.généraux.revenus_imposables_source_étrangère_imputés
+  définition revenus_imposables_réel_professionnels
+    état étrangers
+  égal à
+    revenus_imposables_réel_professionnels
+    + revenus.professionnels.généraux.revenus_imposables_source_étrangère_imputés
 
-  définition revenus_imposables_réel_non_professionnels état étrangers égal à
-    revenus_imposables_réel_non_professionnels +
-    revenus.non_professionnels.généraux.
-      revenus_imposables_source_étrangère_imputés
+  définition revenus_imposables_réel_non_professionnels
+    état étrangers
+  égal à
+    revenus_imposables_réel_non_professionnels
+    + revenus.non_professionnels.généraux.revenus_imposables_source_étrangère_imputés
 ```
