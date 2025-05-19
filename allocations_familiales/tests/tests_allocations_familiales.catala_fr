@@ -363,105 +363,105 @@ champ d'application Test14:
   assertion f.i_montant_versé = 48,77€
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala Typecheck
 ┌─[RESULT]─
 │ Typechecking successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test1 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test2 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test3 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test4 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test5 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test6 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test7 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test8 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test9 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test10 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test11 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test12 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test13 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test13 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!

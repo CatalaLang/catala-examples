@@ -20,7 +20,7 @@ champ d'application DéficitsAntérieurs1:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope DéficitsAntérieurs1 --disable-warnings
 ┌─[RESULT]─
 │ sortie =

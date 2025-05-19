@@ -20,7 +20,7 @@
 > Inclusion: epilogue.catala_fr
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala Typecheck --check-invariants
 ┌─[RESULT]─
 │ All invariant checks passed

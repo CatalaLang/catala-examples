@@ -154,7 +154,7 @@ champ d'application BénéficesNonCommerciaux1:
 ```
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux1
 ┌─[RESULT]─
 │ sortie =
@@ -310,7 +310,7 @@ champ d'application BénéficesNonCommerciaux2:
   }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux2
 ┌─[RESULT]─
 │ sortie =
@@ -560,7 +560,7 @@ champ d'application BénéficesNonCommerciaux3:
   }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux3
 ┌─[RESULT]─
 │ sortie =
@@ -724,7 +724,7 @@ Ce prélèvement est également libératoire de l'impôt.
 Soit : 1 374 * 12.8% = 176
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux4
 ┌─[RESULT]─
 │ sortie =

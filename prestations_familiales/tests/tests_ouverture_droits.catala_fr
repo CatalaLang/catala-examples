@@ -54,7 +54,7 @@ champ d'application Test1:
   assertion (non (f.droit_ouvert de données.enfant4))
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test1 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!

@@ -245,7 +245,7 @@ des différents membres du foyer fiscal soit :
 - Prélèvement forfaitaire de 10% : 50
 - Plus-Value : 176
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux1
 ┌─[RESULT]─
 │ sortie =
@@ -490,7 +490,7 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
  12 500 + 280 + 8700 = 21480
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux2
 ┌─[RESULT]─
 │ sortie =
@@ -830,7 +830,7 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 699 + 4 944 = 50 700**
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux3
 ┌─[RESULT]─
 │ sortie =

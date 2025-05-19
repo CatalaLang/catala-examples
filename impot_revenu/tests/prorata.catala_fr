@@ -15,7 +15,7 @@ champ d'application ProRata1:
   assertion somme argent de sortie.valeurs_proratisées = 100 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope ProRata1 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -38,7 +38,7 @@ champ d'application ProRata2:
   assertion somme argent de sortie.valeurs_proratisées = 15 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope ProRata2 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -61,7 +61,7 @@ champ d'application ProRata3:
   assertion somme argent de sortie.valeurs_proratisées = 567 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope ProRata3 --disable-warnings
 ┌─[RESULT]─
 │ sortie =

@@ -30,14 +30,14 @@ champ d'application TestUnitaire2:
   assertion calcul_impôt.impôt_revenu = 0,00 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TestUnitaire1 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TestUnitaire2 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!

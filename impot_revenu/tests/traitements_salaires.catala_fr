@@ -97,7 +97,7 @@ champ d'application TraitementsSalaires1:
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires1 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -210,7 +210,7 @@ champ d'application TraitementsSalaires2:
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires2 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -416,7 +416,7 @@ champ d'application TraitementsSalaires3:
     )
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires3 --disable-warnings
 ┌─[RESULT]─
 │ parts =
@@ -519,7 +519,7 @@ champ d'application TraitementsSalaires4:
   = 4123 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires4 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -688,7 +688,7 @@ champ d'application TraitementsSalaires5:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires5 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -899,7 +899,7 @@ champ d'application TraitementsSalaires6:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires6 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -1361,7 +1361,7 @@ champ d'application TraitementsSalaires7:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires7 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -1674,7 +1674,7 @@ champ d'application TraitementsSalaires8:
 # TODO juridique : à vérifier (issue #45).
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires8 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -1786,7 +1786,7 @@ le calcul du plafond pro-ratisé entre traitements salaires classiques et
 revenus quotientés ? L'exemple du BOFiP ne permet de le déterminer mais
 ce cas de test si (issue #56).
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires9 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -2126,7 +2126,7 @@ champ d'application TraitementsSalaires10:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires10 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -2787,7 +2787,7 @@ champ d'application TraitementsSalaires11:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TraitementsSalaires11 --disable-warnings
 ┌─[RESULT]─
 │ sortie =

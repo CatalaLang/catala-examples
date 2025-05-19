@@ -130,7 +130,7 @@ champ d'application Exemple4 :
   assertion montant = 230,63 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala Typecheck --check-invariants
 ┌─[RESULT]─
 │ All invariant checks passed
@@ -140,28 +140,28 @@ $ catala Typecheck --check-invariants
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple1 --disable-warnings
 ┌─[RESULT]─
 │ montant = 345,73 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
 ┌─[RESULT]─
 │ montant = 352,77 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
 ┌─[RESULT]─
 │ montant = 339,70 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple4 --disable-warnings
 ┌─[RESULT]─
 │ montant = 230,63 €

@@ -217,28 +217,28 @@ champ d'application Exemple3 :
   définition éligibilité.bénéficie_aide_personnalisée_logement égal à faux
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala Typecheck
 ┌─[RESULT]─
 │ Typechecking successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple1 --disable-warnings
 ┌─[RESULT]─
 │ éligible = vrai
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
 ┌─[RESULT]─
 │ éligible = AllocationLogementFamiliale ()
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
 ┌─[RESULT]─
 │ éligible = AllocationLogementFamiliale ()

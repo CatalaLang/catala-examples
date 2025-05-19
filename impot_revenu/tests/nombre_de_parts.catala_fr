@@ -123,7 +123,7 @@ champ d'application NombreDeParts1:
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope NombreDeParts1 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -277,7 +277,7 @@ Le nombre de parts du foyer est donc de 4,5 parts.
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope NombreDeParts2 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -517,7 +517,7 @@ auquel il a droit doit être divisé de moitié.
 
 Le nombre de parts du foyer est donc de 4,5 parts.
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope NombreDeParts3 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -663,7 +663,7 @@ Soit une majoration de 0.25 par pour l'enfant à charge.
 
 **Aussi, le quotient familial du foyer fiscal P sera de 2.25 parts.**
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope NombreDeParts4 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
@@ -833,7 +833,7 @@ prévoit une majoration supplémentaire d'un quart de part.
 **Aussi, le nombre de parts du quotient familial est de 2 + (0.5x2)+0.5+0.25 =
 3.75 parts**
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope NombreDeParts5 --disable-warnings
 ┌─[RESULT]─
 │ sortie =
