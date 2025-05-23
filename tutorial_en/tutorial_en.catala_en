@@ -443,7 +443,7 @@ the file as follows:
 
 ```catala-test-cli
 $ catala interpret --scope Test1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test1 ─
 │ income_tax = $72,000.00
 └─
 ```
@@ -564,7 +564,7 @@ scope Test3:
 
 ```catala-test-cli
 $ catala interpret --scope Test3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test3 ─
 │ income_tax = $0.00
 └─
 ```
@@ -616,7 +616,7 @@ scope Test4:
 
 ```catala-test-cli
 $ catala interpret --scope Test4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test4 ─
 │ income_tax = $0.00
 └─
 ```
@@ -706,7 +706,7 @@ variable that will contain the structure holding the outputs of
 
 ```catala-test-cli
 $ catala interpret --scope Test4bis --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test4bis ─
 │ tax_computation =
 │   NewIncomeTaxComputationFixed {
 │     -- tax_formula: <function>
@@ -995,7 +995,7 @@ scope AmbiguousDate2:
 
 ```catala-test-cli
 $ catala interpret --scope AmbiguousDate2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ AmbiguousDate2 ─
 │ result = 2001-02-28
 └─
 ```

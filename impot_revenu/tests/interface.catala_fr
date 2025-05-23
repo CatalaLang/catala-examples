@@ -49,6 +49,7 @@ déclaration champ d'application TraitementsSalairesDéclarant:
 
   résultat sortie contenu IR.DéclarationTraitementsSalaires
 ```
+
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   # Valeurs par défaut pour chaque champ
@@ -145,6 +146,7 @@ déclaration champ d'application TraitementsSalairesFoyerFiscal:
 
   résultat sortie contenu IR.DéclarationTraitementsSalairesFoyerFiscal
 ```
+
 ```catala
 champ d'application TraitementsSalairesFoyerFiscal:
   définition rentes_percues_49moins_ans égal à 0 €
@@ -484,6 +486,7 @@ déclaration champ d'application DescriptionFoyerFiscal:
 
   résultat sortie contenu IR.DescriptionFoyerFiscal
 ```
+
 ```catala
 champ d'application DescriptionFoyerFiscal:
   définition nombre_enfants_à_charge_mineurs_et_non_mariés égal à 0

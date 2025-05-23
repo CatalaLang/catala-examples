@@ -35,6 +35,7 @@ Calcul du revenu brut global.
 
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux1:
   déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
 
@@ -247,7 +248,7 @@ des différents membres du foyer fiscal soit :
 
 ```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux1
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesIndustrielsCommerciaux1 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
@@ -300,6 +301,7 @@ En 2022, contribuable a perçu :
 - 5NO micro BIC vente de marchandises : 30 000€
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux2:
   déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
 
@@ -492,7 +494,7 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 
 ```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux2
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesIndustrielsCommerciaux2 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
@@ -590,6 +592,7 @@ comme suit :
 --> 0XX (prestations de services, revenus exceptionnels) : 57 843€
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux3:
   déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
 
@@ -832,7 +835,7 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 
 ```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux3
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesIndustrielsCommerciaux3 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:

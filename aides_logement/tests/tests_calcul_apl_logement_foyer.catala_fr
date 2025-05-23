@@ -144,35 +144,35 @@ champ d'application CasTest5:
 
 ```catala-test-cli
 $ catala test-scope CasTest1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ CasTest1 ─
 │ montant = 12,06 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope CasTest2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ CasTest2 ─
 │ montant = 23,12 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope CasTest3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ CasTest3 ─
 │ montant = 154,78 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope CasTest4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ CasTest4 ─
 │ montant = 154,78 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope CasTest5 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ CasTest5 ─
 │ montant = 129,65 €
 └─
 ```

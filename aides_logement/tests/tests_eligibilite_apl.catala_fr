@@ -226,21 +226,21 @@ $ catala Typecheck
 
 ```catala-test-cli
 $ catala test-scope Exemple1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple1 ─
 │ éligible = vrai
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple2 ─
 │ éligible = AllocationLogementFamiliale ()
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple3 ─
 │ éligible = AllocationLogementFamiliale ()
 └─
 ```

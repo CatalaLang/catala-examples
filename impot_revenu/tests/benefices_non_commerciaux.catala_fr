@@ -124,6 +124,7 @@ reporter 12 020€ de déficit sur les six années suivantes.**
 
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesNonCommerciaux1:
   déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
   déclarant2 champ d'application Interface.BénéficesNonCommerciauxDéclarant
@@ -156,7 +157,7 @@ champ d'application BénéficesNonCommerciaux1:
 
 ```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux1
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesNonCommerciaux1 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
@@ -277,6 +278,7 @@ Imputation du déficit de l'année 2021 :
 lui restera à imputer 6 020€ de déficit**
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesNonCommerciaux2:
   déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
 
@@ -312,7 +314,7 @@ champ d'application BénéficesNonCommerciaux2:
 
 ```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux2
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesNonCommerciaux2 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
@@ -512,6 +514,7 @@ Soit :
 **Le revenu brut global du foyer fiscal sera de 2 900€**
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesNonCommerciaux3:
   déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
   déclarant2 champ d'application Interface.BénéficesNonCommerciauxDéclarant
@@ -562,7 +565,7 @@ champ d'application BénéficesNonCommerciaux3:
 
 ```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux3
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesNonCommerciaux3 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
@@ -627,6 +630,7 @@ En 2023, le foyer fiscal a déclaré des revenus comme suit :
 -> 5SO :  1 374€
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesNonCommerciaux4:
   déclarant1 champ d'application Interface.BénéficesNonCommerciauxDéclarant
 
@@ -726,7 +730,7 @@ Soit : 1 374 * 12.8% = 176
 
 ```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux4
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesNonCommerciaux4 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:

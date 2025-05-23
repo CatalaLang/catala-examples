@@ -76,6 +76,7 @@ Soit 10 000 - 1 000 = 9 000 €.
 ### Résultat
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires1:
   résultat sortie contenu IR.TraitementsSalairesDéclarant
 
@@ -99,7 +100,7 @@ Le test ci-dessus doit donner le résultat suivant à l'exécution.
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires1 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesDéclarant {
 │     -- abattement_pensions_retraites_rentes: 0,00 €
@@ -188,6 +189,7 @@ avantageuse pour le contribuable que la déduction forfaitaire de 10%.
 **Le revenu brut global du foyer fiscal est donc de 8 000€.**
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires2:
   résultat sortie contenu IR.TraitementsSalairesDéclarant
 
@@ -212,7 +214,7 @@ Le test ci-dessus doit donner le résultat suivant à l'exécution.
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires2 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesDéclarant {
 │     -- abattement_pensions_retraites_rentes: 0,00 €
@@ -383,6 +385,7 @@ rente de Jérome est de 3 000 euros.
 ### Au titre du prélèvement libératoire de 7,5% sur les prestations de retraites en capital, Jérôme devra s'acquitter d'une somme de 2025 euros.
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires3:
   résultat parts contenu IR.NombreDeParts
   résultat traitements_salaires contenu IR.TraitementsSalairesDéclarant
@@ -418,7 +421,7 @@ champ d'application TraitementsSalaires3:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires3 ─
 │ parts =
 │   Impot_revenu.NombreDeParts {
 │     -- nombre_de_parts: 1,0
@@ -440,6 +443,7 @@ $ catala test-scope TraitementsSalaires3 --disable-warnings
 ## Cas de test 4
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires4:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -521,7 +525,7 @@ champ d'application TraitementsSalaires4:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires4 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -666,6 +670,7 @@ Soit pour la personne à charge : 100 000 x 0.1 = 10 000 Donc 100 000- 10 000=
 750€.
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires5:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -690,7 +695,7 @@ champ d'application TraitementsSalaires5:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires5 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires5 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -875,6 +880,7 @@ fiscal P cela donne :
 de 87 105€**
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires6:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -901,7 +907,7 @@ champ d'application TraitementsSalaires6:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires6 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires6 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -1330,6 +1336,7 @@ l'impôt global il convient de suivre la méthode suivante : "
 000 = 84 502€**
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires7:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -1363,7 +1370,7 @@ champ d'application TraitementsSalaires7:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires7 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires7 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -1642,6 +1649,7 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3_”.
 = 119 160€.**
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires8:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -1676,7 +1684,7 @@ champ d'application TraitementsSalaires8:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires8 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires8 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -1754,6 +1762,7 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 - Revenus quotientés : 500 000 - 13 513 = 486 487
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires9:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
 
@@ -1788,7 +1797,7 @@ ce cas de test si (issue #56).
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires9 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires9 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -2103,6 +2112,7 @@ revenus du foyer fiscal doivent donc être ajoutés entre eux.
 Jean et Marie sera de 64 500€**
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires10:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -2128,7 +2138,7 @@ champ d'application TraitementsSalaires10:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires10 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires10 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:
@@ -2732,6 +2742,7 @@ compte pour le calcul du taux effectif.
 - Revenus pour le foyer : 2050 (rentes viagères à titre onéreux 1 000+ 1050), 4 000.
 
 ```catala
+#[test]
 déclaration champ d'application TraitementsSalaires11:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
@@ -2789,7 +2800,7 @@ champ d'application TraitementsSalaires11:
 
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires11 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ TraitementsSalaires11 ─
 │ sortie =
 │   Impot_revenu.TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires:

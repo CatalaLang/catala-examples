@@ -142,28 +142,28 @@ $ catala Typecheck --check-invariants
 
 ```catala-test-cli
 $ catala test-scope Exemple1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple1 ─
 │ montant = 345,73 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple2 ─
 │ montant = 352,77 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple3 ─
 │ montant = 339,70 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple4 ─
 │ montant = 230,63 €
 └─
 ```

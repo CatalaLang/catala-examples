@@ -87,14 +87,14 @@ $ catala Typecheck --check-invariants
 
 ```catala-test-cli
 $ catala test-scope Exemple1
-┌─[RESULT]─
+┌─[RESULT]─ Exemple1 ─
 │ montant = 96,48 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple2
-┌─[RESULT]─
+┌─[RESULT]─ Exemple2 ─
 │ montant = 85,00 €
 └─
 ```
