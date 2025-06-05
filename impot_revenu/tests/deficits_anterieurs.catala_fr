@@ -3,6 +3,7 @@
 > Usage de Oracles
 
 ```catala
+#[test]
 déclaration champ d'application DéficitsAntérieurs1:
   résultat sortie contenu Oracles.ImputationAuxDéficitsLesPlusAnciens
 
@@ -20,9 +21,9 @@ champ d'application DéficitsAntérieurs1:
     }
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope DéficitsAntérieurs1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ DéficitsAntérieurs1 ─
 │ sortie =
 │   Oracles.ImputationAuxDéficitsLesPlusAnciens {
 │     -- revenu_imputé: 0,00 €

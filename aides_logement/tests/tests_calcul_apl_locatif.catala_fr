@@ -288,65 +288,65 @@ champ d'application Exemple9:
   assertion montant = 210,06 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple1 ─
 │ montant = 0,00 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple2 ─
 │ montant = 352,77 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple3 ─
 │ montant = 321,61 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple4 ─
 │ montant = 0,00 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple5 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple5 ─
 │ montant = 311,56 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple6 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple6 ─
 │ montant = 0,00 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple7 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple7 ─
 │ montant = 153,77 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple8 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple8 ─
 │ montant = 11,06 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple9 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple9 ─
 │ montant = 210,06 €
 └─
 ```

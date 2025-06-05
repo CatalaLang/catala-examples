@@ -3,6 +3,7 @@
 > Usage de Oracles
 
 ```catala
+#[test]
 déclaration champ d'application ProRata1:
   résultat sortie contenu Oracles.ProRataArrondiEuro
 
@@ -15,9 +16,9 @@ champ d'application ProRata1:
   assertion somme argent de sortie.valeurs_proratisées = 100 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope ProRata1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ ProRata1 ─
 │ sortie =
 │   Oracles.ProRataArrondiEuro {
 │     -- valeurs_proratisées: [10,00 €; 20,00 €; 30,00 €; 40,00 €]
@@ -26,6 +27,7 @@ $ catala test-scope ProRata1 --disable-warnings
 ```
 
 ```catala
+#[test]
 déclaration champ d'application ProRata2:
   résultat sortie contenu Oracles.ProRataArrondiEuro
 
@@ -38,9 +40,9 @@ champ d'application ProRata2:
   assertion somme argent de sortie.valeurs_proratisées = 15 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope ProRata2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ ProRata2 ─
 │ sortie =
 │   Oracles.ProRataArrondiEuro {
 │     -- valeurs_proratisées: [2,00 €; 3,00 €; 4,00 €; 6,00 €]
@@ -49,6 +51,7 @@ $ catala test-scope ProRata2 --disable-warnings
 ```
 
 ```catala
+#[test]
 déclaration champ d'application ProRata3:
   résultat sortie contenu Oracles.ProRataArrondiEuro
 
@@ -61,9 +64,9 @@ champ d'application ProRata3:
   assertion somme argent de sortie.valeurs_proratisées = 567 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope ProRata3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ ProRata3 ─
 │ sortie =
 │   Oracles.ProRataArrondiEuro {
 │     -- valeurs_proratisées:

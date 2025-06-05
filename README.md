@@ -43,7 +43,7 @@ create a test file `foo_tests.catala_en` inside that directory.
 Inside `foo_tests.catala_en`, declare one ore more test scopes. Then, you can
 provide the expected output for the interpretation of these scopes or the
 compilation of the whole program using the standard expected by `clerk test` by
-including `catala-test-inline` sections in your file.
+including `catala-test-cli` sections in your file.
 
 Once your tests are written, then will automatically be added to the regression
 suite executed using:

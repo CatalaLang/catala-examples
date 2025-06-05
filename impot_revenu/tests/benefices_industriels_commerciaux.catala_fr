@@ -35,6 +35,7 @@ Calcul du revenu brut global.
 
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux1:
   déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
 
@@ -245,9 +246,9 @@ des différents membres du foyer fiscal soit :
 - Prélèvement forfaitaire de 10% : 50
 - Plus-Value : 176
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux1
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesIndustrielsCommerciaux1 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
@@ -300,6 +301,7 @@ En 2022, contribuable a perçu :
 - 5NO micro BIC vente de marchandises : 30 000€
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux2:
   déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
 
@@ -490,9 +492,9 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
  12 500 + 280 + 8700 = 21480
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux2
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesIndustrielsCommerciaux2 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
@@ -590,6 +592,7 @@ comme suit :
 --> 0XX (prestations de services, revenus exceptionnels) : 57 843€
 
 ```catala
+#[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux3:
   déclarant1 champ d'application Interface.BénéficesIndustrielsCommerciauxDéclarant
 
@@ -830,9 +833,9 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 699 + 4 944 = 50 700**
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux3
-┌─[RESULT]─
+┌─[RESULT]─ BénéficesIndustrielsCommerciaux3 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:

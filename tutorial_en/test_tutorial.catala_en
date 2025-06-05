@@ -30,14 +30,14 @@ scope UnitTest2:
   assertion tax_computation.income_tax = $0.00
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope UnitTest1 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope UnitTest2 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!

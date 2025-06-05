@@ -12,7 +12,7 @@ zakres Test_A7_U1_P7:
 
   asercja sprzedaż.podatek = 1 PLN
 ```
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test_A7_U1_P7 --disable-warnings
 ┌─[RESULT]─
 │ Computation successful!

@@ -159,17 +159,17 @@ champ d'application Exemple2 :
   définition calculette.ressources_ménage_prises_en_compte égal à 12 500 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple1
-┌─[RESULT]─
+┌─[RESULT]─ Exemple1 ─
 │ montant_versé = 246,23 €
 │ éligibilité = vrai
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple2
-┌─[RESULT]─
+┌─[RESULT]─ Exemple2 ─
 │ montant_versé = 230,63 €
 │ éligibilité = vrai
 └─

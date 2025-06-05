@@ -441,9 +441,9 @@ scope Test1:
 This test should pass. We can validate it by inserting a special test snippet in
 the file as follows:
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope Test1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test1 ─
 │ income_tax = $72,000.00
 └─
 ```
@@ -469,7 +469,7 @@ scope Test2:
   assertion income_tax = $0
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope Test2 --disable-warnings
 ┌─[ERROR]─
 │
@@ -562,9 +562,9 @@ scope Test3:
   assertion income_tax = $0
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope Test3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test3 ─
 │ income_tax = $0.00
 └─
 ```
@@ -614,9 +614,9 @@ scope Test4:
   assertion income_tax = $0
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope Test4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test4 ─
 │ income_tax = $0.00
 └─
 ```
@@ -704,9 +704,9 @@ Besides defining the subscope, this declares `tax_computation` as an output
 variable that will contain the structure holding the outputs of
 `NewIncomeTaxComputationFixed`.
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope Test4bis --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test4bis ─
 │ tax_computation =
 │   NewIncomeTaxComputationFixed {
 │     -- tax_formula: <function>
@@ -962,7 +962,7 @@ scope AmbiguousDate:
   definition result equals |2000-02-29| + 1 year
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope AmbiguousDate --disable-warnings
 ┌─[ERROR]─
 │
@@ -993,9 +993,9 @@ scope AmbiguousDate2:
   date round decreasing   # or "increasing"
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope AmbiguousDate2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ AmbiguousDate2 ─
 │ result = 2001-02-28
 └─
 ```
@@ -1011,7 +1011,7 @@ scope AmbiguousDate3:
   definition result equals 30 day < 1 month
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala interpret --scope AmbiguousDate3 --disable-warnings
 ┌─[ERROR]─
 │

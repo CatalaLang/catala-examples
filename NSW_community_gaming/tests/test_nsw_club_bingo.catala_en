@@ -26,7 +26,7 @@ scope Test1:
 ```
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test1
 ┌─[RESULT]─
 │ Computation successful!
@@ -55,7 +55,7 @@ scope Test2:
 ```
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test2
 ┌─[RESULT]─
 │ Computation successful!
@@ -83,7 +83,7 @@ scope Test3:
   assertion my_gaming.authorized = false
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test3
 ┌─[RESULT]─
 │ Computation successful!
@@ -112,7 +112,7 @@ scope Test4:
 ```
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test4
 ┌─[RESULT]─
 │ Computation successful!
@@ -141,7 +141,7 @@ scope Test5:
 ```
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Test5
 ┌─[RESULT]─
 │ Computation successful!

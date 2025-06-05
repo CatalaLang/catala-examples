@@ -2,270 +2,189 @@ open Runtime_ocaml.Runtime
 
 [@@@ocaml.warning "-4-26-27-32-41-42"]
 
-module DeficitAnterieur = struct
-  type t = { annee : integer; valeur : money }
-end
 
-let embed_deficit_anterieur (x : DeficitAnterieur.t) : runtime_value =
-  Struct
-    ( "DéficitAntérieur",
-      [
-        "année", embed_integer x.DeficitAnterieur.annee;
-        "valeur", embed_money x.DeficitAnterieur.valeur;
-      ] )
+module DeficitAnterieur = struct
+  type t = {annee: integer; valeur: money}
+  let embed (x: t) : runtime_value =
+    Struct(
+      "DeficitAnterieur",
+      [("annee", embed_integer x.annee); ("valeur", embed_money x.valeur)]
+    )
+end
 
 module ProRataArrondiEuro = struct
-  type t = { valeurs_proratisees : money array }
+  type t = {valeurs_proratisees: money array}
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ProRataArrondiEuro",
+      [("valeurs_proratisees",
+        embed_array (embed_money) x.valeurs_proratisees)]
+    )
 end
-
-let embed_pro_rata_arrondi_euro (x : ProRataArrondiEuro.t) : runtime_value =
-  Struct
-    ( "ProRataArrondiEuro",
-      [
-        ( "valeurs_proratisées",
-          embed_array embed_money x.ProRataArrondiEuro.valeurs_proratisees );
-      ] )
 
 module ProRataArrondiEuroListes = struct
-  type t = { valeurs_proratisees : money array array }
+  type t = {valeurs_proratisees: (money array) array}
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ProRataArrondiEuroListes",
+      [("valeurs_proratisees",
+        embed_array (embed_array (embed_money)) x.valeurs_proratisees)]
+    )
 end
-
-let embed_pro_rata_arrondi_euro_listes (x : ProRataArrondiEuroListes.t) :
-    runtime_value =
-  Struct
-    ( "ProRataArrondiEuroListes",
-      [
-        ( "valeurs_proratisées",
-          embed_array (embed_array embed_money)
-            x.ProRataArrondiEuroListes.valeurs_proratisees );
-      ] )
-
-module ImputationAuxDeficitsLesPlusAnciens = struct
-  type t = {
-    revenu_impute : money;
-    deficits_anterieurs_restants : DeficitAnterieur.t array;
-  }
-end
-
-let embed_imputation_aux_deficits_les_plus_anciens
-    (x : ImputationAuxDeficitsLesPlusAnciens.t) : runtime_value =
-  Struct
-    ( "ImputationAuxDéficitsLesPlusAnciens",
-      [
-        ( "revenu_imputé",
-          embed_money x.ImputationAuxDeficitsLesPlusAnciens.revenu_impute );
-        ( "déficits_antérieurs_restants",
-          embed_array embed_deficit_anterieur
-            x.ImputationAuxDeficitsLesPlusAnciens.deficits_anterieurs_restants );
-      ] )
-
-module ImputationAuxDeficitsLesPlusAnciens_in = struct
-  type t = {
-    revenu_declare_in : money;
-    deficits_anterieurs_in : DeficitAnterieur.t array;
-  }
-end
-
-let embed_imputation_aux_deficits_les_plus_anciens_in
-    (x : ImputationAuxDeficitsLesPlusAnciens_in.t) : runtime_value =
-  Struct
-    ( "ImputationAuxDéficitsLesPlusAnciens_in",
-      [
-        ( "revenu_déclaré_in",
-          embed_money x.ImputationAuxDeficitsLesPlusAnciens_in.revenu_declare_in
-        );
-        ( "déficits_antérieurs_in",
-          embed_array embed_deficit_anterieur
-            x.ImputationAuxDeficitsLesPlusAnciens_in.deficits_anterieurs_in );
-      ] )
-
-module ProRataArrondiEuro_in = struct
-  type t = { montant_a_distribuer_in : money; bases_prorata_in : money array }
-end
-
-let embed_pro_rata_arrondi_euro_in (x : ProRataArrondiEuro_in.t) : runtime_value
-    =
-  Struct
-    ( "ProRataArrondiEuro_in",
-      [
-        ( "montant_à_distribuer_in",
-          embed_money x.ProRataArrondiEuro_in.montant_a_distribuer_in );
-        ( "bases_prorata_in",
-          embed_array embed_money x.ProRataArrondiEuro_in.bases_prorata_in );
-      ] )
-
-module ProRataArrondiEuroListes_in = struct
-  type t = {
-    montant_a_distribuer_in : money;
-    bases_prorata_in : money array array;
-  }
-end
-
-let embed_pro_rata_arrondi_euro_listes_in (x : ProRataArrondiEuroListes_in.t) :
-    runtime_value =
-  Struct
-    ( "ProRataArrondiEuroListes_in",
-      [
-        ( "montant_à_distribuer_in",
-          embed_money x.ProRataArrondiEuroListes_in.montant_a_distribuer_in );
-        ( "bases_prorata_in",
-          embed_array (embed_array embed_money)
-            x.ProRataArrondiEuroListes_in.bases_prorata_in );
-      ] )
 
 module ProRataArrondiEuroBranchement = struct
   type t = {
-    valeur_proratisee_1 : money;
-    valeur_proratisee_2 : money;
-    valeur_proratisee_3 : money;
-    valeur_proratisee_4 : money;
-    valeur_proratisee_5 : money;
-    valeur_proratisee_6 : money;
-    valeur_proratisee_7 : money;
-    valeur_proratisee_8 : money;
-    valeur_proratisee_9 : money;
-    valeurs_proratisees_liste_1 : money array;
-    valeurs_proratisees_liste_2 : money array;
-    valeurs_proratisees_liste_3 : money array;
-    valeurs_proratisees_liste_4 : money array;
-    valeurs_proratisees_liste_5 : money array;
-    valeurs_proratisees_liste_6 : money array;
-    valeurs_proratisees_liste_7 : money array;
-    valeurs_proratisees_liste_8 : money array;
-    valeurs_proratisees_liste_9 : money array;
+    valeur_proratisee_1: money;
+    valeur_proratisee_2: money;
+    valeur_proratisee_3: money;
+    valeur_proratisee_4: money;
+    valeur_proratisee_5: money;
+    valeur_proratisee_6: money;
+    valeur_proratisee_7: money;
+    valeur_proratisee_8: money;
+    valeur_proratisee_9: money;
+    valeurs_proratisees_liste_1: money array;
+    valeurs_proratisees_liste_2: money array;
+    valeurs_proratisees_liste_3: money array;
+    valeurs_proratisees_liste_4: money array;
+    valeurs_proratisees_liste_5: money array;
+    valeurs_proratisees_liste_6: money array;
+    valeurs_proratisees_liste_7: money array;
+    valeurs_proratisees_liste_8: money array;
+    valeurs_proratisees_liste_9: money array
   }
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ProRataArrondiEuroBranchement",
+      [("valeur_proratisee_1", embed_money x.valeur_proratisee_1);
+       ("valeur_proratisee_2", embed_money x.valeur_proratisee_2);
+       ("valeur_proratisee_3", embed_money x.valeur_proratisee_3);
+       ("valeur_proratisee_4", embed_money x.valeur_proratisee_4);
+       ("valeur_proratisee_5", embed_money x.valeur_proratisee_5);
+       ("valeur_proratisee_6", embed_money x.valeur_proratisee_6);
+       ("valeur_proratisee_7", embed_money x.valeur_proratisee_7);
+       ("valeur_proratisee_8", embed_money x.valeur_proratisee_8);
+       ("valeur_proratisee_9", embed_money x.valeur_proratisee_9);
+       ("valeurs_proratisees_liste_1",
+        embed_array (embed_money) x.valeurs_proratisees_liste_1);
+       ("valeurs_proratisees_liste_2",
+        embed_array (embed_money) x.valeurs_proratisees_liste_2);
+       ("valeurs_proratisees_liste_3",
+        embed_array (embed_money) x.valeurs_proratisees_liste_3);
+       ("valeurs_proratisees_liste_4",
+        embed_array (embed_money) x.valeurs_proratisees_liste_4);
+       ("valeurs_proratisees_liste_5",
+        embed_array (embed_money) x.valeurs_proratisees_liste_5);
+       ("valeurs_proratisees_liste_6",
+        embed_array (embed_money) x.valeurs_proratisees_liste_6);
+       ("valeurs_proratisees_liste_7",
+        embed_array (embed_money) x.valeurs_proratisees_liste_7);
+       ("valeurs_proratisees_liste_8",
+        embed_array (embed_money) x.valeurs_proratisees_liste_8);
+       ("valeurs_proratisees_liste_9",
+        embed_array (embed_money) x.valeurs_proratisees_liste_9)]
+    )
 end
 
-let embed_pro_rata_arrondi_euro_branchement
-    (x : ProRataArrondiEuroBranchement.t) : runtime_value =
-  Struct
-    ( "ProRataArrondiEuroBranchement",
-      [
-        ( "valeur_proratisée_1",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_1 );
-        ( "valeur_proratisée_2",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_2 );
-        ( "valeur_proratisée_3",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_3 );
-        ( "valeur_proratisée_4",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_4 );
-        ( "valeur_proratisée_5",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_5 );
-        ( "valeur_proratisée_6",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_6 );
-        ( "valeur_proratisée_7",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_7 );
-        ( "valeur_proratisée_8",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_8 );
-        ( "valeur_proratisée_9",
-          embed_money x.ProRataArrondiEuroBranchement.valeur_proratisee_9 );
-        ( "valeurs_proratisées_liste_1",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_1 );
-        ( "valeurs_proratisées_liste_2",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_2 );
-        ( "valeurs_proratisées_liste_3",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_3 );
-        ( "valeurs_proratisées_liste_4",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_4 );
-        ( "valeurs_proratisées_liste_5",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_5 );
-        ( "valeurs_proratisées_liste_6",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_6 );
-        ( "valeurs_proratisées_liste_7",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_7 );
-        ( "valeurs_proratisées_liste_8",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_8 );
-        ( "valeurs_proratisées_liste_9",
-          embed_array embed_money
-            x.ProRataArrondiEuroBranchement.valeurs_proratisees_liste_9 );
-      ] )
+module ImputationAuxDeficitsLesPlusAnciens = struct
+  type t = {
+    revenu_impute: money;
+    deficits_anterieurs_restants: DeficitAnterieur.t array
+  }
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ImputationAuxDeficitsLesPlusAnciens",
+      [("revenu_impute", embed_money x.revenu_impute);
+       ("deficits_anterieurs_restants",
+        embed_array (DeficitAnterieur.embed) x.deficits_anterieurs_restants)]
+    )
+end
+
+module ImputationAuxDeficitsLesPlusAnciens_in = struct
+  type t = {
+    revenu_declare_in: money;
+    deficits_anterieurs_in: DeficitAnterieur.t array
+  }
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ImputationAuxDeficitsLesPlusAnciens_in",
+      [("revenu_declare_in", embed_money x.revenu_declare_in);
+       ("deficits_anterieurs_in",
+        embed_array (DeficitAnterieur.embed) x.deficits_anterieurs_in)]
+    )
+end
+
+module ProRataArrondiEuro_in = struct
+  type t = {montant_a_distribuer_in: money; bases_prorata_in: money array}
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ProRataArrondiEuro_in",
+      [("montant_a_distribuer_in", embed_money x.montant_a_distribuer_in);
+       ("bases_prorata_in", embed_array (embed_money) x.bases_prorata_in)]
+    )
+end
+
+module ProRataArrondiEuroListes_in = struct
+  type t = {
+    montant_a_distribuer_in: money;
+    bases_prorata_in: (money array) array
+  }
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ProRataArrondiEuroListes_in",
+      [("montant_a_distribuer_in", embed_money x.montant_a_distribuer_in);
+       ("bases_prorata_in",
+        embed_array (embed_array (embed_money)) x.bases_prorata_in)]
+    )
+end
 
 module ProRataArrondiEuroBranchement_in = struct
   type t = {
-    montant_a_distribuer_in : money;
-    base_prorata_1_in : (money * source_position) Eoption.t;
-    base_prorata_2_in : (money * source_position) Eoption.t;
-    base_prorata_3_in : (money * source_position) Eoption.t;
-    base_prorata_4_in : (money * source_position) Eoption.t;
-    base_prorata_5_in : (money * source_position) Eoption.t;
-    base_prorata_6_in : (money * source_position) Eoption.t;
-    base_prorata_7_in : (money * source_position) Eoption.t;
-    base_prorata_8_in : (money * source_position) Eoption.t;
-    base_prorata_9_in : (money * source_position) Eoption.t;
-    bases_prorata_liste_1_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_2_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_3_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_4_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_5_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_6_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_7_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_8_in : (money array * source_position) Eoption.t;
-    bases_prorata_liste_9_in : (money array * source_position) Eoption.t;
+    montant_a_distribuer_in: money;
+    base_prorata_1_in: ((money * source_position)) Eoption.t;
+    base_prorata_2_in: ((money * source_position)) Eoption.t;
+    base_prorata_3_in: ((money * source_position)) Eoption.t;
+    base_prorata_4_in: ((money * source_position)) Eoption.t;
+    base_prorata_5_in: ((money * source_position)) Eoption.t;
+    base_prorata_6_in: ((money * source_position)) Eoption.t;
+    base_prorata_7_in: ((money * source_position)) Eoption.t;
+    base_prorata_8_in: ((money * source_position)) Eoption.t;
+    base_prorata_9_in: ((money * source_position)) Eoption.t;
+    bases_prorata_liste_1_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_2_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_3_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_4_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_5_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_6_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_7_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_8_in: (((money array) * source_position)) Eoption.t;
+    bases_prorata_liste_9_in: (((money array) * source_position)) Eoption.t
   }
+  let embed (x: t) : runtime_value =
+    Struct(
+      "ProRataArrondiEuroBranchement_in",
+      [("montant_a_distribuer_in", embed_money x.montant_a_distribuer_in);
+       ("base_prorata_1_in", unembeddable x.base_prorata_1_in);
+       ("base_prorata_2_in", unembeddable x.base_prorata_2_in);
+       ("base_prorata_3_in", unembeddable x.base_prorata_3_in);
+       ("base_prorata_4_in", unembeddable x.base_prorata_4_in);
+       ("base_prorata_5_in", unembeddable x.base_prorata_5_in);
+       ("base_prorata_6_in", unembeddable x.base_prorata_6_in);
+       ("base_prorata_7_in", unembeddable x.base_prorata_7_in);
+       ("base_prorata_8_in", unembeddable x.base_prorata_8_in);
+       ("base_prorata_9_in", unembeddable x.base_prorata_9_in);
+       ("bases_prorata_liste_1_in", unembeddable x.bases_prorata_liste_1_in);
+       ("bases_prorata_liste_2_in", unembeddable x.bases_prorata_liste_2_in);
+       ("bases_prorata_liste_3_in", unembeddable x.bases_prorata_liste_3_in);
+       ("bases_prorata_liste_4_in", unembeddable x.bases_prorata_liste_4_in);
+       ("bases_prorata_liste_5_in", unembeddable x.bases_prorata_liste_5_in);
+       ("bases_prorata_liste_6_in", unembeddable x.bases_prorata_liste_6_in);
+       ("bases_prorata_liste_7_in", unembeddable x.bases_prorata_liste_7_in);
+       ("bases_prorata_liste_8_in", unembeddable x.bases_prorata_liste_8_in);
+       ("bases_prorata_liste_9_in", unembeddable x.bases_prorata_liste_9_in)]
+    )
 end
 
-let embed_pro_rata_arrondi_euro_branchement_in
-    (x : ProRataArrondiEuroBranchement_in.t) : runtime_value =
-  Struct
-    ( "ProRataArrondiEuroBranchement_in",
-      [
-        ( "montant_à_distribuer_in",
-          embed_money x.ProRataArrondiEuroBranchement_in.montant_a_distribuer_in
-        );
-        ( "base_prorata_1_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_1_in );
-        ( "base_prorata_2_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_2_in );
-        ( "base_prorata_3_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_3_in );
-        ( "base_prorata_4_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_4_in );
-        ( "base_prorata_5_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_5_in );
-        ( "base_prorata_6_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_6_in );
-        ( "base_prorata_7_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_7_in );
-        ( "base_prorata_8_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_8_in );
-        ( "base_prorata_9_in",
-          unembeddable x.ProRataArrondiEuroBranchement_in.base_prorata_9_in );
-        ( "bases_prorata_liste_1_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_1_in );
-        ( "bases_prorata_liste_2_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_2_in );
-        ( "bases_prorata_liste_3_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_3_in );
-        ( "bases_prorata_liste_4_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_4_in );
-        ( "bases_prorata_liste_5_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_5_in );
-        ( "bases_prorata_liste_6_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_6_in );
-        ( "bases_prorata_liste_7_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_7_in );
-        ( "bases_prorata_liste_8_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_8_in );
-        ( "bases_prorata_liste_9_in",
-          unembeddable
-            x.ProRataArrondiEuroBranchement_in.bases_prorata_liste_9_in );
-      ] )
 
 let imputation_aux_deficits_les_plus_anciens
     (imputation_aux_deficits_les_plus_anciens_in :

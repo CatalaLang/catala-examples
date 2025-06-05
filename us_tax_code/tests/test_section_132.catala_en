@@ -45,21 +45,21 @@ scope TestSection132_3:
   assertion section_132.qualified_employee_discount = $300
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TestSection132_1
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TestSection132_2
 ┌─[RESULT]─
 │ Computation successful!
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope TestSection132_3
 ┌─[RESULT]─
 │ Computation successful!

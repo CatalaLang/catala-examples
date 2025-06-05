@@ -152,31 +152,31 @@ champ d'application Exemple4:
   assertion calcul.aide_finale_formule = 123,94 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple1 ─
 │ montant = 181,91 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple2 ─
 │ montant = 67,34 €
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple3 ─
 │ montant = 181,91 €
 └─
 ```
 
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope Exemple4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Exemple4 ─
 │ montant = 118,59 €
 └─
 ```

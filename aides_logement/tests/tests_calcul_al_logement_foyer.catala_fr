@@ -33,7 +33,7 @@ champ d'application CasTest1:
   assertion montant = 76,38 €
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala Typecheck --check-invariants
 ┌─[RESULT]─
 │ All invariant checks passed
@@ -43,9 +43,9 @@ $ catala Typecheck --check-invariants
 └─
 ```
 
-```catala-test-inline
+```catala-test-cli
 $ catala test-scope CasTest1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ CasTest1 ─
 │ montant = 76,38 €
 └─
 ```

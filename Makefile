@@ -19,7 +19,6 @@ CATALA_FLAGS ?= --trace
 CLERK_FLAGS ?= --exe=$(CATALA)
 
 CLERK_BUILD = $(CLERK) build --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts='$(CATALA_FLAGS)',) $(CLERK_FLAGS)
-CLERK_RUN = $(CLERK) run --build-dir=$(BUILD) $(if $(CATALA_FLAGS),--catala-opts='$(CATALA_FLAGS)',) $(CLERK_FLAGS)
 
 CLERK_TEST = $(CLERK) test $(CLERK_FLAGS) --build-dir=$(BUILD_TESTS)
 
@@ -88,27 +87,28 @@ $(BUILD)/%.html: %.catala_??
 ##########################
 
 $(BUILD)/%.cmi: %.catala_??
-	$(CLERK_BUILD) $@
+	$(CLERK_BUILD) $(@D)/ocaml/$(@F)
 $(BUILD)/%.cmo: %.catala_??
-	$(CLERK_BUILD) $@
+	$(CLERK_BUILD) $(@D)/ocaml/$(@F)
 $(BUILD)/%.cmx: %.catala_??
-	$(CLERK_BUILD) $@
+	$(CLERK_BUILD) $(@D)/ocaml/$(@F)
 $(BUILD)/%.cmxs: %.catala_??
-	$(CLERK_BUILD) $@
+	$(CLERK_BUILD) $(@D)/ocaml/$(@F)
 # $(BUILD)/%.exe: %.catala_??
-# 	$(CLERK_BUILD) $@
+# 	$(CLERK_BUILD) $(@D)/ocaml/$(@F)
 
 $(BUILD)/%.cma: $(BUILD)/%.cmi
 	$(OCAMLC) $(OCAML_FLAGS) \
-	  $(shell $(CATALA_DEPENDS) --extension=cmo $(BUILD)/$*.catala_??) \
+	  $(shell $(CATALA_DEPENDS) --subdir=ocaml --extension=cmo $(BUILD)/../$*.catala_??) \
 	  -intf-suffix .ml \
 	  -a -o $@
 
 $(BUILD)/%.cmxa: $(BUILD)/%.cmi
 	$(OCAMLOPT) $(OCAML_FLAGS) \
-	  $(shell $(CATALA_DEPENDS) --extension=cmx $(BUILD)/$*.catala_??) \
+	  $(shell $(CATALA_DEPENDS) --subdir=ocaml --extension=cmx $(BUILD)/../$*.catala_??) \
 	  -intf-suffix .ml \
 	  -a -o $@
+	# clerk link x.catala_x --srcext cmo -- ocamlopt -a -o xxx ??
 
 ###############################################
 # Rules: api_web and compilation of JS packages
@@ -119,14 +119,14 @@ $(BUILD)/%_api_web.ml: %.catala_?? | $(BUILD)/%.cmo
 
 $(BUILD)/%-web.bc:
 	$(if $^,,$(error Building a js bundle ($@) requires expliciting the expected contents))
-	$(eval MLDEPS = $(shell $(CATALA_DEPENDS) --extension=cmo $^))
+	$(eval MLDEPS = $(shell $(CATALA_DEPENDS) --subdir=ocaml --extension=cmo $^))
 	$(eval API = $(patsubst %,$(BUILD)/%_api_web.ml,$(basename $^)))
 	$(CLERK_BUILD) $(MLDEPS)
 	$(MAKE) $(API)
 	ocamlfind ocamlc -linkpkg \
 	  -package catala.runtime_jsoo,js_of_ocaml-ppx \
 	  $(OCAML_FLAGS) \
-	  $(addprefix -I $(BUILD)/,$(subst :, , $(CATALA_INCLUDE))) \
+	  $(patsubst %,-I $(BUILD)/%/ocaml,$(subst :, , $(CATALA_INCLUDE))) \
 	  $(MLDEPS) \
 	  $(API) \
 	  -o $@
@@ -203,7 +203,7 @@ endef
 
 $(BUILD)/%_python.tar.gz:
 	$(if $^,,$(error Building a python package ($@) requires expliciting the expected contents))
-	$(eval PYDEPS = $(shell $(CATALA_DEPENDS) --extension=py $^))
+	$(eval PYDEPS = $(shell $(CATALA_DEPENDS) --subdir=python --extension=py $^))
 	@mkdir -p $(BUILD)/python/$(*F)/$(*F)
 	$(CLERK_BUILD) $(PYDEPS)
 	cp $(PYDEPS) $(BUILD)/python/$(*F)/$(*F)
@@ -230,16 +230,18 @@ catala-examples.install: $(TARGET_LIBS:=.catala_??)
 	  echo "lib: ["; \
 	  echo "  \"META\""; \
 	  $(foreach lib,$(TARGET_LIBS),\
-	    $(foreach ext,.a .ml .cma .cmxa _schema.json,\
+	    $(foreach ext,.ml,\
+	      echo "  \"$(BUILD)/$(dir $(lib))ocaml/$(notdir $(lib))$(ext)\" {\"$(lib)$(ext)\"}"; )\
+	    $(foreach ext,.a .cma .cmxa _schema.json,\
 	      echo "  \"$(BUILD)/$(lib)$(ext)\" {\"$(lib)$(ext)\"}"; )\
 	    $(foreach f,$(shell catala depends -I $(CATALA_INCLUDE) --extension= $(lib).catala_??),\
-	      echo "  \"$(BUILD)/$f.mli\" {\"$(dir $(lib))$(notdir $f.mli)\"}"; \
-	      echo "  \"$(BUILD)/$f.cmi\" {\"$(dir $(lib))$(notdir $f.cmi)\"}"; )\
+	      echo "  \"$(BUILD)/$(dir $f)ocaml/$(notdir $f).mli\" {\"$(dir $(lib))$(notdir $f.mli)\"}"; \
+	      echo "  \"$(BUILD)/$(dir $f)ocaml/$(notdir $f).cmi\" {\"$(dir $(lib))$(notdir $f.cmi)\"}"; )\
 	  ) \
 	  $(foreach f,$(FRENCH_LAW_TARGETS),echo "  \"$(BUILD)/$f\" {\"$f\"}"; )\
 	  echo "]"; \
 	  echo "libexec: ["; \
-	  $(foreach f,$(INSTALL_libexec),echo "  \"$(BUILD)/$f\" {\"$f\"}";) \
+	  $(foreach f,$(INSTALL_libexec),echo "  \"$(BUILD)/$(dir $f)/ocaml/$(notdir $f)\" {\"$f\"}";) \
 	  echo "]"; \
 	  echo "doc: ["; \
 	  echo "  \"LICENSE.txt\""; \
@@ -269,13 +271,32 @@ clean: .FORCE
 # Running legislation unit tests
 ################################
 
+TEST_DIRS = \
+  prestations_familiales/tests \
+  allocations_familiales/tests \
+  aides_logement/tests \
+  droit_successions/tests \
+  aides_logement/tests \
+  tutorial_en \
+  tutoriel_fr/tests \
+  polish_taxes/tests \
+  NSW_community_gaming/tests \
+  us_tax_code/tests
+
+# impot_revenu/tests is excluded because only supported for OCaml
+
+interp-tests:
+	$(CLERK_TEST)
+
 binary-tests:
-	$(CLERK_RUN) allocations_familiales/tests --backend ocaml --autotest
-	$(CLERK_RUN) aides_logement/tests --backend ocaml --autotest
+	$(CLERK_TEST) --backend ocaml
+	$(CLERK_TEST) $(TEST_DIRS) --backend c
+	$(CLERK_TEST) $(TEST_DIRS) --backend python
+#	$(CLERK_TEST) $(TEST_DIRS) --backend java
 	@echo "$(CURDIR): all binary tests passed"
 
-test: .FORCE binary-tests
-	$(CLERK_TEST)
+test: .FORCE interp-tests binary-tests
+tests: test
 
 TEST_FLAGS_LIST = "" --lcalc,-O
 
