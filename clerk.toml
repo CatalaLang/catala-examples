@@ -10,6 +10,35 @@ include_dirs = [
   "impot_revenu"
 ]
 
+[variables]
+CFLAGS = ["-std=c89", "-pedantic", "-Wall", "-Wno-unused-function", "-Wno-unused-variable", "-Wno-unused-but-set-variable", "-Werror", "-g", "-fPIC"]
+RUNTIME_C_LIBS = ["${RUNTIME_C_LIBS}"]
+
+[[rule]]
+out_exts = ["cma"]
+in_exts = ["cmo"]
+backend = "ocaml"
+commandline = ["$OCAMLC_EXE", "$OCAML_FLAGS", "$src", "-a", "-o", "$dst"]
+
+[[target]]
+name = "french_law"
+modules = ["Prestations_familiales", "Allocations_familiales"]
+backends = ["ocaml"] # + dune | makefile ...
+include_runtime = true
+# exts = [""]
+
+[[rule]]
+out_exts = ["so"]
+in_exts = ["o"]
+backend = "c"
+commandline = ["$CC", "$CFLAGS", "$C_INCLUDE_FLAGS", "$RUNTIME_C_LIBS", "$src", "-shared", "-o", "$dst"]
+
+[[rule]]
+out_exts = ["_python.tar.gz"]
+in_exts = ["py"]
+backend = "python"
+commandline = ["./pypkg", "$src", "$dst"]
+
 [[module]]
 name = "Aides_logement"
 module_uses = [
