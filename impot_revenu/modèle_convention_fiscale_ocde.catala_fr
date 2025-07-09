@@ -74,7 +74,7 @@ champ d'application TraitementsSalairesDéclarant:
     pensions_retraites_rentes_79
     ++ [ PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_étrangères_impôts_imputé
-        -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+        -- type_pension: TypePensionRetraiteRente.PensionsRetraitesRentes
       } ]
 
 champ d'application TraitementsSalairesFoyerFiscal:

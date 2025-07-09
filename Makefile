@@ -230,7 +230,7 @@ catala-examples.install: $(TARGET_LIBS:=.catala_??)
 	  echo "lib: ["; \
 	  echo "  \"META\""; \
 	  $(foreach lib,$(TARGET_LIBS),\
-	    $(foreach ext,.ml .mli,\
+	    $(foreach ext,.ml,\
 	      echo "  \"$(BUILD)/$(dir $(lib))ocaml/$(notdir $(lib))$(ext)\" {\"$(lib)$(ext)\"}"; )\
 	    $(foreach ext,.a .cma .cmxa _schema.json,\
 	      echo "  \"$(BUILD)/$(lib)$(ext)\" {\"$(lib)$(ext)\"}"; )\
