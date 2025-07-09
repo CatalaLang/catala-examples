@@ -1362,23 +1362,23 @@ champ d'application TraitementsSalairesDéclarant:
   égal à
     [ PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_retraites_rentes
-        -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+        -- type_pension: TypePensionRetraiteRente.PensionsRetraitesRentes
       } ;
       PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_retraites_en_capital_7_5pct
-        -- type: PensionEnCapital_7_5pct
+        -- type_pension: PensionEnCapital_7_5pct
       } ;
       PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_en_capital_plans_épargne_retraite
-        -- type: PensionEnCapitalPlansÉpargneRetraite
+        -- type_pension: PensionEnCapitalPlansÉpargneRetraite
       } ;
       PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_invalidité
-        -- type: PensionInvalidité
+        -- type_pension: PensionInvalidité
       } ;
       PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_alimentaires_perçues
-        -- type: PensionAlimentairePercue
+        -- type_pension: PensionAlimentairePercue
       } ]
 # Ici on conserve une collection plutôt de calculer la somme, car les différents
 # types d'entrées vont nécessiter des calculs d'abattements différents par la
@@ -4157,7 +4157,7 @@ champ d'application TraitementsSalairesDéclarant:
   égal à
     somme argent de (
       transforme chaque p parmi pensions_retraites_rentes_79 en
-        si abattement_selon_158_5_a de p.type alors
+        si abattement_selon_158_5_a de p.type_pension alors
           calcul_abattement_pensions_retraites_rentes de p.valeur_initiale
         sinon 0 €
     )
@@ -5938,7 +5938,7 @@ champ d'application TraitementsSalairesDéclarant:
     pensions_retraites_rentes_79
     ++ [ PensionRetraiteRente {
         -- valeur_initiale: revenus.autre_pensions_imposables_source_étrangère
-        -- type: TypePensionRetraiteRente.PensionsRetraitesRentes
+        -- type_pension: TypePensionRetraiteRente.PensionsRetraitesRentes
       } ]
 ```
 

@@ -45,7 +45,7 @@ déclaration énumération TypePensionRetraiteRente:
 
 déclaration structure PensionRetraiteRente:
   donnée valeur_initiale contenu argent
-  donnée type contenu TypePensionRetraiteRente
+  donnée type_pension contenu TypePensionRetraiteRente
 
 déclaration énumération SélecteurPlafondAbattementPensionsRetraitesRentes79:
   -- Déplafonné
