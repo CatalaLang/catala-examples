@@ -7,6 +7,8 @@ of the Catala programming language development.
 
 <strong>[Browse examples online »](https://catala-lang.org/en/examples)</strong>
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/CatalaLang/catala-examples?quickstart=1)
+
 ## List of examples
 
 - `allocations_familiales/`: computation of the French family benefits, based
