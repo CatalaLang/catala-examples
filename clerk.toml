@@ -10,6 +10,8 @@ include_dirs = [
   "impot_revenu"
 ]
 
+# -- the following is deprecated, but still used by the LSP --
+
 [[module]]
 name = "Aides_logement"
 module_uses = [

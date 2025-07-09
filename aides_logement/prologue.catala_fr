@@ -115,7 +115,7 @@ déclaration structure TrancheRevenuDécimal:
   donnée taux contenu décimal
 
 déclaration structure LogementFoyer:
-  donnée type contenu TypeLogementFoyer
+  donnée type_logement contenu TypeLogementFoyer
   donnée logement_foyer_jeunes_travailleurs contenu booléen
   donnée remplit_conditions_r832_21 contenu booléen
   donnée conventionné_livre_III_titre_V_chap_III contenu booléen

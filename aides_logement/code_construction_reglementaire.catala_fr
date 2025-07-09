@@ -1534,7 +1534,7 @@ champ d'application CalculAidePersonnaliséeLogement:
             -- date_courante: date_courante
             -- situation_familiale_calcul_apl: situation_familiale_calcul_apl
             -- redevance: logement_foyer_.redevance
-            -- type_logement_foyer: logement_foyer_.type
+            -- type_logement_foyer: logement_foyer_.type_logement
             -- date_conventionnement: logement_foyer_.date_conventionnement
           }
         dans
@@ -1634,7 +1634,7 @@ champ d'application CalculAllocationLogement:
             -- redevance: logement_foyer_.redevance
             -- catégorie_équivalence_loyer_d842_16:
               logement_foyer_.catégorie_équivalence_loyer_d842_16
-            -- type_logement_foyer: logement_foyer_.type
+            -- type_logement_foyer: logement_foyer_.type_logement
             -- date_conventionnement: logement_foyer_.date_conventionnement
           }
         dans
@@ -3708,7 +3708,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer de logement_foyer :
-      logement_foyer.type sous forme TypeLogementFoyer.Autre
+      logement_foyer.type_logement sous forme TypeLogementFoyer.Autre
     -- n'importe quel : faux
   conséquence non rempli
 ```
@@ -5950,7 +5950,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer de logement_foyer :
-      logement_foyer.type sous forme FoyerJeunesTravailleursOuMigrantsConventionnéL353_2Avant1995
+      logement_foyer.type_logement sous forme FoyerJeunesTravailleursOuMigrantsConventionnéL353_2Avant1995
     -- n'importe quel : faux
   conséquence non rempli
 ```
