@@ -234,13 +234,13 @@ $ catala test-scope Exemple1 --disable-warnings
 ```catala-test-cli
 $ catala test-scope Exemple2 --disable-warnings
 ┌─[RESULT]─ Exemple2 ─
-│ éligible = AllocationLogementFamiliale ()
+│ éligible = AllocationLogementFamiliale
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple3 --disable-warnings
 ┌─[RESULT]─ Exemple3 ─
-│ éligible = AllocationLogementFamiliale ()
+│ éligible = AllocationLogementFamiliale
 └─
 ```
