@@ -141,24 +141,24 @@ end
 module ProRataArrondiEuroBranchement_in = struct
   type t = {
     montant_a_distribuer_in: money;
-    base_prorata_1_in: ((money * source_position)) Eoption.t;
-    base_prorata_2_in: ((money * source_position)) Eoption.t;
-    base_prorata_3_in: ((money * source_position)) Eoption.t;
-    base_prorata_4_in: ((money * source_position)) Eoption.t;
-    base_prorata_5_in: ((money * source_position)) Eoption.t;
-    base_prorata_6_in: ((money * source_position)) Eoption.t;
-    base_prorata_7_in: ((money * source_position)) Eoption.t;
-    base_prorata_8_in: ((money * source_position)) Eoption.t;
-    base_prorata_9_in: ((money * source_position)) Eoption.t;
-    bases_prorata_liste_1_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_2_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_3_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_4_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_5_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_6_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_7_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_8_in: (((money array) * source_position)) Eoption.t;
-    bases_prorata_liste_9_in: (((money array) * source_position)) Eoption.t
+    base_prorata_1_in: ((money * source_position)) Optional.t;
+    base_prorata_2_in: ((money * source_position)) Optional.t;
+    base_prorata_3_in: ((money * source_position)) Optional.t;
+    base_prorata_4_in: ((money * source_position)) Optional.t;
+    base_prorata_5_in: ((money * source_position)) Optional.t;
+    base_prorata_6_in: ((money * source_position)) Optional.t;
+    base_prorata_7_in: ((money * source_position)) Optional.t;
+    base_prorata_8_in: ((money * source_position)) Optional.t;
+    base_prorata_9_in: ((money * source_position)) Optional.t;
+    bases_prorata_liste_1_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_2_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_3_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_4_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_5_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_6_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_7_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_8_in: (((money array) * source_position)) Optional.t;
+    bases_prorata_liste_9_in: (((money array) * source_position)) Optional.t
   }
   let embed (x: t) : runtime_value =
     Struct(
@@ -530,144 +530,144 @@ let pro_rata_arrondi_euro_branchement
       handle_exceptions
         [| base_prorata_1_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_2_ : money =
     match
       handle_exceptions
         [| base_prorata_2_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_3_ : money =
     match
       handle_exceptions
         [| base_prorata_3_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_4_ : money =
     match
       handle_exceptions
         [| base_prorata_4_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_5_ : money =
     match
       handle_exceptions
         [| base_prorata_5_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_6_ : money =
     match
       handle_exceptions
         [| base_prorata_6_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_7_ : money =
     match
       handle_exceptions
         [| base_prorata_7_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_8_ : money =
     match
       handle_exceptions
         [| base_prorata_8_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let base_prorata_9_ : money =
     match
       handle_exceptions
         [| base_prorata_9_ |]
     with
-    | ENone _ -> money_of_units_int 0
-    | ESome (x, _) -> x
+    | Absent _ -> money_of_units_int 0
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_1_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_1_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_2_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_2_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_3_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_3_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_4_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_4_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_5_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_5_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_6_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_6_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_7_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_7_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_8_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_8_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata_liste_9_ : money array =
     match
       handle_exceptions
         [| bases_prorata_liste_9_ |]
     with
-    | ENone _ -> Array.make 0 (money_of_units_int 0)
-    | ESome (x, _) -> x
+    | Absent _ -> Array.make 0 (money_of_units_int 0)
+    | Present (x, _) -> x
   in
   let bases_prorata =
     Array.make

@@ -522,7 +522,6 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │                 -- coefficient: 4
 │                 -- catégorie:
 │                   MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-│                     ()
 │               }
 │             ]
 │           -- solde_net_professionnel: 0,00 €
@@ -544,7 +543,6 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │             -- coefficient: 4
 │             -- catégorie:
 │               MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-│                 ()
 │           }
 │         ]
 │       ]
@@ -862,8 +860,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │                 -- valeur_nette: 28 922,00 €
 │                 -- déduction: 28 921,00 €
 │                 -- coefficient: 4
-│                 -- catégorie:
-│                   MicroBénéficesIndustrielsCommerciauxServices ()
+│                 -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
 │               }
 │             ]
 │           -- solde_net_professionnel: 32 629,00 €
@@ -882,7 +879,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │             -- valeur_nette: 28 922,00 €
 │             -- déduction: 28 921,00 €
 │             -- coefficient: 4
-│             -- catégorie: MicroBénéficesIndustrielsCommerciauxServices ()
+│             -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
 │           }
 │         ]; []
 │       ]

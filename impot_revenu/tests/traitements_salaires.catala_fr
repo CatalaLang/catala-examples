@@ -1390,7 +1390,7 @@ $ catala test-scope TraitementsSalaires7 --disable-warnings
 │                 -- valeur_nette: 238 681,00 €
 │                 -- déduction: 11 319,00 €
 │                 -- coefficient: 5
-│                 -- catégorie: TraitementsSalaires ()
+│                 -- catégorie: TraitementsSalaires
 │               }
 │             ]
 │         };
@@ -1704,7 +1704,7 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 │                 -- valeur_nette: 907 464,00 €
 │                 -- déduction: 12 536,00 €
 │                 -- coefficient: 6
-│                 -- catégorie: TraitementsSalaires ()
+│                 -- catégorie: TraitementsSalaires
 │               }
 │             ]
 │         };
@@ -1816,7 +1816,7 @@ $ catala test-scope TraitementsSalaires9 --disable-warnings
 │                 -- valeur_nette: 486 572,00 €
 │                 -- déduction: 13 428,00 €
 │                 -- coefficient: 6
-│                 -- catégorie: TraitementsSalaires ()
+│                 -- catégorie: TraitementsSalaires
 │               }
 │             ]
 │         }
@@ -2820,7 +2820,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │                 -- valeur_nette: 3 734,00 €
 │                 -- déduction: 389,00 €
 │                 -- coefficient: 5
-│                 -- catégorie: TraitementsSalaires ()
+│                 -- catégorie: TraitementsSalaires
 │               }
 │             ]
 │         };
