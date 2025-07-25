@@ -346,7 +346,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
         tel que (
           selon personne_à_charge sous forme
           -- AutrePersonneÀCharge : faux
-          -- EnfantÀCharge de enfant :
+          -- EnfantÀCharge contenu enfant :
             (
               selon enfant.situation_garde_alternée sous forme
               -- GardeAlternéeCoefficientPriseEnCharge : vrai
@@ -356,10 +356,10 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
       en
         selon personne_à_charge sous forme
         -- AutrePersonneÀCharge : 0,0
-        -- EnfantÀCharge de enfant :
+        -- EnfantÀCharge contenu enfant :
           (
             selon enfant.situation_garde_alternée sous forme
-            -- GardeAlternéeCoefficientPriseEnCharge de coeff : coeff
+            -- GardeAlternéeCoefficientPriseEnCharge contenu coeff : coeff
             -- PasDeGardeAlternée : 0,0
           )
     )
@@ -1247,7 +1247,7 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
             tel que (
               selon personne_à_charge sous forme
               -- AutrePersonneÀCharge : vrai
-              -- EnfantÀCharge de enfant :
+              -- EnfantÀCharge contenu enfant :
                 (
                   selon enfant.situation_garde_alternée sous forme
                   -- GardeAlternéeCoefficientPriseEnCharge : faux

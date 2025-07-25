@@ -348,7 +348,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
   définition déclarations_revenus égal à
     [déclarant1] ++ (selon déclarant2 sous forme
       -- PasDeDéclaration: []
-      -- Déclaration de déclarant2: [déclarant2]) ++
+      -- Déclaration contenu déclarant2: [déclarant2]) ++
     déclarations_personnes_à_charge
 ```
 
