@@ -94,15 +94,15 @@ scope Section121TwoPersons:
 
   definition person1 equals
     match return_type with pattern
-    -- SingleReturn of data_person1 : data_person1
-    -- JointReturn of data_couple : data_couple.person1
-    -- SingleReturnSurvivingSpouse of data_single : data_single.return
+    -- SingleReturn content data_person1 : data_person1
+    -- JointReturn content data_couple : data_couple.person1
+    -- SingleReturnSurvivingSpouse content data_single : data_single.return
 
   definition person2 equals
     match return_type with pattern
-    -- SingleReturn of data_person2 : data_person2
-    -- JointReturn of data_couple : data_couple.person2
-    -- SingleReturnSurvivingSpouse of data_single : data_single.return
+    -- SingleReturn content data_person2 : data_person2
+    -- JointReturn content data_couple : data_couple.person2
+    -- SingleReturnSurvivingSpouse content data_single : data_single.return
 
   definition section121Person1.property_ownage equals person1.property_ownage
 
@@ -324,15 +324,15 @@ scope Section121TwoPasses
 
   definition period_merge.periods1 equals
     match return_type with pattern
-    -- JointReturn of joint_return : joint_return.person1.property_ownage
-    -- SingleReturnSurvivingSpouse of dead_spouse_info : [] # does not happen
-    -- SingleReturn of return : []
+    -- JointReturn content joint_return : joint_return.person1.property_ownage
+    -- SingleReturnSurvivingSpouse content dead_spouse_info : [] # does not happen
+    -- SingleReturn content return : []
   # does not happen
   definition period_merge.periods2 equals
     match return_type with pattern
-    -- JointReturn of joint_return : joint_return.person2.property_ownage
-    -- SingleReturnSurvivingSpouse of dead_spouse_info : [] # does not happen
-    -- SingleReturn of return : []
+    -- JointReturn content joint_return : joint_return.person2.property_ownage
+    -- SingleReturnSurvivingSpouse content dead_spouse_info : [] # does not happen
+    -- SingleReturn content return : []
   # does not happen
 
   definition second_pass.person1 equals
@@ -361,7 +361,7 @@ was any other sale or exchange by the taxpayer to which subsection (a) applied.
 ```catala
 scope Section121SinglePerson:
   rule section_121_b_3_applies under condition
-    other_section_121a_sale with pattern MostRecentSaleWhereSection121aApplied of other_sale
+    other_section_121a_sale with pattern MostRecentSaleWhereSection121aApplied content other_sale
     and date_of_sale_or_exchange - other_sale.date_of_sale_or_exchange <= 2 year
   consequence fulfilled
 
@@ -385,29 +385,29 @@ years after the date of death of such spouse and the requirements of paragraph
 
 ```catala
 scope Section121TwoPasses
-  under condition return_type with pattern SingleReturnSurvivingSpouse of single_data
+  under condition return_type with pattern SingleReturnSurvivingSpouse content single_data
   and single_data.date_of_spouse_death < date_of_sale_or_exchange
   and date_of_sale_or_exchange <= single_data.date_of_spouse_death + 2 year:
 
   definition first_pass.date_of_sale_or_exchange equals
     match return_type with pattern
-    -- SingleReturnSurvivingSpouse of single_data :
+    -- SingleReturnSurvivingSpouse content single_data :
       single_data.date_of_spouse_death
-    -- SingleReturn of return : date_of_sale_or_exchange # does not happen
-    -- JointReturn of return : date_of_sale_or_exchange
+    -- SingleReturn content return : date_of_sale_or_exchange # does not happen
+    -- JointReturn content return : date_of_sale_or_exchange
   # does not happen
 
   definition first_pass.return_type equals
     match return_type with pattern
-    -- SingleReturnSurvivingSpouse of single_data :
+    -- SingleReturnSurvivingSpouse content single_data :
       JointReturn content (
         JointReturn {
           -- person1: single_data.return
           -- person2: single_data.death_spouse_info_at_time_of_death
         }
       )
-    -- SingleReturn of return : SingleReturn content return # does not happen
-    -- JointReturn of return : JointReturn content return
+    -- SingleReturn content return : SingleReturn content return # does not happen
+    -- JointReturn content return : JointReturn content return
   # does not happen
 
   definition second_pass.gain_cap under condition

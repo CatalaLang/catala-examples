@@ -1145,7 +1145,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement
   étiquette r823_4_enfants
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     selon personne_à_charge sous forme
-    -- EnfantÀCharge de enfant :
+    -- EnfantÀCharge contenu enfant :
       # Pour être considéré à charge pour les aides personnelles au logement,
       # l'enfant doit en plus d'avoir moins de 21 ans mais aussi selon le
       # 7e alinéa de L823-1 être éligible aux prestations familiales.
@@ -1158,7 +1158,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement
           -- a_déjà_ouvert_droit_aux_allocations_familiales:
             enfant.a_déjà_ouvert_droit_aux_allocations_familiales
         }
-    -- AutrePersonneÀCharge de parent : faux
+    -- AutrePersonneÀCharge contenu parent : faux
   conséquence rempli
 ```
 
@@ -1181,8 +1181,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   règle condition_2_r823_4 de personne_à_charge sous condition
     date_courante >= |2023-09-01|
     et selon personne_à_charge sous forme
-    -- EnfantÀCharge de enfant : faux
-    -- AutrePersonneÀCharge de parent :
+    -- EnfantÀCharge contenu enfant : faux
+    -- AutrePersonneÀCharge contenu parent :
       parent.parenté = Ascendant
       et parent.ressources
       <= plafond_individuel_l815_9_sécu * 1,25
@@ -1245,8 +1245,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement
   exception r823_4_2
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     selon personne_à_charge sous forme
-    -- EnfantÀCharge de enfant : faux
-    -- AutrePersonneÀCharge de parent :
+    -- EnfantÀCharge contenu enfant : faux
+    -- AutrePersonneÀCharge contenu parent :
       (
         parent.parenté sous forme Ascendant
         ou parent.parenté sous forme Descendant
@@ -1437,13 +1437,13 @@ et D. 842-6 à D. 842-13 .
 champ d'application CalculAllocationLogement:
   définition catégorie_calcul_apl égal à
     selon mode_occupation sous forme
-    -- Locataire de location : Location contenu location
-    -- SousLocataire de location : Location contenu location
-    -- RésidentLogementFoyer de logementfoyer :
+    -- Locataire contenu location : Location contenu location
+    -- SousLocataire contenu location : Location contenu location
+    -- RésidentLogementFoyer contenu logementfoyer :
       CatégorieCalculAPL.LogementFoyer contenu logementfoyer
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire :
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       AccessionPropriété contenu propriétaire
-    -- LocationAccession de propriétaire :
+    -- LocationAccession contenu propriétaire :
       AccessionPropriété contenu propriétaire
 
   définition aide_finale_formule égal à
@@ -1458,13 +1458,13 @@ champ d'application CalculAllocationLogement:
 champ d'application CalculAidePersonnaliséeLogement:
   définition catégorie_calcul_apl égal à
     selon mode_occupation sous forme
-    -- Locataire de location : Location contenu location
-    -- SousLocataire de location : Location contenu location
-    -- RésidentLogementFoyer de logementfoyer :
+    -- Locataire contenu location : Location contenu location
+    -- SousLocataire contenu location : Location contenu location
+    -- RésidentLogementFoyer contenu logementfoyer :
       CatégorieCalculAPL.LogementFoyer contenu logementfoyer
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire :
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       AccessionPropriété contenu propriétaire
-    -- LocationAccession de propriétaire :
+    -- LocationAccession contenu propriétaire :
       AccessionPropriété contenu propriétaire
 
   définition aide_finale_formule égal à
@@ -1484,7 +1484,7 @@ champ d'application CalculAidePersonnaliséeLogement:
 champ d'application CalculAidePersonnaliséeLogement:
   définition sous_calcul_traitement égal à
     selon catégorie_calcul_apl sous forme
-    -- Location de location :
+    -- Location contenu location :
       (
         soit traitement_formule égal à
           résultat de CalculAidePersonnaliséeLogementLocatif avec {
@@ -1504,7 +1504,7 @@ champ d'application CalculAidePersonnaliséeLogement:
             -- réduction_loyer_solidarité:
               (
                 selon location.bailleur sous forme
-                -- BailleurSocial de bailleur :
+                -- BailleurSocial contenu bailleur :
                   bailleur.réduction_loyer_solidarité_perçue
                 -- n'importe quel : 0€
               )
@@ -1521,7 +1521,7 @@ champ d'application CalculAidePersonnaliséeLogement:
               CalculAidePersonnaliséeLogementLocatif.traitement_aide_finale
         }
       )
-    -- LogementFoyer de logement_foyer_ :
+    -- LogementFoyer contenu logement_foyer_ :
       (
         soit traitement_formule égal à
           résultat de CalculAidePersonnaliséeLogementFoyer avec {
@@ -1547,7 +1547,7 @@ champ d'application CalculAidePersonnaliséeLogement:
               CalculAidePersonnaliséeLogementFoyer.traitement_aide_finale
         }
       )
-    -- AccessionPropriété de propriétaire :
+    -- AccessionPropriété contenu propriétaire :
       (
         soit traitement_formule égal à
           résultat de CalculAidePersonnaliséeLogementAccessionPropriété avec {
@@ -1582,7 +1582,7 @@ champ d'application CalculAidePersonnaliséeLogement:
 champ d'application CalculAllocationLogement:
   définition sous_calcul_traitement égal à
     selon catégorie_calcul_apl sous forme
-    -- Location de location :
+    -- Location contenu location :
       (
         soit traitement_formule égal à
           résultat de CalculAllocationLogementLocatif avec {
@@ -1603,7 +1603,7 @@ champ d'application CalculAllocationLogement:
             -- réduction_loyer_solidarité:
               (
                 selon location.bailleur sous forme
-                -- BailleurSocial de bailleur :
+                -- BailleurSocial contenu bailleur :
                   bailleur.réduction_loyer_solidarité_perçue
                 -- n'importe quel : 0€
               )
@@ -1619,7 +1619,7 @@ champ d'application CalculAllocationLogement:
               CalculAllocationLogementLocatif.traitement_aide_finale
         }
       )
-    -- LogementFoyer de logement_foyer_ :
+    -- LogementFoyer contenu logement_foyer_ :
       (
         soit traitement_formule égal à
           résultat de CalculAllocationLogementFoyer avec {
@@ -1646,7 +1646,7 @@ champ d'application CalculAllocationLogement:
               CalculAllocationLogementFoyer.traitement_aide_finale
         }
       )
-    -- AccessionPropriété de propriétaire :
+    -- AccessionPropriété contenu propriétaire :
       (
         soit traitement_formule égal à
           résultat de CalculAllocationLogementAccessionPropriété avec {
@@ -2121,12 +2121,12 @@ champ d'application ÉligibilitéPrimeDeDéménagement:
     (
       selon informations.date_naissance_troisième_enfant_ou_dernier_si_plus sous forme
       -- MoinsDeTroisEnfants : faux
-      -- PlusDeTroisEnfants de date_naissance_ou_grossesse :
+      -- PlusDeTroisEnfants contenu date_naissance_ou_grossesse :
         (
           selon date_naissance_ou_grossesse sous forme
           -- AvantPremierJourMoisCivilTroisièmeMoisDeGrossesse : faux
           -- AprèsPremierJourMoisCivilTroisièmeMoisDeGrossesse : vrai
-          -- DateDeNaissance de date_naissance :
+          -- DateDeNaissance contenu date_naissance :
             # VERIF: ambigü
             date_courante
             <= ((premier_jour_du_mois de (date_naissance + 2 an))) + (-1 jour)
@@ -2244,7 +2244,7 @@ champ d'application ImpayéDépenseLogement
     aide_versée sous forme Bénéficiaire
   conséquence égal à
     selon dépense_logement_brute sous forme
-    -- Loyer de loyer_brut : (loyer_brut + montant_charges) * 2,0
+    -- Loyer contenu loyer_brut : (loyer_brut + montant_charges) * 2,0
     -- Mensualité : 0€ # ne devrait pas arriver
     -- TotalAnnuelÉchéances : 0€
 # ne devrait pas arriver
@@ -2261,7 +2261,7 @@ champ d'application ImpayéDépenseLogement
     aide_versée sous forme Bailleur
   conséquence égal à
     selon dépense_logement_nette sous forme
-    -- Loyer de loyer_net : (loyer_net + montant_charges) * 2,0
+    -- Loyer contenu loyer_net : (loyer_net + montant_charges) * 2,0
     -- Mensualité : 0€ # ne devrait pas arriver
     -- TotalAnnuelÉchéances : 0€
 # ne devrait pas arriver
@@ -2284,10 +2284,10 @@ champ d'application ImpayéDépenseLogement
   sous condition mode_occupation_impayé sous forme ImpayéLoyer:
   définition dépense_logement_nette égal à
     selon dépense_logement_brute sous forme
-    -- Loyer de montant_loyer : Loyer contenu (montant_loyer - montant_apl)
-    -- Mensualité de mensualité : Mensualité contenu mensualité
+    -- Loyer contenu montant_loyer : Loyer contenu (montant_loyer - montant_apl)
+    -- Mensualité contenu mensualité : Mensualité contenu mensualité
     # Ne devrait pas arriver
-    -- TotalAnnuelÉchéances de total : TotalAnnuelÉchéances contenu total
+    -- TotalAnnuelÉchéances contenu total : TotalAnnuelÉchéances contenu total
 # Ne devrait pas arriver
 ```
 
@@ -2329,9 +2329,9 @@ champ d'application ImpayéDépenseLogement
   conséquence égal à
     selon dépense_logement_brute sous forme
     -- Loyer : 0€ # Ne devrait pas arriver
-    -- Mensualité de mensualité_brute :
+    -- Mensualité contenu mensualité_brute :
       mensualité_brute * 2,0
-    -- TotalAnnuelÉchéances de échéance_prêt_brute :
+    -- TotalAnnuelÉchéances contenu échéance_prêt_brute :
       échéance_prêt_brute * (1,0 / 6,0)
 ```
 
@@ -2355,8 +2355,8 @@ champ d'application ImpayéDépenseLogement
   conséquence égal à
     selon dépense_logement_nette sous forme
     -- Loyer : 0€ # ne devrait pas arriver
-    -- Mensualité de mensualité_nette : mensualité_nette * 2,0
-    -- TotalAnnuelÉchéances de échéance_prêt_nette :
+    -- Mensualité contenu mensualité_nette : mensualité_nette * 2,0
+    -- TotalAnnuelÉchéances contenu échéance_prêt_nette :
       échéance_prêt_nette * (1,0 / 6,0)
 ```
 
@@ -2376,10 +2376,10 @@ champ d'application ImpayéDépenseLogement
   sous condition mode_occupation_impayé sous forme ImpayéPrêt:
   définition dépense_logement_nette égal à
     selon dépense_logement sous forme
-    -- Loyer de loyer : Loyer contenu loyer # ne devrait pas arriver
-    -- Mensualité de mensualité :
+    -- Loyer contenu loyer : Loyer contenu loyer # ne devrait pas arriver
+    -- Mensualité contenu mensualité :
       Mensualité contenu (mensualité - montant_apl)
-    -- TotalAnnuelÉchéances de total_échéances :
+    -- TotalAnnuelÉchéances contenu total_échéances :
       TotalAnnuelÉchéances contenu (total_échéances - (montant_apl * 12,0))
 ```
 
@@ -3707,7 +3707,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
   exception logement_foyer
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- RésidentLogementFoyer de logement_foyer :
+    -- RésidentLogementFoyer contenu logement_foyer :
       logement_foyer.type_logement sous forme TypeLogementFoyer.Autre
     -- n'importe quel : faux
   conséquence non rempli
@@ -3766,7 +3766,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
   étiquette logement_foyer
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- RésidentLogementFoyer de logement_foyer :
+    -- RésidentLogementFoyer contenu logement_foyer :
       logement_foyer.remplit_conditions_r832_21
     # On a regroupé toutes les conditions au dessus dans une seule
     # variable, le calcul n'étant pas ici pertinent.
@@ -4166,7 +4166,7 @@ champ d'application CalculÉquivalenceLoyerMinimale:
           (
             selon tranche.haut sous forme
             -- LimiteTranche.Infini : LimiteTrancheDécimal.Infini
-            -- LimiteTranche.Revenu de tranche_haut :
+            -- LimiteTranche.Revenu contenu tranche_haut :
               LimiteTrancheDécimal.Revenu contenu ((décimal de tranche_haut) * n_nombre_parts_d832_25)
           )
         -- bas:
@@ -4189,7 +4189,7 @@ champ d'application CalculÉquivalenceLoyerMinimale:
                   si ressources_ménage_arrondies <= tranche.bas alors 0,0
                   sinon
                     selon tranche.haut sous forme
-                    -- LimiteTrancheDécimal.Revenu de tranche_haut :
+                    -- LimiteTrancheDécimal.Revenu contenu tranche_haut :
                       (
                         si ressources_ménage_arrondies >= tranche_haut alors
                           (tranche_haut - tranche.bas)
@@ -4240,7 +4240,7 @@ champ d'application CalculÉquivalenceLoyerMinimale:
                   sinon
                     (
                       selon tranche.haut sous forme
-                      -- LimiteTrancheDécimal.Revenu de tranche_haut :
+                      -- LimiteTrancheDécimal.Revenu contenu tranche_haut :
                         (
                           si ressources_ménage_arrondies >= tranche_haut alors
                             (tranche_haut - tranche.bas)
@@ -4445,14 +4445,14 @@ du 3° de l'article L. 823-1 .
 ```catala
 champ d'application CalculAllocationLogementLocatif
   sous condition selon changement_logement_d842_4 sous forme
-  -- Changement de infos :
+  -- Changement contenu infos :
     loyer_principal >= infos.ancien_loyer_principal
   -- PasDeChangement : faux:
 
   exception
   définition aide_finale_formule égal à
     selon changement_logement_d842_4 sous forme
-    -- Changement de infos :
+    -- Changement contenu infos :
       loyer_principal
       - (infos.ancien_loyer_principal - infos.ancienne_allocation_logement)
     -- n'importe quel : 0 €
@@ -4511,7 +4511,7 @@ champ d'application ÉligibilitéAllocationLogement:
   exception
   règle condition_accession_propriété sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire :
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.titulaire_prêt sous forme Demandeur
       et (
         propriétaire.type_travaux_logement_r842_5 sous forme TypeTravauxLogementR842_5.PasDeTravaux
@@ -4529,7 +4529,7 @@ champ d'application ÉligibilitéAllocationLogement:
   exception
   règle condition_accession_propriété sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire :
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.titulaire_prêt sous forme Demandeur
       et propriétaire.type_travaux_logement_r842_5 sous forme PrévuDansListeR321_15
     -- n'importe quel : faux
@@ -4546,7 +4546,7 @@ champ d'application ÉligibilitéAllocationLogement:
   exception
   règle condition_accession_propriété sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire :
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.titulaire_prêt sous forme Demandeur
       et propriétaire.type_travaux_logement_r842_5 sous forme AgrandirOuRendreHabitableD331_63
     -- n'importe quel : faux
@@ -4966,7 +4966,7 @@ application du III de l'article 12 de la loi n° 57-908 du 7 août 1957 tendant
 ```catala
 champ d'application ÉligibilitéAllocationLogement
   sous condition selon ménage.logement.mode_occupation sous forme
-  -- RésidentLogementFoyer de logement_foyer :
+  -- RésidentLogementFoyer contenu logement_foyer :
     logement_foyer.construit_application_loi_1957_12_III
   -- n'importe quel : faux:
 
@@ -5949,7 +5949,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement
   exception logement_foyer
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- RésidentLogementFoyer de logement_foyer :
+    -- RésidentLogementFoyer contenu logement_foyer :
       logement_foyer.type_logement sous forme FoyerJeunesTravailleursOuMigrantsConventionnéL353_2Avant1995
     -- n'importe quel : faux
   conséquence non rempli
@@ -6766,7 +6766,7 @@ champ d'application CalculAllocationLogement
     catégorie_calcul_apl sous forme LogementFoyer
   conséquence égal à
     selon catégorie_calcul_apl sous forme
-    -- LogementFoyer de logement_foyer_ :
+    -- LogementFoyer contenu logement_foyer_ :
       (
         soit traitement_formule égal à
           résultat de CalculAllocationLogementLocatif avec {

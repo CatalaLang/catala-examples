@@ -837,7 +837,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
     # présent". Les anciennes et nouvelles version font référence aux
     # changements introduits par l’arrêté du 26 décembre 2022.
     (selon ancienneté_logement sous forme
-     -- Ancien de amélioré_par_occupant:
+     -- Ancien contenu amélioré_par_occupant:
         amélioré_par_occupant sous forme AmélioréParOccupant.Oui
      -- Neuf: faux) et
     type_prêt sous forme D331_63_64
@@ -2467,7 +2467,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
     selon ancienneté_logement sous forme
     -- Neuf:
       (si date_signature_prêt <= |1998-10-01| alors 0,0226 sinon 0,0234)
-    -- Ancien de amélioré_par_occupant:
+    -- Ancien contenu amélioré_par_occupant:
       (selon amélioré_par_occupant sous forme
       -- AmélioréParOccupant.Oui: 0,0172
       -- AmélioréParOccupant.Non:
