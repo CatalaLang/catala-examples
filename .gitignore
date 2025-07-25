@@ -1,4 +1,5 @@
 _build/
+_targets/
 _opam/
 _python_venv/
 *.install
