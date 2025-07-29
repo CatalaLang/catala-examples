@@ -2513,7 +2513,7 @@ champ d'application TraitementsSalairesDéclarant:
     # et salaires d'un déclarant.
     selon revenus.frais_réels sous forme
     -- FraisRéels.Non : FraisRéels.Non
-    -- FraisRéels.Oui de montant_frais_réels :
+    -- FraisRéels.Oui contenu montant_frais_réels :
       # Ici, règle de gestion fiscale dans l'intérêt du contribuable :
       # si le montant des frais réels est inférieur à la déduction
       # forfaitaire, alors on applique quand même cette dernière même
@@ -2536,7 +2536,7 @@ champ d'application TraitementsSalairesDéclarant:
       # En l'absence de frais réels on prend juste la valeur plafonnée
       # calculée précédemment.
       déduction_frais_professionnels_totale
-    -- FraisRéels.Oui de montant_frais_réels :
+    -- FraisRéels.Oui contenu montant_frais_réels :
       montant_frais_réels
 
   # Donc pour l'instant nous avons calculé la déduction pour frais
@@ -2555,7 +2555,7 @@ champ d'application TraitementsSalairesDéclarant:
   conséquence égal à
     selon application_frais_réels sous forme
     -- FraisRéels.Non : 0 € # Ne peut pas arriver
-    -- FraisRéels.Oui de montant_frais_réels :
+    -- FraisRéels.Oui contenu montant_frais_réels :
       # Nous allons imputer à un revenu quotienté donné un pro-rata de la
       # déduction aux frais réels qui s'applique à la fois aux traitements
       # salaires normaux, mais aussi aux revenus quotientés.
@@ -4194,7 +4194,7 @@ champ d'application TraitementsSalairesDéclarant:
     selon selecteur_plafond_abattement_pensions_retraites_rentes sous forme
     -- Déplafonné :
       abattement_pensions_retraites_rentes_total_non_plafonné
-    -- PlafondStandardOuProratisé de plafond_standard_ou_proratisé :
+    -- PlafondStandardOuProratisé contenu plafond_standard_ou_proratisé :
       plafond de
         abattement_pensions_retraites_rentes_total_non_plafonné,
         plafond_standard_ou_proratisé
@@ -4595,7 +4595,7 @@ champ d'application CalculRevenuQuotienté:
       -- coefficient:
         selon revenu.échéance sous forme
         -- RevenuExceptionnel : 4
-        -- RevenuDifféréÉchéanceNormale de année_d_échéance_normale :
+        -- RevenuDifféréÉchéanceNormale contenu année_d_échéance_normale :
           (année_revenus - année_d_échéance_normale)
           + décalage_échéance_prise_en_compte
     }
@@ -4670,7 +4670,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
         (
           soit déduction égal à
             selon revenu.catégorie sous forme
-            -- RenteViagèreOnéreux de catégorie_rente_viagère :
+            -- RenteViagèreOnéreux contenu catégorie_rente_viagère :
               calcul_déduction_rente_viagères_titre_onéreux de
                 RenteViagèreOnéreux {
                   -- valeur: revenu.valeur

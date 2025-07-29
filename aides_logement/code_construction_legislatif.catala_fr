@@ -125,7 +125,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition condition_nationalité égal à
     selon demandeur.nationalité sous forme
     -- Française: vrai
-    -- Étrangère de conditions:
+    -- Étrangère contenu conditions:
       conditions.satisfait_conditions_l512_2_code_sécurité_sociale
 ```
 
@@ -163,10 +163,10 @@ quels que soient leurs formes et leurs objets.
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition usufruit_ou_propriété_famille égal à
     (selon ménage.logement.propriétaire sous forme
-      -- DemandeurOuConjointOuParentOuViaPartsSociétés de parts: vrai
+      -- DemandeurOuConjointOuParentOuViaPartsSociétés contenu parts: vrai
       -- ParentOuAutre.Autre: faux) ou
     (selon ménage.logement.usufruit sous forme
-      -- DemandeurOuConjointOuParentOuViaPartsSociétés de parts: vrai
+      -- DemandeurOuConjointOuParentOuViaPartsSociétés contenu parts: vrai
       -- ParentOuAutre.Autre: faux)
 
   étiquette l822_3_1 exception l822_2
@@ -188,10 +188,10 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   règle condition_logement_mode_occupation sous condition
     usufruit_ou_propriété_famille et
     (selon ménage.logement.propriétaire sous forme
-      -- DemandeurOuConjointOuParentOuViaPartsSociétés de parts: parts
+      -- DemandeurOuConjointOuParentOuViaPartsSociétés contenu parts: parts
       -- ParentOuAutre.Autre: 0,0) < seuil_l822_3_parts_propriété et
     (selon ménage.logement.usufruit sous forme
-      -- DemandeurOuConjointOuParentOuViaPartsSociétés de parts: parts
+      -- DemandeurOuConjointOuParentOuViaPartsSociétés contenu parts: parts
       -- ParentOuAutre.Autre: 0,0) < seuil_l822_3_parts_usufruit
   conséquence rempli
   # Les < sont stricts par mention de R822-1
@@ -220,7 +220,7 @@ exception cas_base_l822_4 règle condition_logement_location_tiers
   sous condition
     selon ménage.logement.loué_ou_sous_loué_à_des_tiers sous forme
     -- LouéOuSousLouéÀDesTiers.Non: vrai
-    -- LouéOuSousLouéÀDesTiers.Oui de personne:
+    -- LouéOuSousLouéÀDesTiers.Oui contenu personne:
       (résultat de France.VérificationÂgeSupérieurÀ avec
         { -- date_naissance: personne.date_naissance_personne_sous_location
           -- date_courante: date_courante
@@ -436,9 +436,9 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     septième_alinéa_l823_1_applicable et
     selon personne_à_charge sous forme
-    -- EnfantÀCharge de enfant: (
+    -- EnfantÀCharge contenu enfant: (
       selon enfant.nationalité sous forme
-      -- Étrangère de conditions:
+      -- Étrangère contenu conditions:
         non conditions.satisfait_conditions_l512_2_code_sécurité_sociale
       -- n'importe quel: faux
     )
@@ -640,7 +640,7 @@ conditions d'octroi sont fixées par voie réglementaire, sous les réserves
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- AccessionPropriétéLocalUsageExclusifHabitation de propriété:
+      -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriété:
         caractéristiques_prêt_l831_1_1 de propriété.prêt
       -- n'importe quel: faux
   conséquence rempli
@@ -661,12 +661,12 @@ régies par la section 3 du chapitre Ier du titre II du livre III ;
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- Locataire de location:
+      -- Locataire contenu location:
         (selon location.bailleur sous forme
-        -- BailleurSocial de convention:
+        -- BailleurSocial contenu convention:
           convention.
             conventionné_livre_III_titre_V_chap_III
-        -- BailleurPrivéAvecConventionnementSocial de convention:
+        -- BailleurPrivéAvecConventionnementSocial contenu convention:
           convention.conventionné_livre_III_titre_II_chap_I_sec_3
         -- n'importe quel: faux)
       -- n'importe quel: faux
@@ -705,7 +705,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
   étiquette logement_foyer
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- RésidentLogementFoyer de location:
+      -- RésidentLogementFoyer contenu location:
         location.conventionné_livre_III_titre_V_chap_III
       -- n'importe quel: faux
   conséquence rempli
@@ -722,7 +722,7 @@ fixées par voie réglementaire, sous les réserves énoncées à l ‘ article 
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- LocationAccession de propriété:
+      -- LocationAccession contenu propriété:
         caractéristiques_prêt_l831_1_6 de propriété.prêt
       -- n'importe quel: faux
   conséquence rempli
@@ -742,9 +742,9 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
   étiquette l831_2_1 exception l831_2_base règle condition_logement_prêt
   sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- LocationAccession de propriété:
+      -- LocationAccession contenu propriété:
         propriété.prêt.date_signature >= |2017-12-31|
-      -- AccessionPropriétéLocalUsageExclusifHabitation de propriété:
+      -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriété:
         propriété.prêt.date_signature >= |2017-12-31|
       -- n'importe quel: faux
   conséquence non rempli
@@ -761,14 +761,14 @@ d'accès au logement dans le parc résidentiel existant.
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   exception l831_2_1 règle condition_logement_prêt sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- LocationAccession de propriété:
+      -- LocationAccession contenu propriété:
         # Le fait que cette exception ne soit valable qu'après le 1er janvier
         # 2018 nous a été confirmé le 25/05/2022 par DGALN/DHUP/FE4.
         propriété.prêt.date_signature >= |2018-01-01| et
         propriété.prêt.date_signature < |2020-01-01| et
         propriété.ancienneté_logement sous forme Ancien et
         logement_situé_commune_déséquilibre_l831_2
-      -- AccessionPropriétéLocalUsageExclusifHabitation de propriété:
+      -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriété:
         propriété.prêt.date_signature >= |2018-01-01| et
         propriété.prêt.date_signature < |2020-01-01| et
         propriété.ancienneté_logement sous forme Ancien et
@@ -919,7 +919,7 @@ champ d'application ÉligibilitéAllocationLogement:
       (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
-        -- EnfantÀCharge de enfant: prestations_familiales.droit_ouvert de
+        -- EnfantÀCharge contenu enfant: prestations_familiales.droit_ouvert de
           Prestations_familiales.EnfantPrestationsFamiliales {
           -- identifiant: enfant.identifiant
           -- obligation_scolaire: enfant.obligation_scolaire
@@ -943,7 +943,7 @@ champ d'application ÉligibilitéAllocationLogement:
       (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
-        -- EnfantÀCharge de enfant: non (prestations_familiales.droit_ouvert de
+        -- EnfantÀCharge contenu enfant: non (prestations_familiales.droit_ouvert de
           Prestations_familiales.EnfantPrestationsFamiliales {
           -- identifiant: enfant.identifiant
           -- obligation_scolaire: enfant.obligation_scolaire
@@ -956,7 +956,7 @@ champ d'application ÉligibilitéAllocationLogement:
     et
     (selon ménage.situation_familiale sous forme
     # VERIF: opération ambiguë
-    -- Mariés de date_mariage : date_courante <= date_mariage + durée_l841_1_3
+    -- Mariés contenu date_mariage : date_courante <= date_mariage + durée_l841_1_3
     -- n'importe quel: faux)
   conséquence rempli
 ```
@@ -990,7 +990,7 @@ champ d'application ÉligibilitéAllocationLogement:
   sous condition
     existe personne_à_charge parmi ménage.personnes_à_charge tel que
       (selon personne_à_charge sous forme
-      -- AutrePersonneÀCharge de parent:
+      -- AutrePersonneÀCharge contenu parent:
         # Cela a l'air similaire au 3° du R823-4 code construction mais
         # ici le pourcentage est "fixé par voie réglementaire" au lieu d'être
         # fixé à 80%.
@@ -998,7 +998,7 @@ champ d'application ÉligibilitéAllocationLogement:
         # est bien égal à 80%.
         parent.ascendant_descendant_collatéral_deuxième_troisième_degré et
         parent.incapacité_80_pourcent_ou_restriction_emploi
-      -- EnfantÀCharge de enfant: faux)
+      -- EnfantÀCharge contenu enfant: faux)
   conséquence rempli
 ```
 
@@ -1169,7 +1169,7 @@ champ d'application ÉligibilitéAllocationLogement:
   étiquette accession_propriété
   exception base définition éligibilité état l841_2 sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire:
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire:
       propriétaire.prêt.date_signature > |2017-12-31|
     -- n'importe quel: faux
   conséquence égal à PasÉligible
@@ -1311,7 +1311,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   conséquence égal à
     selon demandeur.nationalité sous forme
     -- Française: faux
-    -- Étrangère de conditions:
+    -- Étrangère contenu conditions:
       conditions.satisfait_art_4_ordonnance_2002_mayotte
 ```
 
@@ -1393,7 +1393,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement sous condition
   étiquette logement_foyer
   règle condition_logement_bailleur sous condition
     selon ménage.logement.mode_occupation sous forme
-      -- RésidentLogementFoyer de location:
+      -- RésidentLogementFoyer contenu location:
         location.conventionné_selon_règles_drom
       -- n'importe quel: faux
   conséquence rempli
@@ -1463,7 +1463,7 @@ champ d'application ÉligibilitéAllocationLogement sous condition
       (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
-        -- EnfantÀCharge de enfant: prestations_familiales.droit_ouvert de
+        -- EnfantÀCharge contenu enfant: prestations_familiales.droit_ouvert de
           Prestations_familiales.EnfantPrestationsFamiliales {
           -- identifiant: enfant.identifiant
           -- obligation_scolaire: enfant.obligation_scolaire
@@ -1540,7 +1540,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
   exception r823_4_enfants
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     selon personne_à_charge sous forme
-    -- EnfantÀCharge de enfant:
+    -- EnfantÀCharge contenu enfant:
       enfant.obligation_scolaire sous forme
         Prestations_familiales.SituationObligationScolaire.Après et
       (enfant.date_de_naissance + prestations_familiales.âge_l512_3_2 >
@@ -1571,13 +1571,13 @@ champ d'application ÉligibilitéAllocationLogement sous condition
   étiquette accession_propriété_outre_mer exception accession_propriété
   définition éligibilité état l841_2 sous condition
     selon ménage.logement.mode_occupation sous forme
-    -- AccessionPropriétéLocalUsageExclusifHabitation de propriétaire:
+    -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire:
       propriétaire.prêt.date_signature > |2017-12-31| ou (
       propriétaire.prêt.date_signature > |2019-12-31| et
       selon
         propriétaire.prêt.accord_financement_représentant_État_outre_mer
       sous forme
-      -- Accord de date_accord: date_accord <= |2018-12-31|
+      -- Accord contenu date_accord: date_accord <= |2018-12-31|
       -- PasdAccord: faux )
     -- n'importe quel: faux
   conséquence égal à PasÉligible
@@ -1753,7 +1753,7 @@ champ d'application ÉligibilitéAllocationLogement sous condition
       (liste de personne_à_charge parmi ménage.personnes_à_charge tel que
        (selon personne_à_charge sous forme
         -- AutrePersonneÀCharge: faux
-        -- EnfantÀCharge de enfant: prestations_familiales.droit_ouvert de
+        -- EnfantÀCharge contenu enfant: prestations_familiales.droit_ouvert de
           Prestations_familiales.EnfantPrestationsFamiliales {
           -- identifiant: enfant.identifiant
           -- obligation_scolaire: enfant.obligation_scolaire
@@ -1807,7 +1807,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement sous condition
   exception r823_4_enfants
   règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
     selon personne_à_charge sous forme
-    -- EnfantÀCharge de enfant:
+    -- EnfantÀCharge contenu enfant:
       enfant.obligation_scolaire sous forme
         Prestations_familiales.SituationObligationScolaire.Après et
       (enfant.date_de_naissance + prestations_familiales.âge_l512_3_2 >
