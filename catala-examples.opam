@@ -1,5 +1,5 @@
 opam-version: "2.0"
-version: "0.10.0"
+version: "1.0.0~alpha"
 synopsis: "Collection of Catala programs"
 description:
   "This package gathers implementations of algorithmic portions of various legislative texts, as well as tutorials and examples. Installed artefacts include OCaml and Python libraries resulting from the compilation of the examples written in Catala"
@@ -17,7 +17,7 @@ bug-reports: "https://github.com/CatalaLang/catala/issues"
 depends: [
   "dune" {>= "2.8"}
   "ocaml" {>= "4.11.0"}
-  "catala" {>= "0.10.0" & < "0.11"}
+  "catala" {= version}
   "odoc" {with-doc}
 ]
 build: [ make "all" "test" {with-test} ]
