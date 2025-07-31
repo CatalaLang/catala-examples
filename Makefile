@@ -220,7 +220,7 @@ $(BUILD)/french_law_python.tar.gz: $(TARGET_LIBS:=.catala_??) | $(BUILD)
 # Installation
 ##############
 
-INSTALL_lib = $(filter %.cma %.cmxa %.js %_schema.json, $(TARGETS))
+INSTALL_lib = $(filter %.cma %.cmxa %.a %.js %_schema.json, $(TARGETS))
 INSTALL_libexec = $(filter %.cmxs, $(TARGETS))
 INSTALL_doc = $(filter %.txt %.md %.tex %.html, $(TARGETS))
 
