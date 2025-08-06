@@ -12,7 +12,7 @@ jobs:
     name: Test suite
     runs-on: self-hosted
     container:
-      image: registry.gitlab.inria.fr/verifisc/docker-catala
+      image: registry.gitlab.inria.fr/verifisc/docker-catala:latest-python
       options: --user root
     steps:
       - name: Fix home
@@ -21,16 +21,6 @@ jobs:
         run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install Python dependencies
-        run: |
-          apk add py3-pip
-          python3 -m venv python_venv
-          . python_venv/bin/activate
-          pip install gmpy2 python-dateutil
-      - name: Install C dependencies
-        run: |
-          apk add gmp-dev
       - name: Run tests (interpreter and backends)
         run: |
-          . python_venv/bin/activate
           opam --cli=2.1 exec -- clerk ci
