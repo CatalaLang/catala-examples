@@ -21,6 +21,6 @@ jobs:
         run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Run tests (interpreter and backennd)
+      - name: Run tests (interpreter and backends)
         run: |
           opam --cli=2.1 exec -- clerk ci
