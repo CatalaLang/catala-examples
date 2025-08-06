@@ -24,6 +24,8 @@ jobs:
       - name: Install Python dependencies
         run: |
           apk add py3-pip
+          python3 -m venv python_venv
+          . python_venv/bin/activate
           pip install gmpy2
       - name: Install C dependencies
         run: |
