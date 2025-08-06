@@ -47,10 +47,11 @@ ouvre droit aux prestations familiales :
 1°) tout enfant jusqu'à la fin de l'obligation scolaire ;
 
 ```catala
-champ d'application ÉligibilitéPrestationsFamiliales :
-  étiquette cas_base règle droit_ouvert de enfant sous condition
-    enfant.obligation_scolaire sous forme Avant ou
-    enfant.obligation_scolaire sous forme Pendant
+champ d'application ÉligibilitéPrestationsFamiliales:
+  étiquette cas_base
+  règle droit_ouvert de enfant sous condition
+    enfant.obligation_scolaire sous forme Avant
+    ou enfant.obligation_scolaire sous forme Pendant
   conséquence rempli
 ```
 
@@ -58,24 +59,32 @@ champ d'application ÉligibilitéPrestationsFamiliales :
 dont la rémunération éventuelle n'excède pas un plafond.
 
 ```catala
-champ d'application ÉligibilitéPrestationsFamiliales :
-  étiquette cas_base règle droit_ouvert de enfant sous condition
-    enfant.obligation_scolaire sous forme Après et
-    (enfant.rémuneration_mensuelle <= plafond_l512_3_2) et
-    (résultat de France.VérificationÂgeSupérieurÀ avec
-                { -- date_naissance: enfant.date_de_naissance
-                  -- date_courante: date_courante
-                  -- années: âge_l512_3_2 }).est_supérieur
+champ d'application ÉligibilitéPrestationsFamiliales:
+  étiquette cas_base
+  règle droit_ouvert de enfant sous condition
+    enfant.obligation_scolaire sous forme Après
+    et (enfant.rémuneration_mensuelle <= plafond_l512_3_2)
+    et (
+      résultat de France.VérificationÂgeSupérieurÀ avec {
+        -- date_naissance: enfant.date_de_naissance
+        -- date_courante: date_courante
+        -- années: âge_l512_3_2
+      }
+    ).est_supérieur
   conséquence rempli
 
   # On définit les conditions hors âge d'abord car elles
   # sont référencées plus tard dans l'article L521-1
   règle conditions_hors_âge de enfant sous condition
-    (enfant.obligation_scolaire sous forme Avant ou
-     enfant.obligation_scolaire sous forme Pendant ou
-     enfant.obligation_scolaire sous forme Après) et
-    (enfant.rémuneration_mensuelle <=
-      plafond_l512_3_2)
+    (
+      enfant.obligation_scolaire sous forme Avant
+      ou enfant.obligation_scolaire sous forme Pendant
+      ou enfant.obligation_scolaire sous forme Après
+    )
+    et (
+      enfant.rémuneration_mensuelle
+      <= plafond_l512_3_2
+    )
   conséquence rempli
 ```
 
@@ -100,7 +109,6 @@ ce qui concerne le versement d'une l'allocation forfaitaire transitoire.
 # cet âge autre part que pour Complément Familial ou AllocationLogement.
 ```
 
-
 ### Livre 7 : Régimes divers - Dispositions diverses
 
 #### Titre 5 : Dispositions particulières à la Guadeloupe, à la Guyane, à la Martinique, à La Réunion, à Saint-Barthélemy et à Saint-Martin
@@ -118,13 +126,13 @@ sociale, y compris les membres des professions agricoles.
 # Angle mort: ici nous n'avons pas formalisé la partie sur la législation
 # générale de sécurité sociale et les membres des professions agricoles.
 
-champ d'application ÉligibilitéPrestationsFamiliales :
+champ d'application ÉligibilitéPrestationsFamiliales:
   règle régime_outre_mer_l751_1 sous condition
-    (résidence = Guadeloupe) ou
-    (résidence = Guyane) ou
-    (résidence = Martinique) ou
-    (résidence = LaRéunion) ou
-    (résidence = SaintBarthélemy) ou
-    (résidence = SaintMartin)
+    (résidence = Guadeloupe)
+    ou (résidence = Guyane)
+    ou (résidence = Martinique)
+    ou (résidence = LaRéunion)
+    ou (résidence = SaintBarthélemy)
+    ou (résidence = SaintMartin)
   conséquence rempli
 ```

@@ -49,10 +49,11 @@ ouvre droit aux prestations familiales :
 1°) tout enfant jusqu'à la fin de l'obligation scolaire ;
 
 ```catala
-champ d'application PrestationsFamiliales :
-  étiquette cas_base règle droit_ouvert de enfant sous condition
-    enfant.obligation_scolaire sous forme SituationObligationScolaire.Avant ou
-    enfant.obligation_scolaire sous forme SituationObligationScolaire.Pendant
+champ d'application PrestationsFamiliales:
+  étiquette cas_base
+  règle droit_ouvert de enfant sous condition
+    enfant.obligation_scolaire sous forme SituationObligationScolaire.Avant
+    ou enfant.obligation_scolaire sous forme SituationObligationScolaire.Pendant
   conséquence rempli
 ```
 
@@ -60,27 +61,29 @@ champ d'application PrestationsFamiliales :
 tout enfant dont la rémunération éventuelle n'excède pas un plafond.
 
 ```catala
-champ d'application PrestationsFamiliales :
-  étiquette cas_base règle droit_ouvert de enfant sous condition
-    enfant.obligation_scolaire sous forme SituationObligationScolaire.Après et
-    (enfant.rémuneration_mensuelle <= plafond_l512_3_2) et
-    (enfant.date_de_naissance + âge_l512_3_2 > date_courante)
+champ d'application PrestationsFamiliales:
+  étiquette cas_base
+  règle droit_ouvert de enfant sous condition
+    enfant.obligation_scolaire sous forme SituationObligationScolaire.Après
+    et (enfant.rémuneration_mensuelle <= plafond_l512_3_2)
+    et (enfant.date_de_naissance + âge_l512_3_2 > date_courante)
   conséquence rempli
 
   # On définit les conditions hors âge d'abord car elles
   # sont référencées plus tard dans l'article L521-1
   règle conditions_hors_âge de enfant sous condition
-    (enfant.obligation_scolaire sous forme SituationObligationScolaire.Avant ou
-     enfant.obligation_scolaire sous forme SituationObligationScolaire.Pendant
-     ou
-     enfant.obligation_scolaire sous forme SituationObligationScolaire.Après) et
-    (enfant.rémuneration_mensuelle <= plafond_l512_3_2)
+    (
+      enfant.obligation_scolaire sous forme SituationObligationScolaire.Avant
+      ou enfant.obligation_scolaire sous forme SituationObligationScolaire.Pendant
+      ou enfant.obligation_scolaire sous forme SituationObligationScolaire.Après
+    )
+    et (enfant.rémuneration_mensuelle <= plafond_l512_3_2)
   conséquence rempli
 
 champ d'application AllocationsFamiliales:
   définition enfants_à_charge_droit_ouvert_prestation_familiale égal à
     liste de enfant parmi enfants_à_charge
-    tel que prestations_familiales.droit_ouvert de enfant
+      tel que prestations_familiales.droit_ouvert de enfant
 ```
 
 Toutefois, pour l'attribution du complément familial et de l'allocation
@@ -115,7 +118,7 @@ qui concerne le versement d'une l'allocation forfaitaire transitoire.
 Les allocations familiales sont dues à partir du deuxième enfant à charge.
 
 ```catala
-champ d'application AllocationsFamiliales :
+champ d'application AllocationsFamiliales:
   règle droit_ouvert_base sous condition
     nombre de enfants_à_charge_droit_ouvert_prestation_familiale >= 2
   conséquence rempli
@@ -130,17 +133,21 @@ limite mentionné au 2° de l'article L. 512-3 . Cette allocation est versée
 celles de l'âge pour l'ouverture du droit aux allocations familiales.
 
 ```catala
-champ d'application AllocationsFamiliales :
+champ d'application AllocationsFamiliales:
   règle droit_ouvert_forfaitaire de enfant sous condition
     # nombre_enfants_alinéa_2_l521_3 sera défini dans l'article R521-3
-    (nombre de enfants_à_charge >= nombre_enfants_alinéa_2_l521_1) et
+    (nombre de enfants_à_charge >= nombre_enfants_alinéa_2_l521_1)
+    et
     # Puisqu'un enfant ne garde un âge donné que pour une période d'un an,
     # cette condition assure que l'allocation ne peut être distribuée que pour
     # un an.
-    ((enfant.date_de_naissance + prestations_familiales.âge_l512_3_2) -
-      date_courante < 365 jour) et
-    (enfant.a_déjà_ouvert_droit_aux_allocations_familiales) et
-    (prestations_familiales.conditions_hors_âge de enfant)
+    (
+      (enfant.date_de_naissance + prestations_familiales.âge_l512_3_2)
+      - date_courante
+      < 365 jour
+    )
+    et (enfant.a_déjà_ouvert_droit_aux_allocations_familiales)
+    et (prestations_familiales.conditions_hors_âge de enfant)
   conséquence rempli
 ```
 
@@ -174,7 +181,7 @@ Les allocations sont versées à la personne qui assume, dans quelques condition
 que ce soit, la charge effective et permanente de l'enfant.
 
 ```catala
-champ d'application AllocationsFamiliales :
+champ d'application AllocationsFamiliales:
   définition prise_en_compte de enfant sous condition
     enfant.prise_en_charge sous forme EffectiveEtPermanente
   conséquence égal à PriseEnCompte.Complète
@@ -193,7 +200,7 @@ désaccord sur la désignation de l'allocataire. Un décret en Conseil d'Etat fi
 les conditions d'application du présent alinéa.
 
 ```catala
-champ d'application AllocationsFamiliales :
+champ d'application AllocationsFamiliales:
   # Premier cas : garde alternée, parents désignent un unique allocataire
   définition prise_en_compte de enfant sous condition
     enfant.prise_en_charge sous forme GardeAlternéeAllocataireUnique
@@ -220,13 +227,12 @@ du droit aux allocations familiales, ce droit s'ouvre du chef du père ou,
 à défaut, du chef de la mère.
 
 ```catala
-champ d'application AllocationsFamiliales :
-  assertion
-    personne_charge_effective_permanente_est_parent ou
-    (
-      (non personne_charge_effective_permanente_est_parent) et
-      personne_charge_effective_permanente_remplit_titre_I
-    )
+champ d'application AllocationsFamiliales:
+  assertion personne_charge_effective_permanente_est_parent
+  ou (
+    (non personne_charge_effective_permanente_est_parent)
+    et personne_charge_effective_permanente_remplit_titre_I
+  )
 ```
 
 Lorsqu'un enfant est confié au service d'aide sociale à l'enfance, les
@@ -242,26 +248,21 @@ en charge morale ou matérielle de l'enfant ou en vue de faciliter le retour de
 l'enfant dans son foyer.
 
 ```catala
-champ d'application AllocationsFamiliales :
- définition prise_en_compte de enfant sous condition
-    enfant.prise_en_charge sous forme
-      ServicesSociauxAllocationVerséeAuxServicesSociaux
+champ d'application AllocationsFamiliales:
+  définition prise_en_compte de enfant sous condition
+    enfant.prise_en_charge sous forme ServicesSociauxAllocationVerséeAuxServicesSociaux
   conséquence égal à PriseEnCompte.Zéro
 
   définition versement de enfant sous condition
-    enfant.prise_en_charge sous forme
-      ServicesSociauxAllocationVerséeAuxServicesSociaux
+    enfant.prise_en_charge sous forme ServicesSociauxAllocationVerséeAuxServicesSociaux
   conséquence égal à VersementAllocations.AllocationVerséeAuxServicesSociaux
 
   définition prise_en_compte de enfant sous condition
-    enfant.prise_en_charge sous forme
-      ServicesSociauxAllocationVerséeÀLaFamille
+    enfant.prise_en_charge sous forme ServicesSociauxAllocationVerséeÀLaFamille
   conséquence égal à PriseEnCompte.Complète
 
-
   définition versement de enfant sous condition
-    enfant.prise_en_charge sous forme
-      ServicesSociauxAllocationVerséeÀLaFamille
+    enfant.prise_en_charge sous forme ServicesSociauxAllocationVerséeÀLaFamille
   conséquence égal à VersementAllocations.Normal
 ```
 
@@ -295,12 +296,13 @@ Chacun des enfants à charge, à l'exception du plus âgé, ouvre droit à parti
 d'un âge minimum à une majoration des allocations familiales.
 
 ```catala
-champ d'application AllocationsFamiliales :
-  règle droit_ouvert_majoration de enfant
-  sous condition
-    (non (est_enfant_le_plus_âgé de enfant)) et
-    (enfant.date_de_naissance + âge_minimum_alinéa_1_l521_3 de enfant <=
-      date_courante)
+champ d'application AllocationsFamiliales:
+  règle droit_ouvert_majoration de enfant sous condition
+    (non (est_enfant_le_plus_âgé de enfant))
+    et (
+      enfant.date_de_naissance + âge_minimum_alinéa_1_l521_3 de enfant
+      <= date_courante
+    )
   conséquence rempli
 ```
 
@@ -309,14 +311,17 @@ bénéficient de ladite majoration pour chaque enfant à charge à partir
 de l'âge mentionné au premier alinéa.
 
 ```catala
-champ d'application AllocationsFamiliales :
+champ d'application AllocationsFamiliales:
   exception
-  règle droit_ouvert_majoration de enfant
-  sous condition
-    (nombre de enfants_à_charge_droit_ouvert_prestation_familiale >=
-      nombre_enfants_alinéa_2_l521_3) et
-    (enfant.date_de_naissance + âge_minimum_alinéa_1_l521_3 de enfant <=
-      date_courante)
+  règle droit_ouvert_majoration de enfant sous condition
+    (
+      nombre de enfants_à_charge_droit_ouvert_prestation_familiale
+      >= nombre_enfants_alinéa_2_l521_3
+    )
+    et (
+      enfant.date_de_naissance + âge_minimum_alinéa_1_l521_3 de enfant
+      <= date_courante
+    )
   conséquence rempli
 ```
 
@@ -351,14 +356,14 @@ sociale, y compris les membres des professions agricoles.
 # Angle mort: ici nous n'avons pas formalisé la partie sur la législation
 # générale de sécurité sociale et les membres des professions agricoles.
 
-champ d'application PrestationsFamiliales :
+champ d'application PrestationsFamiliales:
   règle régime_outre_mer_l751_1 sous condition
-    (résidence = Guadeloupe) ou
-    (résidence = Guyane) ou
-    (résidence = Martinique) ou
-    (résidence = LaRéunion) ou
-    (résidence = SaintBarthélemy) ou
-    (résidence = SaintMartin)
+    (résidence = Guadeloupe)
+    ou (résidence = Guyane)
+    ou (résidence = Martinique)
+    ou (résidence = LaRéunion)
+    ou (résidence = SaintBarthélemy)
+    ou (résidence = SaintMartin)
   conséquence rempli
 ```
 
@@ -413,8 +418,8 @@ effectivement la charge de celui-ci.
 champ d'application AllocationsFamiliales:
   exception
   règle droit_ouvert_base sous condition
-    prestations_familiales.régime_outre_mer_l751_1 et
-    (nombre de enfants_à_charge_droit_ouvert_prestation_familiale >= 1)
+    prestations_familiales.régime_outre_mer_l751_1
+    et (nombre de enfants_à_charge_droit_ouvert_prestation_familiale >= 1)
   conséquence rempli
 ```
 Toutefois, les quatre derniers alinéas de l'article L. 521-1 ne sont pas
@@ -424,16 +429,16 @@ applicables lorsque le ménage ou la personne a un seul enfant à charge.
 # Ceci concerne l'ouverture du droit à l'allocation forfaitaire
 # et au complément dégressif.
 
-champ d'application AllocationsFamiliales :
+champ d'application AllocationsFamiliales:
   exception
   règle droit_ouvert_forfaitaire de enfant sous condition
-     prestations_familiales.régime_outre_mer_l751_1 et
-     (nombre de enfants_à_charge_droit_ouvert_prestation_familiale = 1)
+    prestations_familiales.régime_outre_mer_l751_1
+    et (nombre de enfants_à_charge_droit_ouvert_prestation_familiale = 1)
   conséquence non rempli
 
   exception
   règle droit_ouvert_complément sous condition
-    prestations_familiales.régime_outre_mer_l751_1 et
-    (nombre de enfants_à_charge_droit_ouvert_prestation_familiale = 1)
+    prestations_familiales.régime_outre_mer_l751_1
+    et (nombre de enfants_à_charge_droit_ouvert_prestation_familiale = 1)
   conséquence non rempli
 ```

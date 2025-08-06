@@ -10,7 +10,7 @@ déclaration énumération SituationObligationScolaire:
   -- Pendant
   -- Après
 
-déclaration structure EnfantPrestationsFamiliales :
+déclaration structure EnfantPrestationsFamiliales:
   donnée identifiant contenu entier
   donnée obligation_scolaire contenu SituationObligationScolaire
   donnée rémuneration_mensuelle contenu argent
@@ -24,10 +24,8 @@ déclaration champ d'application ÉligibilitéPrestationsFamiliales:
   interne plafond_l512_3_2 contenu argent
 
   contexte résultat âge_l512_3_2 contenu durée
-  résultat droit_ouvert condition
-    dépend de enfant contenu EnfantPrestationsFamiliales
-  résultat conditions_hors_âge condition
-    dépend de enfant contenu EnfantPrestationsFamiliales
+  résultat droit_ouvert condition dépend de enfant contenu EnfantPrestationsFamiliales
+  résultat conditions_hors_âge condition dépend de enfant contenu EnfantPrestationsFamiliales
   résultat régime_outre_mer_l751_1 condition
 
   smic champ d'application Smic.Smic

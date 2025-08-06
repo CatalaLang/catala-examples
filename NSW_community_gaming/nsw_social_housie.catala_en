@@ -12,8 +12,6 @@ declaration structure SocialHousie:
   data totalValuePrizePerSession content money
   data applicationOf2007Licence content boolean
   data jackpotPrizeValue content money
-  data totalValueExpenses content money
-  data totalInvestmentPerParticipant content money
   data investmentReturn content boolean
 
 declaration scope GamingAuthorized:
@@ -35,28 +33,28 @@ the Act if the following requirements are complied with—
 
 (a) the gaming activity is conducted solely for social purposes,
 ```catala
-scope GamingAuthorized :
+scope GamingAuthorized:
   definition purpose equals socialHousie.socialPurposeOnly
 ```
 
 (b) the gaming activity is not conducted on premises to which a licence
 under theLiquor Act 2007 relates,
 ```catala
-scope GamingAuthorized :
+scope GamingAuthorized:
   definition licence equals not socialHousie.applicationOf2007Licence
 ```
 
 (c) except as provided by paragraph (d), the total value of all of the
  available prizes for 1 session of the gaming activity does not exceed $40,
 ```catala
-scope GamingAuthorized :
+scope GamingAuthorized:
   definition prizePrice equals socialHousie.totalValuePrizePerSession <= $40
 ```
 
 (d) if 1 or more individual prizes are not won, the value of any jackpot prize
 does not exceed $200,
 ```catala
-scope GamingAuthorized :
+scope GamingAuthorized:
   definition maxJackpotValue equals socialHousie.jackpotPrizeValue <= $200
 ```
 
@@ -64,10 +62,10 @@ scope GamingAuthorized :
 activity,after the costs of prizes and expenses of conducting the session are
 deducted,is returned to participants.
 ```catala
-scope GamingAuthorized :
+scope GamingAuthorized:
   definition returnInvestment equals socialHousie.investmentReturn
 
   rule authorized under condition
-     purpose and licence and prizePrice and maxJackpotValue and returnInvestment
+    purpose and licence and prizePrice and maxJackpotValue and returnInvestment
   consequence fulfilled
 ```

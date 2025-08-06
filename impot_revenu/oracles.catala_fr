@@ -23,11 +23,11 @@ déclaration structure DéficitAntérieur:
 #      antérieurs identique à celle en  entrée sauf le déficit le plus ancien
 #      où l'on a diminué le déficit du montant imputé sur le revenu.
 déclaration champ d'application ImputationAuxDéficitsLesPlusAnciens:
-   entrée revenu_déclaré contenu argent
-   entrée déficits_antérieurs contenu liste de DéficitAntérieur
+  entrée revenu_déclaré contenu argent
+  entrée déficits_antérieurs contenu liste de DéficitAntérieur
 
-   résultat revenu_imputé contenu argent
-   résultat déficits_antérieurs_restants contenu liste de DéficitAntérieur
+  résultat revenu_imputé contenu argent
+  résultat déficits_antérieurs_restants contenu liste de DéficitAntérieur
 ```
 
 # Calcul de pro-rata

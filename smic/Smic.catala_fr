@@ -7,12 +7,12 @@
 ## Prologue
 
 ```catala-metadata
-déclaration champ d'application Smic :
+déclaration champ d'application Smic:
   entrée date_courante contenu date
   entrée résidence contenu France.Collectivité
   résultat brut_horaire contenu argent
 
-champ d'application Smic :
+champ d'application Smic:
   # Ce programme ne peut pas être utilisé avec des dates trop anciennes,
   # pour lesquelles les textes en vigueur n'ont pas été formalisés.
   assertion date_courante >= |2019-01-01|
@@ -31,17 +31,19 @@ croissance est relevé dans les conditions ci-après :
 son montant est porté à 10,03 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2019-01-01| et date_courante <= |2019-12-31| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2019-01-01|
+    et date_courante <= |2019-12-31|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 10,03 €
 ```
@@ -49,9 +51,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 7,57 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2019-01-01| et date_courante <= |2019-12-31| et (
+    date_courante >= |2019-01-01|
+    et date_courante <= |2019-12-31|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 7,57 €
@@ -70,17 +74,19 @@ croissance est relevé dans les conditions ci-après :
 son montant est porté à 10,15 € l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2020-01-01| et date_courante <= |2020-12-31| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2020-01-01|
+    et date_courante <= |2020-12-31|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 10,15 €
 ```
@@ -88,9 +94,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 7,66 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2020-01-01| et date_courante <= |2020-12-31| et (
+    date_courante >= |2020-01-01|
+    et date_courante <= |2020-12-31|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 7,66 €
@@ -109,17 +117,19 @@ croissance est relevé dans les conditions ci-après :
 son montant est porté à 10,25 € l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2021-01-01| et date_courante <= |2021-12-31| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2021-01-01|
+    et date_courante <= |2021-12-31|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 10,25 €
 ```
@@ -127,9 +137,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 7,74 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2021-01-01| et date_courante <= |2021-12-31| et (
+    date_courante >= |2021-01-01|
+    et date_courante <= |2021-12-31|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 7,74 €
@@ -148,28 +160,31 @@ Saint-Barthélemy, à Saint-Martin et à Saint-Pierre-et-Miquelon, son montant e
 porté à 10,57 euros l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2022-01-01| et date_courante <= |2022-04-30| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2022-01-01|
+    et date_courante <= |2022-04-30|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 10,57 €
 ```
 
-
 2° A Mayotte, son montant est fixé à 7,98 euros l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2022-01-01| et date_courante <= |2022-04-30| et (
+    date_courante >= |2022-01-01|
+    et date_courante <= |2022-04-30|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 7,98 €
@@ -188,17 +203,19 @@ Saint-Barthélemy, à Saint-Martin et à Saint-Pierre-et-Miquelon, son montant
 est porté à 10,85 € l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2022-05-01| et date_courante <= |2022-07-31| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2022-05-01|
+    et date_courante <= |2022-07-31|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 10,85 €
 ```
@@ -206,9 +223,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 8,19 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2022-05-01| et date_courante <= |2022-07-31| et (
+    date_courante >= |2022-05-01|
+    et date_courante <= |2022-07-31|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 8,19 €
@@ -227,17 +246,19 @@ minimum de croissance est relevé dans les conditions ci-après :
 son montant est porté à 11,07 € l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2022-08-01| et date_courante <= |2022-12-31| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2022-08-01|
+    et date_courante <= |2022-12-31|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 11,07 €
 ```
@@ -245,9 +266,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 8,35 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2022-08-01| et date_courante <= |2022-12-31| et (
+    date_courante >= |2022-08-01|
+    et date_courante <= |2022-12-31|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 8,35 €
@@ -267,17 +290,19 @@ croissance est relevé dans les conditions ci-après :
 son montant est porté à 11,27 euros l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2023-01-01| et date_courante < |2023-05-01| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2023-01-01|
+    et date_courante < |2023-05-01|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 11,27 €
 ```
@@ -285,9 +310,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 8,51 euros l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2023-01-01| et date_courante < |2023-05-01| et (
+    date_courante >= |2023-01-01|
+    et date_courante < |2023-05-01|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 8,51 €
@@ -306,17 +333,19 @@ Saint-Barthélemy, à Saint-Martin et à Saint-Pierre-et-Miquelon, son montant
 est porté à 11,52 € l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2023-05-01| et date_courante < |2024-01-01| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2023-05-01|
+    et date_courante < |2024-01-01|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 11,52 €
 ```
@@ -324,9 +353,11 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 8,70 € l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2023-05-01| et date_courante < |2024-01-01| et (
+    date_courante >= |2023-05-01|
+    et date_courante < |2024-01-01|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 8,70 €
@@ -346,17 +377,18 @@ Saint-Barthélemy, à Saint-Martin et à Saint-Pierre-et-Miquelon, son montant
 est porté à 11,65 euros l'heure ;
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2024-01-01| et (
-      (résidence = Métropole) ou
-      (résidence = Guadeloupe) ou
-      (résidence = Guyane) ou
-      (résidence = Martinique) ou
-      (résidence = LaRéunion) ou
-      (résidence = SaintBarthélemy) ou
-      (résidence = SaintMartin) ou
-      (résidence = SaintPierreEtMiquelon)
+    date_courante >= |2024-01-01|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
     )
   conséquence égal à 11,65 €
 ```
@@ -364,9 +396,10 @@ champ d'application Smic :
 2° A Mayotte, son montant est fixé à 8,80 euros l'heure.
 
 ```catala
-champ d'application Smic :
+champ d'application Smic:
   définition brut_horaire sous condition
-    date_courante >= |2024-01-01| et (
+    date_courante >= |2024-01-01|
+    et (
       (résidence = Mayotte)
     )
   conséquence égal à 8,80 €

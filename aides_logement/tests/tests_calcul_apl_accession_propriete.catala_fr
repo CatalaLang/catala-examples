@@ -32,7 +32,7 @@ champ d'application Exemple1:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-    calcul.aide_finale_formule
+      calcul.aide_finale_formule
   assertion montant = 181,91 €
   assertion calcul.mensualité_éligible = 533,91 €
   assertion calcul.mensualité_minimale = 332,76 €
@@ -108,7 +108,7 @@ champ d'application Exemple3:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-    calcul.aide_finale_formule
+      calcul.aide_finale_formule
   assertion montant = 181,91 €
   assertion calcul.mensualité_éligible = 533,91 €
   assertion calcul.mensualité_minimale = 332,76 €
@@ -144,7 +144,7 @@ champ d'application Exemple4:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-    calcul.aide_finale_formule
+      calcul.aide_finale_formule
   assertion montant = 118,59 €
   assertion calcul.mensualité_éligible = 399,20 €
   assertion calcul.mensualité_minimale = 290,21 €
@@ -172,7 +172,6 @@ $ catala test-scope Exemple3 --disable-warnings
 │ montant = 181,91 €
 └─
 ```
-
 
 ```catala-test-cli
 $ catala test-scope Exemple4 --disable-warnings

@@ -86,8 +86,8 @@ Couple marié   17 079,77 €    1 423,31 €
 # aux APL
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition plafond_individuel_l815_9_sécu sous condition
-    date_courante >= |2022-01-01| et
-    date_courante < |2023-01-01|
+    date_courante >= |2022-01-01|
+    et date_courante < |2023-01-01|
   conséquence égal à 11 001,44€
 ```
 
@@ -106,7 +106,6 @@ Couple marié   16 893,94 €    1 407,82 €
 # Pas important pour nous
 ```
 
-
 Pour prétendre à cette allocation non contributive, les plafonds de ressources sont fixés à:
 
 Bénéficiaire   Montant annuel Montant mensuel
@@ -119,8 +118,8 @@ Couple marié   16 893,94 €    1 407,82 €
 # aux APL
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition plafond_individuel_l815_9_sécu sous condition
-    date_courante >= |2021-01-01| et
-    date_courante < |2022-01-01|
+    date_courante >= |2021-01-01|
+    et date_courante < |2022-01-01|
   conséquence égal à 10 881,75€
 ```
 
@@ -153,7 +152,8 @@ champ d'application ContributionsSocialesAidesPersonnelleLogement:
   conséquence égal à
     aide_finale * taux_crds
 
-  assertion exonéré_csg # Voir L136-1-3 code de la sécurité sociale
+  assertion exonéré_csg
+# Voir L136-1-3 code de la sécurité sociale
 ```
 
 8° Les prestations visées à l'article L. 511-1 et au chapitre V du titre V
@@ -187,7 +187,8 @@ Le taux des contributions instituées par les articles 14 à 17 est fixé à 0,5
 
 ```catala
 champ d'application ContributionsSocialesAidesPersonnelleLogement:
-  définition taux_crds sous condition date_courante >= |2020-01-01|
+  définition taux_crds sous condition
+    date_courante >= |2020-01-01|
   conséquence égal à 0,5%
 ```
 
@@ -277,28 +278,38 @@ toutefois prétendre à une aide déterminée sur cette base qu'au titre de la
 période cumulée pendant laquelle il accueille l'enfant à son domicile au cours
 de l'année ;
 
-
 ```catala
 champ d'application CalculetteAidesAuLogementGardeAlternée:
   définition aide_finale égal à
     # TODO juridique: discuter des effets du choix de la fonction de traitement.
     # Faut-il prendre calculette.traitement_aide_finale ou
     # calculette_sans_garde_alternée.traitement_aide_finale ?
-    calculette.traitement_aide_finale de (
-      calculette_sans_garde_alternée.aide_finale_formule + (
-        si nombre de coefficients_enfants_garde_alternée_pris_en_compte = 0 alors
-          0 €
-        sinon
-          # On retire la part des allocations logement dues aux enfants
-          # en garde alternée à hauteur des coefficients prenant en compte la
-          # période cumulée pendant laquelle le ménage accueille l'enfant
-          # à domicile.
-          (calculette.aide_finale_formule -
-            calculette_sans_garde_alternée.aide_finale_formule) *
-              ((somme décimal de
-                coefficients_enfants_garde_alternée_pris_en_compte) /
-               (décimal de
-                nombre de coefficients_enfants_garde_alternée_pris_en_compte))))
+    calculette.traitement_aide_finale de
+      (
+        calculette_sans_garde_alternée.aide_finale_formule
+        + (
+          si nombre de coefficients_enfants_garde_alternée_pris_en_compte = 0 alors
+            0 €
+          sinon
+            # On retire la part des allocations logement dues aux enfants
+            # en garde alternée à hauteur des coefficients prenant en compte la
+            # période cumulée pendant laquelle le ménage accueille l'enfant
+            # à domicile.
+            (
+              calculette.aide_finale_formule
+              - calculette_sans_garde_alternée.aide_finale_formule
+            )
+            * (
+              (
+                somme décimal de coefficients_enfants_garde_alternée_pris_en_compte
+              )
+              / (
+                décimal de
+                  nombre de coefficients_enfants_garde_alternée_pris_en_compte
+              )
+            )
+        )
+      )
 ```
 
 5. Considérant qu'il résulte de ce qui précède que le ministre du logement et
@@ -366,20 +377,22 @@ code précité, le cas échéant adaptées selon les dispositions de l'article 2
 peuvent être modifiées par décret.
 
 ```catala
-déclaration montée_en_charge_saint_pierre_miquelon contenu argent dépend de
-  aide_finale contenu argent,
-  résidence contenu France.Collectivité,
-  date_courante contenu date
-égal à
-  si
-    résidence sous forme SaintPierreEtMiquelon et
-    date_courante >= |2022-01-01| et
-    date_courante <= |2025-12-31|
-  alors
-    aide_finale * (1,0 -
-      (décimal de (2026 - accès_année de date_courante) / 8,0))
-  sinon
-    aide_finale
+déclaration montée_en_charge_saint_pierre_miquelon
+  contenu argent
+  dépend de aide_finale contenu argent,
+    résidence contenu France.Collectivité,
+    date_courante contenu date
+  égal à
+    si résidence sous forme SaintPierreEtMiquelon
+      et date_courante >= |2022-01-01|
+      et date_courante <= |2025-12-31| alors
+      aide_finale
+      * (
+        1,0
+        - (décimal de (2026 - accès_année de date_courante) / 8,0)
+      )
+    sinon
+      aide_finale
 
 # D'après L860-3 CCH, les habitants de Saint-Pierre et Miquelon n'ont
 # droit qu'à l'allocation logement et pas à l'aide au logement. Donc on
@@ -388,24 +401,24 @@ déclaration montée_en_charge_saint_pierre_miquelon contenu argent dépend de
 # l'allocation logement passe par le barème de l'aide personnalisée au logement,
 # et où il faut donc modifier le champ d'application afférent.
 champ d'application CalculAidePersonnaliséeLogementLocatif:
-  définition traitement_aide_finale de aide_finale
-  état montée_en_charge_saint_pierre_miquelon
+  définition traitement_aide_finale
+    de aide_finale état montée_en_charge_saint_pierre_miquelon
   égal à
     soit aide_finale égal à traitement_aide_finale de aide_finale dans
     montée_en_charge_saint_pierre_miquelon de
       aide_finale, résidence, date_courante
 
 champ d'application CalculAllocationLogementFoyer:
-  définition traitement_aide_finale de aide_finale
-  état montée_en_charge_saint_pierre_miquelon
+  définition traitement_aide_finale
+    de aide_finale état montée_en_charge_saint_pierre_miquelon
   égal à
     soit aide_finale égal à traitement_aide_finale de aide_finale dans
     montée_en_charge_saint_pierre_miquelon de
       aide_finale, résidence, date_courante
 
 champ d'application CalculAllocationLogementAccessionPropriété:
-  définition traitement_aide_finale de aide_finale
-  état montée_en_charge_saint_pierre_miquelon
+  définition traitement_aide_finale
+    de aide_finale état montée_en_charge_saint_pierre_miquelon
   égal à
     soit aide_finale égal à traitement_aide_finale de aide_finale dans
     montée_en_charge_saint_pierre_miquelon de
@@ -468,9 +481,10 @@ II. – La collectivité fixe les règles applicables dans les matières suivant
 # Saint-Martin et Saint-Barthélémy, pas besoin de coder d'exception pour ces
 # territoires.
 champ d'application ContributionsSocialesAidesPersonnelleLogement:
-  exception définition montant de aide_finale sous condition
-    date_courante >= |2007-02-22| et
-    lieu sous forme SaintPierreEtMiquelon
+  exception
+  définition montant de aide_finale sous condition
+    date_courante >= |2007-02-22|
+    et lieu sous forme SaintPierreEtMiquelon
   conséquence égal à 0 €
 ```
 

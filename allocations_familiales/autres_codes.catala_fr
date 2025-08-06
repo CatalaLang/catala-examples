@@ -20,7 +20,8 @@ personnelle au logement, il n'est pas pris en compte, comme enfant
 
 ```catala
 champ d'application PrestationsFamiliales:
-  exception cas_base règle droit_ouvert de enfant sous condition
+  exception cas_base
+  règle droit_ouvert de enfant sous condition
     enfant.bénéficie_titre_personnel_aide_personnelle_logement
   conséquence non rempli
 ```

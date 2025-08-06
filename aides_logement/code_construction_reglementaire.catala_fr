@@ -2000,11 +2000,13 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
 à la section 2 du chapitre II du présent titre et arrondies à la centaine d'euros supérieure ;
 
 ```catala
-déclaration arrondi_centaine_supérieure contenu argent
-dépend de ressources_ménage contenu argent égal à
-  # Cette formule arrondit à la centaine d'euros supérieure. Essayez quelques
-  # exemples pour vous en convaincre, dont 100 et 150.
-  arrondi de ((ressources_ménage * 1%) + 0,49€) * 100,0
+déclaration arrondi_centaine_supérieure
+  contenu argent
+  dépend de ressources_ménage contenu argent
+  égal à
+    # Cette formule arrondit à la centaine d'euros supérieure. Essayez quelques
+    # exemples pour vous en convaincre, dont 100 et 150.
+    arrondi de ((ressources_ménage * 1%) + 0,49€) * 100,0
 
 # Ici nous arrondissons le montant des ressources pour tous les modes
 # de calcul et pour l'APL et l'AL. En effet, chaque mode de calcul
@@ -6822,8 +6824,10 @@ champ d'application CalculAllocationLogement
         -- traitement_aide_finale: traitement_nul_tout_le_temps
       }
 
-déclaration traitement_nul_tout_le_temps contenu argent
-dépend de aide_finale contenu argent égal à 0€
+déclaration traitement_nul_tout_le_temps
+  contenu argent
+  dépend de aide_finale contenu argent
+  égal à 0€
 ```
 
 2° Au 5° de l'article D. 823-17, les mots : “ en fonction de l'évolution de l'indice des

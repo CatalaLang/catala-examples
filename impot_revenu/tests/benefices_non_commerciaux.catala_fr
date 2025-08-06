@@ -2,7 +2,6 @@
 > Usage de Impot_revenu en tant que IR
 > Usage de Oracles
 
-
 # Tests calcul revenu global sur bénéfices non commerciaux
 
 ## Cas test bénéfices non commerciaux n°1
@@ -122,7 +121,6 @@ Soit : - 14 000 + 1 980 = - 12 020.
 **Le revenu brut global du foyer fiscal sera donc de 0€. Il faudra également
 reporter 12 020€ de déficit sur les six années suivantes.**
 
-
 ```catala
 #[test]
 déclaration champ d'application BénéficesNonCommerciaux1:
@@ -133,27 +131,37 @@ déclaration champ d'application BénéficesNonCommerciaux1:
 
 champ d'application BénéficesNonCommerciaux1:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables: 1 000 €
-        -- déficit_réel : 15 000 €
-      }).sortie
-    }).sortie
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables: 1 000 €
+              -- déficit_réel: 15 000 €
+            }
+          ).sortie
+      }
+    ).sortie
 
   définition déclarant2.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables_micro: 3000€
-      }).sortie
-    }).sortie
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables_micro: 3000€
+            }
+          ).sortie
+      }
+    ).sortie
 
-  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels: []
-    -- revenus: [déclarant1.sortie; déclarant2.sortie]
-    -- année_revenus : 2022
-  }
+  définition sortie égal à
+    résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels: []
+      -- revenus: [ déclarant1.sortie ; déclarant2.sortie ]
+      -- année_revenus: 2022
+    }
 ```
-
 
 ```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux1
@@ -286,30 +294,35 @@ déclaration champ d'application BénéficesNonCommerciaux2:
 
 champ d'application BénéficesNonCommerciaux2:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables: 15 798 €
-      }).sortie
-    }).sortie
-
-  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels: [
-      Oracles.DéficitAntérieur {
-        -- année: 2019
-        -- valeur: 5000 €
-      };
-      Oracles.DéficitAntérieur {
-        -- année: 2020
-        -- valeur: 2000 €
-      };
-      Oracles.DéficitAntérieur {
-        -- année: 2021
-        -- valeur: 15 000 €
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables: 15 798 €
+            }
+          ).sortie
       }
-    ]
-    -- revenus: [déclarant1.sortie]
-    -- année_revenus : 2022
-  }
+    ).sortie
+
+  définition sortie égal à
+    résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels:
+        [ Oracles.DéficitAntérieur {
+            -- année: 2019
+            -- valeur: 5000 €
+          } ;
+          Oracles.DéficitAntérieur {
+            -- année: 2020
+            -- valeur: 2000 €
+          } ;
+          Oracles.DéficitAntérieur {
+            -- année: 2021
+            -- valeur: 15 000 €
+          } ]
+      -- revenus: [ déclarant1.sortie ]
+      -- année_revenus: 2022
+    }
 ```
 
 ```catala-test-cli
@@ -524,43 +537,58 @@ déclaration champ d'application BénéficesNonCommerciaux3:
 
 champ d'application BénéficesNonCommerciaux3:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables: 22 540 €
-        -- déficit_réel : 4 000 €
-      }).sortie
-    }).sortie
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables: 22 540 €
+              -- déficit_réel: 4 000 €
+            }
+          ).sortie
+      }
+    ).sortie
 
   définition déclarant2.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables: 10 000 €
-      }).sortie
-    }).sortie
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables: 10 000 €
+            }
+          ).sortie
+      }
+    ).sortie
 
   définition déclarant3.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables_micro: 1 000 €
-        -- plus_values_nettes_court_terme_micro: 200 €
-        -- moins_values_nettes_court_terme_micro: 500 €
-      }).sortie
-    }).sortie
-
-  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels: [
-      Oracles.DéficitAntérieur {
-        -- année: 2020
-        -- valeur: 1 000 €
-      };
-      Oracles.DéficitAntérieur {
-        -- année: 2021
-        -- valeur: 25 000 €
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables_micro: 1 000 €
+              -- plus_values_nettes_court_terme_micro: 200 €
+              -- moins_values_nettes_court_terme_micro: 500 €
+            }
+          ).sortie
       }
-    ]
-    -- revenus: [déclarant1.sortie; déclarant2.sortie; déclarant3.sortie]
-    -- année_revenus : 2022
-  }
+    ).sortie
+
+  définition sortie égal à
+    résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels:
+        [ Oracles.DéficitAntérieur {
+            -- année: 2020
+            -- valeur: 1 000 €
+          } ;
+          Oracles.DéficitAntérieur {
+            -- année: 2021
+            -- valeur: 25 000 €
+          } ]
+      -- revenus: [ déclarant1.sortie ; déclarant2.sortie ; déclarant3.sortie ]
+      -- année_revenus: 2022
+    }
 ```
 
 ```catala-test-cli
@@ -638,20 +666,26 @@ déclaration champ d'application BénéficesNonCommerciaux4:
 
 champ d'application BénéficesNonCommerciaux4:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables_micro: 12 399 €
-        -- revenus_imposables: 52 676 €
-        -- déficit_réel : 76 988 €
-        -- plus_values_nettes_long_terme_réel: 1374 €
-      }).sortie
-    }).sortie
+    (
+      résultat de Interface.BénéficesNonCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesNonCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables_micro: 12 399 €
+              -- revenus_imposables: 52 676 €
+              -- déficit_réel: 76 988 €
+              -- plus_values_nettes_long_terme_réel: 1374 €
+            }
+          ).sortie
+      }
+    ).sortie
 
-  définition sortie égal à résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels: []
-    -- revenus: [déclarant1.sortie]
-    -- année_revenus : 2023
-  }
+  définition sortie égal à
+    résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels: []
+      -- revenus: [ déclarant1.sortie ]
+      -- année_revenus: 2023
+    }
 ```
 
 ### Calcul du revenu brut global :
@@ -726,7 +760,6 @@ cette plus value fait l'objet d'une imposition au taux forfaitaire de 12,8%.
 Ce prélèvement est également libératoire de l'impôt.
 
 Soit : 1 374 * 12.8% = 176
-
 
 ```catala-test-cli
 $ catala test-scope BénéficesNonCommerciaux4

@@ -29,22 +29,21 @@ $ catala test-scope Test1
 └─
 ```
 
-
 ## Test2
 ```catala
 #[test]
 declaration scope Test2:
   my_gaming scope GamingAuthorized
 
-  scope Test2:
-    definition
+scope Test2:
+  definition
     my_gaming.progressiveLottery
   equals
     ProgressiveLottery {
-        -- maxAmountPayable: $6000
-        -- totalValueOfThePrizes: $5000
-        -- holdsAuthority: false
-      }
+      -- maxAmountPayable: $6000
+      -- totalValueOfThePrizes: $5000
+      -- holdsAuthority: false
+    }
   assertion my_gaming.authorized = true
 ```
 
@@ -55,22 +54,21 @@ $ catala test-scope Test2
 └─
 ```
 
-
 ## Test3
 ```catala
 #[test]
 declaration scope Test3:
   my_gaming scope GamingAuthorized
 
-  scope Test3:
-    definition
+scope Test3:
+  definition
     my_gaming.progressiveLottery
   equals
     ProgressiveLottery {
-        -- maxAmountPayable: $9000
-        -- totalValueOfThePrizes: $10000
-        -- holdsAuthority: false
-      }
+      -- maxAmountPayable: $9000
+      -- totalValueOfThePrizes: $10000
+      -- holdsAuthority: false
+    }
   assertion my_gaming.authorized = false
 ```
 
@@ -87,15 +85,15 @@ $ catala test-scope Test3
 declaration scope Test4:
   my_gaming scope GamingAuthorized
 
-  scope Test4:
-    definition
+scope Test4:
+  definition
     my_gaming.progressiveLottery
   equals
     ProgressiveLottery {
-        -- maxAmountPayable: $0
-        -- totalValueOfThePrizes: $31000
-        -- holdsAuthority: false
-      }
+      -- maxAmountPayable: $0
+      -- totalValueOfThePrizes: $31000
+      -- holdsAuthority: false
+    }
   assertion my_gaming.authorized = false
 ```
 ```catala-test-cli
@@ -104,4 +102,3 @@ $ catala test-scope Test4
 │ Computation successful!
 └─
 ```
-

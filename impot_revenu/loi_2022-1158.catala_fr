@@ -96,22 +96,24 @@ champ d'application TraitementsSalairesDéclarant:
       plafond de revenus.prime_partage_valeur_exonérée, 3000€
 
   définition traitements_salaires_avec_déduction_frais_professionnels
-  état loi_2022_1158 égal à
-    traitements_salaires_avec_déduction_frais_professionnels +
-      revenus.prime_partage_valeur_exonérée - exonération_prime_partage_valeur
-  # Afin de pouvoir bénéficier de l’exonération d’impôt sur le revenu de la
-  # prime de partage de la valeur, le contribuable doit remplir la case 1 AD de
-  # la déclaration de 2042. Si le plafond de la prime est de 6 000 € , le
-  # contribuable devra en plus cocher la case 1 AV. En cas de perception de
-  # plusieurs primes de partage de la valeur, le VI  de l’article 1 de la LOI n°
-  # 2022-1158 du 16 août 2022 portant mesures d'urgence pour la protection du
-  # pouvoir d'achat, dispose que le plafond d’exonération d’impôt sur le
-  # revenu ne peut excéder 6 000 € : "En cas de cumul de la prime exonérée en
-  # application du premier alinéa du présent VI avec celle prévue à l'article 4
-  # de la loi n° 2021-953 du 19 juillet 2021 de finances rectificative pour
-  # 2021, le montant total exonéré d'impôt sur le revenu au titre des revenus de
-  # l'année 2022 ne peut excéder 6 000 €."
-  # Voir https://gitlab.adullact.net/dgfip/ir-catala/-/issues/5
+    état loi_2022_1158
+  égal à
+    traitements_salaires_avec_déduction_frais_professionnels
+    + revenus.prime_partage_valeur_exonérée
+    - exonération_prime_partage_valeur
+# Afin de pouvoir bénéficier de l’exonération d’impôt sur le revenu de la
+# prime de partage de la valeur, le contribuable doit remplir la case 1 AD de
+# la déclaration de 2042. Si le plafond de la prime est de 6 000 € , le
+# contribuable devra en plus cocher la case 1 AV. En cas de perception de
+# plusieurs primes de partage de la valeur, le VI  de l’article 1 de la LOI n°
+# 2022-1158 du 16 août 2022 portant mesures d'urgence pour la protection du
+# pouvoir d'achat, dispose que le plafond d’exonération d’impôt sur le
+# revenu ne peut excéder 6 000 € : "En cas de cumul de la prime exonérée en
+# application du premier alinéa du présent VI avec celle prévue à l'article 4
+# de la loi n° 2021-953 du 19 juillet 2021 de finances rectificative pour
+# 2021, le montant total exonéré d'impôt sur le revenu au titre des revenus de
+# l'année 2022 ne peut excéder 6 000 €."
+# Voir https://gitlab.adullact.net/dgfip/ir-catala/-/issues/5
 ```
 
 VI. - Lorsque, entre le 1er juillet 2022 et le 31 décembre 2023, la prime de
@@ -146,4 +148,3 @@ fiscal.
 
 IX. - Le coût résultant du présent article est intégralement pris en charge par
 l'Etat, conformément à l'article L. 131-7 du code de la sécurité sociale.
-

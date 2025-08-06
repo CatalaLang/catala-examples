@@ -2,7 +2,6 @@
 > Usage de Impot_revenu en tant que IR
 > Usage de Oracles
 
-
 # Tests calcul revenu global sur bénéfices industriels et commerciaux
 
 ## Cas de test n°1
@@ -33,7 +32,6 @@ En 2023, le foyer fiscal a déclaré des revenus comme suit :
 
 Calcul du revenu brut global.
 
-
 ```catala
 #[test]
 déclaration champ d'application BénéficesIndustrielsCommerciaux1:
@@ -43,31 +41,38 @@ déclaration champ d'application BénéficesIndustrielsCommerciaux1:
 
 champ d'application BénéficesIndustrielsCommerciaux1:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables_micro_marchandises: 7514 €
-        -- revenus_imposables_micro_services: 3859 €
-        -- revenus_imposables_réel: 11 225 €
-      }).sortie
-      -- locations_meublées_micro_hôtes_classées: 1000 €
-      -- locations_meublées_micro_classées_rurales_spéciales: 3000 €
-    }).sortie
+    (
+      résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables_micro_marchandises: 7514 €
+              -- revenus_imposables_micro_services: 3859 €
+              -- revenus_imposables_réel: 11 225 €
+            }
+          ).sortie
+        -- locations_meublées_micro_hôtes_classées: 1000 €
+        -- locations_meublées_micro_classées_rurales_spéciales: 3000 €
+      }
+    ).sortie
 
   définition déclarant1.professionnels égal à
-    (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+    (
+      résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
         -- revenus_imposables_réel: 60 000 €
         -- revenus_concession_brevets: 500 €
         -- déficit_réel: 10 000 €
-    }).sortie
+      }
+    ).sortie
 
-  définition sortie égal à résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
-    -- déficits_réels_années_antérieures_non_professionnels: []
-    -- revenus: [déclarant1.sortie]
-    -- année_revenus : 2023
-  }
+  définition sortie égal à
+    résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
+      -- déficits_réels_années_antérieures_non_professionnels: []
+      -- revenus: [ déclarant1.sortie ]
+      -- année_revenus: 2023
+    }
 ```
-
 
 ### Calcul du revenu brut global :
 
@@ -309,28 +314,33 @@ déclaration champ d'application BénéficesIndustrielsCommerciaux2:
 
 champ d'application BénéficesIndustrielsCommerciaux2:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables_micro_marchandises: 30 000 €
-        -- revenus_exceptionnels_ou_différés: [
-          IR.RevenuExceptionnelOuDifféré {
-            -- valeur : 40 000 €
-            -- régime: Article163_0_A
-            -- échéance : RevenuExceptionnel
-            -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-          }
-        ]
-      }).sortie
-      -- locations_meublées_micro_général: 25 000 €
-      -- locations_meublées_micro_classées_rurales_spéciales: 3500 €
-    }).sortie
+    (
+      résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables_micro_marchandises: 30 000 €
+              -- revenus_exceptionnels_ou_différés:
+                [ IR.RevenuExceptionnelOuDifféré {
+                    -- valeur: 40 000 €
+                    -- régime: Article163_0_A
+                    -- échéance: RevenuExceptionnel
+                    -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+                  } ]
+            }
+          ).sortie
+        -- locations_meublées_micro_général: 25 000 €
+        -- locations_meublées_micro_classées_rurales_spéciales: 3500 €
+      }
+    ).sortie
 
-  définition sortie égal à résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
-    -- déficits_réels_années_antérieures_non_professionnels: []
-    -- revenus: [déclarant1.sortie]
-    -- année_revenus : 2023
-  }
+  définition sortie égal à
+    résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
+      -- déficits_réels_années_antérieures_non_professionnels: []
+      -- revenus: [ déclarant1.sortie ]
+      -- année_revenus: 2023
+    }
 ```
 
 ## Calcul du revenu net
@@ -491,7 +501,6 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 **Aussi le revenu brut global du foyer fiscal sera**:
  12 500 + 280 + 8700 = 21480
 
-
 ```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux2
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux2 ─
@@ -598,35 +607,44 @@ déclaration champ d'application BénéficesIndustrielsCommerciaux3:
 
 champ d'application BénéficesIndustrielsCommerciaux3:
   définition déclarant1.non_professionnels égal à
-    (résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
-      -- généraux: (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
-        -- revenus_imposables_micro_marchandises: 43 789€
-        -- revenus_imposables_micro_services: 9 888€
-        -- revenus_exceptionnels_ou_différés: [IR.RevenuExceptionnelOuDifféré {
-          -- valeur : 57843 €
-          -- régime: Article163_0_A
-          -- échéance: RevenuExceptionnel
-          -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
-        }]
-      }).sortie
-      -- locations_meublées_micro_général: 645€
-      -- locations_meublées_micro_classées_rurales_spéciales: 1 328€
-    }).sortie
+    (
+      résultat de Interface.BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant avec {
+        -- généraux:
+          (
+            résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+              -- revenus_imposables_micro_marchandises: 43 789€
+              -- revenus_imposables_micro_services: 9 888€
+              -- revenus_exceptionnels_ou_différés:
+                [ IR.RevenuExceptionnelOuDifféré {
+                    -- valeur: 57843 €
+                    -- régime: Article163_0_A
+                    -- échéance: RevenuExceptionnel
+                    -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
+                  } ]
+            }
+          ).sortie
+        -- locations_meublées_micro_général: 645€
+        -- locations_meublées_micro_classées_rurales_spéciales: 1 328€
+      }
+    ).sortie
 
   définition déclarant1.professionnels égal à
-    (résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
+    (
+      résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
         -- revenus_imposables_micro_marchandises: 7847 €
         -- revenus_imposables_micro_services: 12444 €
         -- revenus_imposables_réel: 29 353€
-        -- déficit_réel:  5 222 €
-    }).sortie
+        -- déficit_réel: 5 222 €
+      }
+    ).sortie
 
-  définition sortie égal à résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
-    -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
-    -- déficits_réels_années_antérieures_non_professionnels: []
-    -- revenus: [déclarant1.sortie]
-    -- année_revenus : 2023
-  }
+  définition sortie égal à
+    résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
+      -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
+      -- déficits_réels_années_antérieures_non_professionnels: []
+      -- revenus: [ déclarant1.sortie ]
+      -- année_revenus: 2023
+    }
 ```
 
 ### Calcul du revenu brut global
@@ -829,7 +847,6 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 
 **Aussi le revenu brut global du foyer fiscal sera : 32 629+ 428 + 12
 699 + 4 944 = 50 700**
-
 
 ```catala-test-cli
 $ catala test-scope BénéficesIndustrielsCommerciaux3
