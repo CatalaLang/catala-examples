@@ -26,7 +26,7 @@ jobs:
           apk add py3-pip
           python3 -m venv python_venv
           . python_venv/bin/activate
-          pip install gmpy2
+          pip install gmpy2 dateutil
       - name: Install C dependencies
         run: |
           apk add gmp-dev
