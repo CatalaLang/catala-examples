@@ -13,13 +13,13 @@ include_dirs = [
 [[target]]
 name     = "allocations-familiales"
 modules  = ["Aides_logement"]
-backends = ["ocaml", "python"]
+backends = ["ocaml", "python", "c"] # Java backend fails because of SMIC
 tests    = ["allocations_familiales/tests/"]
 
 [[target]]
 name     = "aides-logement"
 modules  = ["Aides_logement"]
-backends = ["ocaml", "python"]
+backends = ["ocaml", "python", "c"] # Java backend fails because of SMIC
 tests    = ["aides_logement/tests/"]
 
 [[target]]
