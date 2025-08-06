@@ -32,4 +32,5 @@ jobs:
           apk add gmp-dev
       - name: Run tests (interpreter and backends)
         run: |
+          . python_venv/bin/activate
           opam --cli=2.1 exec -- clerk ci
