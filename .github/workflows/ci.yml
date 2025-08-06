@@ -23,4 +23,4 @@ jobs:
         uses: actions/checkout@v4
       - name: Run tests (interpreter and backennd)
         run: |
-          opam --cli=2.1 exec -- clerck ci
+          opam --cli=2.1 exec -- clerk ci
