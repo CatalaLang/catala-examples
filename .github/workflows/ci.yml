@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['*.*.*']
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  tests:
+    name: Test suite
+    runs-on: self-hosted
+    container:
+      image: registry.gitlab.inria.fr/verifisc/docker-catala
+      options: --user root
+    steps:
+      - name: Fix home
+        # Workaround Github actions issue, see
+        # https://github.com/actions/runner/issues/863
+        run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run tests (interpreter and backennd)
+        run: |
+          opam --cli=2.1 exec -- clerck ci

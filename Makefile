@@ -7,7 +7,7 @@ BUILD = _build
 # (e.g. no --trace) and the objects would otherwise overwrite the main ones
 BUILD_TESTS = _build/clerk_tests
 
-VERSION = 0.10.0
+VERSION = 1.0.0~alpha
 
 #############################################
 # Compiler and build tools commands and flags
