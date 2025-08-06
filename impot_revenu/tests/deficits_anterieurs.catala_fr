@@ -8,16 +8,17 @@ déclaration champ d'application DéficitsAntérieurs1:
   résultat sortie contenu Oracles.ImputationAuxDéficitsLesPlusAnciens
 
 champ d'application DéficitsAntérieurs1:
-  définition sortie égal à 
+  définition sortie égal à
     résultat de Oracles.ImputationAuxDéficitsLesPlusAnciens avec {
       -- revenu_déclaré: 1000 €
-      -- déficits_antérieurs: [Oracles.DéficitAntérieur {
-        -- année: 2020
-        -- valeur: 500 €
-      }; Oracles.DéficitAntérieur {
-        -- année: 2019
-        -- valeur: 600 €
-      }]
+      -- déficits_antérieurs:
+        [ Oracles.DéficitAntérieur {
+            -- année: 2020
+            -- valeur: 500 €
+          } ; Oracles.DéficitAntérieur {
+            -- année: 2019
+            -- valeur: 600 €
+          } ]
     }
 ```
 

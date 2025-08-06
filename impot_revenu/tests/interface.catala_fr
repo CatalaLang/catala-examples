@@ -35,8 +35,8 @@ déclaration champ d'application TraitementsSalairesDéclarant:
   contexte pensions_alimentaires_perçues contenu argent
   contexte autres_revenus_imposables_chômage_préretraite contenu argent
   contexte salaires_imposables_agent_assurance contenu argent
-  contexte revenus_exceptionnels_ou_différés contenu
-    liste de IR.RevenuExceptionnelOuDifféré
+  contexte revenus_exceptionnels_ou_différés
+    contenu liste de IR.RevenuExceptionnelOuDifféré
   contexte indemnités_préjudice_moral_fraction_supérieure_million
     contenu argent
   contexte gains_et_distributions_carried_interest contenu argent
@@ -84,48 +84,49 @@ champ d'application TraitementsSalairesDéclarant:
   définition autre_salaires_imposables_source_étrangère égal à 0 €
   définition autre_pensions_imposables_source_étrangère égal à 0 €
 
-  définition sortie égal à IR.DéclarationTraitementsSalaires {
-    -- revenu_assistants_maternels_familiaux:
-      revenu_assistants_maternels_familiaux
-    -- revenus_associés_gérants: revenus_associés_gérants
-    -- droits_dauteurs_fonctionnaires_chercheurs:
-      droits_dauteurs_fonctionnaires_chercheurs
-    -- frais_réels: frais_réels
-    -- traitements_salaires: traitements_salaires
-    -- heures_supplémentaires_et_rtt_exonérées:
-      heures_supplémentaires_et_rtt_exonérées
-    -- pourboires_exonérés: pourboires_exonérés
-    -- prime_partage_valeur_exonérée: prime_partage_valeur_exonérée
-    -- majoration_seuil_exonération: majoration_seuil_exonération
-    -- rabais_excédentaire_options_sur_titres:
-      rabais_excédentaire_options_sur_titres
-    -- gains_de_levee_doptions: gains_de_levee_doptions
-    -- pensions_retraites_rentes: pensions_retraites_rentes
-    -- pensions_retraites_en_capital_7_5pct:
-      pensions_retraites_en_capital_7_5pct
-    -- pensions_en_capital_plans_épargne_retraite:
-      pensions_en_capital_plans_épargne_retraite
-    -- pensions_invalidité: pensions_invalidité
-    -- pensions_alimentaires_perçues: pensions_alimentaires_perçues
-    -- autres_revenus_imposables_chômage_préretraite:
-      autres_revenus_imposables_chômage_préretraite
-    -- salaires_imposables_agent_assurance:
-      salaires_imposables_agent_assurance
-    -- revenus_exceptionnels_ou_différés:
-      revenus_exceptionnels_ou_différés
-    -- indemnités_préjudice_moral_fraction_supérieure_million:
-      indemnités_préjudice_moral_fraction_supérieure_million
-    -- gains_et_distributions_carried_interest:
-      gains_et_distributions_carried_interest
-    -- gains_et_distributions_carried_interest_soumis_contribution_salariale:
-      gains_et_distributions_carried_interest_soumis_contribution_salariale
-    -- salaires_étrangers_impôt_imputé: salaires_étrangers_impôt_imputé
-    -- pensions_étrangères_impôts_imputé: pensions_étrangères_impôts_imputé
-    -- autre_salaires_imposables_source_étrangère:
-      autre_salaires_imposables_source_étrangère
-    -- autre_pensions_imposables_source_étrangère:
-      autre_pensions_imposables_source_étrangère
-  }
+  définition sortie égal à
+    IR.DéclarationTraitementsSalaires {
+      -- revenu_assistants_maternels_familiaux:
+        revenu_assistants_maternels_familiaux
+      -- revenus_associés_gérants: revenus_associés_gérants
+      -- droits_dauteurs_fonctionnaires_chercheurs:
+        droits_dauteurs_fonctionnaires_chercheurs
+      -- frais_réels: frais_réels
+      -- traitements_salaires: traitements_salaires
+      -- heures_supplémentaires_et_rtt_exonérées:
+        heures_supplémentaires_et_rtt_exonérées
+      -- pourboires_exonérés: pourboires_exonérés
+      -- prime_partage_valeur_exonérée: prime_partage_valeur_exonérée
+      -- majoration_seuil_exonération: majoration_seuil_exonération
+      -- rabais_excédentaire_options_sur_titres:
+        rabais_excédentaire_options_sur_titres
+      -- gains_de_levee_doptions: gains_de_levee_doptions
+      -- pensions_retraites_rentes: pensions_retraites_rentes
+      -- pensions_retraites_en_capital_7_5pct:
+        pensions_retraites_en_capital_7_5pct
+      -- pensions_en_capital_plans_épargne_retraite:
+        pensions_en_capital_plans_épargne_retraite
+      -- pensions_invalidité: pensions_invalidité
+      -- pensions_alimentaires_perçues: pensions_alimentaires_perçues
+      -- autres_revenus_imposables_chômage_préretraite:
+        autres_revenus_imposables_chômage_préretraite
+      -- salaires_imposables_agent_assurance:
+        salaires_imposables_agent_assurance
+      -- revenus_exceptionnels_ou_différés:
+        revenus_exceptionnels_ou_différés
+      -- indemnités_préjudice_moral_fraction_supérieure_million:
+        indemnités_préjudice_moral_fraction_supérieure_million
+      -- gains_et_distributions_carried_interest:
+        gains_et_distributions_carried_interest
+      -- gains_et_distributions_carried_interest_soumis_contribution_salariale:
+        gains_et_distributions_carried_interest_soumis_contribution_salariale
+      -- salaires_étrangers_impôt_imputé: salaires_étrangers_impôt_imputé
+      -- pensions_étrangères_impôts_imputé: pensions_étrangères_impôts_imputé
+      -- autre_salaires_imposables_source_étrangère:
+        autre_salaires_imposables_source_étrangère
+      -- autre_pensions_imposables_source_étrangère:
+        autre_pensions_imposables_source_étrangère
+    }
 ```
 
 ### Traitements et salaires pour un foyer fiscal
@@ -160,7 +161,8 @@ champ d'application TraitementsSalairesFoyerFiscal:
   définition acquisition_d_actions_gratuites_gain_imposable égal à 0 €
   définition revenus_exceptionnels_ou_différés égal à []
 
-  définition sortie égal à IR.DéclarationTraitementsSalairesFoyerFiscal {
+  définition sortie égal à
+    IR.DéclarationTraitementsSalairesFoyerFiscal {
       -- rentes_percues_49moins_ans: rentes_percues_49moins_ans
       -- rentes_percues_50_59ans: rentes_percues_50_59ans
       -- rentes_percues_60_69ans: rentes_percues_60_69ans
@@ -176,9 +178,8 @@ champ d'application TraitementsSalairesFoyerFiscal:
       -- revenus_exceptionnels_ou_différés: revenus_exceptionnels_ou_différés
       -- acquisition_d_actions_gratuites_gain_imposable:
         acquisition_d_actions_gratuites_gain_imposable
-  }
+    }
 ```
-
 
 ## Calculs pour les BNC / BIC
 
@@ -214,8 +215,8 @@ déclaration champ d'application BénéficesNonCommerciauxNonProfessionnelsDécl
 déclaration champ d'application BénéficesNonCommerciauxDéclarant:
   contexte professionnels
     contenu IR.DéclarationBénéficesNonCommerciauxProfessionnels
-  contexte non_professionnels contenu
-    IR.DéclarationBénéficesNonCommerciauxNonProfessionnels
+  contexte non_professionnels
+    contenu IR.DéclarationBénéficesNonCommerciauxNonProfessionnels
   contexte recettes_prélèvement_libératoire_éxonérées_cotisations contenu argent
 
   résultat sortie contenu IR.DéclarationBénéficesNonCommerciaux
@@ -235,19 +236,19 @@ champ d'application BénéficesNonCommerciauxGénérauxDéclarant:
   définition revenus_imposables_source_étrangère_imputés égal à 0 €
 
   définition sortie égal à
-      IR.DéclarationBénéficesNonCommerciauxGénéraux {
-        -- revenus_imposables_micro: revenus_imposables_micro
-        -- plus_values_nettes_court_terme_micro: plus_values_nettes_court_terme_micro
-        -- moins_values_nettes_court_terme_micro: moins_values_nettes_court_terme_micro
-        -- plus_values_nettes_long_terme_micro: plus_values_nettes_long_terme_micro
-        -- moins_values_nettes_long_terme_micro: moins_values_nettes_long_terme_micro
-        -- plus_values_nettes_long_terme_réel: plus_values_nettes_long_terme_réel
-        -- revenus_imposables: revenus_imposables
-        -- revenus_exceptionnels_ou_différés: revenus_exceptionnels_ou_différés
-        -- déficit_réel: déficit_réel
-        -- revenus_imposables_source_étrangère_imputés:
-          revenus_imposables_source_étrangère_imputés
-      }
+    IR.DéclarationBénéficesNonCommerciauxGénéraux {
+      -- revenus_imposables_micro: revenus_imposables_micro
+      -- plus_values_nettes_court_terme_micro: plus_values_nettes_court_terme_micro
+      -- moins_values_nettes_court_terme_micro: moins_values_nettes_court_terme_micro
+      -- plus_values_nettes_long_terme_micro: plus_values_nettes_long_terme_micro
+      -- moins_values_nettes_long_terme_micro: moins_values_nettes_long_terme_micro
+      -- plus_values_nettes_long_terme_réel: plus_values_nettes_long_terme_réel
+      -- revenus_imposables: revenus_imposables
+      -- revenus_exceptionnels_ou_différés: revenus_exceptionnels_ou_différés
+      -- déficit_réel: déficit_réel
+      -- revenus_imposables_source_étrangère_imputés:
+        revenus_imposables_source_étrangère_imputés
+    }
 
 champ d'application BénéficesNonCommerciauxProfessionnelsDéclarant:
   définition généraux égal à (résultat de BénéficesNonCommerciauxGénérauxDéclarant).sortie
@@ -267,9 +268,10 @@ champ d'application BénéficesNonCommerciauxProfessionnelsDéclarant:
 champ d'application BénéficesNonCommerciauxNonProfessionnelsDéclarant:
   définition généraux égal à (résultat de BénéficesNonCommerciauxGénérauxDéclarant).sortie
 
-  définition sortie égal à IR.DéclarationBénéficesNonCommerciauxNonProfessionnels {
-    -- généraux: généraux
-  }
+  définition sortie égal à
+    IR.DéclarationBénéficesNonCommerciauxNonProfessionnels {
+      -- généraux: généraux
+    }
 
 champ d'application BénéficesNonCommerciauxDéclarant:
   définition professionnels égal à
@@ -278,12 +280,13 @@ champ d'application BénéficesNonCommerciauxDéclarant:
     (résultat de BénéficesNonCommerciauxNonProfessionnelsDéclarant).sortie
   définition recettes_prélèvement_libératoire_éxonérées_cotisations égal à 0 €
 
-  définition sortie égal à IR.DéclarationBénéficesNonCommerciaux {
-    -- professionnels: professionnels
-    -- non_professionnels: non_professionnels
-    -- recettes_prélèvement_libératoire_éxonérées_cotisations:
-      recettes_prélèvement_libératoire_éxonérées_cotisations
-  }
+  définition sortie égal à
+    IR.DéclarationBénéficesNonCommerciaux {
+      -- professionnels: professionnels
+      -- non_professionnels: non_professionnels
+      -- recettes_prélèvement_libératoire_éxonérées_cotisations:
+        recettes_prélèvement_libératoire_éxonérées_cotisations
+    }
 ```
 
 ### Bénéfices industriels et commerciaux
@@ -300,12 +303,12 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxGénérauxDéc
   contexte revenus_imposables_micro_services contenu argent
   contexte revenus_imposables_réel contenu argent
   contexte déficit_réel contenu argent
-  contexte revenus_exceptionnels_ou_différés contenu
-    liste de IR.RevenuExceptionnelOuDifféré
+  contexte revenus_exceptionnels_ou_différés
+    contenu liste de IR.RevenuExceptionnelOuDifféré
   contexte revenus_imposables_réel_source_étrangère_imputés contenu argent
 
-  résultat sortie contenu
-      IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux
+  résultat sortie
+    contenu IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux
 ```
 
 ```catala
@@ -324,36 +327,35 @@ champ d'application BénéficesIndustrielsCommerciauxGénérauxDéclarant:
   définition revenus_imposables_réel_source_étrangère_imputés égal à 0 €
 
   définition sortie égal à
-      IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux {
-        -- revenus_concession_brevets: revenus_concession_brevets
-        -- plus_values_nettes_court_terme_micro:
-          plus_values_nettes_court_terme_micro
-        -- moins_values_nettes_court_terme_micro:
-          moins_values_nettes_court_terme_micro
-        -- plus_values_nettes_long_terme_micro:
-          plus_values_nettes_long_terme_micro
-        -- moins_values_nettes_long_terme_micro:
-          moins_values_nettes_long_terme_micro
-        -- plus_values_nettes_long_terme_réel:
-          plus_values_nettes_long_terme_réel
-        -- revenus_imposables_micro_marchandises:
-          revenus_imposables_micro_marchandises
-        -- revenus_imposables_micro_services:
-          revenus_imposables_micro_services
-        -- revenus_exceptionnels_ou_différés:
-          revenus_exceptionnels_ou_différés
-        -- revenus_imposables_réel: revenus_imposables_réel
-        -- déficit_réel: déficit_réel
-        -- revenus_imposables_réel_source_étrangère_imputés:
-          revenus_imposables_réel_source_étrangère_imputés
-      }
+    IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux {
+      -- revenus_concession_brevets: revenus_concession_brevets
+      -- plus_values_nettes_court_terme_micro:
+        plus_values_nettes_court_terme_micro
+      -- moins_values_nettes_court_terme_micro:
+        moins_values_nettes_court_terme_micro
+      -- plus_values_nettes_long_terme_micro:
+        plus_values_nettes_long_terme_micro
+      -- moins_values_nettes_long_terme_micro:
+        moins_values_nettes_long_terme_micro
+      -- plus_values_nettes_long_terme_réel:
+        plus_values_nettes_long_terme_réel
+      -- revenus_imposables_micro_marchandises:
+        revenus_imposables_micro_marchandises
+      -- revenus_imposables_micro_services:
+        revenus_imposables_micro_services
+      -- revenus_exceptionnels_ou_différés:
+        revenus_exceptionnels_ou_différés
+      -- revenus_imposables_réel: revenus_imposables_réel
+      -- déficit_réel: déficit_réel
+      -- revenus_imposables_réel_source_étrangère_imputés:
+        revenus_imposables_réel_source_étrangère_imputés
+    }
 ```
 
 ```catala-metadata
-déclaration champ d'application
-  BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant:
-  contexte généraux contenu
-    IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux
+déclaration champ d'application BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant:
+  contexte généraux
+    contenu IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux
   contexte locations_meublées_micro_général contenu argent
   contexte locations_meublées_micro_hôtes_classées contenu argent
   contexte locations_meublées_micro_classées_rurales_spéciales contenu argent
@@ -366,13 +368,12 @@ déclaration champ d'application
     contenu argent
   contexte locations_meublées_réel_cotisations contenu argent
   contexte locations_meublées_déficit_cotisations contenu argent
-  résultat sortie contenu
-    IR.DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
+  résultat sortie
+    contenu IR.DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
 ```
 
 ```catala
-champ d'application
-  BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant:
+champ d'application BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant:
   définition généraux égal à
     (résultat de BénéficesIndustrielsCommerciauxGénérauxDéclarant).sortie
   définition locations_meublées_micro_général égal à 0 €
@@ -383,54 +384,54 @@ champ d'application
   définition locations_meublées_déficit_général égal à 0 €
   définition locations_meublées_micro_cotisations_général égal à 0 €
   définition locations_meublées_micro_cotisations_hôtes_classées égal à 0 €
-  définition locations_meublées_micro_cotisations_classées_rurales_spéciales
-    égal à 0 €
+  définition
+    locations_meublées_micro_cotisations_classées_rurales_spéciales
+  égal à
+    0 €
   définition locations_meublées_réel_cotisations égal à 0 €
   définition locations_meublées_déficit_cotisations égal à 0 €
 
   définition sortie égal à
-     IR.DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels {
-        -- généraux: généraux
-        -- locations_meublées_micro_général:
-          locations_meublées_micro_général
-        -- locations_meublées_micro_hôtes_classées:
-          locations_meublées_micro_hôtes_classées
-        -- locations_meublées_micro_classées_rurales_spéciales:
-          locations_meublées_micro_classées_rurales_spéciales
-        -- locations_meublées_réel_général:
-          locations_meublées_réel_général
-        -- locations_meublées_réel_source_étrangère:
-          locations_meublées_réel_source_étrangère
-        -- locations_meublées_déficit_général:
-          locations_meublées_déficit_général
-        -- locations_meublées_micro_cotisations_général:
-          locations_meublées_micro_cotisations_général
-        -- locations_meublées_micro_cotisations_hôtes_classées:
-          locations_meublées_micro_cotisations_hôtes_classées
-        -- locations_meublées_micro_cotisations_classées_rurales_spéciales:
-          locations_meublées_micro_cotisations_classées_rurales_spéciales
-        -- locations_meublées_réel_cotisations:
-          locations_meublées_réel_cotisations
-        -- locations_meublées_déficit_cotisations:
-          locations_meublées_déficit_cotisations
-     }
+    IR.DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels {
+      -- généraux: généraux
+      -- locations_meublées_micro_général:
+        locations_meublées_micro_général
+      -- locations_meublées_micro_hôtes_classées:
+        locations_meublées_micro_hôtes_classées
+      -- locations_meublées_micro_classées_rurales_spéciales:
+        locations_meublées_micro_classées_rurales_spéciales
+      -- locations_meublées_réel_général:
+        locations_meublées_réel_général
+      -- locations_meublées_réel_source_étrangère:
+        locations_meublées_réel_source_étrangère
+      -- locations_meublées_déficit_général:
+        locations_meublées_déficit_général
+      -- locations_meublées_micro_cotisations_général:
+        locations_meublées_micro_cotisations_général
+      -- locations_meublées_micro_cotisations_hôtes_classées:
+        locations_meublées_micro_cotisations_hôtes_classées
+      -- locations_meublées_micro_cotisations_classées_rurales_spéciales:
+        locations_meublées_micro_cotisations_classées_rurales_spéciales
+      -- locations_meublées_réel_cotisations:
+        locations_meublées_réel_cotisations
+      -- locations_meublées_déficit_cotisations:
+        locations_meublées_déficit_cotisations
+    }
 ```
 
 ```catala-metadata
 déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
-  contexte professionnels contenu
-    IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux
-  contexte non_professionnels contenu
-    IR.DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
-  contexte
-    chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
-  contenu argent
-  contexte
-    chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
-  contenu argent
+  contexte professionnels
+    contenu IR.DéclarationBénéficesIndustrielsCommerciauxGénéraux
+  contexte non_professionnels
+    contenu IR.DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
+  contexte chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
+    contenu argent
+  contexte chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
+    contenu argent
 
-  résultat sortie contenu
-      IR.DéclarationBénéficesIndustrielsCommerciaux
+  résultat sortie
+    contenu IR.DéclarationBénéficesIndustrielsCommerciaux
 ```
 
 ```catala
@@ -438,24 +439,27 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition professionnels égal à
     (résultat de BénéficesIndustrielsCommerciauxGénérauxDéclarant).sortie
   définition non_professionnels égal à
-    (résultat de
-      BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant).sortie
+    (
+      résultat de BénéficesIndustrielsCommerciauxNonProfessionnelsDéclarant
+    ).sortie
   définition
     chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
-  égal à 0 €
+  égal à
+    0 €
   définition
     chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
-  égal à 0 €
+  égal à
+    0 €
 
   définition sortie égal à
-      IR.DéclarationBénéficesIndustrielsCommerciaux {
-        -- professionnels: professionnels
-        -- non_professionnels: non_professionnels
-        -- chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations:
-          chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
-        -- chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations:
-          chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
-      }
+    IR.DéclarationBénéficesIndustrielsCommerciaux {
+      -- professionnels: professionnels
+      -- non_professionnels: non_professionnels
+      -- chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations:
+        chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
+      -- chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations:
+        chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
+    }
 ```
 
 ## Calcul du nombre de parts
@@ -471,7 +475,9 @@ déclaration champ d'application DescriptionFoyerFiscal:
   contexte nombre_enfants_majeurs_célibataires_sans_enfant contenu entier
   contexte nombre_enfants_majeurs_mariés_ou_chargés_famille contenu décimal
   contexte mariées contenu booléen
-  contexte célibataire contenu booléen état base état défaut
+  contexte célibataire contenu booléen
+    état base
+    état défaut
   contexte pacsées contenu booléen
   contexte divorcée_séparées contenu booléen
   contexte veuve contenu booléen
@@ -498,8 +504,10 @@ champ d'application DescriptionFoyerFiscal:
   définition nombre_enfants_majeurs_mariés_ou_chargés_famille égal à 0,0
   définition célibataire_divorcé_veuf_sans_enfant égal à faux
   définition titulaire_carte_invalidité_CMI_invalidité_40_pourcent égal à faux
-  définition conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
-    égal à faux
+  définition
+    conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+  égal à
+    faux
   définition pensionné_guerre_célibataire_veuf égal à faux
   définition pensionné_guerre_marié_pacsé égal à faux
   définition pensionné_veuve_de_guerre égal à faux
@@ -511,43 +519,46 @@ champ d'application DescriptionFoyerFiscal:
   définition célibataire état base égal à faux
   # Si toutes les cases de situation familiales sont fausses, alors on considère
   # par défaut que le cas est célibataire.
-  définition célibataire état défaut égal à
-    si non (pacsées ou mariées ou veuve ou parent_isolé ou célibataire)
-    alors vrai
+  définition célibataire
+    état défaut
+  égal à
+    si non (pacsées ou mariées ou veuve ou parent_isolé ou célibataire) alors
+      vrai
     sinon célibataire
 
-  définition sortie égal à IR.DescriptionFoyerFiscal {
-    -- mariées: mariées
-    -- célibataire: célibataire
-    -- pacsées: pacsées
-    -- divorcée_séparées: divorcée_séparées
-    -- veuve: veuve
-    -- parent_isolé: parent_isolé
-    -- nombre_enfants_à_charge_mineurs_et_non_mariés:
-      nombre_enfants_à_charge_mineurs_et_non_mariés
-    -- nombre_enfants_à_charge_mineurs_et_non_mariés_invalides:
-      nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
-    -- nombre_enfants_à_charge_résidence_alternée:
-      nombre_enfants_à_charge_résidence_alternée
-    -- nombre_enfants_à_charge_résidence_alternée_invalides:
-      nombre_enfants_à_charge_résidence_alternée_invalides
-    -- nombre_autres_personnes_invalides_vivant_sous_toit:
-      nombre_autres_personnes_invalides_vivant_sous_toit
-    -- nombre_enfants_majeurs_célibataires_sans_enfant:
-      nombre_enfants_majeurs_célibataires_sans_enfant
-    -- nombre_enfants_majeurs_mariés_ou_chargés_famille:
-      nombre_enfants_majeurs_mariés_ou_chargés_famille
-    -- célibataire_divorcé_veuf_sans_enfant:
-      célibataire_divorcé_veuf_sans_enfant
-    -- titulaire_carte_invalidité_CMI_invalidité_40_pourcent:
-      titulaire_carte_invalidité_CMI_invalidité_40_pourcent
-    -- conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent:
-      conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
-    -- pensionné_guerre_célibataire_veuf:
-      pensionné_guerre_célibataire_veuf
-    -- pensionné_guerre_marié_pacsé:
-      pensionné_guerre_marié_pacsé
-    -- pensionné_veuve_de_guerre:
-      pensionné_veuve_de_guerre
-  }
+  définition sortie égal à
+    IR.DescriptionFoyerFiscal {
+      -- mariées: mariées
+      -- célibataire: célibataire
+      -- pacsées: pacsées
+      -- divorcée_séparées: divorcée_séparées
+      -- veuve: veuve
+      -- parent_isolé: parent_isolé
+      -- nombre_enfants_à_charge_mineurs_et_non_mariés:
+        nombre_enfants_à_charge_mineurs_et_non_mariés
+      -- nombre_enfants_à_charge_mineurs_et_non_mariés_invalides:
+        nombre_enfants_à_charge_mineurs_et_non_mariés_invalides
+      -- nombre_enfants_à_charge_résidence_alternée:
+        nombre_enfants_à_charge_résidence_alternée
+      -- nombre_enfants_à_charge_résidence_alternée_invalides:
+        nombre_enfants_à_charge_résidence_alternée_invalides
+      -- nombre_autres_personnes_invalides_vivant_sous_toit:
+        nombre_autres_personnes_invalides_vivant_sous_toit
+      -- nombre_enfants_majeurs_célibataires_sans_enfant:
+        nombre_enfants_majeurs_célibataires_sans_enfant
+      -- nombre_enfants_majeurs_mariés_ou_chargés_famille:
+        nombre_enfants_majeurs_mariés_ou_chargés_famille
+      -- célibataire_divorcé_veuf_sans_enfant:
+        célibataire_divorcé_veuf_sans_enfant
+      -- titulaire_carte_invalidité_CMI_invalidité_40_pourcent:
+        titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+      -- conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent:
+        conjoint_titulaire_carte_invalidité_CMI_invalidité_40_pourcent
+      -- pensionné_guerre_célibataire_veuf:
+        pensionné_guerre_célibataire_veuf
+      -- pensionné_guerre_marié_pacsé:
+        pensionné_guerre_marié_pacsé
+      -- pensionné_veuve_de_guerre:
+        pensionné_veuve_de_guerre
+    }
 ```

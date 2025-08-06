@@ -34,7 +34,7 @@ scope GamingAuthorized:
 ```catala
 scope GamingAuthorized:
   definition bonusPrize equals
-     ( (clubBingo.bonusPrizeMaxValue <= $70) or (not clubBingo.bonusPrizeOffered) )
+    ((clubBingo.bonusPrizeMaxValue <= $70) or (not clubBingo.bonusPrizeOffered))
 ```
 
 (d)  none of the prizes consist of or include money.
@@ -42,7 +42,7 @@ scope GamingAuthorized:
 scope GamingAuthorized:
   definition contentPrize equals not clubBingo.prizeContent
 
-rule authorized under condition
-  conductor and prizeValueIsSmall and bonusPrize and contentPrize
-consequence fulfilled
+  rule authorized under condition
+    conductor and prizeValueIsSmall and bonusPrize and contentPrize
+  consequence fulfilled
 ```

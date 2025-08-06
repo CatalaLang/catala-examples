@@ -96,8 +96,8 @@ declaration structure Individual:
   # Available types include: integer, decimal, money, date, duration,
   # and any other structure or enumeration that you declare.
   data number_of_children content integer
-  # "income" and "number_of_children" start by a lowercase letter,
-  # they follow the snake_case convention.
+# "income" and "number_of_children" start by a lowercase letter,
+# they follow the snake_case convention.
 ```
 
 This structure contains two data fields, "income" and "number_of_children".
@@ -111,10 +111,10 @@ enumerations are modeled in Catala using an enumeration type, like:
 
 ```catala-metadata
 declaration enumeration TaxCredit:
-# The name "TaxCredit" is also written in CamelCase.
--- NoTaxCredit
-# This line says that "TaxCredit" can be a "NoTaxCredit" situation.
--- ChildrenTaxCredit content integer
+  # The name "TaxCredit" is also written in CamelCase.
+  -- NoTaxCredit
+  # This line says that "TaxCredit" can be a "NoTaxCredit" situation.
+  -- ChildrenTaxCredit content integer
 # This line says that alternatively, "TaxCredit" can be a
 # "ChildrenTaxCredit" situation. This situation carries a content
 # of type integer corresponding to the number of children concerned
@@ -193,8 +193,8 @@ The fixed percentage mentioned at article 1 is equal to 20 %.
 
 ```catala
 scope IncomeTaxComputation:
-  definition fixed_percentage equals 20 %
-  # Writing 20% is just an abbreviation for "0.20".
+  definition fixed_percentage equals 20%
+# Writing 20% is just an abbreviation for "0.20".
 ```
 
 You can see here that Catala allows definitions to be scattered throughout
@@ -224,8 +224,8 @@ you precisely to redefine a variable under a condition:
 scope IncomeTaxComputation:
   definition fixed_percentage under condition
     individual.number_of_children >= 2
-  consequence equals 15 %
-  # Writing 15% is just an abbreviation for "0.15".
+  consequence equals 15%
+# Writing 15% is just an abbreviation for "0.15".
 ```
 While conditional definitions are a powerful tool for expressing legal conditions,
 a correctly drafted legislative source should always ensure that at most one
@@ -263,14 +263,14 @@ declaration scope Child:
   input age content integer
   # The age of the child can be declared as before.
   output is_eligible_article_3 condition
-  # For we declare the eligibility using the special "condition" keyword
-  # that stands for the content of the variable.
+# For we declare the eligibility using the special "condition" keyword
+# that stands for the content of the variable.
 
 scope Child:
   rule is_eligible_article_3 under condition age < 18 consequence fulfilled
-  # When defining when a condition is true, we use the special "rule" syntax
-  # instead of "definition". Rules set conditions to be "fulfilled" or
-  # "not fulfilled" conditionally.
+# When defining when a condition is true, we use the special "rule" syntax
+# instead of "definition". Rules set conditions to be "fulfilled" or
+# "not fulfilled" conditionally.
 ```
 
 When interacting with other elements of the code, condition values behaves
@@ -292,14 +292,14 @@ declaration structure TwoBrackets:
 # This structure describes the parameters of a tax computation formula that
 # has two tax brackets, each with their own tax rate.
 
-declaration scope TwoBracketsTaxComputation :
+declaration scope TwoBracketsTaxComputation:
   input brackets content TwoBrackets
   # This input variable contains the description of the
   # parameters of the tax formula.
   output tax_formula content money depends on income content money
-  # But for declaring the tax_formula variable, we declare it as
-  # a function: "content money depends on income content money" means a function
-  # that returns money as output (the tax) and takes the income money as input.
+# But for declaring the tax_formula variable, we declare it as
+# a function: "content money depends on income content money" means a function
+# that returns money as output (the tax) and takes the income money as input.
 ```
 
 ### Article 4
@@ -308,7 +308,7 @@ The tax amount for a two-brackets computation is equal to the amount
 of income in each bracket multiplied by the rate of each bracket.
 
 ```catala
-scope TwoBracketsTaxComputation :
+scope TwoBracketsTaxComputation:
   definition tax_formula of income equals
     # The money parameter for the "tax_formula" function is introduced as
     # "income". The name of the parameter is your choice, and will not impact
@@ -316,11 +316,12 @@ scope TwoBracketsTaxComputation :
     # name in another definition of "tax_formula".
     if income <= brackets.breakpoint then
       income * brackets.rate1
-    else (
-      brackets.breakpoint * brackets.rate1 +
-      (income - brackets.breakpoint) * brackets.rate2
-    )
-    # This is the formula for implementing a two-brackets tax system.
+    else
+      (
+        brackets.breakpoint * brackets.rate1
+        + (income - brackets.breakpoint) * brackets.rate2
+      )
+# This is the formula for implementing a two-brackets tax system.
 ```
 
 ## Scope inclusion
@@ -347,25 +348,26 @@ declaration scope NewIncomeTaxComputation:
 ```
 
 ```catala
-scope NewIncomeTaxComputation :
+scope NewIncomeTaxComputation:
   # Since the subscope "two_brackets" is like a big function we can call,
   # we need to define its arguments. This is done below:
-  definition two_brackets.brackets equals TwoBrackets {
-    -- breakpoint: $100,000
-    -- rate1: 20%
-    -- rate2: 40%
-  }
+  definition two_brackets.brackets equals
+    TwoBrackets {
+      -- breakpoint: $100,000
+      -- rate1: 20%
+      -- rate2: 40%
+    }
   # By defining the input variable "brackets" of the subscope "two_brackets",
   # we have changed how the subscope will execute. The subscope will execute
   # with all the values defined by the caller, then compute the value
   # of its other variables.
 
   definition income_tax equals two_brackets.tax_formula of individual.income
-  # After the subscope has executed, you can retrieve results from it. Here,
-  # we retrieve the result of variable "tax_formula" of computed by the
-  # subscope "two_brackets". It's up yo you to choose what is an input and
-  # an output of your subscope; if you make an inconsistent choice, the
-  # Catala compiler will warn you.
+# After the subscope has executed, you can retrieve results from it. Here,
+# we retrieve the result of variable "tax_formula" of computed by the
+# subscope "two_brackets". It's up yo you to choose what is an input and
+# an output of your subscope; if you make an inconsistent choice, the
+# Catala compiler will warn you.
 ```
 
 Now that we've successfully defined our income tax computation, the legislator
@@ -385,8 +387,8 @@ scope NewIncomeTaxComputation:
   definition income_tax under condition
     individual.income <= $10,000
   consequence equals $0
-  # What, you think something might be wrong with this? Hmmm... We'll see
-  # later!
+# What, you think something might be wrong with this? Hmmm... We'll see
+# later!
 ```
 
 That's it! We've defined a two-brackets tax computation with a special case
@@ -460,10 +462,11 @@ declaration scope Test2:
   output income_tax content money
 
 scope Test2:
-  definition tax_computation.individual equals Individual {
-    -- income: $4,000
-    -- number_of_children: 0
-  }
+  definition tax_computation.individual equals
+    Individual {
+      -- income: $4,000
+      -- number_of_children: 0
+    }
 
   definition income_tax equals tax_computation.income_tax
   assertion income_tax = $0
@@ -515,18 +518,19 @@ declaration scope NewIncomeTaxComputationFixed:
   input individual content Individual
   output tax_formula content money depends on income content money
   context output income_tax content money
-  # This variable is tagged with "context", a new concept which we have not
-  # introduced yet. For now, ignore it as we'll come back to it in the section
-  # "Context scope variables".
+# This variable is tagged with "context", a new concept which we have not
+# introduced yet. For now, ignore it as we'll come back to it in the section
+# "Context scope variables".
 ```
 
 ```catala
-scope NewIncomeTaxComputationFixed :
-  definition two_brackets.brackets equals TwoBrackets {
-    -- breakpoint: $100,000
-    -- rate1: 20%
-    -- rate2: 40%
-  }
+scope NewIncomeTaxComputationFixed:
+  definition two_brackets.brackets equals
+    TwoBrackets {
+      -- breakpoint: $100,000
+      -- rate1: 20%
+      -- rate2: 40%
+    }
   definition tax_formula of income equals two_brackets.tax_formula of income
 ```
 
@@ -554,10 +558,11 @@ declaration scope Test3:
   output income_tax content money
 
 scope Test3:
-  definition tax_computation.individual equals Individual {
-    -- income: $4,000
-    -- number_of_children: 0
-  }
+  definition tax_computation.individual equals
+    Individual {
+      -- income: $4,000
+      -- number_of_children: 0
+    }
   definition income_tax equals tax_computation.income_tax
   assertion income_tax = $0
 ```
@@ -606,10 +611,11 @@ declaration scope Test4:
   output income_tax content money
 
 scope Test4:
-  definition tax_computation.individual equals Individual {
-    -- income: $7,000
-    -- number_of_children: 7
-  }
+  definition tax_computation.individual equals
+    Individual {
+      -- income: $7,000
+      -- number_of_children: 7
+    }
   definition income_tax equals tax_computation.income_tax
   assertion income_tax = $0
 ```
@@ -643,19 +649,21 @@ declaration scope Test5:
 
 scope Test5:
   definition normal_income_tax_computation_applies equals true
-  definition individual equals Individual {
-    -- income: $7,000
-    -- number_of_children: 7
-  }
+  definition individual equals
+    Individual {
+      -- income: $7,000
+      -- number_of_children: 7
+    }
   definition income_tax equals
     if normal_income_tax_computation_applies then
-      let result_of_tax_computation
-      equals
+      let result_of_tax_computation equals
         output of NewIncomeTaxComputationFixed with {
           -- individual: individual
         }
-      in result_of_tax_computation.income_tax
-    else $0 # Insert some other modes of computation here
+      in
+      result_of_tax_computation.income_tax
+    else $0
+# Insert some other modes of computation here
 ```
 
 There are three important bits here:
@@ -694,10 +702,11 @@ declaration scope Test4bis:
   output tax_computation scope NewIncomeTaxComputationFixed
 
 scope Test4bis:
-  definition tax_computation.individual equals Individual {
-    -- income: $7,000
-    -- number_of_children: 7
-  }
+  definition tax_computation.individual equals
+    Individual {
+      -- income: $7,000
+      -- number_of_children: 7
+    }
 ```
 
 Besides defining the subscope, this declares `tax_computation` as an output
@@ -714,7 +723,6 @@ $ catala interpret --scope Test4bis --disable-warnings
 │   }
 └─
 ```
-
 
 ## Context scope variables
 
@@ -744,7 +752,7 @@ declaration scope BasisForFineDetermination:
   input individual content Individual
   output basis_for_fine content money
 
-scope BasisForFineDetermination :
+scope BasisForFineDetermination:
   # First, we link the inputs and outputs of the two scopes.
   definition tax_computation.individual equals individual
   definition basis_for_fine equals tax_computation.income_tax
@@ -801,25 +809,29 @@ declaration scope WealthTax:
   input value_of_buildings_used_for_charity content money
   input total_wealth content money
   internal wealth content money
-    # After the type of the variable, we can define the ordered list of states
-    # that the variable shall take before computing its final value. In each
-    # state, we'll be able to refer to the value of the previous state.
+  # After the type of the variable, we can define the ordered list of states
+  # that the variable shall take before computing its final value. In each
+  # state, we'll be able to refer to the value of the previous state.
     state total
     state after_charity_deductions
     state after_capping
 
 scope WealthTax:
   definition wealth state total equals total_wealth
-  definition wealth state after_charity_deductions equals
-    wealth - # Here, "wealth" refers to the state "total"
-      value_of_buildings_used_for_charity
-  definition wealth state after_capping equals
+  definition wealth
+    state after_charity_deductions
+  equals
+    wealth
+    - # Here, "wealth" refers to the state "total"
+    value_of_buildings_used_for_charity
+  definition wealth
+    state after_capping
+  equals
     if wealth >= $2,500,000 then $2,500,000 else wealth
-    # Here, "wealth" refers to the state "after_charity_deductions"
+  # Here, "wealth" refers to the state "after_charity_deductions"
 
   assertion wealth > $0
-  # this refers to the final state of the variable, here "after_capping".
-
+# this refers to the final state of the variable, here "after_capping".
 ```
 
 #### Accessing states
@@ -860,7 +872,7 @@ scope BooleanValues:
   # Sets the boolean of the value1 condition to "true" under condition
   # "false and true"
   definition value2 equals value1 xor (value1 and true) = false
-  # Boolean operators include and, or, xor
+# Boolean operators include and, or, xor
 ```
 
 ### Integers
@@ -892,12 +904,12 @@ declaration scope DecimalValues:
 
 scope DecimalValues:
   definition value1 under condition
-    12.655465446655426 - 0.45265426541654  < 12.3554654652 consequence
-  equals 45 / 8
+    12.655465446655426 - 0.45265426541654 < 12.3554654652
+  consequence equals 45 / 8
   # The / operator corresponds to an exact division. The division of integers
   # yields a decimal.
   definition value2 equals value1 * value1 * 65%
-  # Percentages are decimal numbers (0.65 here)
+# Percentages are decimal numbers (0.65 here)
 ```
 
 ### Money
@@ -917,8 +929,8 @@ declaration scope MoneyValues:
 
 scope MoneyValues:
   definition value1 under condition
-    12.655465446655426 - 0.45265426541654 < 12.3554654652 consequence
-  equals 45 / 8
+    12.655465446655426 - 0.45265426541654 < 12.3554654652
+  consequence equals 45 / 8
   definition value2 equals
     $1.00 * ((($6,520.23 - $320.45) * value1) / $45)
 ```
@@ -945,9 +957,11 @@ declaration scope DateValues:
   output value2 content duration
 
 scope DateValues:
-  definition value1 equals |2000-01-01| + 1 year # yields |2001-01-01|
+  definition value1 equals |2000-01-01| + 1 year
+  # yields |2001-01-01|
   definition value2 equals
-    (value1 - |1999-12-31|) + 45 day # 367 + 45 days (2000 is a leap year)
+    (value1 - |1999-12-31|) + 45 day
+# 367 + 45 days (2000 is a leap year)
 ```
 
 #### Ambiguities
@@ -990,7 +1004,8 @@ declaration scope AmbiguousDate2:
 
 scope AmbiguousDate2:
   definition result equals |2000-02-29| + 1 year
-  date round decreasing   # or "increasing"
+  date round decreasing
+# or "increasing"
 ```
 
 ```catala-test-cli
@@ -1029,7 +1044,6 @@ $ catala interpret --scope AmbiguousDate3 --disable-warnings
 #return code 123#
 ```
 
-
 ### Lists
 
 Often, Catala programs need to work with collections of data because the law is
@@ -1048,17 +1062,17 @@ declaration scope ListValues:
 
 scope ListValues:
   definition values equals
-      [ 45; -6; 3; 4; 0; 2155 ]
+    [ 45 ; -6 ; 3 ; 4 ; 0 ; 2155 ]
   definition more_values equals
-      values ++ [ 1; 2; 3]
+    values ++ [ 1 ; 2 ; 3 ]
   definition total equals
-      sum integer of values
+    sum integer of values
   definition average equals
-      total / number of values
+    total / number of values
   definition positive_values equals
-      list of x among values such that x >= 0
+    list of x among values such that x >= 0
   definition relative_values equals
-      map each x among values to (x / total)
+    map each x among values to (x / total)
 ```
 
 ### Tuples
@@ -1098,7 +1112,7 @@ declaration scope ApplyRates:
 
 scope ApplyRates:
   definition result equals
-  map each (v, r) among (values, rates) to (v * r)
+    map each (v, r) among (values, rates) to (v * r)
 ```
 
 This will create a new list where the first element is the product of the first
@@ -1148,8 +1162,8 @@ declaration workdays_per_week content integer equals 5
 
 ```catala
 declaration round_up_100
-    content money
-    depends on money_amount content money
+  content money
+  depends on money_amount content money
   equals
     round of (money_amount / 100.0 + $0.49) * 100.0
 # This computation would certainly require some justification where it is
@@ -1173,12 +1187,13 @@ takes us further from the law and into technical detail. It's better to define a
 named function as such:
 
 ```catala
-declaration excess content money
+declaration excess
+  content money
   depends on x content money,
-             y content money
+    y content money
   equals
-  if x > y then x - y
-  else $0
+    if x > y then x - y
+    else $0
 
 declaration scope IncludeInGrossIncome:
   input fair_market_value content money

@@ -15,7 +15,6 @@ declaration scope GamingAuthorized:
   #context maxValueOfPrizes content boolean
   #context authority content boolean
   internal amountOfPrizesGreaterThan30000 content boolean
-
 ```
   A progressive lottery is a permitted gaming activity for the purposes of section 10 of
   the Act if the following requirements are complied with—
@@ -30,11 +29,13 @@ scope GamingAuthorized:
 ```catala
 scope GamingAuthorized:
   definition amountOfPrizesGreaterThan30000 equals
-    (progressiveLottery.totalValueOfThePrizes < $30000
-      or progressiveLottery.holdsAuthority)
+    (
+      progressiveLottery.totalValueOfThePrizes < $30000
+      or progressiveLottery.holdsAuthority
+    )
 
 scope GamingAuthorized:
-  rule authorized
-    under condition maxCashPrize and amountOfPrizesGreaterThan30000
-    consequence fulfilled
+  rule authorized under condition
+    maxCashPrize and amountOfPrizesGreaterThan30000
+  consequence fulfilled
 ```

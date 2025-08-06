@@ -18,12 +18,14 @@ declaration scope QualifiedEmployeeDiscount:
   internal is_services content boolean
 
 scope QualifiedEmployeeDiscount:
-  definition is_property equals match discount_type with pattern
-    -- Property: true
-    -- Services: false
-  definition is_services equals match discount_type with pattern
-    -- Property: false
-    -- Services: true
+  definition is_property equals
+    match discount_type with pattern
+    -- Property : true
+    -- Services : false
+  definition is_services equals
+    match discount_type with pattern
+    -- Property : false
+    -- Services : true
 ```
 
 ### (c) Qualified employee discount defined
@@ -37,13 +39,13 @@ to qualified property or services to the extent such discount does not exceed—
 the property is being offered by the employer to customers, or
 
 ```catala
-scope QualifiedEmployeeDiscount :
-  definition qualified_employee_discount
-    under condition is_property consequence
-  equals
-    if employee_discount >
+scope QualifiedEmployeeDiscount:
+  definition qualified_employee_discount under condition
+    is_property
+  consequence equals
+    if employee_discount
+      > customer_price * gross_profit_percentage then
       customer_price * gross_profit_percentage
-    then customer_price * gross_profit_percentage
     else employee_discount
 ```
 
@@ -51,20 +53,20 @@ scope QualifiedEmployeeDiscount :
 being offered by the employer to customers.
 
 ```catala
-scope QualifiedEmployeeDiscount :
-definition qualified_employee_discount
-  under condition is_services consequence
-equals
-  if employee_discount >
-    customer_price * 20%
-  then customer_price * 20%
-  else employee_discount
+scope QualifiedEmployeeDiscount:
+  definition qualified_employee_discount under condition
+    is_services
+  consequence equals
+    if employee_discount
+      > customer_price * 20% then
+      customer_price * 20%
+    else employee_discount
 
 scope QualifiedEmployeeDiscount under condition is_services:
-    # When selling a service, one does not need the aggregate cost.
-    # We provide a default value here so that the computations run smooth.
-    definition aggregate_cost equals $0
-    definition gross_profit_percentage equals 0%
+  # When selling a service, one does not need the aggregate cost.
+  # We provide a default value here so that the computations run smooth.
+  definition aggregate_cost equals $0
+  definition gross_profit_percentage equals 0%
 ```
 
 #### (2) Gross profit percentage

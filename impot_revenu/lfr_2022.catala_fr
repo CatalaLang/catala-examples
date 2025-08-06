@@ -41,8 +41,8 @@ de l'article 1417 du même code.
 ```catala
 champ d'application TraitementsSalairesDéclarant:
   définition assiette_exonérations_81_quater
-      état art_5_lfr_2022
-    égal à assiette_exonérations_81_quater + revenus.pourboires_exonérés
+    état art_5_lfr_2022
+  égal à assiette_exonérations_81_quater + revenus.pourboires_exonérés
 ```
 
 IV. - La perte de recettes résultant pour l'Etat du prolongement, du 31 décembre

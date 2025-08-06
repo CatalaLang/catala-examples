@@ -105,8 +105,8 @@ déclaration structure Personne:
   # argent, date, durée ou tout autre structure ou énumération
   # que vous aurez déclaré
   donnée nombre_enfants contenu entier
-  # « revenu » et « nombre_enfants » commencent par une lettre minuscule,
-  # ils adhèrent à la convention « snake_case ».
+# « revenu » et « nombre_enfants » commencent par une lettre minuscule,
+# ils adhèrent à la convention « snake_case ».
 ```
 
 Cette structure contient deux champs de données, « revenu » et
@@ -121,11 +121,11 @@ sont modélisées en Catala par le type énumération, comme suit :
 
 ```catala-metadata
 déclaration énumération CréditImpôt:
-# Le nom "CréditImpôt" s’écrit aussi en « CamelCase »
--- AucunCréditImpôt
-# Cette ligne indique que « CréditImpôt » peut être
-# en situation « AucunCréditImpôt »
--- CréditImpôtEnfants contenu entier
+  # Le nom "CréditImpôt" s’écrit aussi en « CamelCase »
+  -- AucunCréditImpôt
+  # Cette ligne indique que « CréditImpôt » peut être
+  # en situation « AucunCréditImpôt »
+  -- CréditImpôtEnfants contenu entier
 # Cette ligne indique, de manière alternative, que « CréditImpôt » peut aussi
 # être une situation « CréditImpôtEnfants ». Cette situation porte un contenu
 # de type entier qui correspond au nombre d’enfants concernés par le crédit
@@ -212,7 +212,7 @@ Le pourcentage fixe mentionné à l’article 1 est égal à 20%.
 ```catala
 champ d'application CalculImpôtRevenu:
   définition pourcentage_fixe égal à 20%
-  # Ecrire 20% est juste une abbréviation pour « 0.20 »
+# Ecrire 20% est juste une abbréviation pour « 0.20 »
 ```
 
 Vous pouvez voir ici que Catala permet des définitions réparties dans toute
@@ -243,7 +243,7 @@ champ d'application CalculImpôtRevenu:
   définition pourcentage_fixe sous condition
     personne.nombre_enfants >= 2
   conséquence égal à 15%
-  # Ecrire 15% est juste une abbréviation pour « 0.15 »
+# Ecrire 15% est juste une abbréviation pour « 0.15 »
 ```
 
 Même si les définitions conditionelles sont un outil puissant et expressif,
@@ -289,14 +289,14 @@ déclaration champ d'application Enfant:
   entrée âge contenu entier
   # L’âge de l’enfant peut être déclarée comme ci-dessus.
   résultat éligible_à_article_3 condition
-  # Nous déclarons l’éligibilité en utilisant le mot-clé spécial « condition »
-  # qui représente le contenu de la variable.
+# Nous déclarons l’éligibilité en utilisant le mot-clé spécial « condition »
+# qui représente le contenu de la variable.
 
 champ d'application Enfant:
   règle éligible_à_article_3 sous condition âge < 18 conséquence rempli
-  # Au moment de définir la valeur d’une condition à vraie, nous utilisons
-  # la syntaxe spéciale « règle » au lieu de « définition ». Les règles fixent
-  # les conditions à « rempli » ou à « non rempli » par des tests conditionnels.
+# Au moment de définir la valeur d’une condition à vraie, nous utilisons
+# la syntaxe spéciale « règle » au lieu de « définition ». Les règles fixent
+# les conditions à « rempli » ou à « non rempli » par des tests conditionnels.
 ```
 
 Lors de l’interaction avec d’autres éléments du code, les valeurs
@@ -318,16 +318,16 @@ déclaration structure DeuxTranches:
 # Cette structure décrit les paramètres d’un calcul de la formule de l’impôt qui
 # possède deux tranches d’impôts, chacune avec leur propre taux d’imposition.
 
-déclaration champ d'application CalculImpôtDeuxTranches :
+déclaration champ d'application CalculImpôtDeuxTranches:
   entrée tranches contenu DeuxTranches
   # Cette variable d’entrée contient la description des paramètres
   # de la formule d’imposition.
-  résultat formule_imposition contenu argent
-    dépend de revenu contenu argent
-  # Mais en déclarant la variable « formule_imposition », nous la déclarons
-  # comme une fonction : « contenu argent dépend de » signifie qu’une fonction
-  # retourne de « l’argent » en résultat (l’impôt) et prend de « l’argent » en
-  # entrée (le revenu).
+  résultat formule_imposition
+    contenu argent dépend de revenu contenu argent
+# Mais en déclarant la variable « formule_imposition », nous la déclarons
+# comme une fonction : « contenu argent dépend de » signifie qu’une fonction
+# retourne de « l’argent » en résultat (l’impôt) et prend de « l’argent » en
+# entrée (le revenu).
 ```
 
 Et dans le code :
@@ -338,20 +338,21 @@ Le montant de l’impôt pour le calcul à deux tranches est égal au montant
 de l’impôt de chaque tranche, multiplié par le taux de chaque tranche.
 
 ```catala
-champ d'application CalculImpôtDeuxTranches :
+champ d'application CalculImpôtDeuxTranches:
   définition formule_imposition de revenu égal à
-  # Le paramètre de type « argent », de la fonction « formule_imposition »,
-  # est « revenu ». Le nom du paramètre peut-être ce que vous voulez, et cela
-  # n’impactera pas les autres parties du code en dehors de la définition.
-  # Vous pouvez choisir un autre nom pour le paramètre, lors de sa définition,
-  # de la fonction « formule_imposition ».
+    # Le paramètre de type « argent », de la fonction « formule_imposition »,
+    # est « revenu ». Le nom du paramètre peut-être ce que vous voulez, et cela
+    # n’impactera pas les autres parties du code en dehors de la définition.
+    # Vous pouvez choisir un autre nom pour le paramètre, lors de sa définition,
+    # de la fonction « formule_imposition ».
     si revenu <= tranches.seuil alors
       revenu * tranches.taux1
-    sinon (
-      tranches.seuil * tranches.taux1 +
-      (revenu - tranches.seuil) * tranches.taux2
-    )
-    # C’est cette formule pour implémenter un système à deux tranches.
+    sinon
+      (
+        tranches.seuil * tranches.taux1
+        + (revenu - tranches.seuil) * tranches.taux2
+      )
+# C’est cette formule pour implémenter un système à deux tranches.
 ```
 
 ## Inclusion d’un champ d'application
@@ -379,15 +380,16 @@ déclaration champ d'application NouveauCalculImpôtRevenu:
   entrée personne contenu Personne
   résultat impôt_revenu contenu argent
 
-champ d'application NouveauCalculImpôtRevenu :
+champ d'application NouveauCalculImpôtRevenu:
   # Puisque le sous-champ d’application « deux_tranches » est une grande
   # fonction que nous pouvons appelé, nous avons besoin de définir ses
   # paramètres. Ceci est fait ci-dessous :
-  définition deux_tranches.tranches égal à DeuxTranches {
-    -- seuil: 100 000€
-    -- taux1: 20%
-    -- taux2: 40%
-  }
+  définition deux_tranches.tranches égal à
+    DeuxTranches {
+      -- seuil: 100 000€
+      -- taux1: 20%
+      -- taux2: 40%
+    }
   # En définissant la variable d’entrée « tranches », du sous-champ
   # d’application « deux_tranches », nous avons changé la manière dont
   # le sous-champ d’application s’éxécutera. Le sous-champ d'application
@@ -396,12 +398,12 @@ champ d'application NouveauCalculImpôtRevenu :
 
   définition impôt_revenu égal à
     deux_tranches.formule_imposition de personne.revenu
-  # Après que le sous-champ d'application ait été éxécuté, vous pouvez en
-  # récupérer les résultats. Ci-dessus, vous récupérez les résultats de la
-  # variable « formule_imposition » calculée par le sous-champ d’application
-  # « deux_tranches ». C’est à vous de choisir ce qui est une entrée et un
-  # résultat de votre sous-champ d'application ; si vous faites un choix
-  # incohérent, le compilateur Catala vous en avertira.
+# Après que le sous-champ d'application ait été éxécuté, vous pouvez en
+# récupérer les résultats. Ci-dessus, vous récupérez les résultats de la
+# variable « formule_imposition » calculée par le sous-champ d’application
+# « deux_tranches ». C’est à vous de choisir ce qui est une entrée et un
+# résultat de votre sous-champ d'application ; si vous faites un choix
+# incohérent, le compilateur Catala vous en avertira.
 ```
 Maintenant que vous avez réussi de définir le calcul d’impôt sur le revenu,
 le législateur vient inévitablement pérturber nos belles et irréprochables
@@ -420,8 +422,8 @@ champ d'application NouveauCalculImpôtRevenu:
   définition impôt_revenu sous condition
     personne.revenu <= 10 000€
   conséquence égal à 0€
-  # Quoi ? Pensez-vous que quelque chose peut-être faux avec ceci ?
-  # Hmmm… Nous verrons cela plus tard !
+# Quoi ? Pensez-vous que quelque chose peut-être faux avec ceci ?
+# Hmmm… Nous verrons cela plus tard !
 ```
 
 Et voilà ! Nous avons défini un calcul d’impôt à deux tranches en annotant
@@ -479,10 +481,11 @@ déclaration champ d'application Test2:
   résultat impôt_revenu contenu argent
 
 champ d'application Test2:
-  définition calcul_impôt.personne égal à Personne {
-    -- revenu: 4 000€
-    -- nombre_enfants: 0
-  }
+  définition calcul_impôt.personne égal à
+    Personne {
+      -- revenu: 4 000€
+      -- nombre_enfants: 0
+    }
 
   définition impôt_revenu égal à calcul_impôt.impôt_revenu
   assertion impôt_revenu = 0€
@@ -511,16 +514,17 @@ déclaration champ d'application NouveauCalculImpôtRevenuCorrect:
   entrée personne contenu Personne
   résultat formule_imposition contenu argent dépend de revenu contenu argent
   contexte résultat impôt_revenu contenu argent
-  # Cette variable est marquée avec un « contexte », un nouveau concept que
-  # nous n’avons pas encore introduit. Pour le moment, ignorons le jusqu’à
-  # ce que nous revenions dessus dans la section « Variables de contexte ».
+# Cette variable est marquée avec un « contexte », un nouveau concept que
+# nous n’avons pas encore introduit. Pour le moment, ignorons le jusqu’à
+# ce que nous revenions dessus dans la section « Variables de contexte ».
 
-champ d'application NouveauCalculImpôtRevenuCorrect :
-  définition deux_tranches.tranches égal à DeuxTranches {
-    -- seuil: 100 000€
-    -- taux1: 20%
-    -- taux2: 40%
-  }
+champ d'application NouveauCalculImpôtRevenuCorrect:
+  définition deux_tranches.tranches égal à
+    DeuxTranches {
+      -- seuil: 100 000€
+      -- taux1: 20%
+      -- taux2: 40%
+    }
   définition formule_imposition de revenu égal à
     deux_tranches.formule_imposition de revenu
 ```
@@ -550,10 +554,11 @@ déclaration champ d'application Test3:
   résultat impôt_revenu contenu argent
 
 champ d'application Test3:
-  définition calcul_impôt.personne égal à Personne {
-    -- revenu: 4 000€
-    -- nombre_enfants: 0
-  }
+  définition calcul_impôt.personne égal à
+    Personne {
+      -- revenu: 4 000€
+      -- nombre_enfants: 0
+    }
   définition impôt_revenu égal à calcul_impôt.impôt_revenu
   assertion impôt_revenu = 0€
 ```
@@ -579,10 +584,10 @@ mentionné à l’article 1.
 
 ```catala
 champ d'application NouveauCalculImpôtRevenuCorrect:
-      exception article_5
-      définition impôt_revenu sous condition
-        personne.nombre_enfants >= 7
-      conséquence égal à 0€
+  exception article_5
+  définition impôt_revenu sous condition
+    personne.nombre_enfants >= 7
+  conséquence égal à 0€
 ```
 
 Le même problème devrait être déclenché ci-dessus, pour des familles avec un
@@ -606,7 +611,6 @@ Pour ces cas, il est possible d’appeler un champ d'application directement, en
 spécifiant en même temps toutes ses variables d’entrées, et de récupérer ses
 variables de résultat de la même manière qu’avec des sous-champs d’application.
 
-
 ```catala
 déclaration champ d'application Test5:
   interne personne contenu Personne
@@ -614,15 +618,20 @@ déclaration champ d'application Test5:
   résultat impôt_revenu contenu argent
 
 champ d'application Test5:
-  définition personne égal à Personne {
-    -- revenu: 7 000€
-    -- nombre_enfants: 7
-  }
+  définition personne égal à
+    Personne {
+      -- revenu: 7 000€
+      -- nombre_enfants: 7
+    }
   définition impôt_revenu égal à
     si est_applicable_au_calcul_normal_impôt_revenu alors
-      (résultat de NouveauCalculImpôtRevenuCorrect avec
-      	 { -- personne: personne }).impôt_revenu
-    sinon 0€ # Insérez d’autres modes de calcul ici
+      (
+        résultat de NouveauCalculImpôtRevenuCorrect avec {
+          -- personne: personne
+        }
+      ).impôt_revenu
+    sinon 0€
+# Insérez d’autres modes de calcul ici
 ```
 
 Ici le syntaxe « NouveauCalculImpôtRevenuCorrect avec » déclenche un appel
@@ -656,9 +665,9 @@ particuliers gagnant moins de 10 000€.
 # Pour calculer la base qui détermine l’imposition de l’amende, nous créons
 # un nouveau champ d’application.
 déclaration champ d'application DétermineBaseAmende:
-   calcul_impôt champ d'application NouveauCalculImpôtRevenuCorrect
-   entrée personne contenu Personne
-   résultat base_amende contenu argent
+  calcul_impôt champ d'application NouveauCalculImpôtRevenuCorrect
+  entrée personne contenu Personne
+  résultat base_amende contenu argent
 
 champ d'application DétermineBaseAmende:
   # Tout d’abord, nous relions l’entrée et le résultat des
@@ -723,24 +732,28 @@ déclaration champ d'application ImpôtSurLaFortune:
   entrée valeur_du_bâtiment_pour_exploitation_caritative contenu argent
   entrée total_du_patrimoine contenu argent
   interne patrimoine contenu argent
-    # Après le type de la variable, nous pouvons définir la liste ordonnée
-    # des états que la variable doit prendre avant de calculer sa valeur finale.
-    # À chaque état, nous pourrons nous référer à la valeur de l’état précédent.
+  # Après le type de la variable, nous pouvons définir la liste ordonnée
+  # des états que la variable doit prendre avant de calculer sa valeur finale.
+  # À chaque état, nous pourrons nous référer à la valeur de l’état précédent.
     état total
     état après_déduction_caritative
     état après_plafonnement
 
 champ d'application ImpôtSurLaFortune:
   définition patrimoine état total égal à total_du_patrimoine
-  définition patrimoine état après_déduction_caritative égal à
+  définition patrimoine
+    état après_déduction_caritative
+  égal à
     patrimoine - valeur_du_bâtiment_pour_exploitation_caritative
-    # Ci-dessus, « patrimoine » se réfère à l’état « total »
-  définition patrimoine état après_plafonnement égal à
+  # Ci-dessus, « patrimoine » se réfère à l’état « total »
+  définition patrimoine
+    état après_plafonnement
+  égal à
     si patrimoine >= 2 500 000€ alors 2 500 000€ sinon patrimoine
-    # Ci-dessus, « patrimoine » réfère à l’état « après_déduction_caritative »
+  # Ci-dessus, « patrimoine » réfère à l’état « après_déduction_caritative »
   assertion patrimoine > 0€
-  # En dehors de la définition de « patrimoine », « patrimoine » réfère toujours
-  # à l’état final de la variable, ici « après_plafonnement ».
+# En dehors de la définition de « patrimoine », « patrimoine » réfère toujours
+# à l’état final de la variable, ici « après_plafonnement ».
 ```
 
 ## Les types de données de Catala
@@ -767,7 +780,7 @@ champ d'application ValeursBooléennes:
   # Mets le booléen de la condition « valeur1 » à « vrai »,
   # si la condition « faux et vrai » est respectée.
   définition valeur2 égal à valeur1 ou bien (valeur1 et vrai) = faux
-  # Les opérateurs booléens incluent « et », « ou », « ou bien »
+# Les opérateurs booléens incluent « et », « ou », « ou bien »
 ```
 
 ### Entiers
@@ -802,12 +815,12 @@ déclaration champ d'application ValeursDécimales:
 
 champ d'application ValeursDécimales:
   définition valeur1 sous condition
-    12,655465446655426 - 0,45265426541654  < 12,3554654652
+    12,655465446655426 - 0,45265426541654 < 12,3554654652
   conséquence égal à 45 / 9
   # L’opérateur « / » correspond à une division éxacte.
   # La division d’entiers produit une décimale.
   définition valeur2 égal à valeur1 * valeur1 * 65%
-  # Les pourcentages sont des nombres décimaux (ici 0,65)
+# Les pourcentages sont des nombres décimaux (ici 0,65)
 ```
 
 ### Argent
@@ -830,8 +843,8 @@ déclaration champ d'application ValeursMonétaires:
 
 champ d'application ValeursMonétaires:
   définition valeur1 sous condition
-    12,655465446655426 - 0,45265426541654  < 12,3554654652 conséquence
-  égal à (décimal de 45) / (décimal de 9)
+    12,655465446655426 - 0,45265426541654 < 12,3554654652
+  conséquence égal à (décimal de 45) / (décimal de 9)
   définition valeur2 égal à
     1,00€ * (((6 520,23€ - 320,45€) * valeur1) / 45€)
 ```
@@ -855,9 +868,11 @@ déclaration champ d'application ValeursDate:
   interne valeur2 contenu durée
 
 champ d'application ValeursDate:
-  définition valeur1 égal à |2000-01-01| + 1 an # produit |2001-01-01|
+  définition valeur1 égal à |2000-01-01| + 1 an
+  # produit |2001-01-01|
   définition valeur2 égal à
-    (valeur1 - |1999-12-31|) + 45 jour # 367 + 45 jours (2000 est bissextile)
+    (valeur1 - |1999-12-31|) + 45 jour
+# 367 + 45 jours (2000 est bissextile)
 ```
 
 ### Collections
@@ -874,7 +889,7 @@ déclaration champ d'application ValeursDeListe:
   interne valeur2 contenu entier
 
 champ d'application ValeursDeListe:
-  définition valeur1 égal à [45;-6;3;4;0;2155]
+  définition valeur1 égal à [ 45 ; -6 ; 3 ; 4 ; 0 ; 2155 ]
   définition valeur2 égal à
     # somme de carré
     somme entier de transforme chaque i parmi valeur1 en (i * i)
@@ -917,8 +932,8 @@ déclaration champ d'application NombreDeJoursTravaillésParSemaine:
 
 champ d'application NombreDeJoursTravaillésParSemaine:
   définition valeur égal à 5
-  # L’obligation de déclarer le champ d'application avec une simple variable
-  # de résultat est assez lourde et nuit à la lisibilité.
+# L’obligation de déclarer le champ d'application avec une simple variable
+# de résultat est assez lourde et nuit à la lisibilité.
 ```
 
 b. Les frais de repas sont de 2€ par jour de travail, sur le nombre de
@@ -927,18 +942,22 @@ semaines travaillées.
 ```catala
 déclaration champ d'application FraisDeRepas_A:
   entrée nombre_de_semaines_travaillées contenu entier
-  nombre_de_jours_travaillés_par_semaine champ d'application
-    NombreDeJoursTravaillésParSemaine
-    # Le sous-champ d'application doit être déclaré pour accéder à sa valeur.
-    # Dans certains cas, il peut être bon d’avoir une dépendance explicite.
+  nombre_de_jours_travaillés_par_semaine
+    champ d'application NombreDeJoursTravaillésParSemaine
+  # Le sous-champ d'application doit être déclaré pour accéder à sa valeur.
+  # Dans certains cas, il peut être bon d’avoir une dépendance explicite.
   résultat valeur contenu argent
 
 champ d'application FraisDeRepas_A:
   définition valeur égal à
-    2€ * (nombre_de_semaines_travaillées *
-          nombre_de_jours_travaillés_par_semaine.valeur / 7)
-          # La syntaxe est <nom_du_champ_d’application>.<nom_de_variable>
-	  # afin d’accéder à la valeur
+    2€
+    * (
+      nombre_de_semaines_travaillées
+      * nombre_de_jours_travaillés_par_semaine.valeur
+      / 7
+    )
+# La syntaxe est <nom_du_champ_d’application>.<nom_de_variable>
+# afin d’accéder à la valeur
 ```
 
 ### B. En utilisant les définitions de premier niveau
@@ -962,11 +981,15 @@ déclaration champ d'application FraisDeRepas_B:
 
 champ d'application FraisDeRepas_B:
   définition valeur égal à
-    2€ * (nombre_de_semaines_travaillées *
-          nombre_de_jours_travaillés_par_semaine / 7)
-          # Il n’est pas nécessaire d’un sous-champ d'application, la valeur
-          # de « nombre_de_jours_travaillés_par semaine » est accessible
-	  # directement par son nom
+    2€
+    * (
+      nombre_de_semaines_travaillées
+      * nombre_de_jours_travaillés_par_semaine
+      / 7
+    )
+# Il n’est pas nécessaire d’un sous-champ d'application, la valeur
+# de « nombre_de_jours_travaillés_par semaine » est accessible
+# directement par son nom
 ```
 
 ## Exemple 2: Les fonctions de premier niveau
@@ -990,14 +1013,15 @@ b. L’allocation finale est arrondie au multiple supérieur de 100€.
 
 ```catala
 champ d'application Allocation:
-  définition valeur état final égal à
+  définition valeur
+    état final
+  égal à
     arrondi de (valeur / 100,0 + 0,49€) * 100,0
-    # Ici vous devriez expliquer pourquoi cette formule fait ce que
-    # le texte exprime, puisque c’est loin d’être évident.
-    # Ça n’est pas grave s’il est utilisé qu’une seule fois, mais c’est loin
-    # d’être l’idéal si cet arrondi spécifique est utilisé partout dans la loi.
+# Ici vous devriez expliquer pourquoi cette formule fait ce que
+# le texte exprime, puisque c’est loin d’être évident.
+# Ça n’est pas grave s’il est utilisé qu’une seule fois, mais c’est loin
+# d’être l’idéal si cet arrondi spécifique est utilisé partout dans la loi.
 ```
-
 
 ### B. Nouvelle syntaxe proposée pour les « fonctions de niveau supérieur »
 
@@ -1005,13 +1029,13 @@ b. L’allocation finale est arrondie au multiple supérieur de 100€
 
 ```catala
 déclaration arrondi_supérieur_à_100
-    contenu argent
-    dépend de montant contenu argent
+  contenu argent
+  dépend de montant contenu argent
   égal à
     arrondi de (montant / 100,0 + 0,49€) * 100,0
-    # L’explication est encore nécessaire, bien que
-    # ça n’encombre pas le champ d'application actuel.
-    # Cette définition pourrait même être mise dans le prologue.
+# L’explication est encore nécessaire, bien que
+# ça n’encombre pas le champ d'application actuel.
+# Cette définition pourrait même être mise dans le prologue.
 
 champ d'application Allocation:
   définition valeur état final égal à arrondi_supérieur_à_100 de valeur
@@ -1038,7 +1062,7 @@ champ d'application InclureDansRevenuBrut:
       juste_valeur_marchande - montant_payé
     sinon
       0€
-    # C’est essentiellement la définition de « l’excédent de »
+# C’est essentiellement la définition de « l’excédent de »
 ```
 
 ### B. Avec une fonction à deux paramètres
@@ -1047,7 +1071,7 @@ champ d'application InclureDansRevenuBrut:
 déclaration excédent
   contenu argent
   dépend de x contenu argent,
-            y contenu argent
+    y contenu argent
   égal à
     si x > y alors x - y
     sinon 0€

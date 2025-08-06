@@ -20,19 +20,21 @@ déclaration énumération FraisRéels:
   -- Non
   -- Oui contenu argent
 
-déclaration plafond contenu argent
+déclaration plafond
+  contenu argent
   dépend de valeur contenu argent,
-            plafond contenu argent
+    plafond contenu argent
   égal à
-  si valeur > plafond alors plafond
-  sinon valeur
+    si valeur > plafond alors plafond
+    sinon valeur
 
-déclaration plancher contenu argent
+déclaration plancher
+  contenu argent
   dépend de valeur contenu argent,
-            plancher contenu argent
+    plancher contenu argent
   égal à
-  si valeur < plancher alors plancher
-  sinon valeur
+    si valeur < plancher alors plancher
+    sinon valeur
 
 déclaration énumération TypePensionRetraiteRente:
   -- PensionsRetraitesRentes
@@ -40,8 +42,8 @@ déclaration énumération TypePensionRetraiteRente:
   -- PensionInvalidité
   -- PensionEnCapitalPlansÉpargneRetraite
   -- PensionAlimentairePercue
-  # -- PensionNonRésident_etc # Non encore utilisé
-  # -- AutrePensionImposableSourceÉtrangère # Non encore utilisé
+# -- PensionNonRésident_etc # Non encore utilisé
+# -- AutrePensionImposableSourceÉtrangère # Non encore utilisé
 
 déclaration structure PensionRetraiteRente:
   donnée valeur_initiale contenu argent
@@ -149,8 +151,8 @@ déclaration structure DéclarationTraitementsSalaires:
   # Case 1SM/1DN
   # donnée sommes_exonérées_cet_jours_congés_non_pris contenu argent
   # Case 0XX
-  donnée revenus_exceptionnels_ou_différés contenu
-    liste de RevenuExceptionnelOuDifféré
+  donnée revenus_exceptionnels_ou_différés
+    contenu liste de RevenuExceptionnelOuDifféré
   # Case 1AC/...
   # donnée salaires_taux_effectif contenu argent
   # Case 1GE/... (utile pour le prélèvement à la source)
@@ -186,23 +188,25 @@ déclaration structure DéclarationTraitementsSalairesFoyerFiscal:
   # Case 1DR
   donnée rentes_étrangères_imputables_percues_70plus_ans contenu argent
   # Case 0XX
-  donnée revenus_exceptionnels_ou_différés contenu
-    liste de RevenuExceptionnelOuDifféré
+  donnée revenus_exceptionnels_ou_différés
+    contenu liste de RevenuExceptionnelOuDifféré
   # Case 1TZ
   donnée acquisition_d_actions_gratuites_gain_imposable contenu argent
-  # Case 1UZ
-  # donnée acquisition_d_actions_gratuites_abattement_duree contenu argent
-  # Case 1WZ
-  # donnée acquisition_d_actions_gratuites_abattement_50 contenu argent
-  # Case 1VZ
-  # donnée acquisition_d_actions_gratuites_abattement_retraite contenu argent
+# Case 1UZ
+# donnée acquisition_d_actions_gratuites_abattement_duree contenu argent
+# Case 1WZ
+# donnée acquisition_d_actions_gratuites_abattement_50 contenu argent
+# Case 1VZ
+# donnée acquisition_d_actions_gratuites_abattement_retraite contenu argent
 
 déclaration structure RevenuQuotienté:
   # Les revenus quotientés sont des résultats du champ d'application
   # TraitementsSalairesDéclarant, parce qu'ils seront nécessaires à la
   # liquidation multiple pour le calcul de l'imposition (BOI-IR-LIQ-20-30-20).
-  donnée valeur_nette contenu argent # La déduction a déjà été soustraite ici
-  donnée déduction contenu argent # Déduction des frais réels au prorata
+  donnée valeur_nette contenu argent
+  # La déduction a déjà été soustraite ici
+  donnée déduction contenu argent
+  # Déduction des frais réels au prorata
   donnée coefficient contenu entier
   donnée catégorie contenu CatégorieRevenuExceptionnelOuDifféré
 
@@ -221,18 +225,16 @@ déclaration champ d'application TraitementsSalairesDéclarant:
   interne plafond_déduction_frais_professionnels contenu argent
   interne minimum_déduction_frais_professionnels contenu argent
 
-  interne pensions_retraites_rentes_79 contenu
-    liste de PensionRetraiteRente
+  interne pensions_retraites_rentes_79 contenu liste de PensionRetraiteRente
     état art79
     état convention_internationale
     état art204c
-  interne abattement_selon_158_5_a contenu booléen
-    dépend de type_retraite contenu TypePensionRetraiteRente
+  interne abattement_selon_158_5_a
+    contenu booléen dépend de type_retraite contenu TypePensionRetraiteRente
   interne minimum_abattement_pensions_retraites_rentes contenu argent
 
   interne calcul_abattement_pensions_retraites_rentes contenu argent
-    dépend de pension_retraite_rente contenu argent
-    état base
+  dépend de pension_retraite_rente contenu argent état base
     état arrondissement
     état plancher
     état maximisation
@@ -240,21 +242,16 @@ déclaration champ d'application TraitementsSalairesDéclarant:
     contenu argent
   interne abattement_pensions_retraites_rentes_total_plafonné
     contenu argent
-  interne calcul_abattement_proratisé_revenus_quotienté_pensions_retraites
-    contenu argent
-    dépend de revenu_quotienté contenu argent
-    état base
+  interne calcul_abattement_proratisé_revenus_quotienté_pensions_retraites contenu argent
+  dépend de revenu_quotienté contenu argent état base
     état arrondissement
   résultat abattement_pensions_retraites_rentes contenu argent
   interne calcul_déduction_frais_professionnels
     contenu argent dépend de assiette contenu argent
-  interne calcul_déduction_proratisée_revenus_quotientés_traitements_salaires
-    contenu argent
-    dépend de revenu_quotienté contenu argent
-    état base
+  interne calcul_déduction_proratisée_revenus_quotientés_traitements_salaires contenu argent
+  dépend de revenu_quotienté contenu argent état base
     état arrondissement
-  interne déduction_frais_professionnels_traitements_salaires_avant_prorata
-    contenu argent
+  interne déduction_frais_professionnels_traitements_salaires_avant_prorata contenu argent
     état forfaitaire
     état arrondissement
     état plancher_83_3_3
@@ -269,8 +266,7 @@ déclaration champ d'application TraitementsSalairesDéclarant:
     état art_5_lfr_2022
   résultat exonérations_81_quater contenu argent
   résultat prélèvement_libératoire contenu argent
-  résultat traitements_salaires_avec_déduction_frais_professionnels
-    contenu argent
+  résultat traitements_salaires_avec_déduction_frais_professionnels contenu argent
     état base
     état art62
     état art93_1bis
@@ -287,7 +283,6 @@ déclaration champ d'application TraitementsSalairesDéclarant:
     état art204c
   résultat revenu_brut_déclarant_hors_quotient contenu argent
   résultat revenus_quotientés contenu liste de RevenuQuotienté
-
 ```
 
 ### Pour l'ensemble du foyer fiscal
@@ -328,15 +323,14 @@ déclaration champ d'application TraitementsSalairesFoyerFiscal:
   interne déclarations_revenus contenu liste de DéclarationTraitementsSalaires
   interne déclarations_avec_plafond_pensions_retraites_rentes_correct
     contenu liste de DéclarationAvecPlafondPensionRetraitesRentesCorrect
-  résultat
-    déclarations_avec_résultats_traitements_salaires
+  résultat déclarations_avec_résultats_traitements_salaires
     contenu liste de TraitementsSalairesDéclarant
   # Fin des liquidations successives
 
   interne solde_revenu_brut_global_hors_quotient_avant_déficit_quotient
     contenu argent
-  interne calcul_déduction_rente_viagères_titre_onéreux contenu argent
-    dépend de rente_viagère contenu RenteViagèreOnéreux
+  interne calcul_déduction_rente_viagères_titre_onéreux
+    contenu argent dépend de rente_viagère contenu RenteViagèreOnéreux
   résultat rentes_viagères_titre_onéreux contenu argent
     état base
     état étrangères_imputables
@@ -346,10 +340,13 @@ déclaration champ d'application TraitementsSalairesFoyerFiscal:
 
 champ d'application TraitementsSalairesFoyerFiscal:
   définition déclarations_revenus égal à
-    [déclarant1] ++ (selon déclarant2 sous forme
-      -- PasDeDéclaration: []
-      -- Déclaration contenu déclarant2: [déclarant2]) ++
-    déclarations_personnes_à_charge
+    [ déclarant1 ]
+    ++ (
+      selon déclarant2 sous forme
+      -- PasDeDéclaration : []
+      -- Déclaration contenu déclarant2 : [ déclarant2 ]
+    )
+    ++ déclarations_personnes_à_charge
 ```
 
 ### Bénéfices non commerciaux
@@ -385,8 +382,8 @@ déclaration structure DéclarationBénéficesNonCommerciauxGénéraux:
   # Case 5XJ/... et 5XS/...
   donnée revenus_imposables_source_étrangère_imputés contenu argent
   # Case 0XX
-  donnée revenus_exceptionnels_ou_différés contenu
-    liste de RevenuExceptionnelOuDifféré
+  donnée revenus_exceptionnels_ou_différés
+    contenu liste de RevenuExceptionnelOuDifféré
 
 déclaration structure DéclarationBénéficesNonCommerciauxProfessionnels:
   donnée généraux contenu DéclarationBénéficesNonCommerciauxGénéraux
@@ -400,8 +397,8 @@ déclaration structure DéclarationBénéficesNonCommerciauxNonProfessionnels:
 
 déclaration structure DéclarationBénéficesNonCommerciaux:
   donnée professionnels contenu DéclarationBénéficesNonCommerciauxProfessionnels
-  donnée non_professionnels contenu
-    DéclarationBénéficesNonCommerciauxNonProfessionnels
+  donnée non_professionnels
+    contenu DéclarationBénéficesNonCommerciauxNonProfessionnels
   # Case 5TE/...
   # donnée total_recettes_prélèvement_libératoire contenu argent
   # Case 5TL/...
@@ -431,14 +428,14 @@ déclaration champ d'application BénéficesNonCommerciauxDéclarant:
     contenu liste de RevenuExceptionnelOuDifféré
   interne revenus_exceptionnels_non_professionnels_sans_abattement
     contenu liste de RevenuExceptionnelOuDifféré
-  pro_rata_abattement_forfaitaire_micro champ d'application
-    Oracles.ProRataArrondiEuroBranchement
+  pro_rata_abattement_forfaitaire_micro
+    champ d'application Oracles.ProRataArrondiEuroBranchement
 
   résultat abattement_forfaitaire_micro_professionnel contenu argent
   résultat abattement_forfaitaire_micro_non_professionnel contenu argent
   résultat revenus_quotientés_professionnels contenu liste de RevenuQuotienté
-  résultat revenus_quotientés_non_professionnels contenu
-    liste de RevenuQuotienté
+  résultat revenus_quotientés_non_professionnels
+    contenu liste de RevenuQuotienté
   résultat prélèvement_libératoire_auto_entreprise contenu argent
     état base
     état arrondissement
@@ -462,10 +459,10 @@ déclaration champ d'application BénéficesNonCommerciauxFoyerFiscal:
   entrée année_revenus contenu entier
   entrée revenus contenu liste de DéclarationBénéficesNonCommerciaux
   # Case 5HT/...
-  entrée déficits_réels_années_antérieures_non_professionnels contenu
-    liste de Oracles.DéficitAntérieur
-  résultat résultats_liquidation_bénéfices_non_commerciaux contenu
-    liste de BénéficesNonCommerciauxDéclarant
+  entrée déficits_réels_années_antérieures_non_professionnels
+    contenu liste de Oracles.DéficitAntérieur
+  résultat résultats_liquidation_bénéfices_non_commerciaux
+    contenu liste de BénéficesNonCommerciauxDéclarant
   interne solde_net_global_non_professionnel contenu argent
     état agrégation
     état imputation_déficit_revenus_quotient
@@ -475,8 +472,8 @@ déclaration champ d'application BénéficesNonCommerciauxFoyerFiscal:
   imputation_déficit_sur_revenu_quotientés_non_professionnels
     champ d'application ImputationDéficitSurRevenusQuotientés
 
-  imputation_aux_déficits_les_plus_anciens champ d'application
-    Oracles.ImputationAuxDéficitsLesPlusAnciens
+  imputation_aux_déficits_les_plus_anciens
+    champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
 
   résultat revenus_non_professionnels_quotientés_imputés
     contenu liste de (liste de RevenuQuotienté)
@@ -521,11 +518,10 @@ déclaration structure DéclarationBénéficesIndustrielsCommerciauxGénéraux:
   # donnée revenus_imposable_micro_services_source_étrangère_imputés
   #   contenu argent
   # Case 0XX
-  donnée revenus_exceptionnels_ou_différés contenu
-    liste de RevenuExceptionnelOuDifféré
+  donnée revenus_exceptionnels_ou_différés
+    contenu liste de RevenuExceptionnelOuDifféré
 
-déclaration structure
-  DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels:
+déclaration structure DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels:
   donnée généraux contenu DéclarationBénéficesIndustrielsCommerciauxGénéraux
   # Case 5ND/...
   donnée locations_meublées_micro_général contenu argent
@@ -554,27 +550,24 @@ déclaration structure
   donnée locations_meublées_déficit_cotisations contenu argent
 
 déclaration structure DéclarationBénéficesIndustrielsCommerciaux:
-  donnée professionnels contenu
-    DéclarationBénéficesIndustrielsCommerciauxGénéraux
-  donnée non_professionnels contenu
-    DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
+  donnée professionnels
+    contenu DéclarationBénéficesIndustrielsCommerciauxGénéraux
+  donnée non_professionnels
+    contenu DéclarationBénéficesIndustrielsCommerciauxNonProfessionnels
   # Case 5TA/...
   # donnée
   #  total_chiffre_affaires_prélèvement_libératoire_marchandises
   # contenu argent
   # Case 5TJ/...
-  donnée
-   chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
-  contenu argent
+  donnée chiffre_affaires_prélèvement_libératoire_marchandises_éxonéré_cotisations
+    contenu argent
   # Case 5TB/...
   # donnée
   #  total_chiffre_affaires_prélèvement_libératoire_services
   # contenu argent
   # Case 5TK/...
-  donnée
-   chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
-  contenu argent
-
+  donnée chiffre_affaires_prélèvement_libératoire_services_éxonéré_cotisations
+    contenu argent
 
 déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   entrée revenus contenu DéclarationBénéficesIndustrielsCommerciaux
@@ -586,55 +579,46 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   interne revenus_imposables_réel_non_professionnels contenu argent
     état base
     état étrangers
-  interne revenus_imposables_réel_non_professionnels_locations_meublées
-    contenu argent
+  interne revenus_imposables_réel_non_professionnels_locations_meublées contenu argent
     état base
     état étrangers
-  interne
-    revenus_exceptionnels_professionnels_abattement_micro_marchandises
+  interne revenus_exceptionnels_professionnels_abattement_micro_marchandises
     contenu liste de RevenuExceptionnelOuDifféré
-  interne
-    revenus_exceptionnels_non_professionnels_abattement_micro_marchandises
+  interne revenus_exceptionnels_non_professionnels_abattement_micro_marchandises
     contenu liste de RevenuExceptionnelOuDifféré
-  interne
-    revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
+  interne revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales
     contenu liste de RevenuExceptionnelOuDifféré
-  interne
-    revenus_exceptionnels_professionnels_abattement_micro_services
+  interne revenus_exceptionnels_professionnels_abattement_micro_services
     contenu liste de RevenuExceptionnelOuDifféré
-  interne
-    revenus_exceptionnels_non_professionnels_abattement_micro_services
+  interne revenus_exceptionnels_non_professionnels_abattement_micro_services
     contenu liste de RevenuExceptionnelOuDifféré
-  interne
-    revenus_exceptionnels_professionnels_sans_abattement
+  interne revenus_exceptionnels_professionnels_sans_abattement
     contenu liste de RevenuExceptionnelOuDifféré
-    interne
-    revenus_exceptionnels_non_professionnels_sans_abattement
+  interne revenus_exceptionnels_non_professionnels_sans_abattement
     contenu liste de RevenuExceptionnelOuDifféré
   interne assiette_abattement_forfaitaire_micro_services contenu argent
   interne abattement_forfaitaire_micro_total_services contenu argent
     état base
     état arrondissement
     état plancher
-  pro_rata_abattement_forfaitaire_micro_services champ d'application
-    Oracles.ProRataArrondiEuroBranchement
+  pro_rata_abattement_forfaitaire_micro_services
+    champ d'application Oracles.ProRataArrondiEuroBranchement
   interne assiette_abattement_forfaitaire_micro_marchandises contenu argent
   interne abattement_forfaitaire_micro_total_marchandises contenu argent
     état base
     état arrondissement
     état plancher
-  pro_rata_abattement_forfaitaire_micro_marchandises champ d'application
-    Oracles.ProRataArrondiEuroBranchement
+  pro_rata_abattement_forfaitaire_micro_marchandises
+    champ d'application Oracles.ProRataArrondiEuroBranchement
   interne assiette_abattement_spécial_micro_location_meublées_rurales_spéciales
     contenu argent
-  interne abattement_spécial_micro_total_location_meublées_rurales_spéciales
-    contenu argent
+  interne abattement_spécial_micro_total_location_meublées_rurales_spéciales contenu argent
     état base
     état arrondissement
     état plancher
-  interne plancher_abattement_forfaitaire_micro_total contenu argent 
-  pro_rata_plancher_abattement_forfaitaire_total champ d'application 
-    Oracles.ProRataArrondiEuroBranchement
+  interne plancher_abattement_forfaitaire_micro_total contenu argent
+  pro_rata_plancher_abattement_forfaitaire_total
+    champ d'application Oracles.ProRataArrondiEuroBranchement
   pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales
     champ d'application Oracles.ProRataArrondiEuroBranchement
   résultat abattement_spécial_micro_location_meublées_rurales_spéciales
@@ -651,8 +635,8 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   résultat abattement_forfaitaire_micro_non_professionnel_services_locations_meublées
     contenu argent
   résultat revenus_quotientés_professionnels contenu liste de RevenuQuotienté
-  résultat revenus_quotientés_non_professionnels contenu
-    liste de RevenuQuotienté
+  résultat revenus_quotientés_non_professionnels
+    contenu liste de RevenuQuotienté
 
   résultat solde_net_professionnel contenu argent
     état revenus_imposables_réel
@@ -677,15 +661,14 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   entrée année_revenus contenu entier
   entrée revenus contenu liste de DéclarationBénéficesIndustrielsCommerciaux
   # Case 5RN/...
-  entrée déficits_réels_années_antérieures_non_professionnels contenu
-    liste de Oracles.DéficitAntérieur
+  entrée déficits_réels_années_antérieures_non_professionnels
+    contenu liste de Oracles.DéficitAntérieur
   # Case 5GA/...
   entrée déficits_réels_années_antérieures_non_professionnels_locations_meublées
     contenu liste de Oracles.DéficitAntérieur
-  résultat résultats_liquidation_bénéfices_industriels_commerciaux contenu
-    liste de BénéficesIndustrielsCommerciauxDéclarant
-  interne solde_net_global_non_professionnel_hors_locations_meublées
-    contenu argent
+  résultat résultats_liquidation_bénéfices_industriels_commerciaux
+    contenu liste de BénéficesIndustrielsCommerciauxDéclarant
+  interne solde_net_global_non_professionnel_hors_locations_meublées contenu argent
     état agrégation
     état imputation_déficit_revenus_quotient
     état imputation_déficits_années_antérieures_non_professionnels
@@ -700,13 +683,12 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   imputation_déficit_sur_revenu_quotientés_non_professionnels_locations_meublées
     champ d'application ImputationDéficitSurRevenusQuotientés
 
-  imputation_aux_déficits_les_plus_anciens champ d'application
-    Oracles.ImputationAuxDéficitsLesPlusAnciens
+  imputation_aux_déficits_les_plus_anciens
+    champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
   imputation_aux_déficits_les_plus_anciens_locations_meublées
     champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
 
-  résultat revenus_non_professionnels_quotientés_imputés
-    contenu liste de (liste de RevenuQuotienté)
+  résultat revenus_non_professionnels_quotientés_imputés contenu liste de (liste de RevenuQuotienté)
     état base
     état locations_meublées
   résultat revenu_brut_global contenu argent
@@ -720,15 +702,13 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   résultat déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour
     contenu liste de Oracles.DéficitAntérieur
 
-déclaration champ d'application
-  PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux:
+déclaration champ d'application PlusMoinsValueCourtTermeBénéficesIndustrielsCommerciaux:
   entrée plus_values_nettes contenu argent
   entrée moins_values_nettes contenu argent
 
   résultat solde_net contenu argent
 
-déclaration champ d'application
-  PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux:
+déclaration champ d'application PrélèvementPlusMoinsValueLongTermeBénéficesIndustrielsCommerciaux:
   entrée plus_values_nettes contenu argent
   entrée moins_values_nettes contenu argent
 
@@ -750,15 +730,15 @@ déclaration champ d'application CalculRevenuQuotienté:
 
 déclaration champ d'application ImputationDéficitSurRevenusQuotientés:
   entrée solde_catégoriel_à_imputer contenu argent
-  entrée revenus_quotientés_catégoriels contenu
-    liste de (liste de RevenuQuotienté)
+  entrée revenus_quotientés_catégoriels
+    contenu liste de (liste de RevenuQuotienté)
   # Cette liste de liste correspond aux listes de revenus catégoriels pour
   # chaque déclarant.
 
   interne base_d_imputation_déficit_catégoriel contenu argent
 
-  résultat revenus_quotientés_catégoriels_imputés contenu
-    liste de (liste de RevenuQuotienté)
+  résultat revenus_quotientés_catégoriels_imputés
+    contenu liste de (liste de RevenuQuotienté)
   résultat déficit_catégoriel_imputé contenu argent
 ```
 

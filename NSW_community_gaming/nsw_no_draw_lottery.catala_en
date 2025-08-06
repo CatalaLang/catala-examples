@@ -3,10 +3,10 @@
 ```
 ```catala-metadata
 declaration enumeration OrganisationType:
--- Charitable
---NonProfit
---NonCharitable
---ProfitOrg
+  -- Charitable
+  -- NonProfit
+  -- NonCharitable
+  -- ProfitOrg
 
 declaration structure NoDrawLottery:
   data typeOrg content OrganisationType
@@ -30,30 +30,29 @@ Act if the following requirements are complied with—
 or a non-profit organisation,
 ```catala
 scope GamingAuthorized:
-definition benefitingOrg equals noDrawLottery.typeOrg with pattern OrganisationType.Charitable
-or noDrawLottery.typeOrg with pattern OrganisationType.NonProfit
-
+  definition benefitingOrg equals
+    noDrawLottery.typeOrg with pattern OrganisationType.Charitable
+    or noDrawLottery.typeOrg with pattern OrganisationType.NonProfit
 ```
 (b) not less than 40% of the gross proceeds of the gaming activity are paid to the
 benefiting organisation,
 ```catala
 scope GamingAuthorized:
-definition minimumProceeds equals noDrawLottery.proceedsToBenefitingOrg >= noDrawLottery.grossProceeds * 40 %
-
+  definition minimumProceeds equals noDrawLottery.proceedsToBenefitingOrg >= noDrawLottery.grossProceeds * 40%
 ```
 (c) the total value of all of the prizes does not exceed $5,000,
 ```catala
 scope GamingAuthorized:
-definition maxValueOfPrizes equals noDrawLottery.totalValueOfThePrizes <= $5,000
+  definition maxValueOfPrizes equals noDrawLottery.totalValueOfThePrizes <= $5,000
 ```
 (d) the total number of tickets produced or obtained for sale for the lottery does
 not exceed 3,000.
 ```catala
 scope GamingAuthorized:
-definition maxTicketsProduced equals noDrawLottery.maxTickets <= 3000
+  definition maxTicketsProduced equals noDrawLottery.maxTickets <= 3000
 
 scope GamingAuthorized:
-  rule authorized
-  under condition benefitingOrg and minimumProceeds and maxValueOfPrizes and maxTicketsProduced
+  rule authorized under condition
+    benefitingOrg and minimumProceeds and maxValueOfPrizes and maxTicketsProduced
   consequence fulfilled
 ```

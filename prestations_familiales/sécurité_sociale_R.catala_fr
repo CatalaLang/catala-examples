@@ -17,7 +17,7 @@ alinéa du présent article.
 # répétition par rapport au texte de L512-3. On ne remet donc pas le code
 # ici correspondant à cette limitation.
 
-champ d'application ÉligibilitéPrestationsFamiliales :
+champ d'application ÉligibilitéPrestationsFamiliales:
   définition âge_l512_3_2 égal à 20 an
 ```
 
@@ -25,17 +25,15 @@ Le plafond de rémunération mentionné au 2° de l'article L. 512-3 est égal, 
 un mois, à 55 % du salaire minimum interprofessionnel de croissance défini aux
 articles L. 141-1 à L. 141-9 du code du travail, multiplié par 169.
 
-
 ```catala
-champ d'application ÉligibilitéPrestationsFamiliales :
+champ d'application ÉligibilitéPrestationsFamiliales:
   définition plafond_l512_3_2 égal à
-   (smic.brut_horaire * 55 %) * 169,0
+    (smic.brut_horaire * 55%) * 169,0
 ```
 
 Pour ceux des enfants qui bénéficient d'avantages en nature, l'évaluation de ces
 avantages devra être faite suivant les barèmes fixés pour l'application de la
 législation sur les assurances sociales.
-
 
 ```catala
 # Le programme Catala ne tient pas en compte des avantages en nature.
@@ -56,10 +54,10 @@ vigueur dans chacun des départements mentionnés à l'article L. 751-1 ,
 multiplié par 169.
 
 ```catala
-champ d'application ÉligibilitéPrestationsFamiliales :
+champ d'application ÉligibilitéPrestationsFamiliales:
   exception
-  définition plafond_l512_3_2
-  sous condition régime_outre_mer_l751_1
+  définition plafond_l512_3_2 sous condition
+    régime_outre_mer_l751_1
   conséquence égal à
     (smic.brut_horaire * 55%) * 169,0
 ```

@@ -107,7 +107,6 @@ deklaracja  zakres Hipoteka:
   kontekst kwota typu pieniądze
   kontekst wysokość_nieustalona warunek
   kontekst stawka_podatku typu dziesiętny
-  kontekst podatek typu pieniądze
 
 zakres Hipoteka:
   etykieta a7_u1_p7_ppa

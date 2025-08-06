@@ -3,10 +3,10 @@
 ```
 ```catala-metadata
 declaration enumeration OrganisationType:
--- Charitable
---NonProfit
---NonCharitable
---ProfitOrg
+  -- Charitable
+  -- NonProfit
+  -- NonCharitable
+  -- ProfitOrg
 
 declaration structure DrawLottery:
   data typeOrg content OrganisationType
@@ -20,9 +20,7 @@ declaration scope GamingAuthorized:
   internal benefitingOrg content boolean
   internal minimumProceeds content boolean
   internal maxValueOfPrizes content boolean
-
 ```
-
 
 A draw lottery is a permitted gaming activity for the purposes of section 10 of the Act
 if the following requirements are complied with—
@@ -31,22 +29,22 @@ if the following requirements are complied with—
 or a non-profit organisation,
 ```catala
 scope GamingAuthorized:
-definition benefitingOrg equals drawLottery.typeOrg with pattern OrganisationType.Charitable or drawLottery.typeOrg with pattern OrganisationType.NonProfit
+  definition benefitingOrg equals drawLottery.typeOrg with pattern OrganisationType.Charitable or drawLottery.typeOrg with pattern OrganisationType.NonProfit
 ```
 (b) not less than 40% of the gross proceeds of the gaming activity are paid to the
 benefiting organisation,
 ```catala
 scope GamingAuthorized:
-definition minimumProceeds equals drawLottery.proceedsToBenefitingOrg >= drawLottery.grossProceeds * 40 %
+  definition minimumProceeds equals drawLottery.proceedsToBenefitingOrg >= drawLottery.grossProceeds * 40%
 ```
 
 (c) the total value of all of the prizes does not exceed $30,000.
 ```catala
 scope GamingAuthorized:
-definition maxValueOfPrizes equals drawLottery.totalValueOfThePrizes <= $30,000
+  definition maxValueOfPrizes equals drawLottery.totalValueOfThePrizes <= $30,000
 
 scope GamingAuthorized:
-  rule authorized
-    under condition benefitingOrg and minimumProceeds and maxValueOfPrizes
-    consequence fulfilled
+  rule authorized under condition
+    benefitingOrg and minimumProceeds and maxValueOfPrizes
+  consequence fulfilled
 ```

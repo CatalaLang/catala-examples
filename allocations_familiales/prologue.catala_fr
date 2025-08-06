@@ -7,7 +7,7 @@ informatiques qui modélisent la situation dont parlent ces textes législatifs.
 ## Types de données manipulées par le programme
 
 ```catala-metadata
-déclaration énumération PriseEnCharge :
+déclaration énumération PriseEnCharge:
   -- GardeAlternéePartageAllocations
   -- GardeAlternéeAllocataireUnique
   -- EffectiveEtPermanente
@@ -19,7 +19,7 @@ déclaration énumération SituationObligationScolaire:
   -- Pendant
   -- Après
 
-déclaration structure Enfant :
+déclaration structure Enfant:
   donnée identifiant contenu entier
   donnée obligation_scolaire contenu SituationObligationScolaire
   donnée rémuneration_mensuelle contenu argent
@@ -84,8 +84,8 @@ déclaration champ d'application AllocationsFamiliales:
   interne enfants_à_charge_droit_ouvert_prestation_familiale
     contenu liste de Enfant
   interne prise_en_compte contenu PriseEnCompte dépend de enfant contenu Enfant
-  résultat versement contenu VersementAllocations
-    dépend de enfant contenu Enfant
+  résultat versement
+    contenu VersementAllocations dépend de enfant contenu Enfant
 
   résultat montant_versé contenu argent
 
@@ -107,27 +107,25 @@ déclaration champ d'application AllocationsFamiliales:
   interne montant_initial_base_quatrième_enfant_et_plus_mayotte contenu argent
 
   # Variables liées à l'allocation forfaitaire
-  interne droit_ouvert_forfaitaire condition
-    dépend de enfant contenu Enfant
+  interne droit_ouvert_forfaitaire condition dépend de enfant contenu Enfant
   interne montant_versé_forfaitaire_par_enfant contenu argent
   interne montant_versé_forfaitaire contenu argent
 
   # Variables liées aux majorations des allocations familiales
-  interne droit_ouvert_majoration condition
-    dépend de enfant contenu Enfant
-  interne montant_initial_métropole_majoration contenu argent
-    dépend de enfant contenu Enfant
-  interne montant_initial_majoration contenu argent
-    dépend de enfant contenu Enfant
-  interne montant_avec_garde_alternée_majoration contenu argent
-    dépend de enfant contenu Enfant
+  interne droit_ouvert_majoration condition dépend de enfant contenu Enfant
+  interne montant_initial_métropole_majoration
+    contenu argent dépend de enfant contenu Enfant
+  interne montant_initial_majoration
+    contenu argent dépend de enfant contenu Enfant
+  interne montant_avec_garde_alternée_majoration
+    contenu argent dépend de enfant contenu Enfant
   interne montant_versé_majoration contenu argent
 
   # Variables liées au complément dégressif
   interne droit_ouvert_complément condition
   interne montant_base_complément_pour_base_et_majoration contenu argent
-  interne complément_dégressif contenu argent
-    dépend de allocation contenu argent
+  interne complément_dégressif
+    contenu argent dépend de allocation contenu argent
   interne montant_versé_complément_pour_base_et_majoration contenu argent
   interne montant_versé_complément_pour_forfaitaire contenu argent
 
@@ -138,12 +136,12 @@ déclaration champ d'application AllocationsFamiliales:
   bmaf champ d'application Bmaf.BaseMensuelleAllocationsFamiliales
 
   # Plafonds, âges limites et autres constantes
-  interne âge_minimum_alinéa_1_l521_3 contenu durée
-    dépend de enfant contenu Enfant
+  interne âge_minimum_alinéa_1_l521_3
+    contenu durée dépend de enfant contenu Enfant
   interne nombre_enfants_alinéa_2_l521_3 contenu entier
   interne nombre_enfants_alinéa_2_l521_1 contenu entier
-  interne est_enfant_le_plus_âgé contenu booléen
-    dépend de enfant contenu Enfant
+  interne est_enfant_le_plus_âgé
+    contenu booléen dépend de enfant contenu Enfant
   interne plafond_I_d521_3 contenu argent
   interne plafond_II_d521_3 contenu argent
 
