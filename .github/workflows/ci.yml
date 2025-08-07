@@ -12,7 +12,7 @@ jobs:
     name: Test suite
     runs-on: self-hosted
     container:
-      image: registry.gitlab.inria.fr/verifisc/docker-catala:latest-python
+      image: registry.gitlab.inria.fr/catala/ci-images:latest-python
       options: --user root
     steps:
       - name: Fix home
