@@ -8,6 +8,7 @@ BUILD = _build
 BUILD_TESTS = _build/clerk_tests
 
 VERSION = 1.0.0~alpha
+PYTHON_VERSION=1.0.0a
 
 #############################################
 # Compiler and build tools commands and flags
@@ -184,7 +185,7 @@ define pyproject_toml
 [project]
 name = "$1"
 description = "Examples of law texts compiled from catala code"
-version = "$(VERSION)"
+version = "$(PYTHON_VERSION)"
 dependencies = [ "catala-runtime" ]
 
 [project.urls]
