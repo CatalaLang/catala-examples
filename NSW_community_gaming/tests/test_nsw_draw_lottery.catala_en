@@ -30,7 +30,6 @@ $ catala test-scope Test1
 └─
 ```
 
-
 ## Test2
 ```catala
 #[test]

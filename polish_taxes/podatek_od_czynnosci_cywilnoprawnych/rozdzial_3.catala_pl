@@ -24,7 +24,6 @@ zakres UmowaSprzedaży:
   definicja stawka_podatku wynosi 2%
 ```
 
-
 b) innych praw majątkowych – 1%;
 ```catala
 zakres UmowaSprzedaży:
@@ -91,8 +90,9 @@ deklaracja zakres PożyczkaLubDepozytNieprawidłowy:
 
 zakres PożyczkaLubDepozytNieprawidłowy:
   definicja podatek wynosi
-    kwota * stawka_podatku # TODO: extract somehow?
-                            # this exists in every declaration
+    kwota * stawka_podatku
+# TODO: extract somehow?
+# this exists in every declaration
 
 zakres PożyczkaLubDepozytNieprawidłowy:
   definicja stawka_podatku wynosi 0.5%
@@ -103,7 +103,7 @@ zakres PożyczkaLubDepozytNieprawidłowy:
 a) na zabezpieczenie wierzytelności istniejących – od kwoty zabezpieczonej wierzytelności – 0,1%,
 
 ```catala
-deklaracja  zakres Hipoteka:
+deklaracja zakres Hipoteka:
   kontekst kwota typu pieniądze
   kontekst wysokość_nieustalona warunek
   kontekst stawka_podatku typu dziesiętny

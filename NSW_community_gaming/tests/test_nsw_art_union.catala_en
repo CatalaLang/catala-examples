@@ -60,7 +60,6 @@ $ catala test-scope Test2
 └─
 ```
 
-
 ## Test3
 ```catala
 #[test]
@@ -88,7 +87,6 @@ $ catala test-scope Test3
 │ Computation successful!
 └─
 ```
-
 
 ## Test4
 ```catala

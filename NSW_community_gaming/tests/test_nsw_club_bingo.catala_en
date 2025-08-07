@@ -25,7 +25,6 @@ scope Test1:
   assertion my_gaming.authorized = false
 ```
 
-
 ```catala-test-cli
 $ catala test-scope Test1
 ┌─[RESULT]─
@@ -53,7 +52,6 @@ scope Test2:
     }
   assertion my_gaming.authorized = true
 ```
-
 
 ```catala-test-cli
 $ catala test-scope Test2
@@ -111,7 +109,6 @@ scope Test4:
   assertion my_gaming.authorized = false
 ```
 
-
 ```catala-test-cli
 $ catala test-scope Test4
 ┌─[RESULT]─
@@ -139,7 +136,6 @@ scope Test5:
     }
   assertion my_gaming.authorized = false
 ```
-
 
 ```catala-test-cli
 $ catala test-scope Test5

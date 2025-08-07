@@ -12,7 +12,6 @@ zakres Test_A7_U1_P2_PPa:
 
   asercja sprzedaż.podatek = 2 PLN
 
-
 #[test]
 deklaracja zakres Test_A7_U1_P2_PPb:
   sprzedaż zakres UmowaZamianyLubDarowizny

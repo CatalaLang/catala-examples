@@ -311,9 +311,24 @@ pass_all_tests: testsuite
 reset_all_tests:
 	$(CLERK_TEST) --reset
 
+############################################
+# Checking the formatting of the Catala code
+############################################
+
+CATALA_SRC=$(shell find . -path ./_build -prune -o -type f -name '*.catala_*' -print)
+
+%.catala_pl.format: %.catala_pl
+	catala-format $< | diff -u $< -
+%.catala_en.format: %.catala_en
+	catala-format $< | diff -u $< -
+%.catala_fr.format: %.catala_fr
+	catala-format $< | diff -u $< -
+
+check-format: $(addsuffix .format,$(CATALA_SRC))
+
 .FORCE:
 
-.PHONY: all pass_all_tests reset_all_tests
+.PHONY: all pass_all_tests reset_all_tests check-format
 
 # Disables make removing intermediate files
 .SECONDARY:

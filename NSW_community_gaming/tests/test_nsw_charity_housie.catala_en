@@ -14,7 +14,7 @@ declaration scope Test1:
 
 scope Test1:
   definition
-      my_gaming.charityHousie
+    my_gaming.charityHousie
   equals
     CharityHousie {
       -- typeOrg: Charitable
@@ -23,7 +23,7 @@ scope Test1:
       -- totalValueOfExpenses: $10
       -- maxTicketsPerParticipant: 5
       -- proceedsToBenefitingOrganisation: $80
-  }
+    }
   assertion my_gaming.authorized = true
 ```
 
@@ -44,7 +44,7 @@ declaration scope Test2:
 
 scope Test2:
   definition
-      my_gaming.charityHousie
+    my_gaming.charityHousie
   equals
     CharityHousie {
       -- typeOrg: Charitable
@@ -53,7 +53,7 @@ scope Test2:
       -- totalValueOfExpenses: $10
       -- maxTicketsPerParticipant: 5
       -- proceedsToBenefitingOrganisation: $0
-  }
+    }
   assertion my_gaming.authorized = false
 ```
 
@@ -73,7 +73,7 @@ declaration scope Test3:
 
 scope Test3:
   definition
-      my_gaming.charityHousie
+    my_gaming.charityHousie
   equals
     CharityHousie {
       -- typeOrg: Charitable
@@ -82,7 +82,7 @@ scope Test3:
       -- totalValueOfExpenses: $10
       -- maxTicketsPerParticipant: 5
       -- proceedsToBenefitingOrganisation: $100
-  }
+    }
   assertion my_gaming.authorized = true
 ```
 
@@ -102,7 +102,7 @@ declaration scope Test4:
 
 scope Test4:
   definition
-      my_gaming.charityHousie
+    my_gaming.charityHousie
   equals
     CharityHousie {
       -- typeOrg: Charitable
@@ -111,7 +111,7 @@ scope Test4:
       -- totalValueOfExpenses: $10
       -- maxTicketsPerParticipant: 5
       -- proceedsToBenefitingOrganisation: $80
-  }
+    }
   assertion my_gaming.authorized = false
 ```
 

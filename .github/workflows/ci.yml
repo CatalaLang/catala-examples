@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches: [master]
-    tags: ['*.*.*']
+    tags: ["*.*.*"]
   workflow_dispatch:
   pull_request:
 
@@ -21,6 +21,9 @@ jobs:
         run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Check formatting
+        run: |
+          opam --cli=2.1 exec -- make check-format
       - name: Run tests (interpreter and backends)
         run: |
           opam --cli=2.1 exec -- clerk ci
