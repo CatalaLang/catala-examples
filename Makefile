@@ -48,8 +48,6 @@ TARGET_LIBS = \
 
 TARGET_DOCS = \
   polish_taxes/polish_taxes \
-  tutorial_en/tutorial_en \
-  tutoriel_fr/tutoriel_fr \
   us_tax_code/us_tax_code
 
 TARGETS := \
@@ -277,8 +275,6 @@ TEST_DIRS = \
   aides_logement/tests \
   droit_successions/tests \
   aides_logement/tests \
-  tutorial_en \
-  tutoriel_fr/tests \
   polish_taxes/tests \
   NSW_community_gaming/tests \
   us_tax_code/tests

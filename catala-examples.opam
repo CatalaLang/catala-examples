@@ -2,7 +2,7 @@ opam-version: "2.0"
 version: "1.0.0~alpha"
 synopsis: "Collection of Catala programs"
 description:
-  "This package gathers implementations of algorithmic portions of various legislative texts, as well as tutorials and examples. Installed artefacts include OCaml and Python libraries resulting from the compilation of the examples written in Catala"
+  "This package gathers implementations of algorithmic portions of various legislative texts. Installed artefacts include OCaml and Python libraries resulting from the compilation of the examples written in Catala"
 maintainer: ["contact@catala-lang.org"]
 authors: [ "Denis Merigoux"
            "Nicolas Chataing"
