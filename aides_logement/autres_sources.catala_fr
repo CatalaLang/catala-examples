@@ -389,7 +389,7 @@ déclaration montée_en_charge_saint_pierre_miquelon
       aide_finale
       * (
         1,0
-        - (décimal de (2026 - accès_année de date_courante) / 8,0)
+        - (décimal de (2026 - Date.accès_année de date_courante) / 8,0)
       )
     sinon
       aide_finale

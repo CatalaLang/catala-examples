@@ -344,7 +344,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1952
+    Date.accès_année de date_naissance_assuré = 1952
   conséquence égal à 60 an + 9 mois
 ```
 
@@ -354,7 +354,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1953
+    Date.accès_année de date_naissance_assuré = 1953
   conséquence égal à 61 an + 2 mois
 ```
 
@@ -364,7 +364,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1954
+    Date.accès_année de date_naissance_assuré = 1954
   conséquence égal à 61 an + 7 mois
 ```
 
@@ -396,7 +396,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1962
+    Date.accès_année de date_naissance_assuré = 1962
   conséquence égal à 62 an + 6 mois
 ```
 
@@ -406,7 +406,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1963
+    Date.accès_année de date_naissance_assuré = 1963
   conséquence égal à 62 an + 9 mois
 ```
 
@@ -416,7 +416,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1964
+    Date.accès_année de date_naissance_assuré = 1964
   conséquence égal à 63 an
 ```
 
@@ -426,7 +426,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1965
+    Date.accès_année de date_naissance_assuré = 1965
   conséquence égal à 63 an + 3 mois
 ```
 
@@ -436,7 +436,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1966
+    Date.accès_année de date_naissance_assuré = 1966
   conséquence égal à 63 an + 6 mois
 ```
 
@@ -446,7 +446,7 @@ champ d'application OuvertureDroitsRetraite
 champ d'application OuvertureDroitsRetraite
   sous condition date_courante > |2023-09-01|:
   définition âge_ouverture_droit sous condition
-    accès_année de date_naissance_assuré = 1967
+    Date.accès_année de date_naissance_assuré = 1967
   conséquence égal à 62 an + 9 mois
 ```
 

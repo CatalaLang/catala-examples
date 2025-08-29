@@ -2131,7 +2131,7 @@ champ d'application ÉligibilitéPrimeDeDéménagement:
           -- DateDeNaissance contenu date_naissance :
             # VERIF: ambigü
             date_courante
-            <= ((premier_jour_du_mois de (date_naissance + 2 an))) + (-1 jour)
+            <= ((Date.premier_jour_du_mois de (date_naissance + 2 an))) + (-1 jour)
         )
     )
   conséquence rempli
