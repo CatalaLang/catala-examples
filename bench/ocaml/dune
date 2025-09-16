@@ -1,0 +1,29 @@
+(executable
+ (name bench)
+ (modes native)
+ (modules bench)
+ (flags
+  (:standard
+   -I ../../../../_targets
+   -I ../../../../_targets/allocations-familiales/ocaml
+   -I ../../../../_targets/aides-logement/ocaml))
+ (link_flags
+  (:standard
+   ../../../../_targets/allocations-familiales.cmxa
+   ../../../../_targets/aides-logement.cmxa))
+
+ (libraries zarith api benchmark))
+
+(library
+ (name api)
+ (modes native)
+ (synopsis
+  "A collection of functions for computing French taxes and benefits derived from Catala programs")
+ (flags (:standard -I ../../../../_targets/allocations-familiales/ocaml
+                   -I ../../../../_targets/aides-logement/ocaml))
+ (modules api))
+
+(rule
+ (alias runtest)
+(action
+  (run bench)))
