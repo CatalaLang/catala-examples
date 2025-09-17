@@ -1236,36 +1236,27 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
     calculette.coefficients_enfants_garde_alternée_pris_en_compte
   définition ménage_sans_enfants_garde_alternée égal à
     Ménage {
-      # TODO informatique: syntaxe OCaml { ... with foo = bar} ?
-      -- prestations_reçues:
-        ménage.prestations_reçues
-      -- logement:
-        ménage.logement
-      -- personnes_à_charge:
-        (
-          liste de personne_à_charge parmi ménage.personnes_à_charge
-            tel que (
-              selon personne_à_charge sous forme
-              -- AutrePersonneÀCharge : vrai
-              -- EnfantÀCharge contenu enfant :
-                (
-                  selon enfant.situation_garde_alternée sous forme
-                  -- GardeAlternéeCoefficientPriseEnCharge : faux
-                  -- PasDeGardeAlternée : vrai
-                )
-            )
-        )
-      -- résidence: ménage.résidence
-      -- nombre_autres_occupants_logement:
-        ménage.nombre_autres_occupants_logement
-      -- situation_familiale:
-        ménage.situation_familiale
-      -- condition_rattaché_foyer_fiscal_parent_ifi:
-        ménage.condition_rattaché_foyer_fiscal_parent_ifi
-      -- enfant_à_naître_après_quatrième_mois_grossesse:
-        ménage.enfant_à_naître_après_quatrième_mois_grossesse
-      -- personnes_âgées_handicapées_foyer_r844_4:
-        ménage.personnes_âgées_handicapées_foyer_r844_4
-    }
+    # TODO informatique: syntaxe OCaml { ... with foo = bar} ?
+    -- prestations_reçues:
+      ménage.prestations_reçues -- logement:
+      ménage.logement -- personnes_à_charge:
+      (
+        liste de personne_à_charge parmi ménage.personnes_à_charge
+          tel que (
+            selon personne_à_charge sous forme
+            -- AutrePersonneÀCharge : vrai
+            -- EnfantÀCharge contenu enfant :
+              (
+                selon enfant.situation_garde_alternée sous forme
+                -- GardeAlternéeCoefficientPriseEnCharge : faux
+                -- PasDeGardeAlternée : vrai
+              )
+          )
+      ) -- résidence: ménage.résidence -- nombre_autres_occupants_logement:
+      ménage.nombre_autres_occupants_logement -- situation_familiale:
+      ménage.situation_familiale -- condition_rattaché_foyer_fiscal_parent_ifi:
+      ménage.condition_rattaché_foyer_fiscal_parent_ifi -- enfant_à_naître_après_quatrième_mois_grossesse:
+      ménage.enfant_à_naître_après_quatrième_mois_grossesse -- personnes_âgées_handicapées_foyer_r844_4:
+      ménage.personnes_âgées_handicapées_foyer_r844_4 }
   définition éligibilité égal à calculette.éligibilité
 ```

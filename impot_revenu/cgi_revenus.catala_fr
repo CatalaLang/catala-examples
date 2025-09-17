@@ -4226,11 +4226,8 @@ champ d'application TraitementsSalairesFoyerFiscal:
       transforme chaque déclaration_revenus parmi déclarations_revenus en
         soit résultats_liquidation égal à
           résultat de TraitementsSalairesDéclarant avec {
-            # La première liquidation se fait en déplafonnant l'abattement!
-            -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné
-            -- revenus: déclaration_revenus
-            -- année_revenus: année_revenus
-          }
+          # La première liquidation se fait en déplafonnant l'abattement!
+          -- selecteur_plafond_abattement_pensions_retraites_rentes: Déplafonné -- revenus: déclaration_revenus -- année_revenus: année_revenus }
         dans
         RésultatsLiquidationPlafondPensionRetraitesRentes {
           -- abattement_pensions_retraites_rentes:
