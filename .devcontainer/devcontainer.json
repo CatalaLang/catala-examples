@@ -1,5 +1,5 @@
 {
-  "build": { "dockerfile": "Dockerfile" },
+  "image": "registry.gitlab.inria.fr/catala/dev-images:latest",
   "customizations": {
     "vscode": {
       "extensions": ["catalalang.catala"]
