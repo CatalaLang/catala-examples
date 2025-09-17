@@ -26,7 +26,7 @@ déclaration champ d'application VérificationÂgeInférieurOuÉgalÀ:
 champ d'application VérificationÂgeInférieurOuÉgalÀ:
   définition est_inférieur_ou_égal égal à
     date_naissance + années <= date_courante
-  date arrondi croissant
+  date arrondi supérieur
 
 déclaration champ d'application VérificationÂgeSupérieurÀ:
   entrée date_naissance contenu date
@@ -36,5 +36,5 @@ déclaration champ d'application VérificationÂgeSupérieurÀ:
 
 champ d'application VérificationÂgeSupérieurÀ:
   définition est_supérieur égal à date_naissance + années > date_courante
-  date arrondi croissant
+  date arrondi supérieur
 ```

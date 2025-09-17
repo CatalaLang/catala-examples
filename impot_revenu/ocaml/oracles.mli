@@ -1,4 +1,4 @@
-open Runtime_ocaml.Runtime
+open Catala_runtime
 
 [@@@ocaml.warning "-4-26-27-32-41-42"]
 
@@ -74,24 +74,24 @@ end
 module ProRataArrondiEuroBranchement_in : sig
   type t = {
     montant_a_distribuer_in: money;
-    base_prorata_1_in: ((money * source_position)) Optional.t;
-    base_prorata_2_in: ((money * source_position)) Optional.t;
-    base_prorata_3_in: ((money * source_position)) Optional.t;
-    base_prorata_4_in: ((money * source_position)) Optional.t;
-    base_prorata_5_in: ((money * source_position)) Optional.t;
-    base_prorata_6_in: ((money * source_position)) Optional.t;
-    base_prorata_7_in: ((money * source_position)) Optional.t;
-    base_prorata_8_in: ((money * source_position)) Optional.t;
-    base_prorata_9_in: ((money * source_position)) Optional.t;
-    bases_prorata_liste_1_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_2_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_3_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_4_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_5_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_6_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_7_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_8_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_9_in: (((money array) * source_position)) Optional.t
+    base_prorata_1_in: ((money * code_location)) Optional.t;
+    base_prorata_2_in: ((money * code_location)) Optional.t;
+    base_prorata_3_in: ((money * code_location)) Optional.t;
+    base_prorata_4_in: ((money * code_location)) Optional.t;
+    base_prorata_5_in: ((money * code_location)) Optional.t;
+    base_prorata_6_in: ((money * code_location)) Optional.t;
+    base_prorata_7_in: ((money * code_location)) Optional.t;
+    base_prorata_8_in: ((money * code_location)) Optional.t;
+    base_prorata_9_in: ((money * code_location)) Optional.t;
+    bases_prorata_liste_1_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_2_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_3_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_4_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_5_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_6_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_7_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_8_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_9_in: (((money array) * code_location)) Optional.t
   }
   val embed: t -> runtime_value
 end

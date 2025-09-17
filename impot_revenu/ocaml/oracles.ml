@@ -1,4 +1,4 @@
-open Runtime_ocaml.Runtime
+open Catala_runtime
 
 [@@@ocaml.warning "-4-26-27-32-41-42"]
 
@@ -141,24 +141,24 @@ end
 module ProRataArrondiEuroBranchement_in = struct
   type t = {
     montant_a_distribuer_in: money;
-    base_prorata_1_in: ((money * source_position)) Optional.t;
-    base_prorata_2_in: ((money * source_position)) Optional.t;
-    base_prorata_3_in: ((money * source_position)) Optional.t;
-    base_prorata_4_in: ((money * source_position)) Optional.t;
-    base_prorata_5_in: ((money * source_position)) Optional.t;
-    base_prorata_6_in: ((money * source_position)) Optional.t;
-    base_prorata_7_in: ((money * source_position)) Optional.t;
-    base_prorata_8_in: ((money * source_position)) Optional.t;
-    base_prorata_9_in: ((money * source_position)) Optional.t;
-    bases_prorata_liste_1_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_2_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_3_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_4_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_5_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_6_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_7_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_8_in: (((money array) * source_position)) Optional.t;
-    bases_prorata_liste_9_in: (((money array) * source_position)) Optional.t
+    base_prorata_1_in: ((money * code_location)) Optional.t;
+    base_prorata_2_in: ((money * code_location)) Optional.t;
+    base_prorata_3_in: ((money * code_location)) Optional.t;
+    base_prorata_4_in: ((money * code_location)) Optional.t;
+    base_prorata_5_in: ((money * code_location)) Optional.t;
+    base_prorata_6_in: ((money * code_location)) Optional.t;
+    base_prorata_7_in: ((money * code_location)) Optional.t;
+    base_prorata_8_in: ((money * code_location)) Optional.t;
+    base_prorata_9_in: ((money * code_location)) Optional.t;
+    bases_prorata_liste_1_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_2_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_3_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_4_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_5_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_6_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_7_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_8_in: (((money array) * code_location)) Optional.t;
+    bases_prorata_liste_9_in: (((money array) * code_location)) Optional.t
   }
   let embed (x: t) : runtime_value =
     Struct(
@@ -314,10 +314,10 @@ let pro_rata_arrondi_euro (pro_rata_arrondi_euro_in : ProRataArrondiEuro_in.t) :
                      (decimal_of_money base_prorata)
                      (decimal_of_money assiette_totale_prorata))
               with
-              | Runtime_ocaml.Runtime.Error
-                  (Runtime_ocaml.Runtime.DivisionByZero, _)
+              | Catala_runtime.Error
+                  (Catala_runtime.DivisionByZero, _)
               ->
-                Runtime_ocaml.Runtime.decimal_of_float 0.0
+                Catala_runtime.decimal_of_float 0.0
           in
           let arrondi = decimal_round brut in
           ( money_of_decimal arrondi,
@@ -806,7 +806,7 @@ let pro_rata_arrondi_euro_branchement
   }
 
 let () =
-  Runtime_ocaml.Runtime.register_module "Oracles"
+  Catala_runtime.register_module "Oracles"
     [
       ( "ImputationAuxD\195\169ficitsLesPlusAnciens",
         Obj.repr imputation_aux_deficits_les_plus_anciens );
