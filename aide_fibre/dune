@@ -1,0 +1,4 @@
+(library
+ (name aide_fibre)
+ (public_name catala-examples.aide_fibre)
+ (libraries catala.runtime_ocaml))

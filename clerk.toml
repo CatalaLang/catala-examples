@@ -7,26 +7,34 @@ include_dirs = [
   "allocations_familiales",
   "aides_logement",
   "droit_successions",
-  "impot_revenu"
+  "impot_revenu",
+  "aide_fibre",
 ]
 
 [[target]]
-name     = "allocations-familiales"
-modules  = ["Allocations_familiales"]
+name = "allocations-familiales"
+modules = ["Allocations_familiales"]
 backends = ["ocaml", "python", "c", "java"]
-tests    = ["allocations_familiales/tests/"]
+tests = ["allocations_familiales/tests/"]
 include_objects = true
 
 [[target]]
-name     = "aides-logement"
-modules  = ["Aides_logement"]
+name = "aides-logement"
+modules = ["Aides_logement"]
 backends = ["ocaml", "python", "c", "java"]
-tests    = ["aides_logement/tests/"]
+tests = ["aides_logement/tests/"]
 include_objects = true
 
 [[target]]
-name    = "impot-revenu"
+name = "impot-revenu"
 modules = ["Impot_revenu"]
-backends= ["ocaml"] # External module 'Oracle' exists only in OCaml
-tests   = ["impot_revenu/tests/"]
+backends = ["ocaml"]            # External module 'Oracle' exists only in OCaml
+tests = ["impot_revenu/tests/"]
+include_objects = true
+
+[[target]]
+name = "aide-fibre"
+modules = ["Aide_travaux_raccordement_fibre_optique", "Eligibilite_commune"]
+backends = ["ocaml", "java"]                                                 # External module 'Oracle' exists only in OCaml
+tests = ["aide_fibre/tests/"]
 include_objects = true
