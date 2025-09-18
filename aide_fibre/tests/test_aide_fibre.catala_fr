@@ -1,0 +1,29 @@
+> Usage de Aide_travaux_raccordement_fibre_optique en tant que A
+
+```catala
+#[test]
+déclaration champ d'application Test1:
+  résultat calcul contenu A.CalculAide
+
+champ d'application Test1:
+  définition calcul égal à
+    résultat de A.CalculAide avec {
+      -- demandeur:
+        (
+          A.Demandeur.PersonnePhysique contenu (
+            A.PersonnePhysique {
+              -- travaux_dans_maison_individuelle_par_occupant: vrai
+              -- résidence_principale: vrai
+              -- code_postal_commune: 97233
+              -- n_a_pas_déjà_bénéficié_de_l_aide: vrai
+              -- quotient_familial: 5000 €
+              -- échec_de_raccordement_constaté: vrai
+            }
+          )
+        )
+      -- montant_facture_raccordement: 10000 €
+      -- date_achèvement: |2026-01-01|
+      -- date_demande: |2025-10-18|
+      -- ampleur_travaux: A.AmpleurTravaux.GrosTravaux
+    }
+```
