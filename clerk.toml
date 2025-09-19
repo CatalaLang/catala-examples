@@ -15,15 +15,18 @@ name     = "allocations-familiales"
 modules  = ["Allocations_familiales"]
 backends = ["ocaml", "python", "c", "java"]
 tests    = ["allocations_familiales/tests/"]
+include_objects = true
 
 [[target]]
 name     = "aides-logement"
 modules  = ["Aides_logement"]
 backends = ["ocaml", "python", "c", "java"]
 tests    = ["aides_logement/tests/"]
+include_objects = true
 
 [[target]]
 name    = "impot-revenu"
 modules = ["Impot_revenu"]
 backends= ["ocaml"] # External module 'Oracle' exists only in OCaml
 tests   = ["impot_revenu/tests/"]
+include_objects = true

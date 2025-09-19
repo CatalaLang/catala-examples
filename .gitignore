@@ -2,6 +2,7 @@ _build/
 _targets/
 _opam/
 _python_venv/
+**/__pycache__
 *.install
 dune-workspace*
 result
