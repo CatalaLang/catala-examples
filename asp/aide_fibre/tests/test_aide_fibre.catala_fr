@@ -26,4 +26,7 @@ champ d'application Test1:
       -- date_demande: |2025-10-18|
       -- ampleur_travaux: A.AmpleurTravaux.GrosTravaux
     }
+
+  assertion calcul.éligibilité
+  assertion calcul.montant = 1200 €
 ```
