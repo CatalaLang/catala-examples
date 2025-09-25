@@ -8,7 +8,8 @@ include_dirs = [
   "aides_logement",
   "droit_successions",
   "impot_revenu",
-  "aide_fibre",
+  "asp/aide_fibre",
+  "asp/fonpeps",
 ]
 
 [[target]]
@@ -33,4 +34,10 @@ tests = ["impot_revenu/tests/"]
 name = "aide-fibre"
 modules = ["Aide_travaux_raccordement_fibre_optique", "Eligibilite_commune"]
 backends = ["ocaml"]                                                         # External module 'Oracle' exists only in OCaml
-tests = ["aide_fibre/tests/"]
+tests = ["asp/aide_fibre/tests/"]
+
+[[target]]
+name = "fonpeps"
+modules = ["Fonpeps"]
+backends = ["ocaml"]           # External module 'Oracle' exists only in OCaml
+tests = ["asp/fonpeps/tests/"]
