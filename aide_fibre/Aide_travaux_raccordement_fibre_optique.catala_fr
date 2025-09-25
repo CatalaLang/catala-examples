@@ -367,22 +367,6 @@ I. - Le montant de l'aide correspond à une somme forfaitaire, faisant référen
 La somme forfaitaire associée à chaque catégorie de travaux est définie par
 arrêté du ministre chargé de des communications électroniques.
 
-```catala
-# En attendant l'arrêté, placeholder:
-champ d'application CalculAide:
-  définition montant
-    état forfait
-  égal à
-    si éligibilité alors
-      selon ampleur_travaux sous forme
-      -- FaibleAmpleur : 1000 €
-      -- AmpleurMoyenne : 2000 €
-      -- GrosTravaux : 5000 €
-    sinon 0 €
-
-  définition seuil_quotient_familial_article_3_I_5 égal à 10 000 €
-```
-
 La notification d'attribution d'aide prend la forme d'une décision d'octroi
 notifiée au bénéficiaire, sur laquelle est inscrite la somme forfaitaire.
 
@@ -471,3 +455,218 @@ numérique et le ministre auprès du ministre de l'économie, des finances et de
 souveraineté industrielle et numérique, chargé de l'industrie et de l'énergie,
 sont chargés, chacun en ce qui le concerne, de l'exécution du présent décret,
 qui sera publié au Journal officiel de la République française.
+
+# Arrêté du 2 septembre 2025 relatif à l'aide à la réalisation des travaux en domaine privé pour le raccordement à un réseau en fibre optique
+
+## Article 1 | JORFARTI000052281300
+
+I. - Le dossier de demande d'aide instituée par le décret susvisé est transmis
+par les personnes physiques ou morales à l'Agence de services et de paiement
+exclusivement par l'intermédiaire d'un téléservice disponible sur son site
+internet. A l'appui de leur demande, les personnes physiques ou morales
+concernées fournissent :
+
+II. - Pour les personnes physiques :
+
+1° Une copie de la carte nationale d'identité, du passeport en cours de validité
+ou de l'un des documents de séjour mentionné à l'article L. 411-1 du code de
+l'entrée et du séjour des étrangers et du droit d'asile en cours de validité, à
+l'exception de ceux prévus aux 1° et 8° de ce même article, ou un justificatif
+numérique d'identité ;
+
+2° L'adresse de la résidence principale correspondant à celle où seront réalisés
+les travaux pour le raccordement à la fibre ;
+
+3° L'attestation d'échec de raccordement mentionnée à l'alinéa 3 du décret
+susvisé comportant les mentions prévues à l'article 4 ;
+
+4° Le numéro fiscal du demandeur ;
+
+5° Un justificatif de domicile peut également être demandé par l'Agence de
+services et de paiement si le traitement du dossier révèle une non-concordance
+entre l'adresse fiscale et l'adresse de la résidence principale de l'usager.
+
+III. - Pour les entreprises :
+
+1° Le numéro du système d'identification du répertoire des établissements et sa
+dénomination sociale ;
+
+2° L'adresse du local de l'entreprise correspondant à celle où seront réalisés
+les travaux pour le raccordement à la fibre ;
+
+3° L'attestation d'échec de raccordement mentionnée au quatrième alinéa de
+l'article 3 du décret susvisé comportant les mentions précisées à l'article 3 ;
+
+4° Une déclaration sur l'honneur portant sur le nombre de salariés de
+l'entreprise ;
+
+5° Un justificatif du représentant légal de l'entreprise ;
+
+6° Une copie de la carte nationale d'identité, du passeport, en cours de
+validité ou de l'un des documents de séjour mentionné à l'article L. 411-1 du
+code de l'entrée et du séjour des étrangers et du droit d'asile en cours de
+validité, à l'exception de ceux prévus aux 1° et 8° de ce même article ou un
+justificatif numérique d'identité du représentant légal de l'entreprise.
+
+IV. - Lorsque le dossier est incomplet, l'Agence de services et de paiement
+informe le demandeur des pièces ou informations manquantes exigées par les II et
+III du présent article. Elle fixe un délai de trois mois pour la réception de
+ces pièces ou informations.
+
+## Article 2 | JORFARTI000052281303
+
+Le seuil mentionné au 5° de l'article 2 du décret susvisé est fixé à la somme de
+29 316 euros.
+
+```catala
+champ d'application CalculAide:
+  définition seuil_quotient_familial_article_3_I_5 égal à 29 316 €
+```
+
+## Article 3 | JORFARTI000052281304
+
+Pour les personnes physiques, l'attestation mentionnée à l'article 3 du décret
+susvisé comporte les mentions suivantes :
+
+1° Les nom et prénom de la personne ;
+
+2° Le numéro unique de l'attestation, selon une nomenclature établie par
+l'opérateur ;
+
+3° L'adresse du logement, incluant le numéro, le type et le nom de la voie, le
+code postal et le nom de la commune ;
+
+4° La nature du logement, qu'il s'agisse d'une maison individuelle ou d'un
+bâtiment d'habitation collectif ;
+
+5° La typologie de travaux indiquée par l'intervenant de l'opérateur
+correspondant aux typologies indiquées à l'article 5 du présent arrêté ;
+
+6° L'indication selon laquelle l'attestation constitue une pièce nécessaire à
+l'instruction de la demande par l'Agence de service et de paiement et doit être
+conservée par le demandeur ;
+
+7° Le logo et la dénomination sociale de l'opérateur commercial.
+
+## Article 4 | JORFARTI000052281305
+
+Pour les entreprises, l'attestation mentionnée à l'article 3 du décret susvisé
+comporte les mentions suivantes :
+
+1° Sa dénomination sociale et son numéro d'inscription au système
+d'identification du répertoire des établissements ;
+
+2° Le numéro unique de l'attestation, selon une nomenclature établie par
+l'opérateur ;
+
+3° L'adresse du lieu d'exercice de l'activité économique, incluant le numéro, le
+type et le nom de la voie, le code postal et le nom de la commune ;
+
+4° La typologie de travaux indiquée par l'intervenant de l'opérateur
+correspondant aux typologies indiquées à l'article 5 du présent arrêté ;
+
+5° La nature du local professionnel où seront réalisés les travaux, qu'il
+s'agisse d'un bâtiment individuel ou collectif ;
+
+6° L'indication selon laquelle l'attestation constitue une pièce nécessaire à
+l'instruction de sa demande par l'Agence de service et de paiement ;
+
+7° Le logo et la dénomination sociale de l'opérateur commercial.
+
+## Article 5 | JORFARTI000052281306
+
+Les travaux pouvant donner lieu à l'attribution de l'une des sommes forfaitaires
+mentionnées au premier alinéa de l'article 4 du décret susvisé sont classés en
+trois catégories en fonction de leur ampleur :
+
+1° Les travaux de faible ambleur, pouvant donner lieu à l'attribution de la
+somme de 400 euros ;
+
+```catala
+champ d'application CalculAide:
+  définition montant
+    état forfait
+  sous condition
+    ampleur_travaux sous forme FaibleAmpleur
+  conséquence égal à 400 €
+```
+
+2° Les travaux d'ampleur moyenne, pouvant donner lieu à l'attribution de la
+somme de 800 euros ;
+
+```catala
+champ d'application CalculAide:
+  définition montant
+    état forfait
+  sous condition
+    ampleur_travaux sous forme AmpleurMoyenne
+  conséquence égal à 800 €
+```
+
+3° Les gros travaux, pouvant donner lieu à l'attribution de la somme de 1 200
+euros.
+```catala
+champ d'application CalculAide:
+  définition montant
+    état forfait
+  sous condition
+    ampleur_travaux sous forme GrosTravaux
+  conséquence égal à 1200 €
+```
+
+La description des travaux se rattachant à ces catégories est annexée au présent
+arrêté.
+
+## Article 6 | JORFARTI000052281307
+
+I. - Pour obtenir le remboursement de l'avance de l'aide, la personne désignée
+pour réaliser les travaux pour le raccordement à la fibre transmet une demande à
+l'Agence de services et de paiement au moyen d'un formulaire disponible sur son
+site internet.
+
+II. - Le dossier de demande de remboursement comporte les pièces et informations
+suivantes :
+
+1° La raison sociale ou sa dénomination et son numéro d'inscription au système
+d'identification du répertoire des établissements, ainsi que l'adresse de son
+siège ;
+
+2° La facture émise correspondante aux travaux pour le raccordement à la fibre.
+La facture comporte, outre les mentions prévues à l'article 289 du code général
+des impôts s'agissant de la facture, les informations suivantes :
+
+i) Le montant de l'aide attribuée à la personne physique ou l'entreprise pour
+laquelle les travaux pour le raccordement à la fibre ont été réalisés ;
+
+ii) Le nom prénom ou dénomination sociale et l'adresse de la personne physique
+ou l'entreprise pour laquelle les travaux pour le raccordement à la fibre ont
+été réalisés ;
+
+iii) La date d'achèvement des travaux ;
+
+3° Les coordonnées bancaires de la personne formulant la demande de paiement ;
+
+4° Sa raison sociale ou sa dénomination et son numéro d'inscription au système
+d'identification du répertoire des établissements ;
+
+5° Un justificatif du représentant légal du demandeur attestant de sa qualité à
+représenter l'entreprise ;
+
+6° Une copie de la carte nationale d'identité, du passeport, en cours de
+validité ou de l'un des documents de séjour mentionné à l'article L. 411-1 du
+code de l'entrée et du séjour des étrangers et du droit d'asile en cours de
+validité, à l'exception de ceux prévus aux 1° et 8° de ce même article ou un
+justificatif numérique d'identité du représentant légal du demandeur ;
+
+7° La notification d'attribution d'aide délivrée par l'Agence de services et de
+paiement à la personne physique ou l'entreprise pour laquelle les travaux pour
+le raccordement à la fibre ont été réalisés.
+
+III. - Lorsque le dossier est incomplet, l'Agence de services et de paiement
+informe le demandeur des pièces ou informations manquantes exigées par le II du
+présent article. Elle fixe un délai de trois mois pour la réception de ces
+pièces ou informations.
+
+## Article 7 | JORFARTI000052281310
+
+Le présent arrêté sera publié au Journal officiel de la République française.
