@@ -8,19 +8,13 @@
 
 open Catala_runtime
 
-
-module Stdlib_fr
-  = Stdlib_fr
-module Date_fr = Date_fr
-
 module EligibiliteCommune : sig
-  type t = {eligible: bool}
+  type t = { eligible : bool }
 end
 
 module EligibiliteCommune_in : sig
-  type t = {code_postal_commune_in: integer}
+  type t = { code_postal_commune_in : integer }
 end
 
-
-(** Scope ÉligibilitéCommune *)
 val eligibilite_commune : EligibiliteCommune_in.t -> EligibiliteCommune.t
+(** Scope ÉligibilitéCommune *)

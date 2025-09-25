@@ -8,26 +8,6 @@
 
 open Catala_runtime
 
-let () =
-  match
-    Catala_runtime.check_module "Stdlib_fr" "CM0|271594ef|32e49b03|2f081ff1"
-  with
-  | Ok () -> ()
-  | Error h ->
-    failwith "Hash mismatch for module Stdlib_fr, it may need recompiling"
-
-module Stdlib_fr = Stdlib_fr
-
-let () =
-  match
-    Catala_runtime.check_module "Date_fr" "CM0|271594ef|32e49b03|2cf76378"
-  with
-  | Ok () -> ()
-  | Error h ->
-    failwith "Hash mismatch for module Date_fr, it may need recompiling"
-
-module Date_fr = Date_fr
-
 module EligibiliteCommune = struct
   type t = { eligible : bool }
 end
