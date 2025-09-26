@@ -37,12 +37,15 @@ déclaration champ d'application AidePourEmbauche:
   entrée contrat contenu Contrat
   entrée régime_entreprise contenu RégimeEntreprise
   entrée artiste_lyrique_chœur_permanent contenu booléen
+  entrée bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur contenu booléen
   entrée artiste_voix_résidence_milieu_scolaire contenu booléen
   entrée activité_intermittent_spectacle contenu booléen
   entrée salaire_annuel_brut contenu argent
   entrée date_courante contenu date
   entrée date_début_exécution_contrat contenu date
   entrée temps_travail contenu TempsDeTravail
+
+  interne majoration_due condition
 
   smic champ d'application Smic.Smic
 
@@ -210,6 +213,10 @@ changement de fonctions sans toutefois changer d'employeur.
 
 ```catala
 # TODO: ne pas oublier d'ajouter l'exception
+champ d'application AidePourEmbauche:
+  règle majoration_due sous condition
+    bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur
+  conséquence rempli
 ```
 
 Lorsque la demande concerne l'embauche par contrat à durée déterminée d'un
@@ -270,11 +277,14 @@ champ d'application AidePourEmbauche:
       -- CDI : artiste_lyrique_chœur_permanent
       -- CDD : faux
     )
+    et majoration_due
   conséquence égal à
     MontantAide {
       -- montant: 16 000 €
       -- fréquence_versement: Annuelle contenu 3 an
     }
+# Quid de l'artiste de chœur permanent à temps partiel pour lequel
+# la majoration n'est pas due ? Doit-il percevoir 10000 € ou 16000 €
 ```
 
 Pour un contrat à durée déterminée à temps plein, le montant de l'aide est égal

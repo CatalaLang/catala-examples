@@ -16,6 +16,7 @@ champ d'application Test1:
       -- salaire_annuel_brut: 30 000 €
       -- date_courante: |2021-11-01|
       -- date_début_exécution_contrat: |2020-12-15|
+      -- bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur: faux
       -- temps_travail: TempsPartiel contenu (50%)
     }
 ```
