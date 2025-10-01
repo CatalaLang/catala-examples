@@ -212,7 +212,6 @@ permanent qui a bénéficié d'une modification de son contrat de travail pour u
 changement de fonctions sans toutefois changer d'employeur.
 
 ```catala
-# TODO: ne pas oublier d'ajouter l'exception
 champ d'application AidePourEmbauche:
   règle majoration_due sous condition
     bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur
