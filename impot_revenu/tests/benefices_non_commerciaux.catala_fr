@@ -170,7 +170,7 @@ $ catala test-scope BénéficesNonCommerciaux1
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
 │       [
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
 │           -- revenus_quotientés_professionnels: []
@@ -181,7 +181,7 @@ $ catala test-scope BénéficesNonCommerciaux1
 │           -- solde_net_non_professionnel: -14 000,00 €
 │           -- impôt_taux_forfaitaire: 0,00 €
 │         };
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 1 020,00 €
 │           -- revenus_quotientés_professionnels: []
@@ -332,7 +332,7 @@ $ catala test-scope BénéficesNonCommerciaux2
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
 │       [
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
 │           -- revenus_quotientés_professionnels: []
@@ -350,7 +350,10 @@ $ catala test-scope BénéficesNonCommerciaux2
 │     -- déficit_brut_global_professionnel: 0,00 €
 │     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour:
 │       [
-│         Oracles.DéficitAntérieur { -- année: 2 021 -- valeur: 6 202,00 € }
+│         Impot_revenu.Oracles.DéficitAntérieur {
+│           -- année: 2 021
+│           -- valeur: 6 202,00 €
+│         }
 │       ]
 │   }
 └─
@@ -598,7 +601,7 @@ $ catala test-scope BénéficesNonCommerciaux3
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
 │       [
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
 │           -- revenus_quotientés_professionnels: []
@@ -609,7 +612,7 @@ $ catala test-scope BénéficesNonCommerciaux3
 │           -- solde_net_non_professionnel: 18 540,00 €
 │           -- impôt_taux_forfaitaire: 0,00 €
 │         };
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
 │           -- revenus_quotientés_professionnels: []
@@ -620,7 +623,7 @@ $ catala test-scope BénéficesNonCommerciaux3
 │           -- solde_net_non_professionnel: 10 000,00 €
 │           -- impôt_taux_forfaitaire: 0,00 €
 │         };
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 340,00 €
 │           -- revenus_quotientés_professionnels: []
@@ -768,7 +771,7 @@ $ catala test-scope BénéficesNonCommerciaux4
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_non_commerciaux:
 │       [
-│         BénéficesNonCommerciauxDéclarant {
+│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
 │           -- abattement_forfaitaire_micro_professionnel: 0,00 €
 │           -- abattement_forfaitaire_micro_non_professionnel: 4 216,00 €
 │           -- revenus_quotientés_professionnels: []

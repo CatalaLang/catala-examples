@@ -258,7 +258,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux1
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
 │       [
-│         BénéficesIndustrielsCommerciauxDéclarant {
+│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
 │           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
 │             630,00 €
 │           -- abattement_forfaitaire_micro_professionnel_marchandises:
@@ -508,7 +508,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
 │       [
-│         BénéficesIndustrielsCommerciauxDéclarant {
+│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
 │           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
 │             735,00 €
 │           -- abattement_forfaitaire_micro_professionnel_marchandises:
@@ -525,7 +525,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │           -- revenus_quotientés_professionnels: []
 │           -- revenus_quotientés_non_professionnels:
 │             [
-│               RevenuQuotienté {
+│               Impot_revenu.RevenuQuotienté {
 │                 -- valeur_nette: 3 200,00 €
 │                 -- déduction: 36 800,00 €
 │                 -- coefficient: 4
@@ -546,7 +546,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │       [
 │         [];
 │         [
-│           RevenuQuotienté {
+│           Impot_revenu.RevenuQuotienté {
 │             -- valeur_nette: 3 200,00 €
 │             -- déduction: 36 800,00 €
 │             -- coefficient: 4
@@ -855,7 +855,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux:
 │       [
-│         BénéficesIndustrielsCommerciauxDéclarant {
+│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
 │           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
 │             279,00 €
 │           -- abattement_forfaitaire_micro_professionnel_marchandises:
@@ -873,7 +873,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │           -- revenus_quotientés_professionnels: []
 │           -- revenus_quotientés_non_professionnels:
 │             [
-│               RevenuQuotienté {
+│               Impot_revenu.RevenuQuotienté {
 │                 -- valeur_nette: 28 922,00 €
 │                 -- déduction: 28 921,00 €
 │                 -- coefficient: 4
@@ -892,7 +892,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │     -- revenus_non_professionnels_quotientés_imputés:
 │       [
 │         [
-│           RevenuQuotienté {
+│           Impot_revenu.RevenuQuotienté {
 │             -- valeur_nette: 28 922,00 €
 │             -- déduction: 28 921,00 €
 │             -- coefficient: 4
