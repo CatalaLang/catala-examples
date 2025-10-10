@@ -3,13 +3,23 @@
 > Usage de Oracles
 
 ```catala
+déclaration champ d'application ProRataArrondiEuro:
+  entrée montant_à_distribuer contenu argent
+  entrée bases_prorata contenu liste de argent
+
+  résultat valeurs_proratisées contenu liste de argent
+
+champ d'application ProRataArrondiEuro:
+  définition valeurs_proratisées égal à
+    Oracles.prorata_arrondi_euro de montant_à_distribuer, bases_prorata
+
 #[test]
 déclaration champ d'application ProRata1:
-  résultat sortie contenu Oracles.ProRataArrondiEuro
+  résultat sortie contenu ProRataArrondiEuro
 
 champ d'application ProRata1:
   définition sortie égal à
-    résultat de Oracles.ProRataArrondiEuro avec {
+    résultat de ProRataArrondiEuro avec {
       -- montant_à_distribuer: 100 €
       -- bases_prorata: [ 1 € ; 2 € ; 3 € ; 4 € ]
     }
@@ -20,7 +30,7 @@ champ d'application ProRata1:
 $ catala test-scope ProRata1 --disable-warnings
 ┌─[RESULT]─ ProRata1 ─
 │ sortie =
-│   Oracles.ProRataArrondiEuro {
+│   ProRataArrondiEuro {
 │     -- valeurs_proratisées: [10,00 €; 20,00 €; 30,00 €; 40,00 €]
 │   }
 └─
@@ -29,11 +39,11 @@ $ catala test-scope ProRata1 --disable-warnings
 ```catala
 #[test]
 déclaration champ d'application ProRata2:
-  résultat sortie contenu Oracles.ProRataArrondiEuro
+  résultat sortie contenu ProRataArrondiEuro
 
 champ d'application ProRata2:
   définition sortie égal à
-    résultat de Oracles.ProRataArrondiEuro avec {
+    résultat de ProRataArrondiEuro avec {
       -- montant_à_distribuer: 15 €
       -- bases_prorata: [ 1 € ; 2 € ; 3 € ; 4 € ]
     }
@@ -44,7 +54,7 @@ champ d'application ProRata2:
 $ catala test-scope ProRata2 --disable-warnings
 ┌─[RESULT]─ ProRata2 ─
 │ sortie =
-│   Oracles.ProRataArrondiEuro {
+│   ProRataArrondiEuro {
 │     -- valeurs_proratisées: [2,00 €; 3,00 €; 4,00 €; 6,00 €]
 │   }
 └─
@@ -53,11 +63,11 @@ $ catala test-scope ProRata2 --disable-warnings
 ```catala
 #[test]
 déclaration champ d'application ProRata3:
-  résultat sortie contenu Oracles.ProRataArrondiEuro
+  résultat sortie contenu ProRataArrondiEuro
 
 champ d'application ProRata3:
   définition sortie égal à
-    résultat de Oracles.ProRataArrondiEuro avec {
+    résultat de ProRataArrondiEuro avec {
       -- montant_à_distribuer: 567 €
       -- bases_prorata: [ 46 € ; 284 € ; 44 € ; 956 € ; 86 € ; 465 € ; 129 € ; 465 € ]
     }
@@ -68,7 +78,7 @@ champ d'application ProRata3:
 $ catala test-scope ProRata3 --disable-warnings
 ┌─[RESULT]─ ProRata3 ─
 │ sortie =
-│   Oracles.ProRataArrondiEuro {
+│   ProRataArrondiEuro {
 │     -- valeurs_proratisées:
 │       [
 │         11,00 €; 65,00 €; 10,00 €; 219,00 €; 20,00 €; 106,00 €;

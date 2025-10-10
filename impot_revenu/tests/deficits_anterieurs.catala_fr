@@ -1,15 +1,16 @@
 # Tests imputation des déficits antérieurs
 
 > Usage de Oracles
+> Usage de Impot_revenu en tant que IR
 
 ```catala
 #[test]
 déclaration champ d'application DéficitsAntérieurs1:
-  résultat sortie contenu Oracles.ImputationAuxDéficitsLesPlusAnciens
+  résultat sortie contenu IR.ImputationAuxDéficitsLesPlusAnciens
 
 champ d'application DéficitsAntérieurs1:
   définition sortie égal à
-    résultat de Oracles.ImputationAuxDéficitsLesPlusAnciens avec {
+    résultat de IR.ImputationAuxDéficitsLesPlusAnciens avec {
       -- revenu_déclaré: 1000 €
       -- déficits_antérieurs:
         [ Oracles.DéficitAntérieur {
@@ -26,10 +27,15 @@ champ d'application DéficitsAntérieurs1:
 $ catala test-scope DéficitsAntérieurs1 --disable-warnings
 ┌─[RESULT]─ DéficitsAntérieurs1 ─
 │ sortie =
-│   Oracles.ImputationAuxDéficitsLesPlusAnciens {
+│   Impot_revenu.ImputationAuxDéficitsLesPlusAnciens {
 │     -- revenu_imputé: 0,00 €
 │     -- déficits_antérieurs_restants:
-│       [DéficitAntérieur { -- année: 2 020 -- valeur: 100,00 € }]
+│       [
+│         Impot_revenu.Oracles.DéficitAntérieur {
+│           -- année: 2 020
+│           -- valeur: 100,00 €
+│         }
+│       ]
 │   }
 └─
 ```
