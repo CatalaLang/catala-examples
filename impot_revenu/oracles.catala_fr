@@ -7,6 +7,10 @@ déclaration structure DéficitAntérieur:
   donnée année contenu entier
   donnée valeur contenu argent
 
+déclaration structure RésultatImputation:
+  donnée revenu_imputé contenu argent
+  donnée déficits_antérieurs_restants contenu liste de DéficitAntérieur
+
 # Cette fonction prend en argument un revenu déclaré et une liste de déficits
 # antérieurs et va moralement imputer les déficits antérieurs sur le revenu
 # déclaré. ELle le fait fait avec la procédure suivante :
@@ -22,18 +26,16 @@ déclaration structure DéficitAntérieur:
 #      alors on renvoie un revenu imputé final de 0 € et une liste de déficits
 #      antérieurs identique à celle en  entrée sauf le déficit le plus ancien
 #      où l'on a diminué le déficit du montant imputé sur le revenu.
-déclaration champ d'application ImputationAuxDéficitsLesPlusAnciens:
-  entrée revenu_déclaré contenu argent
-  entrée déficits_antérieurs contenu liste de DéficitAntérieur
-
-  résultat revenu_imputé contenu argent
-  résultat déficits_antérieurs_restants contenu liste de DéficitAntérieur
+déclaration imputation_aux_déficits_les_plus_anciens
+  contenu RésultatImputation
+  dépend de revenu_déclaré contenu argent,
+    déficits_antérieurs contenu liste de DéficitAntérieur
 ```
 
 # Calcul de pro-rata
 
 ```catala-metadata
-# Ce champ d'application prend en argument un montant à distribuer et une liste
+# Cette fonction prend en argument un montant à distribuer et une liste
 # de bases qui vont servir à pro-ratiser le montant à distribuer. On suppose
 # que :
 #   - le montant à distribuer ainsi que les bases de pro-rata sont toutes
@@ -67,57 +69,59 @@ déclaration champ d'application ImputationAuxDéficitsLesPlusAnciens:
 #    arrondi et ce que notre calcule retourne finalement.
 # 4° Les inversions des directions d'arrondis sont réparties le plus
 #    uniformément possible dans la liste d'éléments.
-déclaration champ d'application ProRataArrondiEuro:
-  entrée montant_à_distribuer contenu argent
-  entrée bases_prorata contenu liste de argent
-  résultat valeurs_proratisées contenu liste de argent
+déclaration prorata_arrondi_euro
+  contenu liste de argent
+  dépend de montant_à_distribuer contenu argent,
+    bases_prorata contenu liste de argent
 ```
 
 ```catala-metadata
-déclaration champ d'application ProRataArrondiEuroListes:
-  entrée montant_à_distribuer contenu argent
-  entrée bases_prorata contenu liste de (liste de argent)
-  résultat valeurs_proratisées contenu liste de (liste de argent)
+déclaration prorata_arrondi_euro_listes
+  contenu liste de liste de argent
+  dépend de montant_à_distribuer contenu argent,
+    bases_prorata contenu liste de liste de argent
 ```
 
 ```catala-metadata
-déclaration champ d'application ProRataArrondiEuroBranchement:
-  entrée montant_à_distribuer contenu argent
-  contexte base_prorata_1 contenu argent
-  contexte base_prorata_2 contenu argent
-  contexte base_prorata_3 contenu argent
-  contexte base_prorata_4 contenu argent
-  contexte base_prorata_5 contenu argent
-  contexte base_prorata_6 contenu argent
-  contexte base_prorata_7 contenu argent
-  contexte base_prorata_8 contenu argent
-  contexte base_prorata_9 contenu argent
-  contexte bases_prorata_liste_1 contenu liste de argent
-  contexte bases_prorata_liste_2 contenu liste de argent
-  contexte bases_prorata_liste_3 contenu liste de argent
-  contexte bases_prorata_liste_4 contenu liste de argent
-  contexte bases_prorata_liste_5 contenu liste de argent
-  contexte bases_prorata_liste_6 contenu liste de argent
-  contexte bases_prorata_liste_7 contenu liste de argent
-  contexte bases_prorata_liste_8 contenu liste de argent
-  contexte bases_prorata_liste_9 contenu liste de argent
+déclaration structure RésultatProRataArrondiEuroBranchement:
+  donnée valeur_proratisée_1 contenu argent
+  donnée valeur_proratisée_2 contenu argent
+  donnée valeur_proratisée_3 contenu argent
+  donnée valeur_proratisée_4 contenu argent
+  donnée valeur_proratisée_5 contenu argent
+  donnée valeur_proratisée_6 contenu argent
+  donnée valeur_proratisée_7 contenu argent
+  donnée valeur_proratisée_8 contenu argent
+  donnée valeur_proratisée_9 contenu argent
+  donnée valeurs_proratisées_liste_1 contenu liste de argent
+  donnée valeurs_proratisées_liste_2 contenu liste de argent
+  donnée valeurs_proratisées_liste_3 contenu liste de argent
+  donnée valeurs_proratisées_liste_4 contenu liste de argent
+  donnée valeurs_proratisées_liste_5 contenu liste de argent
+  donnée valeurs_proratisées_liste_6 contenu liste de argent
+  donnée valeurs_proratisées_liste_7 contenu liste de argent
+  donnée valeurs_proratisées_liste_8 contenu liste de argent
+  donnée valeurs_proratisées_liste_9 contenu liste de argent
 
-  résultat valeur_proratisée_1 contenu argent
-  résultat valeur_proratisée_2 contenu argent
-  résultat valeur_proratisée_3 contenu argent
-  résultat valeur_proratisée_4 contenu argent
-  résultat valeur_proratisée_5 contenu argent
-  résultat valeur_proratisée_6 contenu argent
-  résultat valeur_proratisée_7 contenu argent
-  résultat valeur_proratisée_8 contenu argent
-  résultat valeur_proratisée_9 contenu argent
-  résultat valeurs_proratisées_liste_1 contenu liste de argent
-  résultat valeurs_proratisées_liste_2 contenu liste de argent
-  résultat valeurs_proratisées_liste_3 contenu liste de argent
-  résultat valeurs_proratisées_liste_4 contenu liste de argent
-  résultat valeurs_proratisées_liste_5 contenu liste de argent
-  résultat valeurs_proratisées_liste_6 contenu liste de argent
-  résultat valeurs_proratisées_liste_7 contenu liste de argent
-  résultat valeurs_proratisées_liste_8 contenu liste de argent
-  résultat valeurs_proratisées_liste_9 contenu liste de argent
+déclaration prorata_arrondi_euro_branchement
+  contenu RésultatProRataArrondiEuroBranchement
+  dépend de montant_à_distribuer contenu argent,
+    base_prorata_1 contenu optionnel de argent,
+    base_prorata_2 contenu optionnel de argent,
+    base_prorata_3 contenu optionnel de argent,
+    base_prorata_4 contenu optionnel de argent,
+    base_prorata_5 contenu optionnel de argent,
+    base_prorata_6 contenu optionnel de argent,
+    base_prorata_7 contenu optionnel de argent,
+    base_prorata_8 contenu optionnel de argent,
+    base_prorata_9 contenu optionnel de argent,
+    bases_prorata_liste_1 contenu liste de argent,
+    bases_prorata_liste_2 contenu liste de argent,
+    bases_prorata_liste_3 contenu liste de argent,
+    bases_prorata_liste_4 contenu liste de argent,
+    bases_prorata_liste_5 contenu liste de argent,
+    bases_prorata_liste_6 contenu liste de argent,
+    bases_prorata_liste_7 contenu liste de argent,
+    bases_prorata_liste_8 contenu liste de argent,
+    bases_prorata_liste_9 contenu liste de argent
 ```

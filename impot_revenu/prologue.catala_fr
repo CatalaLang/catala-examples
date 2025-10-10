@@ -428,8 +428,7 @@ déclaration champ d'application BénéficesNonCommerciauxDéclarant:
     contenu liste de RevenuExceptionnelOuDifféré
   interne revenus_exceptionnels_non_professionnels_sans_abattement
     contenu liste de RevenuExceptionnelOuDifféré
-  pro_rata_abattement_forfaitaire_micro
-    champ d'application Oracles.ProRataArrondiEuroBranchement
+  pro_rata_abattement_forfaitaire_micro champ d'application ProRataArrondiEuroBranchement
 
   résultat abattement_forfaitaire_micro_professionnel contenu argent
   résultat abattement_forfaitaire_micro_non_professionnel contenu argent
@@ -473,7 +472,7 @@ déclaration champ d'application BénéficesNonCommerciauxFoyerFiscal:
     champ d'application ImputationDéficitSurRevenusQuotientés
 
   imputation_aux_déficits_les_plus_anciens
-    champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
+    champ d'application ImputationAuxDéficitsLesPlusAnciens
 
   résultat revenus_non_professionnels_quotientés_imputés
     contenu liste de (liste de RevenuQuotienté)
@@ -602,14 +601,14 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     état arrondissement
     état plancher
   pro_rata_abattement_forfaitaire_micro_services
-    champ d'application Oracles.ProRataArrondiEuroBranchement
+    champ d'application ProRataArrondiEuroBranchement
   interne assiette_abattement_forfaitaire_micro_marchandises contenu argent
   interne abattement_forfaitaire_micro_total_marchandises contenu argent
     état base
     état arrondissement
     état plancher
   pro_rata_abattement_forfaitaire_micro_marchandises
-    champ d'application Oracles.ProRataArrondiEuroBranchement
+    champ d'application ProRataArrondiEuroBranchement
   interne assiette_abattement_spécial_micro_location_meublées_rurales_spéciales
     contenu argent
   interne abattement_spécial_micro_total_location_meublées_rurales_spéciales contenu argent
@@ -618,9 +617,9 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     état plancher
   interne plancher_abattement_forfaitaire_micro_total contenu argent
   pro_rata_plancher_abattement_forfaitaire_total
-    champ d'application Oracles.ProRataArrondiEuroBranchement
+    champ d'application ProRataArrondiEuroBranchement
   pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales
-    champ d'application Oracles.ProRataArrondiEuroBranchement
+    champ d'application ProRataArrondiEuroBranchement
   résultat abattement_spécial_micro_location_meublées_rurales_spéciales
     contenu argent
   résultat abattement_forfaitaire_micro_professionnel_marchandises
@@ -684,9 +683,9 @@ déclaration champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
     champ d'application ImputationDéficitSurRevenusQuotientés
 
   imputation_aux_déficits_les_plus_anciens
-    champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
+    champ d'application ImputationAuxDéficitsLesPlusAnciens
   imputation_aux_déficits_les_plus_anciens_locations_meublées
-    champ d'application Oracles.ImputationAuxDéficitsLesPlusAnciens
+    champ d'application ImputationAuxDéficitsLesPlusAnciens
 
   résultat revenus_non_professionnels_quotientés_imputés contenu liste de (liste de RevenuQuotienté)
     état base
@@ -818,4 +817,128 @@ déclaration champ d'application NombreDeParts:
     état article_196_B
 
   résultat abattement contenu argent
+```
+
+```catala-metadata
+# Champs d'application utilitaires pour appel au module externe Oracles
+déclaration champ d'application ProRataArrondiEuroBranchement:
+  entrée montant_à_distribuer contenu argent
+  contexte base_prorata_1 contenu argent
+  contexte base_prorata_2 contenu argent
+  contexte base_prorata_3 contenu argent
+  contexte base_prorata_4 contenu argent
+  contexte base_prorata_5 contenu argent
+  contexte base_prorata_6 contenu argent
+  contexte base_prorata_7 contenu argent
+  contexte base_prorata_8 contenu argent
+  contexte base_prorata_9 contenu argent
+  contexte bases_prorata_liste_1 contenu liste de argent
+  contexte bases_prorata_liste_2 contenu liste de argent
+  contexte bases_prorata_liste_3 contenu liste de argent
+  contexte bases_prorata_liste_4 contenu liste de argent
+  contexte bases_prorata_liste_5 contenu liste de argent
+  contexte bases_prorata_liste_6 contenu liste de argent
+  contexte bases_prorata_liste_7 contenu liste de argent
+  contexte bases_prorata_liste_8 contenu liste de argent
+  contexte bases_prorata_liste_9 contenu liste de argent
+
+  interne résultat_brut contenu Oracles.RésultatProRataArrondiEuroBranchement
+
+  résultat valeur_proratisée_1 contenu argent
+  résultat valeur_proratisée_2 contenu argent
+  résultat valeur_proratisée_3 contenu argent
+  résultat valeur_proratisée_4 contenu argent
+  résultat valeur_proratisée_5 contenu argent
+  résultat valeur_proratisée_6 contenu argent
+  résultat valeur_proratisée_7 contenu argent
+  résultat valeur_proratisée_8 contenu argent
+  résultat valeur_proratisée_9 contenu argent
+  résultat valeurs_proratisées_liste_1 contenu liste de argent
+  résultat valeurs_proratisées_liste_2 contenu liste de argent
+  résultat valeurs_proratisées_liste_3 contenu liste de argent
+  résultat valeurs_proratisées_liste_4 contenu liste de argent
+  résultat valeurs_proratisées_liste_5 contenu liste de argent
+  résultat valeurs_proratisées_liste_6 contenu liste de argent
+  résultat valeurs_proratisées_liste_7 contenu liste de argent
+  résultat valeurs_proratisées_liste_8 contenu liste de argent
+  résultat valeurs_proratisées_liste_9 contenu liste de argent
+
+déclaration champ d'application ImputationAuxDéficitsLesPlusAnciens:
+  entrée revenu_déclaré contenu argent
+  entrée déficits_antérieurs contenu liste de Oracles.DéficitAntérieur
+
+  interne résultat_brut contenu Oracles.RésultatImputation
+
+  résultat revenu_imputé contenu argent
+  résultat déficits_antérieurs_restants contenu liste de Oracles.DéficitAntérieur
+```
+
+```catala
+champ d'application ProRataArrondiEuroBranchement:
+  définition base_prorata_1 égal à 0€
+  définition base_prorata_2 égal à 0€
+  définition base_prorata_3 égal à 0€
+  définition base_prorata_4 égal à 0€
+  définition base_prorata_5 égal à 0€
+  définition base_prorata_6 égal à 0€
+  définition base_prorata_7 égal à 0€
+  définition base_prorata_8 égal à 0€
+  définition base_prorata_9 égal à 0€
+  définition bases_prorata_liste_1 égal à []
+  définition bases_prorata_liste_2 égal à []
+  définition bases_prorata_liste_3 égal à []
+  définition bases_prorata_liste_4 égal à []
+  définition bases_prorata_liste_5 égal à []
+  définition bases_prorata_liste_6 égal à []
+  définition bases_prorata_liste_7 égal à []
+  définition bases_prorata_liste_8 égal à []
+  définition bases_prorata_liste_9 égal à []
+
+  définition résultat_brut égal à
+    Oracles.prorata_arrondi_euro_branchement de
+      montant_à_distribuer,
+      Présent contenu base_prorata_1,
+      Présent contenu base_prorata_2,
+      Présent contenu base_prorata_3,
+      Présent contenu base_prorata_4,
+      Présent contenu base_prorata_5,
+      Présent contenu base_prorata_6,
+      Présent contenu base_prorata_7,
+      Présent contenu base_prorata_8,
+      Présent contenu base_prorata_9,
+      bases_prorata_liste_1,
+      bases_prorata_liste_2,
+      bases_prorata_liste_3,
+      bases_prorata_liste_4,
+      bases_prorata_liste_5,
+      bases_prorata_liste_6,
+      bases_prorata_liste_7,
+      bases_prorata_liste_8,
+      bases_prorata_liste_9
+
+  définition valeur_proratisée_1 égal à résultat_brut.valeur_proratisée_1
+  définition valeur_proratisée_2 égal à résultat_brut.valeur_proratisée_2
+  définition valeur_proratisée_3 égal à résultat_brut.valeur_proratisée_3
+  définition valeur_proratisée_4 égal à résultat_brut.valeur_proratisée_4
+  définition valeur_proratisée_5 égal à résultat_brut.valeur_proratisée_5
+  définition valeur_proratisée_6 égal à résultat_brut.valeur_proratisée_6
+  définition valeur_proratisée_7 égal à résultat_brut.valeur_proratisée_7
+  définition valeur_proratisée_8 égal à résultat_brut.valeur_proratisée_8
+  définition valeur_proratisée_9 égal à résultat_brut.valeur_proratisée_9
+  définition valeurs_proratisées_liste_1 égal à résultat_brut.valeurs_proratisées_liste_1
+  définition valeurs_proratisées_liste_2 égal à résultat_brut.valeurs_proratisées_liste_2
+  définition valeurs_proratisées_liste_3 égal à résultat_brut.valeurs_proratisées_liste_3
+  définition valeurs_proratisées_liste_4 égal à résultat_brut.valeurs_proratisées_liste_4
+  définition valeurs_proratisées_liste_5 égal à résultat_brut.valeurs_proratisées_liste_5
+  définition valeurs_proratisées_liste_6 égal à résultat_brut.valeurs_proratisées_liste_6
+  définition valeurs_proratisées_liste_7 égal à résultat_brut.valeurs_proratisées_liste_7
+  définition valeurs_proratisées_liste_8 égal à résultat_brut.valeurs_proratisées_liste_8
+  définition valeurs_proratisées_liste_9 égal à résultat_brut.valeurs_proratisées_liste_9
+
+champ d'application ImputationAuxDéficitsLesPlusAnciens:
+  définition résultat_brut égal à
+    Oracles.imputation_aux_déficits_les_plus_anciens de revenu_déclaré, déficits_antérieurs
+
+  définition revenu_imputé égal à résultat_brut.revenu_imputé
+  définition déficits_antérieurs_restants égal à résultat_brut.déficits_antérieurs_restants
 ```

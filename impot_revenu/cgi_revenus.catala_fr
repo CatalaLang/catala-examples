@@ -3408,18 +3408,16 @@ champ d'application ImputationDéficitSurRevenusQuotientés:
   # quotienté de chaque déclarant.
   définition revenus_quotientés_catégoriels_imputés égal à
     soit déficits_à_imputer_aux_revenus_quotientés_catégoriels égal à (
-      résultat de Oracles.ProRataArrondiEuroListes avec {
-        -- montant_à_distribuer: déficit_catégoriel_imputé
-        -- bases_prorata:
-          transforme chaque revenus_quotientés_catégoriels_déclarant
-          parmi revenus_quotientés_catégoriels en
-            (
-              transforme chaque revenu_quotienté_catégoriel
-              parmi revenus_quotientés_catégoriels_déclarant en
-                revenu_quotienté_catégoriel.valeur_nette
-            )
-      }
-    ).valeurs_proratisées
+      Oracles.prorata_arrondi_euro_listes de
+        déficit_catégoriel_imputé,
+        transforme chaque revenus_quotientés_catégoriels_déclarant
+        parmi revenus_quotientés_catégoriels en
+          (
+            transforme chaque revenu_quotienté_catégoriel
+            parmi revenus_quotientés_catégoriels_déclarant en
+              revenu_quotienté_catégoriel.valeur_nette
+          )
+    )
     dans
     # Le nouveau revenu quotienté ne diffère que par sa valeur nette.
     transforme chaque (
@@ -4262,14 +4260,14 @@ champ d'application TraitementsSalairesFoyerFiscal:
       # de chaque déclarant.
       soit plafonds_proratisés égal à
         (
-          résultat de Oracles.ProRataArrondiEuro avec {
-            -- montant_à_distribuer: plafond_abattement_pensions_retraites_rentes
-            -- bases_prorata:
+          Oracles.prorata_arrondi_euro de
+            (
+              plafond_abattement_pensions_retraites_rentes,
               transforme chaque résultats
               parmi résultats_liquidations_plafond_pensions_retraites_rentes en
                 résultats.abattement_pensions_retraites_rentes
-          }
-        ).valeurs_proratisées
+            )
+        )
       dans
       transforme chaque (résultats, plafond_proratisé)
       parmi (
@@ -4879,13 +4877,13 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
         ).revenu_quotienté
     )
     ++ (
-      transforme chaque ( revenu, déduction_micro, déduction_spéciale )
+      transforme chaque (revenu, déduction_micro, déduction_spéciale)
       parmi (
-          revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales,
-          pro_rata_abattement_forfaitaire_micro_marchandises.
-            valeurs_proratisées_liste_3,
-          pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
-            valeurs_proratisées_liste_1
+        revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales,
+        pro_rata_abattement_forfaitaire_micro_marchandises.
+          valeurs_proratisées_liste_3,
+        pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
+          valeurs_proratisées_liste_1
       ) en
         (
           résultat de CalculRevenuQuotienté avec {
