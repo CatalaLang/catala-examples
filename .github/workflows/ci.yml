@@ -24,6 +24,9 @@ jobs:
       - name: Check formatting
         run: |
           opam --cli=2.1 exec -- make check-format
+      - name: Install Java dependencies
+        run: |
+          apk add openjdk21
       - name: Run tests (interpreter and backends)
         run: |
           opam --cli=2.1 exec -- clerk ci
