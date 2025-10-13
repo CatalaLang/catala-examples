@@ -5380,7 +5380,8 @@ champ d'application CalculAllocationLogementAccessionPropriété
   conséquence égal à
     (
       calcul_plafond_mensualité_d842_6 de
-        date_calcul, nombre_personnes_à_charge
+        date_calcul,
+        nombre_personnes_à_charge
     )
     * 75%
 ```

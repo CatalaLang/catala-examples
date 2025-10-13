@@ -4877,13 +4877,13 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
         ).revenu_quotienté
     )
     ++ (
-      transforme chaque ( revenu, déduction_micro, déduction_spéciale )
+      transforme chaque (revenu, déduction_micro, déduction_spéciale)
       parmi (
-          revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales,
-          pro_rata_abattement_forfaitaire_micro_marchandises.
-            valeurs_proratisées_liste_3,
-          pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
-            valeurs_proratisées_liste_1
+        revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales,
+        pro_rata_abattement_forfaitaire_micro_marchandises.
+          valeurs_proratisées_liste_3,
+        pro_rata_abattement_spécial_micro_location_meublées_rurales_spéciales.
+          valeurs_proratisées_liste_1
       ) en
         (
           résultat de CalculRevenuQuotienté avec {

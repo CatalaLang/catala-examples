@@ -406,7 +406,9 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   égal à
     soit aide_finale égal à traitement_aide_finale de aide_finale dans
     montée_en_charge_saint_pierre_miquelon de
-      aide_finale, résidence, date_courante
+      aide_finale,
+      résidence,
+      date_courante
 
 champ d'application CalculAllocationLogementFoyer:
   définition traitement_aide_finale
@@ -414,7 +416,9 @@ champ d'application CalculAllocationLogementFoyer:
   égal à
     soit aide_finale égal à traitement_aide_finale de aide_finale dans
     montée_en_charge_saint_pierre_miquelon de
-      aide_finale, résidence, date_courante
+      aide_finale,
+      résidence,
+      date_courante
 
 champ d'application CalculAllocationLogementAccessionPropriété:
   définition traitement_aide_finale
@@ -422,7 +426,9 @@ champ d'application CalculAllocationLogementAccessionPropriété:
   égal à
     soit aide_finale égal à traitement_aide_finale de aide_finale dans
     montée_en_charge_saint_pierre_miquelon de
-      aide_finale, résidence, date_courante
+      aide_finale,
+      résidence,
+      date_courante
 ```
 
 # Code général des collectivités territoriales
