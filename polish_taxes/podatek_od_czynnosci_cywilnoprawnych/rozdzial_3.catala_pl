@@ -28,9 +28,10 @@ b) innych praw majątkowych – 1%;
 ```catala
 zakres UmowaSprzedaży:
   wyjątek a7_u1_p1_ppa
-  definicja stawka_podatku pod warunkiem
-    inne_prawa_majątkowe
-  konsekwencja wynosi 1%
+  definicja stawka_podatku
+  pod warunkiem inne_prawa_majątkowe
+  konsekwencja wynosi
+    1%
 ```
 
 2) od umów zamiany, dożywocia, o dział spadku, o zniesienie współwłasności oraz darowizny:
@@ -59,9 +60,10 @@ b) przy przeniesieniu własności innych praw majątkowych – 1%;
 ```catala
 zakres UmowaZamianyLubDarowizny:
   wyjątek a7_u1_p2_ppa
-  definicja stawka_podatku pod warunkiem
-    inne_prawa_majątkowe
-  konsekwencja wynosi 1%
+  definicja stawka_podatku
+  pod warunkiem inne_prawa_majątkowe
+  konsekwencja wynosi
+    1%
 ```
 
 3) od umowy ustanowienia odpłatnego użytkowania, w tym nieprawidłowego, oraz odpłatnej służebności – 1%, z zastrzeżeniem ust. 5;
@@ -123,9 +125,10 @@ b) na zabezpieczenie wierzytelności o wysokości nieustalonej – 19 zł;
 ```catala
 zakres Hipoteka:
   wyjątek a7_u1_p7_ppa
-  definicja podatek pod warunkiem
-    wysokość_nieustalona
-  konsekwencja wynosi 19 PLN
+  definicja podatek
+  pod warunkiem wysokość_nieustalona
+  konsekwencja wynosi
+    19 PLN
 ```
 
 9) od umowy spółki – 0,5%.

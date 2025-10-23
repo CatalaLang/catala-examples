@@ -21,7 +21,7 @@ champ d'application ProRata1:
   définition sortie égal à
     résultat de ProRataArrondiEuro avec {
       -- montant_à_distribuer: 100 €
-      -- bases_prorata: [ 1 € ; 2 € ; 3 € ; 4 € ]
+      -- bases_prorata: [ 1 €; 2 €; 3 €; 4 € ]
     }
   assertion somme argent de sortie.valeurs_proratisées = 100 €
 ```
@@ -45,7 +45,7 @@ champ d'application ProRata2:
   définition sortie égal à
     résultat de ProRataArrondiEuro avec {
       -- montant_à_distribuer: 15 €
-      -- bases_prorata: [ 1 € ; 2 € ; 3 € ; 4 € ]
+      -- bases_prorata: [ 1 €; 2 €; 3 €; 4 € ]
     }
   assertion somme argent de sortie.valeurs_proratisées = 15 €
 ```
@@ -69,7 +69,7 @@ champ d'application ProRata3:
   définition sortie égal à
     résultat de ProRataArrondiEuro avec {
       -- montant_à_distribuer: 567 €
-      -- bases_prorata: [ 46 € ; 284 € ; 44 € ; 956 € ; 86 € ; 465 € ; 129 € ; 465 € ]
+      -- bases_prorata: [ 46 €; 284 €; 44 €; 956 €; 86 €; 465 €; 129 €; 465 € ]
     }
   assertion somme argent de sortie.valeurs_proratisées = 567 €
 ```

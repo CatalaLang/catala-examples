@@ -115,14 +115,15 @@ janvier 1968.
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition
+sous condition
   # Cette version de l'article est en vigueur depuis février 2025 seulement
   # mais la version précédente emporte les mêmes effets et était en vigueur
   # depuis le 1er septembre 2023.
   date_courante >= |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    date_naissance_assuré >= |1968-01-01|
-  conséquence égal à 64 an
+  définition âge_ouverture_droit
+  sous condition date_naissance_assuré >= |1968-01-01|
+  conséquence égal à
+    64 an
 
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition ouverture_droits_retraite.date_naissance_assuré égal à
@@ -184,7 +185,8 @@ l'application de l'article L. 821-2.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2023-09-01|
+sous condition
+  date_courante >= |2023-09-01|
   # L'article L351-1-5 du CCS est entré en vigueur au 1er septembre 2023,
   # aussi le code Catala appelé avec une date antérieure ne devrait pas avoir
   # besoin de cette valeur. Cependant, la sémantique de Catala fait que
@@ -216,7 +218,7 @@ de trois années ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2023-09-01|:
+sous condition date_courante >= |2023-09-01|:
   définition âge_l351_8_1_sécu égal à âge_l161_17_2_sécu + 3 an
 ```
 
@@ -320,10 +322,11 @@ L'âge prévu au second alinéa de l'article L. 161-17-2 est fixé à :
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    date_naissance_assuré < |1951-07-01|
-  conséquence égal à 60 an
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition date_naissance_assuré < |1951-07-01|
+  conséquence égal à
+    60 an
 ```
 
 2° Soixante ans et quatre mois pour les assurés nés entre le 1er juillet
@@ -331,123 +334,138 @@ champ d'application OuvertureDroitsRetraite
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition
     date_naissance_assuré >= |1951-07-01|
     et date_naissance_assuré <= |1951-12-31|
-  conséquence égal à 60 an + 4 mois
+  conséquence égal à
+    60 an + 4 mois
 ```
 
 3° Soixante ans et neuf mois pour les assurés nés en 1952 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1952
-  conséquence égal à 60 an + 9 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1952
+  conséquence égal à
+    60 an + 9 mois
 ```
 
 4° Soixante et un ans et deux mois pour les assurés nés en 1953 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1953
-  conséquence égal à 61 an + 2 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1953
+  conséquence égal à
+    61 an + 2 mois
 ```
 
 5° Soixante et un ans et sept mois pour les assurés nés en 1954 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1954
-  conséquence égal à 61 an + 7 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1954
+  conséquence égal à
+    61 an + 7 mois
 ```
 
 6° Soixante-deux ans pour les assurés nés entre le 1er janvier 1955 et le 31 août 1961 inclus ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition
     date_naissance_assuré >= |1955-01-01|
     et date_naissance_assuré <= |1961-08-31|
-  conséquence égal à 62 an
+  conséquence égal à
+    62 an
 ```
 
 7° Soixante-deux ans et trois mois pour les assurés nés entre le 1er septembre 1961 et le 31 décembre 1961 inclus ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition
     date_naissance_assuré >= |1961-09-01|
     et date_naissance_assuré <= |1961-12-31|
-  conséquence égal à 62 an + 3 mois
+  conséquence égal à
+    62 an + 3 mois
 ```
 
 8° Soixante-deux ans et six mois pour les assurés nés en 1962 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1962
-  conséquence égal à 62 an + 6 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1962
+  conséquence égal à
+    62 an + 6 mois
 ```
 
 9° Soixante-deux ans et neuf mois pour les assurés nés en 1963 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1963
-  conséquence égal à 62 an + 9 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1963
+  conséquence égal à
+    62 an + 9 mois
 ```
 
 10° Soixante-trois ans pour les assurés nés en 1964 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1964
-  conséquence égal à 63 an
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1964
+  conséquence égal à
+    63 an
 ```
 
 11° Soixante-trois ans et trois mois pour les assurés nés en 1965 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1965
-  conséquence égal à 63 an + 3 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1965
+  conséquence égal à
+    63 an + 3 mois
 ```
 
 12° Soixante-trois ans et six mois pour les assurés nés en 1966 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1966
-  conséquence égal à 63 an + 6 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1966
+  conséquence égal à
+    63 an + 6 mois
 ```
 
 13° Soixante-trois ans et neuf mois pour les assurés nés en 1967 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante > |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1967
-  conséquence égal à 62 an + 9 mois
+sous condition date_courante > |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1967
+  conséquence égal à
+    62 an + 9 mois
 ```
 
 14° Soixante-quatre ans pour les assurés nés à compter du 1er janvier 1968.
@@ -484,20 +502,26 @@ janvier 2019 et à 10 838,40 euros par an à compter du 1er janvier 2020 ;
 # l'éligibilité aux APL.
 
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  définition plafond_individuel_l815_9_sécu sous condition
+  définition plafond_individuel_l815_9_sécu
+  sous condition
     date_courante >= |2018-04-01|
     et date_courante < |2019-01-01|
-  conséquence égal à 9 998,40€
+  conséquence égal à
+    9 998,40€
 
-  définition plafond_individuel_l815_9_sécu sous condition
+  définition plafond_individuel_l815_9_sécu
+  sous condition
     date_courante >= |2019-01-01|
     et date_courante < |2020-01-01|
-  conséquence égal à 10 418,40€
+  conséquence égal à
+    10 418,40€
 
-  définition plafond_individuel_l815_9_sécu sous condition
+  définition plafond_individuel_l815_9_sécu
+  sous condition
     date_courante >= |2020-01-01|
     et date_courante < |2021-01-01|
-  conséquence égal à 10 838,40€
+  conséquence égal à
+    10 838,40€
 ```
 
 b) Lorsque les deux conjoints, concubins ou partenaires liés par un pacte civil

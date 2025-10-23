@@ -29,13 +29,13 @@ scope GamingAuthorized:
 ```catala
 scope GamingAuthorized:
   definition amountOfPrizesGreaterThan30000 equals
-    (
-      progressiveLottery.totalValueOfThePrizes < $30000
-      or progressiveLottery.holdsAuthority
-    )
+  (
+    progressiveLottery.totalValueOfThePrizes < $30000
+    or progressiveLottery.holdsAuthority
+  )
 
 scope GamingAuthorized:
-  rule authorized under condition
-    maxCashPrize and amountOfPrizesGreaterThan30000
+  rule authorized
+  under condition maxCashPrize and amountOfPrizesGreaterThan30000
   consequence fulfilled
 ```

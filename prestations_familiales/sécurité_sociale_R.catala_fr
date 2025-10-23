@@ -56,8 +56,8 @@ multiplié par 169.
 ```catala
 champ d'application ÉligibilitéPrestationsFamiliales:
   exception
-  définition plafond_l512_3_2 sous condition
-    régime_outre_mer_l751_1
+  définition plafond_l512_3_2
+  sous condition régime_outre_mer_l751_1
   conséquence égal à
     (smic.brut_horaire * 55%) * 169,0
 ```

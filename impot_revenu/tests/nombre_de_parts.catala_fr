@@ -113,18 +113,18 @@ déclaration champ d'application NombreDeParts1:
 
 champ d'application NombreDeParts1:
   définition sortie égal à
-    (
-      résultat de IR.NombreDeParts avec {
-        -- foyer_fiscal:
-          (
-            résultat de Interface.DescriptionFoyerFiscal avec {
-              -- pacsées: vrai
-              -- nombre_enfants_à_charge_mineurs_et_non_mariés: 2
-            }
-          ).sortie
-        -- année_revenus: 2022
-      }
-    )
+  (
+    résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal:
+        (
+          résultat de Interface.DescriptionFoyerFiscal avec {
+            -- pacsées: vrai
+            -- nombre_enfants_à_charge_mineurs_et_non_mariés: 2
+          }
+        ).sortie
+      -- année_revenus: 2022
+    }
+  )
 ```
 
 Le test ci-dessus doit donner le résultat suivant à l'exécution.
@@ -156,19 +156,19 @@ déclaration champ d'application NombreDeParts2:
 
 champ d'application NombreDeParts2:
   définition sortie égal à
-    (
-      résultat de IR.NombreDeParts avec {
-        -- foyer_fiscal:
-          (
-            résultat de Interface.DescriptionFoyerFiscal avec {
-              -- mariées: vrai
-              -- nombre_enfants_à_charge_mineurs_et_non_mariés: 3
-              -- titulaire_carte_invalidité_CMI_invalidité_40_pourcent: vrai
-            }
-          ).sortie
-        -- année_revenus: 2022
-      }
-    )
+  (
+    résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal:
+        (
+          résultat de Interface.DescriptionFoyerFiscal avec {
+            -- mariées: vrai
+            -- nombre_enfants_à_charge_mineurs_et_non_mariés: 3
+            -- titulaire_carte_invalidité_CMI_invalidité_40_pourcent: vrai
+          }
+        ).sortie
+      -- année_revenus: 2022
+    }
+  )
 ```
 
 ### Analyse
@@ -328,21 +328,21 @@ déclaration champ d'application NombreDeParts3:
 
 champ d'application NombreDeParts3:
   définition sortie égal à
-    (
-      résultat de Interface .IR.NombreDeParts avec {
-        -- foyer_fiscal:
-          (
-            résultat de Interface.DescriptionFoyerFiscal avec {
-              -- veuve: vrai
-              -- pensionné_veuve_de_guerre: vrai
-              -- nombre_enfants_à_charge_mineurs_et_non_mariés: 1
-              -- nombre_enfants_majeurs_célibataires_sans_enfant: 2
-              -- nombre_enfants_majeurs_mariés_ou_chargés_famille: 1,5
-            }
-          ).sortie
-        -- année_revenus: 2022
-      }
-    )
+  (
+    résultat de Interface.IR.NombreDeParts avec {
+      -- foyer_fiscal:
+        (
+          résultat de Interface.DescriptionFoyerFiscal avec {
+            -- veuve: vrai
+            -- pensionné_veuve_de_guerre: vrai
+            -- nombre_enfants_à_charge_mineurs_et_non_mariés: 1
+            -- nombre_enfants_majeurs_célibataires_sans_enfant: 2
+            -- nombre_enfants_majeurs_mariés_ou_chargés_famille: 1,5
+          }
+        ).sortie
+      -- année_revenus: 2022
+    }
+  )
 ```
 
 ### Analyse
@@ -556,18 +556,18 @@ déclaration champ d'application NombreDeParts4:
 
 champ d'application NombreDeParts4:
   définition sortie égal à
-    (
-      résultat de Interface .IR.NombreDeParts avec {
-        -- foyer_fiscal:
-          (
-            résultat de Interface.DescriptionFoyerFiscal avec {
-              -- pacsées: vrai
-              -- nombre_enfants_à_charge_résidence_alternée: 1
-            }
-          ).sortie
-        -- année_revenus: 2022
-      }
-    )
+  (
+    résultat de Interface.IR.NombreDeParts avec {
+      -- foyer_fiscal:
+        (
+          résultat de Interface.DescriptionFoyerFiscal avec {
+            -- pacsées: vrai
+            -- nombre_enfants_à_charge_résidence_alternée: 1
+          }
+        ).sortie
+      -- année_revenus: 2022
+    }
+  )
 ```
 
 ### A - Sur le couple pacsé.
@@ -709,22 +709,22 @@ déclaration champ d'application NombreDeParts5:
 
 champ d'application NombreDeParts5:
   définition sortie égal à
-    (
-      résultat de IR.NombreDeParts avec {
-        -- foyer_fiscal:
-          (
-            résultat de Interface.DescriptionFoyerFiscal avec {
-              -- mariées: vrai
-              -- nombre_enfants_à_charge_mineurs_et_non_mariés: 2
-              # Attention ici il faut compter l'enfant 2 fois parce que la case
-              # CI dit "alternée DONT invalides"...
-              -- nombre_enfants_à_charge_résidence_alternée: 1
-              -- nombre_enfants_à_charge_résidence_alternée_invalides: 1
-            }
-          ).sortie
-        -- année_revenus: 2022
-      }
-    )
+  (
+    résultat de IR.NombreDeParts avec {
+      -- foyer_fiscal:
+        (
+          résultat de Interface.DescriptionFoyerFiscal avec {
+            -- mariées: vrai
+            -- nombre_enfants_à_charge_mineurs_et_non_mariés: 2
+            # Attention ici il faut compter l'enfant 2 fois parce que la case
+            # CI dit "alternée DONT invalides"...
+            -- nombre_enfants_à_charge_résidence_alternée: 1
+            -- nombre_enfants_à_charge_résidence_alternée_invalides: 1
+          }
+        ).sortie
+      -- année_revenus: 2022
+    }
+  )
 ```
 
 ## Calcul du nombre de parts du foyer fiscal

@@ -52,7 +52,7 @@ scope GamingAuthorized:
   definition maxTicketsProduced equals noDrawLottery.maxTickets <= 3000
 
 scope GamingAuthorized:
-  rule authorized under condition
-    benefitingOrg and minimumProceeds and maxValueOfPrizes and maxTicketsProduced
+  rule authorized
+  under condition benefitingOrg and minimumProceeds and maxValueOfPrizes and maxTicketsProduced
   consequence fulfilled
 ```

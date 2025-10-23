@@ -23,9 +23,10 @@ champ d'application EnfantLePlusÂgé:
       }
 
 champ d'application AllocationsFamiliales:
-  définition montant_initial_métropole_majoration de enfant sous condition
-    non (droit_ouvert_majoration de enfant)
-  conséquence égal à 0 €
+  définition montant_initial_métropole_majoration de enfant
+  sous condition non (droit_ouvert_majoration de enfant)
+  conséquence égal à
+    0 €
 
   règle droit_ouvert_complément rempli
 
@@ -37,8 +38,8 @@ champ d'application AllocationsFamiliales:
     si droit_ouvert_base alors montant_avec_garde_alternée_base sinon 0€
   définition montant_versé_majoration égal à
     si droit_ouvert_base alors
-      somme argent
-        de transforme chaque enfant parmi enfants_à_charge en montant_avec_garde_alternée_majoration de enfant
+      somme argent de
+        transforme chaque enfant parmi enfants_à_charge en montant_avec_garde_alternée_majoration de enfant
     sinon 0€
 
   définition montant_versé égal à
@@ -87,14 +88,14 @@ champ d'application InterfaceAllocationsFamiliales:
   définition allocations_familiales.ressources_ménage égal à i_ressources_ménage
   définition allocations_familiales.résidence égal à i_résidence
   définition i_montant_versé égal à allocations_familiales.montant_versé
-  règle allocations_familiales.personne_charge_effective_permanente_est_parent sous condition
-    i_personne_charge_effective_permanente_est_parent
+  règle allocations_familiales.personne_charge_effective_permanente_est_parent
+  sous condition i_personne_charge_effective_permanente_est_parent
   conséquence rempli
-  règle allocations_familiales.personne_charge_effective_permanente_remplit_titre_I sous condition
-    i_personne_charge_effective_permanente_remplit_titre_I
+  règle allocations_familiales.personne_charge_effective_permanente_remplit_titre_I
+  sous condition i_personne_charge_effective_permanente_remplit_titre_I
   conséquence rempli
-  règle allocations_familiales.avait_enfant_à_charge_avant_1er_janvier_2012 sous condition
-    i_avait_enfant_à_charge_avant_1er_janvier_2012
+  règle allocations_familiales.avait_enfant_à_charge_avant_1er_janvier_2012
+  sous condition i_avait_enfant_à_charge_avant_1er_janvier_2012
   conséquence rempli
 ```
 

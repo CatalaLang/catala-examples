@@ -41,8 +41,8 @@ la résidence principale.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  règle condition_logement_résidence_principale sous condition
-    ménage.logement.résidence_principale
+  règle condition_logement_résidence_principale
+  sous condition ménage.logement.résidence_principale
   conséquence rempli
 ```
 
@@ -75,7 +75,8 @@ payeur.
 # la méta-structure logique des articles de loi de ce chapitre.
 champ d'application ÉligibilitéAidesPersonnelleLogement:
 
-  règle éligibilité_logement sous condition
+  règle éligibilité_logement
+  sous condition
     # La condition logement est en fait l'amalgame de plusieurs sous-conditions
     # portant toutes sur le logement définies au long des diverses parties
     # du code de la construction et de l'habitation. Attention, ne pas oublier
@@ -88,7 +89,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   conséquence rempli
 
   exception
-  règle éligibilité_logement sous condition
+  règle éligibilité_logement
+  sous condition
     condition_non_ouverture_l822_8
     ou condition_non_ouverture_l822_9_decence_logement
   conséquence non rempli
@@ -144,7 +146,8 @@ Les sous-locataires, sous les mêmes conditions, peuvent également en bénéfic
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   étiquette l822_2
-  règle condition_logement_mode_occupation sous condition
+  règle condition_logement_mode_occupation
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- Locataire : vrai
     -- RésidentLogementFoyer : vrai
@@ -180,7 +183,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
     )
 
   étiquette l822_3_1 exception l822_2
-  règle condition_logement_mode_occupation sous condition
+  règle condition_logement_mode_occupation
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- Locataire : usufruit_ou_propriété_famille
     -- n'importe quel : faux
@@ -195,7 +199,8 @@ Ces seuils ne peuvent excéder 20 % de la propriété ou de l'usufruit du logeme
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   étiquette l822_3_2 exception l822_3_1
-  règle condition_logement_mode_occupation sous condition
+  règle condition_logement_mode_occupation
+  sous condition
     usufruit_ou_propriété_famille
     et (
       selon ménage.logement.propriétaire sous forme
@@ -204,11 +209,11 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
     )
     < seuil_l822_3_parts_propriété
     et (
-      selon ménage.logement.usufruit sous forme
-      -- DemandeurOuConjointOuParentOuViaPartsSociétés contenu parts : parts
-      -- ParentOuAutre.Autre : 0,0
-    )
-    < seuil_l822_3_parts_usufruit
+        selon ménage.logement.usufruit sous forme
+        -- DemandeurOuConjointOuParentOuViaPartsSociétés contenu parts : parts
+        -- ParentOuAutre.Autre : 0,0
+      )
+      < seuil_l822_3_parts_usufruit
   conséquence rempli
   # Les < sont stricts par mention de R822-1
 
@@ -227,12 +232,13 @@ personne de moins de trente ans.
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   étiquette cas_base_l822_4
-  règle condition_logement_location_tiers sous condition
-    ménage.logement.loué_ou_sous_loué_à_des_tiers sous forme LouéOuSousLouéÀDesTiers.Non
+  règle condition_logement_location_tiers
+  sous condition ménage.logement.loué_ou_sous_loué_à_des_tiers sous forme LouéOuSousLouéÀDesTiers.Non
   conséquence non rempli
 
   exception cas_base_l822_4
-  règle condition_logement_location_tiers sous condition
+  règle condition_logement_location_tiers
+  sous condition
     selon ménage.logement.loué_ou_sous_loué_à_des_tiers sous forme
     -- LouéOuSousLouéÀDesTiers.Non : vrai
     -- LouéOuSousLouéÀDesTiers.Oui contenu personne :
@@ -360,8 +366,8 @@ logement. Cette condition est appréciée pour chacun des membres du ménage.
 # L'interpretation est donc qu'aucun membre du ménage ne doit être
 # rattaché à des parents payant l'ifi.
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  règle condition_non_ouverture_l822_8 sous condition
-    ménage.condition_rattaché_foyer_fiscal_parent_ifi
+  règle condition_non_ouverture_l822_8
+  sous condition ménage.condition_rattaché_foyer_fiscal_parent_ifi
   conséquence rempli
 ```
 
@@ -374,8 +380,8 @@ locatifs et portant modification de la loi n° 86-1290 du 23 décembre 1986.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  règle condition_non_ouverture_l822_9_decence_logement sous condition
-    non ménage.logement.logement_decent_l89_462
+  règle condition_non_ouverture_l822_9_decence_logement
+  sous condition non ménage.logement.logement_decent_l89_462
   conséquence rempli
 ```
 
@@ -399,8 +405,8 @@ respect de conditions de peuplement des logements.
 # Cet article fait référence à la condition sur la surface minimale du logement
 # de R822-25
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  règle condition_ouverture_l822_10_peuplement_logement sous condition
-    condition_logement_surface
+  règle condition_ouverture_l822_10_peuplement_logement
+  sous condition condition_logement_surface
   conséquence rempli
 ```
 
@@ -447,17 +453,18 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   règle septième_alinéa_l823_1_applicable rempli
 
   exception r823_4_enfants
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     septième_alinéa_l823_1_applicable
     et selon personne_à_charge sous forme
-    -- EnfantÀCharge contenu enfant :
-      (
-        selon enfant.nationalité sous forme
-        -- Étrangère contenu conditions :
-          non conditions.satisfait_conditions_l512_2_code_sécurité_sociale
-        -- n'importe quel : faux
-      )
-    -- n'importe quel : faux
+      -- EnfantÀCharge contenu enfant :
+        (
+          selon enfant.nationalité sous forme
+          -- Étrangère contenu conditions :
+            non conditions.satisfait_conditions_l512_2_code_sécurité_sociale
+          -- n'importe quel : faux
+        )
+      -- n'importe quel : faux
   conséquence non rempli
 ```
 
@@ -596,12 +603,13 @@ de l'aide.
 ```catala
 # Voir le champ d'application ÉligibilitéPrimeDeDéménagement.
 champ d'application ÉligibilitéPrimeDeDéménagement:
-  règle éligibilité sous condition
+  règle éligibilité
+  sous condition
     éligibilité_apl.éligibilité
     et condition_rang_enfant
     et condition_période_déménagement
     et éligibilité_apl.date_courante - date_emménagement
-    <= délai_après_emménagement_l823_8_2
+      <= délai_après_emménagement_l823_8_2
   conséquence rempli
 ```
 
@@ -621,7 +629,8 @@ indûment versés.
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  règle éligibilité sous condition
+  règle éligibilité
+  sous condition
     # La condition est en fait l'amalgame de plusieurs sous-conditions
     # portant toutes sur le logement définies au long des diverses parties
     # du code de la construction et de l'habitation. Attention, ne pas oublier
@@ -630,7 +639,7 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
     et # L831-1
     condition_logement_prêt
     et # L831-2
-    éligibilité_commune.éligibilité
+      éligibilité_commune.éligibilité
   # Pour être éligible à l'aide personnalisée
   # au logement, il faut remplir les
   # conditions communes.
@@ -657,7 +666,8 @@ conditions d'octroi sont fixées par voie réglementaire, sous les réserves
 # exception à la règle de L822-2 quand les conditions relatives au prêt ne
 # sont pas remplies.
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriété :
       caractéristiques_prêt_l831_1_1 de propriété.prêt
@@ -678,7 +688,8 @@ régies par la section 3 du chapitre Ier du titre II du livre III ;
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- Locataire contenu location :
       (
@@ -724,7 +735,8 @@ des conventions régies par le chapitre III du titre V du livre III ;
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   étiquette logement_foyer
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer contenu location :
       location.conventionné_livre_III_titre_V_chap_III
@@ -741,7 +753,8 @@ fixées par voie réglementaire, sous les réserves énoncées à l ‘ article 
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- LocationAccession contenu propriété :
       caractéristiques_prêt_l831_1_6 de propriété.prêt
@@ -761,7 +774,8 @@ champ d'application ÉligibilitéAidePersonnaliséeLogement:
   # Cas de base implicite
 
   étiquette l831_2_1 exception l831_2_base
-  règle condition_logement_prêt sous condition
+  règle condition_logement_prêt
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- LocationAccession contenu propriété :
       propriété.prêt.date_signature >= |2017-12-31|
@@ -781,7 +795,8 @@ d'accès au logement dans le parc résidentiel existant.
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   exception l831_2_1
-  règle condition_logement_prêt sous condition
+  règle condition_logement_prêt
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- LocationAccession contenu propriété :
       # Le fait que cette exception ne soit valable qu'après le 1er janvier
@@ -883,8 +898,10 @@ champ d'application ÉligibilitéAllocationLogement:
   définition éligibilité
     état dispositions_communes
   égal à
-    si (non éligibilité_commune.éligibilité)
-      ou (non condition_accession_propriété) alors
+    si
+      (non éligibilité_commune.éligibilité)
+      ou (non condition_accession_propriété)
+    alors
       PasÉligible
     sinon
       # Valeur par défaut, sera réécrit à l'application de L841-2.
@@ -910,15 +927,16 @@ d) Soit l'allocation de soutien familial mentionnée au 6° du même article ;
 champ d'application ÉligibilitéAllocationLogement:
   règle l_841_1_1_applicable rempli
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     l_841_1_1_applicable
     et existe prestation parmi ménage.prestations_reçues
-      tel que (
-        prestation = PrestationReçue.AllocationsFamiliales
-        ou prestation = PrestationReçue.ComplémentFamilial
-        ou prestation = PrestationReçue.AllocationSoutienFamilial
-        ou prestation = AllocationSoutienEnfantHandicapé
-      )
+        tel que (
+          prestation = PrestationReçue.AllocationsFamiliales
+          ou prestation = PrestationReçue.ComplémentFamilial
+          ou prestation = PrestationReçue.AllocationSoutienFamilial
+          ou prestation = AllocationSoutienEnfantHandicapé
+        )
   conséquence rempli
 ```
 
@@ -932,27 +950,28 @@ ont un enfant à charge au sens de l'article L. 512-3 du code de la sécurité s
 champ d'application ÉligibilitéAllocationLogement:
   règle l_841_1_2_applicable rempli
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     l_841_1_2_applicable
     et nombre de
-      (
-        liste de personne_à_charge parmi ménage.personnes_à_charge
-          tel que (
-            selon personne_à_charge sous forme
-            -- AutrePersonneÀCharge : faux
-            -- EnfantÀCharge contenu enfant :
-              prestations_familiales.droit_ouvert de
-                Prestations_familiales.EnfantPrestationsFamiliales {
-                  -- identifiant: enfant.identifiant
-                  -- obligation_scolaire: enfant.obligation_scolaire
-                  -- rémuneration_mensuelle: enfant.rémuneration_mensuelle
-                  -- date_de_naissance: enfant.date_de_naissance
-                  -- a_déjà_ouvert_droit_aux_allocations_familiales:
-                    enfant.a_déjà_ouvert_droit_aux_allocations_familiales
-                }
-          )
-      )
-    = 1
+        (
+          liste de personne_à_charge parmi ménage.personnes_à_charge
+            tel que (
+              selon personne_à_charge sous forme
+              -- AutrePersonneÀCharge : faux
+              -- EnfantÀCharge contenu enfant :
+                prestations_familiales.droit_ouvert de
+                  Prestations_familiales.EnfantPrestationsFamiliales {
+                    -- identifiant: enfant.identifiant
+                    -- obligation_scolaire: enfant.obligation_scolaire
+                    -- rémuneration_mensuelle: enfant.rémuneration_mensuelle
+                    -- date_de_naissance: enfant.date_de_naissance
+                    -- a_déjà_ouvert_droit_aux_allocations_familiales:
+                      enfant.a_déjà_ouvert_droit_aux_allocations_familiales
+                  }
+            )
+        )
+      = 1
   conséquence rempli
 ```
 
@@ -961,7 +980,8 @@ champ d'application ÉligibilitéAllocationLogement:
 ```catala
 champ d'application ÉligibilitéAllocationLogement:
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     nombre de
       (
         liste de personne_à_charge parmi ménage.personnes_à_charge
@@ -1000,7 +1020,8 @@ un âge déterminé ;
 # renvoie au 2° du R823-4 du même code.
 champ d'application ÉligibilitéAllocationLogement:
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     existe personne_à_charge parmi ménage.personnes_à_charge
       tel que éligibilité_commune.condition_2_r823_4 de personne_à_charge
   conséquence rempli
@@ -1016,7 +1037,8 @@ prévue par l'article L. 146-9 du code de l'action sociale et des familles ;
 ```catala
 champ d'application ÉligibilitéAllocationLogement:
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     existe personne_à_charge parmi ménage.personnes_à_charge
       tel que (
         selon personne_à_charge sous forme
@@ -1040,13 +1062,14 @@ quatrième mois de la grossesse et jusqu'au mois civil de la naissance de l'enfa
 champ d'application ÉligibilitéAllocationLogement:
   règle l_841_1_6_applicable rempli
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     l_841_1_6_applicable
     et selon ménage.situation_familiale sous forme
-    -- Célibataire :
-      nombre de ménage.personnes_à_charge = 0
-      et ménage.enfant_à_naître_après_quatrième_mois_grossesse
-    -- n'importe quel : faux
+      -- Célibataire :
+        nombre de ménage.personnes_à_charge = 0
+        et ménage.enfant_à_naître_après_quatrième_mois_grossesse
+      -- n'importe quel : faux
   conséquence rempli
 ```
 
@@ -1115,26 +1138,30 @@ champ d'application CalculetteAidesAuLogement:
   définition calcul_aide_personnalisée_logement.type_aide égal à
     TypeAidesPersonnelleLogement.AidePersonnaliséeLogement
   définition calcul_allocation_logement.type_aide égal à
-    (
-      selon éligibilité_allocation_logement.éligibilité sous forme
-      -- PasÉligible :
-        # Valeur par défaut, ne sera pas utilisée
-        TypeAidesPersonnelleLogement.AllocationLogementSociale
-      -- TypeÉligibilitéAllocationLogement.AllocationLogementFamiliale :
-        TypeAidesPersonnelleLogement.AllocationLogementFamiliale
-      -- TypeÉligibilitéAllocationLogement.AllocationLogementSociale :
-        TypeAidesPersonnelleLogement.AllocationLogementSociale
-    )
+  (
+    selon éligibilité_allocation_logement.éligibilité sous forme
+    -- PasÉligible :
+      # Valeur par défaut, ne sera pas utilisée
+      TypeAidesPersonnelleLogement.AllocationLogementSociale
+    -- TypeÉligibilitéAllocationLogement.AllocationLogementFamiliale :
+      TypeAidesPersonnelleLogement.AllocationLogementFamiliale
+    -- TypeÉligibilitéAllocationLogement.AllocationLogementSociale :
+      TypeAidesPersonnelleLogement.AllocationLogementSociale
+  )
 
   définition aide_finale_formule égal à
     si non éligibilité alors 0 €
-    sinon si éligibilité_aide_personnalisée_logement.éligibilité
-      et non (éligibilité_allocation_logement.éligibilité sous forme PasÉligible) alors
+    sinon si
+      éligibilité_aide_personnalisée_logement.éligibilité
+      et non (éligibilité_allocation_logement.éligibilité sous forme PasÉligible)
+    alors
       (
-        si calcul_aide_personnalisée_logement.traitement_aide_finale de
+        si
+          calcul_aide_personnalisée_logement.traitement_aide_finale de
             calcul_aide_personnalisée_logement.aide_finale_formule
           > calcul_allocation_logement.traitement_aide_finale de
-            calcul_allocation_logement.aide_finale_formule alors
+            calcul_allocation_logement.aide_finale_formule
+        alors
           calcul_aide_personnalisée_logement.aide_finale_formule
         sinon
           calcul_allocation_logement.aide_finale_formule
@@ -1152,8 +1179,10 @@ champ d'application CalculetteAidesAuLogement:
     dans
     si non éligibilité alors
       aide_finale
-    sinon si éligibilité_aide_personnalisée_logement.éligibilité
-      et non (éligibilité_allocation_logement.éligibilité sous forme PasÉligible) alors
+    sinon si
+      éligibilité_aide_personnalisée_logement.éligibilité
+      et non (éligibilité_allocation_logement.éligibilité sous forme PasÉligible)
+    alors
       (
         si aide_finale_apl > aide_finale_al alors
           aide_finale_apl
@@ -1183,20 +1212,20 @@ champ d'application ÉligibilitéAllocationLogement:
   # Idem avec l'exception prévue par L861-8. Nous écrivons donc l'assertion
   # ci-dessous pour matérialiser l'impossibilité de se retrouver dans ces
   # situations.
-  assertion non (
-    demandeur.personne_hébergée_centre_soin_l_L162_22_3_sécurité_sociale
-    et (
-      ménage.logement.mode_occupation sous forme AccessionPropriétéLocalUsageExclusifHabitation
-      ou demandeur.
-        magistrat_fonctionnaire_centre_intérêts_matériels_familiaux_hors_mayotte
+  assertion
+    non (
+      demandeur.personne_hébergée_centre_soin_l_L162_22_3_sécurité_sociale
+      et (
+        ménage.logement.mode_occupation sous forme AccessionPropriétéLocalUsageExclusifHabitation
+        ou demandeur.
+          magistrat_fonctionnaire_centre_intérêts_matériels_familiaux_hors_mayotte
+      )
     )
-  )
 
   exception base
   définition éligibilité
     état l841_2
-  sous condition
-    demandeur.personne_hébergée_centre_soin_l_L162_22_3_sécurité_sociale
+  sous condition demandeur.personne_hébergée_centre_soin_l_L162_22_3_sécurité_sociale
   conséquence égal à
     TypeÉligibilitéAllocationLogement.AllocationLogementSociale
 ```
@@ -1216,7 +1245,8 @@ champ d'application ÉligibilitéAllocationLogement:
     -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.date_signature > |2017-12-31|
     -- n'importe quel : faux
-  conséquence égal à PasÉligible
+  conséquence égal à
+    PasÉligible
 ```
 
 ###### Article L841-5 | LEGIARTI000038814856
@@ -1295,7 +1325,8 @@ Saint-Pierre-et-Miquelon.
 # à l'allocation logement.
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   exception
-  règle éligibilité sous condition
+  règle éligibilité
+  sous condition
     date_courante >= |2021-01-01|
     et ménage.résidence sous forme SaintPierreEtMiquelon
   conséquence non rempli
@@ -1332,8 +1363,8 @@ ne sont pas applicables à Mayotte.
 ```catala
 champ d'application ÉligibilitéPrimeDeDéménagement:
   exception
-  règle éligibilité sous condition
-    ménage.résidence sous forme Mayotte
+  règle éligibilité
+  sous condition ménage.résidence sous forme Mayotte
   conséquence non rempli
 ```
 
@@ -1353,8 +1384,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   # de l'article L822-2 et ainsi adapter le droit pour son application à
   # Mayotte.
   exception
-  définition condition_nationalité sous condition
-    ménage.résidence sous forme Mayotte
+  définition condition_nationalité
+  sous condition ménage.résidence sous forme Mayotte
   conséquence égal à
     selon demandeur.nationalité sous forme
     -- Française : faux
@@ -1396,8 +1427,8 @@ par voie réglementaire. " ;
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   exception
-  règle septième_alinéa_l823_1_applicable sous condition
-    ménage.résidence sous forme Mayotte
+  règle septième_alinéa_l823_1_applicable
+  sous condition ménage.résidence sous forme Mayotte
   conséquence non rempli
 ```
 
@@ -1431,17 +1462,18 @@ conditions sont fixées par voie réglementaire ;”.
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- Guadeloupe : vrai
-    -- Guyane : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- Guadeloupe : vrai
+  -- Guyane : vrai
+  -- Martinique : vrai
+  -- LaRéunion : vrai
+  -- Mayotte : vrai
+  -- n'importe quel : faux
+):
   étiquette logement_foyer
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer contenu location :
       location.conventionné_selon_règles_drom
@@ -1463,15 +1495,15 @@ a) Les 1°, 2° et 6° sont supprimés et les 3°, 4° et 5° deviennent les 1°
 
 ```catala
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- Guadeloupe : vrai
-    -- Guyane : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- Guadeloupe : vrai
+  -- Guyane : vrai
+  -- Martinique : vrai
+  -- LaRéunion : vrai
+  -- Mayotte : vrai
+  -- n'importe quel : faux
+):
 
   exception
   règle l_841_1_1_applicable non rempli
@@ -1504,17 +1536,18 @@ L. 512-3 du code de la sécurité sociale ;
 ```catala
 # Ressemble au 2° de L841-1 mais subtilement différent.
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- Guadeloupe : vrai
-    -- Guyane : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- Guadeloupe : vrai
+  -- Guyane : vrai
+  -- Martinique : vrai
+  -- LaRéunion : vrai
+  -- Mayotte : vrai
+  -- n'importe quel : faux
+):
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     nombre de
       (
         liste de personne_à_charge parmi ménage.personnes_à_charge
@@ -1544,18 +1577,18 @@ et de la pêche maritime ;
 # Les personnes mentionnées aux articles L. 781-8 et L. 781-46 du code rural
 # et de la pêche maritime sont les non-salariés agricoles.
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- Guadeloupe : vrai
-    -- Guyane : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- Guadeloupe : vrai
+  -- Guyane : vrai
+  -- Martinique : vrai
+  -- LaRéunion : vrai
+  -- Mayotte : vrai
+  -- n'importe quel : faux
+):
 
-  règle éligibilité_allocation_logement_familiale sous condition
-    demandeur.est_non_salarié_agricole_l781_8_l_781_46_code_rural
+  règle éligibilité_allocation_logement_familiale
+  sous condition demandeur.est_non_salarié_agricole_l781_8_l_781_46_code_rural
   conséquence rempli
 ```
 
@@ -1591,18 +1624,19 @@ l'impossibilité constatée de se livrer à une activité professionnelle. " ;
 # l'article R823-4 : il faut en effet que l'enfant soit en études ou
 # apprentissage, etc.
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- Guadeloupe : vrai
-    -- Guyane : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- Guadeloupe : vrai
+  -- Guyane : vrai
+  -- Martinique : vrai
+  -- LaRéunion : vrai
+  -- Mayotte : vrai
+  -- n'importe quel : faux
+):
 
   exception r823_4_enfants
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge contenu enfant :
       enfant.obligation_scolaire sous forme Prestations_familiales.SituationObligationScolaire.Après
@@ -1626,15 +1660,15 @@ Mayotte. "
 
 ```catala
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- Guadeloupe : vrai
-    -- Guyane : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- Guadeloupe : vrai
+  -- Guyane : vrai
+  -- Martinique : vrai
+  -- LaRéunion : vrai
+  -- Mayotte : vrai
+  -- n'importe quel : faux
+):
   étiquette accession_propriété_outre_mer exception accession_propriété
   définition éligibilité
     état l841_2
@@ -1645,11 +1679,12 @@ champ d'application ÉligibilitéAllocationLogement
       ou (
         propriétaire.prêt.date_signature > |2019-12-31|
         et selon propriétaire.prêt.accord_financement_représentant_État_outre_mer sous forme
-        -- Accord contenu date_accord : date_accord <= |2018-12-31|
-        -- PasdAccord : faux
+          -- Accord contenu date_accord : date_accord <= |2018-12-31|
+          -- PasdAccord : faux
       )
     -- n'importe quel : faux
-  conséquence égal à PasÉligible
+  conséquence égal à
+    PasÉligible
 ```
 
 ####### Article L861-7 | LEGIARTI000038814773
@@ -1670,14 +1705,15 @@ matériels et familiaux est situé hors de Mayotte.
 
 ```catala
 champ d'application ÉligibilitéAllocationLogement
-  sous condition ménage.résidence sous forme Mayotte:
+sous condition ménage.résidence sous forme Mayotte:
   exception accession_propriété_outre_mer
   définition éligibilité
     état l841_2
   sous condition
     demandeur.
       magistrat_fonctionnaire_centre_intérêts_matériels_familiaux_hors_mayotte
-  conséquence égal à PasÉligible
+  conséquence égal à
+    PasÉligible
 ```
 ###### Section V : Contrôles, luttes contre la fraude et sanctions
 
@@ -1792,12 +1828,12 @@ les 1°, 2° et 3° ;
 # Nous faisons abstraction de ce contresens et raisonnons par analogie
 # en considérant qu'on fait ici la même chose que dans le a) de L816-6.
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- SaintBarthélemy : vrai
+  -- SaintMartin : vrai
+  -- n'importe quel : faux
+):
 
   exception
   règle l_841_1_1_applicable non rempli
@@ -1817,14 +1853,15 @@ L. 512-3 du code de la sécurité sociale ;
 ```catala
 # Ressemble au 2° de L841-1 mais subtilement différent.
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- SaintBarthélemy : vrai
+  -- SaintMartin : vrai
+  -- n'importe quel : faux
+):
 
-  règle éligibilité_allocation_logement_familiale sous condition
+  règle éligibilité_allocation_logement_familiale
+  sous condition
     nombre de
       (
         liste de personne_à_charge parmi ménage.personnes_à_charge
@@ -1854,15 +1891,15 @@ de la pêche maritime.
 # Les personnes mentionnées aux articles L. 781-8 et L. 781-46 du code rural
 # et de la pêche maritime sont les non-salariés agricoles.
 champ d'application ÉligibilitéAllocationLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- SaintBarthélemy : vrai
+  -- SaintMartin : vrai
+  -- n'importe quel : faux
+):
 
-  règle éligibilité_allocation_logement_familiale sous condition
-    demandeur.est_non_salarié_agricole_l781_8_l_781_46_code_rural
+  règle éligibilité_allocation_logement_familiale
+  sous condition demandeur.est_non_salarié_agricole_l781_8_l_781_46_code_rural
   conséquence rempli
 ```
 
@@ -1881,15 +1918,16 @@ constatée de se livrer à une activité professionnelle. " ;
 # l'article R823-4 : il faut en effet que l'enfant soit en études ou
 # apprentissage, etc.
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition (
-    selon ménage.résidence sous forme
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
-  ):
+sous condition (
+  selon ménage.résidence sous forme
+  -- SaintBarthélemy : vrai
+  -- SaintMartin : vrai
+  -- n'importe quel : faux
+):
 
   exception r823_4_enfants
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge contenu enfant :
       enfant.obligation_scolaire sous forme Prestations_familiales.SituationObligationScolaire.Après
@@ -1935,10 +1973,10 @@ applicables à Saint-Pierre-et-Miquelon.
 
 ```catala
 champ d'application ÉligibilitéPrimeDeDéménagement
-  sous condition date_courante >= |2022-01-01|:
+sous condition date_courante >= |2022-01-01|:
   exception
-  règle éligibilité sous condition
-    ménage.résidence sous forme SaintPierreEtMiquelon
+  règle éligibilité
+  sous condition ménage.résidence sous forme SaintPierreEtMiquelon
   conséquence non rempli
 ```
 

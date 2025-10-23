@@ -24,11 +24,14 @@ champ d'application NombreDeParts:
   assertion (
     1
     = nombre de
-      liste de case parmi [ foyer_fiscal.mariées ;
-        foyer_fiscal.célibataire ;
-        foyer_fiscal.pacsées ;
-        foyer_fiscal.divorcée_séparées ;
-        foyer_fiscal.veuve ]
+      liste de case
+      parmi [
+        foyer_fiscal.mariées;
+        foyer_fiscal.célibataire;
+        foyer_fiscal.pacsées;
+        foyer_fiscal.divorcée_séparées;
+        foyer_fiscal.veuve
+      ]
         tel que case = vrai
   )
 ```
@@ -48,13 +51,14 @@ champ d'application NombreDeParts:
   # demi-part supplémentaire ne peut être accordée au couple marié, dans lequel
   # l’épouse a cessé de percevoir la pension qui est à l'origine de cet
   # avantage." (Rép. Boucheron : AN 30 avril 1990 p. 2111 n°24112).
-  assertion non (
-    foyer_fiscal.pensionné_veuve_de_guerre
-    et selon situation_familiale sous forme
-    -- Mariées : vrai
-    -- Pacsées : vrai
-    -- n'importe quel : faux
-  )
+  assertion
+    non (
+      foyer_fiscal.pensionné_veuve_de_guerre
+      et selon situation_familiale sous forme
+        -- Mariées : vrai
+        -- Pacsées : vrai
+        -- n'importe quel : faux
+    )
 # TODO juridique : faut-il exiger que la case "veuve" soit cochée et interdire
 # la case "célibataire" si AG est cochée?
 
@@ -91,14 +95,16 @@ champ d'application NombreDeParts:
   )
   # La case AL n'est pas compatible avec la case BT ni avec la case DN.
   # Voir 195 1° du CGI, https://gitlab.adullact.net/dgfip/ir-catala/-/issues/2.
-  assertion non (
-    foyer_fiscal.célibataire_divorcé_veuf_sans_enfant
-    et foyer_fiscal.parent_isolé
-  )
-  assertion non (
-    foyer_fiscal.célibataire_divorcé_veuf_sans_enfant
-    et foyer_fiscal.nombre_enfants_majeurs_mariés_ou_chargés_famille != 0,0
-  )
+  assertion
+    non (
+      foyer_fiscal.célibataire_divorcé_veuf_sans_enfant
+      et foyer_fiscal.parent_isolé
+    )
+  assertion
+    non (
+      foyer_fiscal.célibataire_divorcé_veuf_sans_enfant
+      et foyer_fiscal.nombre_enfants_majeurs_mariés_ou_chargés_famille != 0,0
+    )
 ```
 ### Case AW
 
@@ -190,26 +196,28 @@ pas relever du régime de l'article 163-0 A bis.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  assertion pour tout revenu_exceptionnel_ou_différé
-  parmi revenus.revenus_exceptionnels_ou_différés
-    on a selon revenu_exceptionnel_ou_différé.catégorie sous forme
-    -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes : vrai
-    -- TraitementsSalaires : vrai
-    -- n'importe quel : faux
+  assertion
+    pour tout revenu_exceptionnel_ou_différé
+    parmi revenus.revenus_exceptionnels_ou_différés
+      on a selon revenu_exceptionnel_ou_différé.catégorie sous forme
+      -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes : vrai
+      -- TraitementsSalaires : vrai
+      -- n'importe quel : faux
 
 champ d'application TraitementsSalairesFoyerFiscal:
-  assertion pour tout revenu_exceptionnel_ou_différé
-  parmi revenus.revenus_exceptionnels_ou_différés
-    on a (
-      selon revenu_exceptionnel_ou_différé.catégorie sous forme
-      -- RenteViagèreOnéreux : vrai
-      -- n'importe quel : faux
-    )
-    et (
-      selon revenu_exceptionnel_ou_différé.régime sous forme
-      -- Article163_0_A : vrai
-      -- Article163_0_A_bis : faux
-    )
+  assertion
+    pour tout revenu_exceptionnel_ou_différé
+    parmi revenus.revenus_exceptionnels_ou_différés
+      on a (
+        selon revenu_exceptionnel_ou_différé.catégorie sous forme
+        -- RenteViagèreOnéreux : vrai
+        -- n'importe quel : faux
+      )
+      et (
+        selon revenu_exceptionnel_ou_différé.régime sous forme
+        -- Article163_0_A : vrai
+        -- Article163_0_A_bis : faux
+      )
 ```
 
 ## Revenus quotientés

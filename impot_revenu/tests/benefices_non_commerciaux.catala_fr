@@ -158,7 +158,7 @@ champ d'application BénéficesNonCommerciaux1:
   définition sortie égal à
     résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
       -- déficits_réels_années_antérieures_non_professionnels: []
-      -- revenus: [ déclarant1.sortie ; déclarant2.sortie ]
+      -- revenus: [ déclarant1.sortie; déclarant2.sortie ]
       -- année_revenus: 2022
     }
 ```
@@ -308,18 +308,20 @@ champ d'application BénéficesNonCommerciaux2:
   définition sortie égal à
     résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
       -- déficits_réels_années_antérieures_non_professionnels:
-        [ Oracles.DéficitAntérieur {
+        [
+          Oracles.DéficitAntérieur {
             -- année: 2019
             -- valeur: 5000 €
-          } ;
+          };
           Oracles.DéficitAntérieur {
             -- année: 2020
             -- valeur: 2000 €
-          } ;
+          };
           Oracles.DéficitAntérieur {
             -- année: 2021
             -- valeur: 15 000 €
-          } ]
+          }
+        ]
       -- revenus: [ déclarant1.sortie ]
       -- année_revenus: 2022
     }
@@ -581,15 +583,17 @@ champ d'application BénéficesNonCommerciaux3:
   définition sortie égal à
     résultat de IR.BénéficesNonCommerciauxFoyerFiscal avec {
       -- déficits_réels_années_antérieures_non_professionnels:
-        [ Oracles.DéficitAntérieur {
+        [
+          Oracles.DéficitAntérieur {
             -- année: 2020
             -- valeur: 1 000 €
-          } ;
+          };
           Oracles.DéficitAntérieur {
             -- année: 2021
             -- valeur: 25 000 €
-          } ]
-      -- revenus: [ déclarant1.sortie ; déclarant2.sortie ; déclarant3.sortie ]
+          }
+        ]
+      -- revenus: [ déclarant1.sortie; déclarant2.sortie; déclarant3.sortie ]
       -- année_revenus: 2022
     }
 ```

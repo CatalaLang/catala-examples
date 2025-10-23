@@ -321,12 +321,14 @@ champ d'application BénéficesIndustrielsCommerciaux2:
             résultat de Interface.BénéficesIndustrielsCommerciauxGénérauxDéclarant avec {
               -- revenus_imposables_micro_marchandises: 30 000 €
               -- revenus_exceptionnels_ou_différés:
-                [ IR.RevenuExceptionnelOuDifféré {
+                [
+                  IR.RevenuExceptionnelOuDifféré {
                     -- valeur: 40 000 €
                     -- régime: Article163_0_A
                     -- échéance: RevenuExceptionnel
                     -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-                  } ]
+                  }
+                ]
             }
           ).sortie
         -- locations_meublées_micro_général: 25 000 €
@@ -615,12 +617,14 @@ champ d'application BénéficesIndustrielsCommerciaux3:
               -- revenus_imposables_micro_marchandises: 43 789€
               -- revenus_imposables_micro_services: 9 888€
               -- revenus_exceptionnels_ou_différés:
-                [ IR.RevenuExceptionnelOuDifféré {
+                [
+                  IR.RevenuExceptionnelOuDifféré {
                     -- valeur: 57843 €
                     -- régime: Article163_0_A
                     -- échéance: RevenuExceptionnel
                     -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
-                  } ]
+                  }
+                ]
             }
           ).sortie
         -- locations_meublées_micro_général: 645€

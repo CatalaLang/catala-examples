@@ -65,7 +65,7 @@ déclaration champ d'application Test1:
 
 champ d'application Test1:
   définition f.i_enfants égal à
-    [ données.enfant1 ; données.enfant2 ; données.enfant3 ; données.enfant4 ]
+    [ données.enfant1; données.enfant2; données.enfant3; données.enfant4 ]
   définition f.i_ressources_ménage égal à 30 000 €
   définition f.i_date_courante égal à |2020-05-01|
   définition f.i_résidence égal à Métropole
@@ -79,7 +79,7 @@ déclaration champ d'application Test2:
 
 champ d'application Test2:
   définition f.i_enfants égal à
-    [ données.enfant1 ; données.enfant2 ; données.enfant5 ]
+    [ données.enfant1; données.enfant2; données.enfant5 ]
   définition f.i_ressources_ménage égal à 30 000 €
   définition f.i_date_courante égal à |2020-05-01|
   définition f.i_résidence égal à Métropole
@@ -105,7 +105,7 @@ déclaration champ d'application Test4:
   données champ d'application Données
 
 champ d'application Test4:
-  définition f.i_enfants égal à [ données.enfant1 ; données.enfant3 ]
+  définition f.i_enfants égal à [ données.enfant1; données.enfant3 ]
   définition f.i_ressources_ménage égal à 67 250 €
   définition f.i_date_courante égal à |2020-05-01|
   définition f.i_résidence égal à Métropole
@@ -131,21 +131,24 @@ déclaration champ d'application Test6:
 
 champ d'application Test6:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2009-11-10|
         -- d_rémuneration_mensuelle: 439€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ; AF.EnfantEntrée {
+      };
+      AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2020-09-25|
         -- d_rémuneration_mensuelle: 1949€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 78 830 €
   définition f.i_date_courante égal à |2020-05-01|
   définition f.i_résidence égal à Guadeloupe
@@ -159,7 +162,7 @@ déclaration champ d'application Test7:
 
 champ d'application Test7:
   définition f.i_enfants égal à
-    [ données.enfant1 ; données.enfant2 ; données.enfant3 ; données.enfant4 ]
+    [ données.enfant1; données.enfant2; données.enfant3; données.enfant4 ]
   définition f.i_ressources_ménage égal à 30 000 €
   définition f.i_date_courante égal à |2021-02-01|
   définition f.i_résidence égal à Métropole
@@ -172,21 +175,24 @@ déclaration champ d'application Test8:
 
 champ d'application Test8:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2004-01-01|
         -- d_rémuneration_mensuelle: 0€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ; AF.EnfantEntrée {
+      };
+      AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2005-01-01|
         -- d_rémuneration_mensuelle: 0€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 69945 €
   définition f.i_date_courante égal à |2021-01-01|
   définition f.i_résidence égal à Métropole
@@ -199,21 +205,24 @@ déclaration champ d'application Test9:
 
 champ d'application Test9:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2001-07-27|
         -- d_rémuneration_mensuelle: 1258€
         -- d_prise_en_charge: ServicesSociauxAllocationVerséeAuxServicesSociaux
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ; AF.EnfantEntrée {
+      };
+      AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2008-04-27|
         -- d_rémuneration_mensuelle: 1766€
         -- d_prise_en_charge: ServicesSociauxAllocationVerséeAuxServicesSociaux
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 75786 €
   définition f.i_date_courante égal à |2020-05-01|
   définition f.i_résidence égal à Guadeloupe
@@ -226,21 +235,24 @@ déclaration champ d'application Test10:
 
 champ d'application Test10:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2003-02-22|
         -- d_rémuneration_mensuelle: 0€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ; AF.EnfantEntrée {
+      };
+      AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2013-09-30|
         -- d_rémuneration_mensuelle: 300€
         -- d_prise_en_charge: GardeAlternéePartageAllocations
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 30000 €
   définition f.i_date_courante égal à |2020-04-20|
   définition f.i_résidence égal à Métropole
@@ -253,21 +265,23 @@ déclaration champ d'application Test11:
 
 champ d'application Test11:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2003-02-22|
         -- d_rémuneration_mensuelle: 0€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ; AF.EnfantEntrée {
+      };
+      AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2013-09-30|
         -- d_rémuneration_mensuelle: 300€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ;
+      };
       AF.EnfantEntrée {
         -- d_identifiant: 2
         -- d_date_de_naissance: |2007-04-16|
@@ -275,7 +289,8 @@ champ d'application Test11:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 30000 €
   définition f.i_date_courante égal à |2021-12-31|
   définition f.i_résidence égal à Métropole
@@ -288,21 +303,23 @@ déclaration champ d'application Test12:
 
 champ d'application Test12:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2003-02-22|
         -- d_rémuneration_mensuelle: 0€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ; AF.EnfantEntrée {
+      };
+      AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2013-09-30|
         -- d_rémuneration_mensuelle: 300€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ;
+      };
       AF.EnfantEntrée {
         -- d_identifiant: 2
         -- d_date_de_naissance: |2007-04-16|
@@ -310,7 +327,7 @@ champ d'application Test12:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ;
+      };
       AF.EnfantEntrée {
         -- d_identifiant: 3
         -- d_date_de_naissance: |2012-02-02|
@@ -318,7 +335,8 @@ champ d'application Test12:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 20000 €
   définition f.i_date_courante égal à |2019-08-26|
   définition f.i_résidence égal à Mayotte
@@ -332,14 +350,16 @@ déclaration champ d'application Test13:
 
 champ d'application Test13:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2008-02-22|
         -- d_rémuneration_mensuelle: 0€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 65000 €
   définition f.i_date_courante égal à |2019-08-26|
   définition f.i_résidence égal à Mayotte
@@ -352,14 +372,15 @@ déclaration champ d'application Test14:
 
 champ d'application Test14:
   définition f.i_enfants égal à
-    [ AF.EnfantEntrée {
+    [
+      AF.EnfantEntrée {
         -- d_identifiant: 0
         -- d_date_de_naissance: |2004-12-22|
         -- d_rémuneration_mensuelle: 435€
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ;
+      };
       AF.EnfantEntrée {
         -- d_identifiant: 1
         -- d_date_de_naissance: |2001-12-05|
@@ -367,7 +388,8 @@ champ d'application Test14:
         -- d_prise_en_charge: GardeAlternéeAllocataireUnique
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      } ]
+      }
+    ]
   définition f.i_ressources_ménage égal à 64033 €
   définition f.i_date_courante égal à |2022-05-01|
   définition f.i_résidence égal à Guadeloupe
