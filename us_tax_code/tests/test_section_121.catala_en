@@ -44,7 +44,7 @@ scope Data:
     PersonalData {
       -- property_ownage: [ period_four_years_recent ]
       -- property_usage_as_principal_residence:
-        [ period_two_years_middle ; period_one_year_recent ]
+        [ period_two_years_middle; period_one_year_recent ]
       -- other_section_121a_sale: NoOtherSaleWhereSection121aApplied
     }
   definition person_ko_1 equals
@@ -119,7 +119,7 @@ scope Test4:
     data_.gain_from_sale_or_exchange_of_property
   definition scope121a.property_ownage equals [ data_.period_four_years_recent ]
   definition scope121a.property_usage_as_principal_residence equals
-    [ data_.period_two_years_middle ; data_.period_one_year_recent ]
+    [ data_.period_two_years_middle; data_.period_one_year_recent ]
   definition scope121a.other_section_121a_sale equals NoOtherSaleWhereSection121aApplied
   assertion scope121a.requirements_met
 

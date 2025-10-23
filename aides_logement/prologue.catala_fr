@@ -333,7 +333,8 @@ déclaration champ d'application ÉligibilitéAidesPersonnelleLogement:
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   # TODO informatique et juridique: trouver une meilleur place pour mettre
   # cette conjonction.
-  règle éligibilité sous condition
+  règle éligibilité
+  sous condition
     condition_nationalité
     et condition_logement_mode_occupation
     et éligibilité_logement
@@ -341,28 +342,28 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition nombre_personnes_à_charge_prises_en_compte égal à
     nombre de personnes_à_charge_prises_en_compte
   définition coefficients_enfants_garde_alternée_pris_en_compte égal à
-    (
-      transforme chaque personne_à_charge parmi personnes_à_charge_prises_en_compte
-        tel que (
-          selon personne_à_charge sous forme
-          -- AutrePersonneÀCharge : faux
-          -- EnfantÀCharge contenu enfant :
-            (
-              selon enfant.situation_garde_alternée sous forme
-              -- GardeAlternéeCoefficientPriseEnCharge : vrai
-              -- PasDeGardeAlternée : faux
-            )
-        )
-      en
+  (
+    transforme chaque personne_à_charge parmi personnes_à_charge_prises_en_compte
+      tel que (
         selon personne_à_charge sous forme
-        -- AutrePersonneÀCharge : 0,0
+        -- AutrePersonneÀCharge : faux
         -- EnfantÀCharge contenu enfant :
           (
             selon enfant.situation_garde_alternée sous forme
-            -- GardeAlternéeCoefficientPriseEnCharge contenu coeff : coeff
-            -- PasDeGardeAlternée : 0,0
+            -- GardeAlternéeCoefficientPriseEnCharge : vrai
+            -- PasDeGardeAlternée : faux
           )
-    )
+      )
+    en
+      selon personne_à_charge sous forme
+      -- AutrePersonneÀCharge : 0,0
+      -- EnfantÀCharge contenu enfant :
+        (
+          selon enfant.situation_garde_alternée sous forme
+          -- GardeAlternéeCoefficientPriseEnCharge contenu coeff : coeff
+          -- PasDeGardeAlternée : 0,0
+        )
+  )
   # Ce programme ne peut pas être utilisé avec des dates trop anciennes,
   # pour lesquelles les textes en vigueur n'ont pas été formalisés.
   assertion date_courante >= |2018-04-01|
@@ -880,7 +881,8 @@ déclaration champ d'application CalculAllocationLogementAccessionPropriété:
   résultat coefficient_prise_en_charge contenu décimal
   interne plafond_mensualité_d842_6 contenu argent
   interne calcul_plafond_mensualité_d842_6 contenu argent
-  dépend de date_calcul contenu date,
+  dépend de
+    date_calcul contenu date,
     nombre_personnes_à_charge contenu entier état base
     état avec_copropriété
     état avec_limitation_dom_tom

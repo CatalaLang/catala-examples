@@ -22,7 +22,8 @@ déclaration énumération FraisRéels:
 
 déclaration plafond
   contenu argent
-  dépend de valeur contenu argent,
+  dépend de
+    valeur contenu argent,
     plafond contenu argent
   égal à
     si valeur > plafond alors plafond
@@ -30,7 +31,8 @@ déclaration plafond
 
 déclaration plancher
   contenu argent
-  dépend de valeur contenu argent,
+  dépend de
+    valeur contenu argent,
     plancher contenu argent
   égal à
     si valeur < plancher alors plancher

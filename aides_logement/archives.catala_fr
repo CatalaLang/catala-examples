@@ -9,7 +9,7 @@ habituellement au foyer :
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
   définition personnes_à_charge_prises_en_compte égal à
     liste de personne_à_charge parmi ménage.personnes_à_charge
       tel que prise_en_compte_personne_à_charge de personne_à_charge
@@ -21,14 +21,15 @@ l'article L. 823-2 du présent code ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
   # L'âge limite de 21 ans établi ici vient écraser la valeur de l'âge limite
   # prévue par L512-3 du CSS et définie par défaut par R512-2 du CSS.
   étiquette r823_4_enfants
   définition prestations_familiales.âge_l512_3_2 égal à 21 an
 
   étiquette r823_4_enfants
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge contenu enfant :
       # Pour être considéré à charge pour les aides personnelles au logement,
@@ -63,47 +64,49 @@ code ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  règle condition_2_r823_4 de personne_à_charge sous condition
+  règle condition_2_r823_4 de personne_à_charge
+  sous condition
     date_courante >= |2019-09-01|
     et date_courante < |2023-09-01|
     et selon personne_à_charge sous forme
-    -- EnfantÀCharge contenu enfant : faux
-    -- AutrePersonneÀCharge contenu parent :
-      parent.parenté = Ascendant
-      et parent.ressources
-      <= plafond_individuel_l815_9_sécu * 1,25
-      et (
-        # VERIF: parent.date_naissance + âge_l351_8_1_sécu est ambiguë,
-        # à détecter
-        (
-          parent.date_naissance
-          + âge_l351_8_1_sécu
-          <= date_courante
-          ou (
-            parent.titulaire_allocation_personne_âgée
-            et (
-              résultat de France.VérificationÂgeInférieurOuÉgalÀ avec {
-                -- date_naissance: parent.date_naissance
-                -- date_courante: date_courante
-                -- années: 65 an
-              }
-            ).est_inférieur_ou_égal
+      -- EnfantÀCharge contenu enfant : faux
+      -- AutrePersonneÀCharge contenu parent :
+        parent.parenté = Ascendant
+        et parent.ressources
+        <= plafond_individuel_l815_9_sécu * 1,25
+        et (
+          # VERIF: parent.date_naissance + âge_l351_8_1_sécu est ambiguë,
+          # à détecter
+          (
+            parent.date_naissance
+            + âge_l351_8_1_sécu
+            <= date_courante
+            ou (
+              parent.titulaire_allocation_personne_âgée
+              et (
+                  résultat de France.VérificationÂgeInférieurOuÉgalÀ avec {
+                    -- date_naissance: parent.date_naissance
+                    -- date_courante: date_courante
+                    -- années: 65 an
+                  }
+                ).est_inférieur_ou_égal
+            )
+          )
+          ou
+            # VERIF: parent.date_naissance + âge_l161_17_2_sécu est ambiguë,
+            # à détecter
+          (
+            parent.date_naissance
+            + âge_l161_17_2_sécu
+            <= date_courante
+            et parent.bénéficiaire_l161_19_l351_8_l643_3_sécu
           )
         )
-        ou
-        # VERIF: parent.date_naissance + âge_l161_17_2_sécu est ambiguë,
-        # à détecter
-        (
-          parent.date_naissance
-          + âge_l161_17_2_sécu
-          <= date_courante
-          et parent.bénéficiaire_l161_19_l351_8_l643_3_sécu
-        )
-      )
   conséquence rempli
 
   étiquette r823_4_2
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     # On utilise le si ... alors ... sinon pour éviter que l'appel de
     # la fonction "condition_2_r823_4" soit loggué deux fois lors
     # de l'évaluation des différentes justifications de l'arbre de défauts
@@ -127,9 +130,10 @@ au 31 décembre de l'année de référence multiplié par 1,25.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-09-01|:
   exception r823_4_2
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge contenu enfant : faux
     -- AutrePersonneÀCharge contenu parent :
@@ -140,7 +144,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement
       )
       et parent.incapacité_80_pourcent_ou_restriction_emploi
       et parent.ressources
-      <= plafond_individuel_l815_9_sécu * 1,25
+        <= plafond_individuel_l815_9_sécu * 1,25
   conséquence rempli
 ```
 
@@ -177,11 +181,12 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
 
   # Colonne 1
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -192,7 +197,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonne 2
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -207,8 +213,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonnes 3 et 4
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -264,7 +270,8 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01|
+sous condition
+  date_courante >= |2023-10-01|
   et date_courante < |2024-10-01|
   et logement_est_chambre:
 
@@ -276,8 +283,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 234,74€
 
   exception chambre
-  définition plafond_loyer_d823_16_2 sous condition
-    âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+  définition plafond_loyer_d823_16_2
+  sous condition âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
     selon zone sous forme
     -- Zone1 : 239,48€
@@ -310,7 +317,7 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges_d823_16 égal à
@@ -329,11 +336,13 @@ défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 37,9
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   définition participation_minimale égal à
-    si (loyer_éligible + montant_forfaitaire_charges_d823_16)
+    si
+      (loyer_éligible + montant_forfaitaire_charges_d823_16)
       * 8,5%
-      >= 37,91 € alors
+      >= 37,91 €
+    alors
       (loyer_éligible + montant_forfaitaire_charges_d823_16) * 8,5%
     sinon
       37,91 €
@@ -375,7 +384,7 @@ Majoration par personne à charge supplémentaire     -0,06 %
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   étiquette base
   définition taux_composition_familiale égal à
     si nombre_personnes_à_charge = 0 alors
@@ -412,7 +421,7 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   définition rapport_loyers égal à
     arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
 ```
@@ -435,7 +444,7 @@ $\textrm{TL}=0 \%$    $\textrm{TL}=0,45 \%\times (\textrm{RL}-45\%)$ $\textrm{TL
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   # Ici on choisit de mettre des >= pour inclure le résultat sur la crête
   # dans la case de droite ; nous avons bien vérifié que sur la crête le
   # résultat est le même à gauche et à droite.
@@ -472,7 +481,7 @@ Majoration par personne à charge	                    55,79
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
 
   étiquette base
   définition multiplicateur_majoration_loyer_référence égal à
@@ -518,14 +527,15 @@ charge supplémentaire               47,36  41,84  38,11
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01| et colocation:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01| et colocation:
 
   # Ici l'exception est rapportée au cas de base puisqu'on suppose
   # qu'on ne peut pas être en colocation dans un logement constitué
   # d'une seule chambre.
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -535,7 +545,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 195,62€
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -545,8 +556,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 237,13€
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -567,7 +578,7 @@ Majoration par personne à charge 13,17
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01| et colocation:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01| et colocation:
   étiquette colocation_métropole exception base_outre_mer
   définition montant_forfaitaire_charges_d823_16 égal à
     (
@@ -603,7 +614,7 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
 
   étiquette base
   définition montant_forfaitaire_charges_d832_10 égal à
@@ -618,7 +629,7 @@ Dans le cas des copropriétaires prévus à l'article D. 832-16 du même code :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   définition plafond_mensualité_d832_10_3
     état copropriétaires
   égal à
@@ -638,10 +649,10 @@ Majoration par personne à charge 13,17
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   exception base
-  définition montant_forfaitaire_charges_d832_10 sous condition
-    copropriété
+  définition montant_forfaitaire_charges_d832_10
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -680,98 +691,98 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   définition plafond_équivalence_loyer_éligible égal à
-    (
-      selon zone sous forme
-      -- Zone1 :
-        (
-          si nombre_personnes_à_charge = 0 alors
-            (
-              selon situation_familiale_calcul_apl sous forme
-              -- PersonneSeule : 478,09 €
-              -- Couple : 560,47€
-            )
-          sinon
-            (
-              si nombre_personnes_à_charge = 1 alors
-                597,62 €
-              sinon
-                (
-                  si nombre_personnes_à_charge = 2 alors
-                    639,57 €
-                  sinon
-                    (
-                      si nombre_personnes_à_charge = 3 alors
-                        681,67 €
-                      sinon
-                        (
-                          735,25 €
-                          + 76,26€ * (décimal de (nombre_personnes_à_charge - 4))
-                        )
-                    )
-                )
-            )
-        )
-      -- Zone2 :
-        (
-          si nombre_personnes_à_charge = 0 alors
-            (
-              selon situation_familiale_calcul_apl sous forme
-              -- PersonneSeule : 437,20 €
-              -- Couple : 510,24€
-            )
-          sinon
-            (
-              si nombre_personnes_à_charge = 1 alors
-                544,05 €
-              sinon
-                (
-                  si nombre_personnes_à_charge = 2 alors
-                    582,37 €
-                  sinon
-                    (
-                      si nombre_personnes_à_charge = 3 alors
-                        620,55 €
-                      sinon
-                        (
-                          661,23 €
-                          + 68,92€ * (décimal de (nombre_personnes_à_charge - 4))
-                        )
-                    )
-                )
-            )
-        )
-      -- Zone3 :
-        (
-          si nombre_personnes_à_charge = 0 alors
-            (
-              selon situation_familiale_calcul_apl sous forme
-              -- PersonneSeule : 414,99 €
-              -- Couple : 482,66€
-            )
-          sinon
-            (
-              si nombre_personnes_à_charge = 1 alors
-                512,07 €
-              sinon
-                (
-                  si nombre_personnes_à_charge = 2 alors
-                    545,86 €
-                  sinon
-                    (
-                      si nombre_personnes_à_charge = 3 alors
-                        579,64 €
-                      sinon
-                        (
-                          617,64 €
-                          + 63,96€ * (décimal de (nombre_personnes_à_charge - 4))
-                        )
-                    )
-                )
-            )
-        )
-    )
+  (
+    selon zone sous forme
+    -- Zone1 :
+      (
+        si nombre_personnes_à_charge = 0 alors
+          (
+            selon situation_familiale_calcul_apl sous forme
+            -- PersonneSeule : 478,09 €
+            -- Couple : 560,47€
+          )
+        sinon
+          (
+            si nombre_personnes_à_charge = 1 alors
+              597,62 €
+            sinon
+              (
+                si nombre_personnes_à_charge = 2 alors
+                  639,57 €
+                sinon
+                  (
+                    si nombre_personnes_à_charge = 3 alors
+                      681,67 €
+                    sinon
+                      (
+                        735,25 €
+                        + 76,26€ * (décimal de (nombre_personnes_à_charge - 4))
+                      )
+                  )
+              )
+          )
+      )
+    -- Zone2 :
+      (
+        si nombre_personnes_à_charge = 0 alors
+          (
+            selon situation_familiale_calcul_apl sous forme
+            -- PersonneSeule : 437,20 €
+            -- Couple : 510,24€
+          )
+        sinon
+          (
+            si nombre_personnes_à_charge = 1 alors
+              544,05 €
+            sinon
+              (
+                si nombre_personnes_à_charge = 2 alors
+                  582,37 €
+                sinon
+                  (
+                    si nombre_personnes_à_charge = 3 alors
+                      620,55 €
+                    sinon
+                      (
+                        661,23 €
+                        + 68,92€ * (décimal de (nombre_personnes_à_charge - 4))
+                      )
+                  )
+              )
+          )
+      )
+    -- Zone3 :
+      (
+        si nombre_personnes_à_charge = 0 alors
+          (
+            selon situation_familiale_calcul_apl sous forme
+            -- PersonneSeule : 414,99 €
+            -- Couple : 482,66€
+          )
+        sinon
+          (
+            si nombre_personnes_à_charge = 1 alors
+              512,07 €
+            sinon
+              (
+                si nombre_personnes_à_charge = 2 alors
+                  545,86 €
+                sinon
+                  (
+                    si nombre_personnes_à_charge = 3 alors
+                      579,64 €
+                    sinon
+                      (
+                        617,64 €
+                        + 63,96€ * (décimal de (nombre_personnes_à_charge - 4))
+                      )
+                  )
+              )
+          )
+      )
+  )
 ```
 
 ### Article 34 | LEGIARTI000048109284 [archive]
@@ -792,7 +803,7 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges égal à
@@ -812,12 +823,11 @@ Dans le cas des copropriétaires prévus à l'article D. 842-10 du même code :
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_copropriété
-  sous condition
-    copropriété
+  sous condition copropriété
   conséquence égal à
     (
       calcul_plafond_mensualité_d842_6 de
@@ -837,10 +847,10 @@ Majoration par personne à charge                         13,17
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   étiquette copropriété exception base
-  définition montant_forfaitaire_charges sous condition
-    copropriété
+  définition montant_forfaitaire_charges
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -874,7 +884,7 @@ compter du 1er octobre 2023.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges égal à
@@ -899,9 +909,9 @@ b) 140,34 euros euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 90,13 €
@@ -916,9 +926,9 @@ b) 283,23 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 182,23 €
@@ -933,9 +943,9 @@ b) 343,58 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 221,10 €
@@ -950,9 +960,9 @@ b) 283,23 euros lorsqu'il s'agit d'un couple.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
+sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 182,23 €
@@ -985,9 +995,10 @@ enfant à charge, est remplacée par " 8 574 euros " ;
 # locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
 # pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1024,53 +1035,53 @@ Par personne supplémentaire à charge                10,36
 # locatif. Notamment le paramètre du montant des charges est défini dans le
 # calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     40,26€ + 10,36€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     40,26 € + 10,36 € * multiplicateur_majoration_charges
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     40,26 € + 10,36 € * multiplicateur_majoration_charges
 ```
@@ -1094,9 +1105,10 @@ Majoration par personne à charge 10,36
 # locatif. Notamment le paramètre du montant des charges colocation est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
+  définition montant_forfaitaire_charges_d823_16
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1117,9 +1129,10 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     + 10,36€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
+  définition montant_forfaitaire_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1182,19 +1195,19 @@ Majoration par personne à charge supplémentaire     -0,06 %
 # locatif. Notamment le paramètre TF est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -1256,7 +1269,7 @@ Personne seule ou couple ayant :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-01-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2025-01-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_r0 égal à
@@ -1310,9 +1323,10 @@ enfant à charge, est remplacée par " 8 574 euros " ;
 # locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
 # pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1349,53 +1363,53 @@ Par personne supplémentaire à charge                10,03
 # locatif. Notamment le paramètre du montant des charges est défini dans le
 # calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     38,99€ + 10,03€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     38,99 € + 10,03 € * multiplicateur_majoration_charges
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     38,99 € + 10,03 € * multiplicateur_majoration_charges
 ```
@@ -1419,9 +1433,10 @@ Majoration par personne à charge 10,03
 # locatif. Notamment le paramètre du montant des charges colocation est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
+  définition montant_forfaitaire_charges_d823_16
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1442,9 +1457,10 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     + 10,03€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
+  définition montant_forfaitaire_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1507,19 +1523,19 @@ Majoration par personne à charge supplémentaire     -0,06 %
 # locatif. Notamment le paramètre TF est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -1602,9 +1618,10 @@ ces dispositions sont applicables aux prestations dues à compter du 1er janvier
 # locatif. Notamment le paramètre RO est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2024-01-01| et date_courante < |2025-01-01|:
+sous condition date_courante >= |2024-01-01| et date_courante < |2025-01-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     selon résidence sous forme
     -- SaintPierreEtMiquelon : vrai
     -- n'importe quel : faux
@@ -1651,9 +1668,10 @@ enfant à charge, est remplacée par " 8 181 euros " ;
 # locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
 # pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1690,53 +1708,53 @@ Par personne supplémentaire à charge                10,03
 # locatif. Notamment le paramètre du montant des charges est défini dans le
 # calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     38,99€ + 10,03€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01|:
+sous condition date_courante >= |2023-10-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     38,99 € + 10,03 € * multiplicateur_majoration_charges
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     38,99 € + 10,03 € * multiplicateur_majoration_charges
 ```
@@ -1760,9 +1778,10 @@ Majoration par personne à charge 10,03
 # locatif. Notamment le paramètre du montant des charges colocation est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
+  définition montant_forfaitaire_charges_d823_16
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1783,9 +1802,10 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     + 10,03€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-10-01|:
+sous condition date_courante >= |2023-10-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
+  définition montant_forfaitaire_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1848,19 +1868,19 @@ Majoration par personne à charge supplémentaire     -0,06 %
 # locatif. Notamment le paramètre TF est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -1921,9 +1941,10 @@ enfant à charge, est remplacée par " 8 181 euros " ;
 # locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
 # pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -1960,53 +1981,53 @@ Par personne supplémentaire à charge                9,69
 # locatif. Notamment le paramètre du montant des charges est défini dans le
 # calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     37,67€ + 9,69€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     37,67 € + 9,69 € * multiplicateur_majoration_charges
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     37,67 € + 9,69 € * multiplicateur_majoration_charges
 ```
@@ -2030,9 +2051,10 @@ Majoration par personne à charge 9,69
 # locatif. Notamment le paramètre du montant des charges colocation est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
+  définition montant_forfaitaire_charges_d823_16
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -2053,9 +2075,10 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     + 9,69€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
+  définition montant_forfaitaire_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -2118,19 +2141,19 @@ Majoration par personne à charge supplémentaire     -0,06 %
 # locatif. Notamment le paramètre TF est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -2219,11 +2242,12 @@ ces dispositions sont applicables pour les prestations dues à compter du 1er ju
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
 
   # Colonne 1
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -2234,7 +2258,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonne 2
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -2249,8 +2274,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonnes 3 et 4
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -2305,7 +2330,8 @@ ces dispositions sont applicables pour les prestations dues à compter du 1er ju
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01|
+sous condition
+  date_courante >= |2022-07-01|
   et date_courante < |2023-10-01|
   et logement_est_chambre:
 
@@ -2317,8 +2343,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 226,80€
 
   exception chambre
-  définition plafond_loyer_d823_16_2 sous condition
-    âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+  définition plafond_loyer_d823_16_2
+  sous condition âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
     selon zone sous forme
     -- Zone1 : 231,38€
@@ -2351,7 +2377,7 @@ ces dispositions sont applicables pour les prestations dues à compter du
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges_d823_16 égal à
@@ -2370,11 +2396,13 @@ défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 36,6
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   définition participation_minimale égal à
-    si (loyer_éligible + montant_forfaitaire_charges_d823_16)
+    si
+      (loyer_éligible + montant_forfaitaire_charges_d823_16)
       * 8,5%
-      >= 36,63 € alors
+      >= 36,63 €
+    alors
       (loyer_éligible + montant_forfaitaire_charges_d823_16) * 8,5%
     sinon
       36,63 €
@@ -2416,7 +2444,7 @@ Majoration par personne à charge supplémentaire     -0,06 %
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   étiquette base
   définition taux_composition_familiale égal à
     si nombre_personnes_à_charge = 0 alors
@@ -2453,7 +2481,7 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   définition rapport_loyers égal à
     arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
 ```
@@ -2476,7 +2504,7 @@ $\textrm{TL}=0 \%$    $\textrm{TL}=0,45 \%\times (\textrm{RL}-45\%)$ $\textrm{TL
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   # Ici on choisit de mettre des >= pour inclure le résultat sur la crête
   # dans la case de droite ; nous avons bien vérifié que sur la crête le
   # résultat est le même à gauche et à droite.
@@ -2513,7 +2541,7 @@ Majoration par personne à charge	                    53,90
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
 
   étiquette base
   définition multiplicateur_majoration_loyer_référence égal à
@@ -2553,7 +2581,8 @@ Personne seule ou couple ayant :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01|
+sous condition
+  date_courante >= |2022-07-01|
   et date_courante <= |2022-12-31|:
 
   étiquette métropole
@@ -2613,7 +2642,8 @@ charge supplémentaire               45,76  40,43  36,82
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01|
+sous condition
+  date_courante >= |2022-07-01|
   et date_courante < |2023-10-01|
   et colocation:
 
@@ -2622,7 +2652,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
   # d'une seule chambre.
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -2632,7 +2663,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 189,00€
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -2642,8 +2674,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 229,11€
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -2664,7 +2696,8 @@ Majoration par personne à charge 12,72
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01|
+sous condition
+  date_courante >= |2022-07-01|
   et date_courante < |2023-10-01|
   et colocation:
   étiquette colocation_métropole exception base_outre_mer
@@ -2702,7 +2735,7 @@ juillet 2022.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
 
   étiquette base
   définition montant_forfaitaire_charges_d832_10 égal à
@@ -2717,7 +2750,7 @@ Dans le cas des copropriétaires prévus à l'article D. 832-16 du même code :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   définition plafond_mensualité_d832_10_3
     état copropriétaires
   égal à
@@ -2737,10 +2770,10 @@ Majoration par personne à charge 12,72
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   exception base
-  définition montant_forfaitaire_charges_d832_10 sous condition
-    copropriété
+  définition montant_forfaitaire_charges_d832_10
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -2780,98 +2813,98 @@ dispositions sont applicables pour les prestations dues à compter du
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   définition plafond_équivalence_loyer_éligible égal à
-    (
-      selon zone sous forme
-      -- Zone1 :
-        (
-          si nombre_personnes_à_charge = 0 alors
-            (
-              selon situation_familiale_calcul_apl sous forme
-              -- PersonneSeule : 461,92 €
-              -- Couple : 541,52€
-            )
-          sinon
-            (
-              si nombre_personnes_à_charge = 1 alors
-                577,41 €
-              sinon
-                (
-                  si nombre_personnes_à_charge = 2 alors
-                    617,94 €
-                  sinon
-                    (
-                      si nombre_personnes_à_charge = 3 alors
-                        658,62 €
-                      sinon
-                        (
-                          710,39 €
-                          + 73,68€ * (décimal de (nombre_personnes_à_charge - 4))
-                        )
-                    )
-                )
-            )
-        )
-      -- Zone2 :
-        (
-          si nombre_personnes_à_charge = 0 alors
-            (
-              selon situation_familiale_calcul_apl sous forme
-              -- PersonneSeule : 422,42 €
-              -- Couple : 492,99€
-            )
-          sinon
-            (
-              si nombre_personnes_à_charge = 1 alors
-                525,65 €
-              sinon
-                (
-                  si nombre_personnes_à_charge = 2 alors
-                    562,68 €
-                  sinon
-                    (
-                      si nombre_personnes_à_charge = 3 alors
-                        599,57 €
-                      sinon
-                        (
-                          638,87 €
-                          + 66,59€ * (décimal de (nombre_personnes_à_charge - 4))
-                        )
-                    )
-                )
-            )
-        )
-      -- Zone3 :
-        (
-          si nombre_personnes_à_charge = 0 alors
-            (
-              selon situation_familiale_calcul_apl sous forme
-              -- PersonneSeule : 400,96 €
-              -- Couple : 466,34€
-            )
-          sinon
-            (
-              si nombre_personnes_à_charge = 1 alors
-                494,75 €
-              sinon
-                (
-                  si nombre_personnes_à_charge = 2 alors
-                    527,40 €
-                  sinon
-                    (
-                      si nombre_personnes_à_charge = 3 alors
-                        560,04 €
-                      sinon
-                        (
-                          596,75 €
-                          + 61,80€ * (décimal de (nombre_personnes_à_charge - 4))
-                        )
-                    )
-                )
-            )
-        )
-    )
+  (
+    selon zone sous forme
+    -- Zone1 :
+      (
+        si nombre_personnes_à_charge = 0 alors
+          (
+            selon situation_familiale_calcul_apl sous forme
+            -- PersonneSeule : 461,92 €
+            -- Couple : 541,52€
+          )
+        sinon
+          (
+            si nombre_personnes_à_charge = 1 alors
+              577,41 €
+            sinon
+              (
+                si nombre_personnes_à_charge = 2 alors
+                  617,94 €
+                sinon
+                  (
+                    si nombre_personnes_à_charge = 3 alors
+                      658,62 €
+                    sinon
+                      (
+                        710,39 €
+                        + 73,68€ * (décimal de (nombre_personnes_à_charge - 4))
+                      )
+                  )
+              )
+          )
+      )
+    -- Zone2 :
+      (
+        si nombre_personnes_à_charge = 0 alors
+          (
+            selon situation_familiale_calcul_apl sous forme
+            -- PersonneSeule : 422,42 €
+            -- Couple : 492,99€
+          )
+        sinon
+          (
+            si nombre_personnes_à_charge = 1 alors
+              525,65 €
+            sinon
+              (
+                si nombre_personnes_à_charge = 2 alors
+                  562,68 €
+                sinon
+                  (
+                    si nombre_personnes_à_charge = 3 alors
+                      599,57 €
+                    sinon
+                      (
+                        638,87 €
+                        + 66,59€ * (décimal de (nombre_personnes_à_charge - 4))
+                      )
+                  )
+              )
+          )
+      )
+    -- Zone3 :
+      (
+        si nombre_personnes_à_charge = 0 alors
+          (
+            selon situation_familiale_calcul_apl sous forme
+            -- PersonneSeule : 400,96 €
+            -- Couple : 466,34€
+          )
+        sinon
+          (
+            si nombre_personnes_à_charge = 1 alors
+              494,75 €
+            sinon
+              (
+                si nombre_personnes_à_charge = 2 alors
+                  527,40 €
+                sinon
+                  (
+                    si nombre_personnes_à_charge = 3 alors
+                      560,04 €
+                    sinon
+                      (
+                        596,75 €
+                        + 61,80€ * (décimal de (nombre_personnes_à_charge - 4))
+                      )
+                  )
+              )
+          )
+      )
+  )
 ```
 
 ### Article 34 | LEGIARTI000046206196 [archive]
@@ -2892,7 +2925,7 @@ juillet 2022.
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges égal à
@@ -2912,12 +2945,11 @@ Dans le cas des copropriétaires prévus à l'article D. 842-10 du même code :
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_copropriété
-  sous condition
-    copropriété
+  sous condition copropriété
   conséquence égal à
     (
       calcul_plafond_mensualité_d842_6 de
@@ -2937,10 +2969,10 @@ Majoration par personne à charge                         12,72
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   étiquette copropriété exception base
-  définition montant_forfaitaire_charges sous condition
-    copropriété
+  définition montant_forfaitaire_charges
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -2974,7 +3006,7 @@ juillet 2022.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges égal à
@@ -2999,9 +3031,9 @@ b) 135,59 euros euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 87,08 €
@@ -3016,9 +3048,9 @@ b) 273,65 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 176,07 €
@@ -3033,9 +3065,9 @@ b) 331,96 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 213,62 €
@@ -3050,9 +3082,9 @@ b) 273,65 euros lorsqu'il s'agit d'un couple.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 176,07 €
@@ -3078,9 +3110,10 @@ construction et de l'habitation, dont les valeurs sont fixées à l'article 7 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception métropole
-  définition multiplicateur_majoration_plafond_loyer_d823_16_2 sous condition
+  définition multiplicateur_majoration_plafond_loyer_d823_16_2
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3092,7 +3125,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 # Cette limitation à 6 personnes à charge s'applique également aux exceptions à
 # l'article 7 que sont les articles 8 et 16 de l'arrêté pour les chambres et la
 # colocation. Cependant le barème chambre ne dépend pas du nombre de personnes à
@@ -3128,9 +3162,10 @@ valeurs sont fixées respectivement aux articles 9, 34 et 40 ;
 # au 3° de cet article.
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3142,12 +3177,14 @@ champ d'application CalculAllocationLogementAccessionPropriété
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3159,7 +3196,8 @@ champ d'application CalculAllocationLogementFoyer
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 ```
 
 c) Le loyer de référence " LR ", dont les valeurs sont fixées à l'article 14,
@@ -3168,9 +3206,10 @@ personnelle (" Tp ") visé au 3° de l'article D. 823-17 du même code ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception base
-  définition multiplicateur_majoration_loyer_référence sous condition
+  définition multiplicateur_majoration_loyer_référence
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3182,7 +3221,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 ```
 
 d) Le forfait " R0 ", visé au 5° de l'article D. 823-17 du même code, dont
@@ -3190,9 +3230,10 @@ les valeurs sont fixées à l'article 15 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception métropole
-  définition multiplicateur_majoration_r0 sous condition
+  définition multiplicateur_majoration_r0
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3204,7 +3245,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 0,0
+  conséquence égal à
+    0,0
 ```
 
 e) Les mensualités plafonds visées à l'article D. 842-6 du même code, dont les
@@ -3212,20 +3254,20 @@ valeurs sont fixées à l'article 33 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_limitation_dom_tom
   sous condition
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
-    -- Guadeloupe : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
+      -- Guadeloupe : vrai
+      -- Martinique : vrai
+      -- LaRéunion : vrai
+      -- Mayotte : vrai
+      -- SaintBarthélemy : vrai
+      -- SaintMartin : vrai
+      -- n'importe quel : faux
   conséquence égal à
     calcul_plafond_mensualité_d842_6 de date_calcul, 6
 ```
@@ -3235,9 +3277,10 @@ un ménage ayant un enfant à charge, est remplacée par " 8 051 euros " ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3265,19 +3308,19 @@ Par personne supplémentaire à charge dans la limite de six personnes à charge
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       37,67€ + 9,69€ * (décimal de nombre_personnes_à_charge)
@@ -3288,19 +3331,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       37,67€ + 9,69€ * (décimal de nombre_personnes_à_charge)
@@ -3311,19 +3354,19 @@ champ d'application CalculAllocationLogementAccessionPropriété
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       37,67€ + 9,69€ * (décimal de nombre_personnes_à_charge)
@@ -3346,19 +3389,19 @@ Majoration par personne à charge dans la limite de six personnes à charge 9,69
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -3379,19 +3422,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -3430,19 +3473,19 @@ Personne seule ou couple ayant 6 personnes à charge et plus 1,62 %
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -3507,9 +3550,10 @@ sont applicables pour les prestations dues à compter du 1 er juillet 2022.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
+sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     selon résidence sous forme
     -- SaintPierreEtMiquelon : vrai
     -- n'importe quel : faux
@@ -3556,7 +3600,7 @@ Personne seule ou couple ayant :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-01-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-01-01| et date_courante <= |2023-12-31|:
 
   étiquette métropole
   définition multiplicateur_majoration_r0 égal à
@@ -3633,9 +3677,10 @@ dues à compter du 1er janvier 2023.
 # locatif. Notamment le paramètre RO est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2023-01-01| et date_courante <= |2023-12-31|:
+sous condition date_courante >= |2023-01-01| et date_courante <= |2023-12-31|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     selon résidence sous forme
     -- SaintPierreEtMiquelon : vrai
     -- n'importe quel : faux
@@ -3704,7 +3749,8 @@ Personne seule ou couple ayant :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01|
+sous condition
+  date_courante >= |2022-01-01|
   et date_courante < |2022-07-01|:
 
   étiquette métropole
@@ -3749,9 +3795,10 @@ dont les valeurs sont fixées à l'article 7 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception métropole
-  définition multiplicateur_majoration_plafond_loyer_d823_16_2 sous condition
+  définition multiplicateur_majoration_plafond_loyer_d823_16_2
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3763,7 +3810,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 # Cette limitation à 6 personnes à charge s'applique également aux exceptions à
 # l'article 7 que sont les articles 8 et 16 de l'arrêté pour les chambres et la
 # colocation. Cependant le barème chambre ne dépend pas du nombre de personnes à
@@ -3798,9 +3846,10 @@ D. 842-6 et D. 842-15 du même code, dont les valeurs sont fixées respectivemen
 # au 3° de cet article.
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3812,12 +3861,14 @@ champ d'application CalculAllocationLogementAccessionPropriété
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3829,7 +3880,8 @@ champ d'application CalculAllocationLogementFoyer
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 ```
 
 c) Le loyer de référence " LR ", dont les valeurs sont fixées à l'article 14, intervenant dans le calcul de
@@ -3838,9 +3890,10 @@ code ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception base
-  définition multiplicateur_majoration_loyer_référence sous condition
+  définition multiplicateur_majoration_loyer_référence
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3852,7 +3905,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 ```
 
 d) Le forfait " R0 ", visé au 5° de l'article D. 823-17 du même code, dont les valeurs sont fixées à
@@ -3860,10 +3914,11 @@ l'article 15 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
 
   exception métropole
-  définition multiplicateur_majoration_r0 sous condition
+  définition multiplicateur_majoration_r0
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3875,7 +3930,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 0,0
+  conséquence égal à
+    0,0
 ```
 
 e) Les mensualités plafonds visées à l'article D. 842-6 du même code, dont les valeurs sont fixées à
@@ -3883,20 +3939,20 @@ l'article 33 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_limitation_dom_tom
   sous condition
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
-    -- Guadeloupe : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
+      -- Guadeloupe : vrai
+      -- Martinique : vrai
+      -- LaRéunion : vrai
+      -- Mayotte : vrai
+      -- SaintBarthélemy : vrai
+      -- SaintMartin : vrai
+      -- n'importe quel : faux
   conséquence égal à
     calcul_plafond_mensualité_d842_6 de date_calcul, 6
 ```
@@ -3906,9 +3962,10 @@ un ménage ayant un enfant à charge, est remplacée par " 7 742 euros " ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -3936,19 +3993,19 @@ Par personne supplémentaire à charge dans la limite de six personnes à charge
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,40€ + 9,36€ * (décimal de nombre_personnes_à_charge)
@@ -3959,19 +4016,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,40€ + 9,36€ * (décimal de nombre_personnes_à_charge)
@@ -3982,19 +4039,19 @@ champ d'application CalculAllocationLogementAccessionPropriété
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,40€ + 9,36€ * (décimal de nombre_personnes_à_charge)
@@ -4017,19 +4074,19 @@ Majoration par personne à charge dans la limite de six personnes à charge 9,36
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -4050,19 +4107,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -4101,19 +4158,19 @@ Couple sans enfant                 2,99%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
+sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -4195,12 +4252,14 @@ pour les prestations dues à compter du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
 
   # Colonne 1
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -4211,7 +4270,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonne 2
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -4226,8 +4286,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonnes 3 et 4
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -4283,7 +4343,8 @@ compter du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|
   et logement_est_chambre:
 
@@ -4295,8 +4356,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 219,13€
 
   exception chambre
-  définition plafond_loyer_d823_16_2 sous condition
-    âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+  définition plafond_loyer_d823_16_2
+  sous condition âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
     selon zone sous forme
     -- Zone1 : 223,55€
@@ -4329,7 +4390,8 @@ du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
 
   étiquette métropole
@@ -4349,12 +4411,15 @@ défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 35,3
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   définition participation_minimale égal à
-    si (loyer_éligible + montant_forfaitaire_charges_d823_16)
+    si
+      (loyer_éligible + montant_forfaitaire_charges_d823_16)
       * 8,5%
-      >= 35,39 € alors
+      >= 35,39 €
+    alors
       (loyer_éligible + montant_forfaitaire_charges_d823_16) * 8,5%
     sinon
       35,39 €
@@ -4392,7 +4457,8 @@ Majoration par personne à charge                    -0,06%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   étiquette base
   définition taux_composition_familiale égal à
@@ -4423,7 +4489,8 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   définition rapport_loyers égal à
     arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
@@ -4447,7 +4514,8 @@ $\textrm{TL}=0 \%$    $\textrm{TL}=0,45 \%\times (\textrm{RL}-45\%)$ $\textrm{TL
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   # Ici on choisit de mettre des >= pour inclure le résultat sur la crête
   # dans la case de droite ; nous avons bien vérifié que sur la crête le
@@ -4485,7 +4553,8 @@ Majoration par personne à charge	                    52,08
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
 
   étiquette base
@@ -4530,7 +4599,8 @@ charge supplémentaire               44,21  39,06  35,57
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01| et colocation:
 
   # Ici l'exception est rapportée au cas de base puisqu'on suppose
@@ -4538,7 +4608,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
   # d'une seule chambre.
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -4548,7 +4619,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 182,61€
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -4562,8 +4634,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     décimal de (nombre_personnes_à_charge - 1)
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -4584,7 +4656,8 @@ Majoration par personne à charge 12,29
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01| et colocation:
   étiquette colocation_métropole exception base_outre_mer
   définition montant_forfaitaire_charges_d823_16 égal à
@@ -4619,7 +4692,8 @@ du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
 
   étiquette base
@@ -4635,7 +4709,8 @@ Dans le cas des copropriétaires prévus à l'article D. 832-16 du même code :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   définition plafond_mensualité_d832_10_3
     état copropriétaires
@@ -4656,11 +4731,12 @@ Majoration par personne à charge 12,29
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   exception base
-  définition montant_forfaitaire_charges_d832_10 sous condition
-    copropriété
+  définition montant_forfaitaire_charges_d832_10
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -4695,7 +4771,8 @@ pour les prestations dues à compter du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   définition plafond_équivalence_loyer_éligible égal à
     selon zone sous forme
@@ -4768,7 +4845,8 @@ les prestations dues à compter du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
 
   étiquette métropole
@@ -4789,13 +4867,13 @@ Dans le cas des copropriétaires prévus à l'article D. 842-10 du même code :
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_copropriété
-  sous condition
-    copropriété
+  sous condition copropriété
   conséquence égal à
     (
       calcul_plafond_mensualité_d842_6 de
@@ -4815,11 +4893,12 @@ Majoration par personne à charge                         12,29
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   étiquette copropriété exception base
-  définition montant_forfaitaire_charges sous condition
-    copropriété
+  définition montant_forfaitaire_charges
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -4855,7 +4934,8 @@ sont applicables pour les prestations dues à compter du 1er octobre 2021.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
 
   étiquette métropole
@@ -4881,10 +4961,11 @@ b) 131,00 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 84,14 €
@@ -4899,10 +4980,11 @@ b) 264,40 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 170,12 €
@@ -4917,10 +4999,11 @@ b) 320,73 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 206,40 €
@@ -4935,10 +5018,11 @@ b) 264,40 euros lorsqu'il s'agit d'un couple.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01|
+sous condition
+  date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 170,12 €
@@ -4961,9 +5045,10 @@ dont les valeurs sont fixées à l'article 7 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception métropole
-  définition multiplicateur_majoration_plafond_loyer_d823_16_2 sous condition
+  définition multiplicateur_majoration_plafond_loyer_d823_16_2
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -4975,7 +5060,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 # Cette limitation à 6 personnes à charge s'applique également aux exceptions à
 # l'article 7 que sont les articles 8 et 16 de l'arrêté pour les chambres et la
 # colocation. Cependant le barème chambre ne dépend pas du nombre de personnes à
@@ -5010,9 +5096,10 @@ D. 842-6 et D. 842-15 du même code, dont les valeurs sont fixées respectivemen
 # au 3° de cet article.
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5024,12 +5111,14 @@ champ d'application CalculAllocationLogementAccessionPropriété
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5041,7 +5130,8 @@ champ d'application CalculAllocationLogementFoyer
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 ```
 
 c) Le loyer de référence " LR ", dont les valeurs sont fixées à l'article 14, intervenant dans le calcul
@@ -5050,9 +5140,10 @@ code ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception base
-  définition multiplicateur_majoration_loyer_référence sous condition
+  définition multiplicateur_majoration_loyer_référence
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5064,7 +5155,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 ```
 
 d) Le forfait " R0 ", visé au 5° de l'article D. 823-17 du même code, dont les valeurs sont fixées à
@@ -5072,9 +5164,10 @@ l'article 15 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception métropole
-  définition multiplicateur_majoration_r0 sous condition
+  définition multiplicateur_majoration_r0
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5086,7 +5179,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 0,0
+  conséquence égal à
+    0,0
 ```
 
 e) Les mensualités plafonds visées à l'article D. 842-6 du même code, dont les valeurs sont fixées à
@@ -5094,20 +5188,20 @@ l'article 33 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_limitation_dom_tom
   sous condition
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
-    -- Guadeloupe : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
+      -- Guadeloupe : vrai
+      -- Martinique : vrai
+      -- LaRéunion : vrai
+      -- Mayotte : vrai
+      -- SaintBarthélemy : vrai
+      -- SaintMartin : vrai
+      -- n'importe quel : faux
   conséquence égal à
     calcul_plafond_mensualité_d842_6 de date_calcul, 6
 ```
@@ -5117,9 +5211,10 @@ pour un ménage ayant un enfant à charge, est remplacée par " 7 584 euros " ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   étiquette article_46 exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5147,19 +5242,19 @@ Par personne supplémentaire à charge dans la limite de six personnes à charge
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,40€ + 9,36€ * (décimal de nombre_personnes_à_charge)
@@ -5170,19 +5265,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,40€ + 9,36€ * (décimal de nombre_personnes_à_charge)
@@ -5193,19 +5288,19 @@ champ d'application CalculAllocationLogementAccessionPropriété
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,40€ + 9,36€ * (décimal de nombre_personnes_à_charge)
@@ -5228,19 +5323,19 @@ Majoration par personne à charge dans la limite de six personnes à charge  9,3
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -5261,19 +5356,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -5311,19 +5406,19 @@ Couple sans enfant                2,99%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -5374,12 +5469,14 @@ octobre 2020.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|:
 
   # Colonne 1
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -5390,7 +5487,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonne 2
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -5405,8 +5503,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
 
   # Colonnes 3 et 4
   étiquette base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -5461,7 +5559,8 @@ sont applicables pour les prestations dues à compter du 1er octobre 2020.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|
   et logement_est_chambre:
 
@@ -5473,8 +5572,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 218,21€
 
   exception chambre
-  définition plafond_loyer_d823_16_2 sous condition
-    âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
+  définition plafond_loyer_d823_16_2
+  sous condition âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
     selon zone sous forme
     -- Zone1 : 222,62€
@@ -5507,7 +5606,8 @@ compter du 1er octobre 2020.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|:
 
   étiquette métropole
@@ -5527,12 +5627,15 @@ défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 35,2
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|:
   définition participation_minimale égal à
-    si (loyer_éligible + montant_forfaitaire_charges_d823_16)
+    si
+      (loyer_éligible + montant_forfaitaire_charges_d823_16)
       * 8,5%
-      >= 35,24 € alors
+      >= 35,24 €
+    alors
       (loyer_éligible + montant_forfaitaire_charges_d823_16) * 8,5%
     sinon
       35,24 €
@@ -5571,7 +5674,8 @@ Majoration par personne à charge	                   -0,06%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   étiquette base
   définition taux_composition_familiale égal à
@@ -5602,7 +5706,8 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   définition rapport_loyers égal à
     arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
@@ -5626,7 +5731,8 @@ $\text{TL}=0 \%$    $\text{TL}=0,45 \%\times (\text{RL}-45\%)$ $\text{TL}=0,45\%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   définition taux_loyer_éligible
     état formule
@@ -5661,7 +5767,8 @@ Majoration par personne à charge	                    51,86
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
 
   étiquette base
@@ -5708,11 +5815,13 @@ charge supplémentaire              44,03  38,90  35,42
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01| et colocation:
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme PersonneSeule)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -5722,7 +5831,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     -- Zone3 : 181,85€
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
+  définition plafond_loyer_d823_16_2
+  sous condition
     (situation_familiale_calcul_apl sous forme Couple)
     et nombre_personnes_à_charge = 0
   conséquence égal à
@@ -5736,8 +5846,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     décimal de (nombre_personnes_à_charge - 1)
 
   exception base
-  définition plafond_loyer_d823_16_2 sous condition
-    nombre_personnes_à_charge >= 1
+  définition plafond_loyer_d823_16_2
+  sous condition nombre_personnes_à_charge >= 1
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
@@ -5758,7 +5868,8 @@ Majoration par personne à charge 12,24
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01| et colocation:
   étiquette colocation_métropole exception base_outre_mer
   définition montant_forfaitaire_charges_d823_16 égal à
@@ -5794,7 +5905,8 @@ sont applicables pour les prestations dues à compter du 1er octobre 2020.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|:
 
   étiquette base
@@ -5810,7 +5922,8 @@ Dans le cas des copropriétaires prévus à l'article D. 832-16 du même code :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|:
   définition plafond_mensualité_d832_10_3
     état copropriétaires
@@ -5831,11 +5944,12 @@ Majoration par personne à charge 12,24
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-  sous condition date_courante < |2021-10-01|
+sous condition
+  date_courante < |2021-10-01|
   et date_courante >= |2020-10-01|:
   exception base
-  définition montant_forfaitaire_charges_d832_10 sous condition
-    copropriété
+  définition montant_forfaitaire_charges_d832_10
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -5871,7 +5985,7 @@ sont applicables pour les prestations dues à compter du 1er octobre 2020.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer
-  sous condition date_courante < |2021-10-01| et date_courante >= |2020-10-01|:
+sous condition date_courante < |2021-10-01| et date_courante >= |2020-10-01|:
   définition plafond_équivalence_loyer_éligible égal à
     selon zone sous forme
     -- Zone1 :
@@ -5942,7 +6056,8 @@ applicables pour les prestations dues à compter du 1er octobre 2020.
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   étiquette base
   définition montant_forfaitaire_charges égal à
@@ -5966,13 +6081,13 @@ l'article 33 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_copropriété
-  sous condition
-    copropriété
+  sous condition copropriété
   conséquence égal à
     (
       calcul_plafond_mensualité_d842_6 de
@@ -5992,11 +6107,12 @@ Majoration par personne à charge  12,24
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   étiquette copropriété exception base
-  définition montant_forfaitaire_charges sous condition
-    copropriété
+  définition montant_forfaitaire_charges
+  sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
@@ -6026,7 +6142,8 @@ Par personne supplémentaire à charge                12,24
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   étiquette base
   définition montant_forfaitaire_charges égal à
@@ -6057,10 +6174,11 @@ b) 130,45 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 83,79 €
@@ -6075,10 +6193,11 @@ b) 263,29 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 169,41 €
@@ -6093,10 +6212,11 @@ b) 319,39 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 205,54 €
@@ -6111,10 +6231,11 @@ b) 263,29 euros lorsqu'il s'agit d'un couple.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01|
+sous condition
+  date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
-  définition équivalence_loyer sous condition
-    catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
+  définition équivalence_loyer
+  sous condition catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
     -- PersonneSeule : 169,41 €
@@ -6138,9 +6259,10 @@ l'habitation , dont les valeurs sont fixées à l'article 7 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception métropole
-  définition multiplicateur_majoration_plafond_loyer_d823_16_2 sous condition
+  définition multiplicateur_majoration_plafond_loyer_d823_16_2
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6152,7 +6274,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 # Cette limitation à 6 personnes à charge s'applique également aux exceptions à
 # l'article 7 que sont les articles 8 et 16 de l'arrêté pour les chambres et la
 # colocation. Cependant le barème chambre ne dépend pas du nombre de personnes à
@@ -6188,9 +6311,10 @@ articles 9, 34 et 40 ;
 # au 3° de cet article.
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6202,12 +6326,14 @@ champ d'application CalculAllocationLogementAccessionPropriété
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6219,7 +6345,8 @@ champ d'application CalculAllocationLogementFoyer
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 ```
 
 c) Le loyer de référence " LR ", dont les valeurs sont fixées à l'article 14, intervenant dans
@@ -6228,9 +6355,10 @@ D. 823-17 du même code ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception base
-  définition multiplicateur_majoration_loyer_référence sous condition
+  définition multiplicateur_majoration_loyer_référence
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6242,7 +6370,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 ```
 
 d) Le forfait " R0 ", visé au 5° de l'article D. 823-17 du même code, dont les valeurs sont
@@ -6250,9 +6379,10 @@ fixées à l'article 15 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception métropole
-  définition multiplicateur_majoration_r0 sous condition
+  définition multiplicateur_majoration_r0
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6264,7 +6394,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 0,0
+  conséquence égal à
+    0,0
 ```
 
 e) Les mensualités plafonds visées à l'article D. 842-6 du même code, dont les valeurs sont
@@ -6272,20 +6403,20 @@ fixées à l'article 33 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_limitation_dom_tom
   sous condition
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
-    -- Guadeloupe : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
+      -- Guadeloupe : vrai
+      -- Martinique : vrai
+      -- LaRéunion : vrai
+      -- Mayotte : vrai
+      -- SaintBarthélemy : vrai
+      -- SaintMartin : vrai
+      -- n'importe quel : faux
   conséquence égal à
     calcul_plafond_mensualité_d842_6 de date_calcul, 6
 ```
@@ -6295,9 +6426,10 @@ code, pour un ménage ayant un enfant à charge, est remplacée par " 7 584 euro
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   étiquette article_46 exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6326,19 +6458,19 @@ Par personne supplémentaire à charge dans la limite de six personnes à charge
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,25€ + 9,32€ * (décimal de nombre_personnes_à_charge)
@@ -6349,19 +6481,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,25€ + 9,32€ * (décimal de nombre_personnes_à_charge)
@@ -6372,19 +6504,19 @@ champ d'application CalculAllocationLogementAccessionPropriété
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,25€ + 9,32€ * (décimal de nombre_personnes_à_charge)
@@ -6407,19 +6539,19 @@ Majoration par personne à charge dans la limite de six personnes à charge   9,
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -6440,19 +6572,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -6491,19 +6623,19 @@ Couple sans enfant                2,99%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
+sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -6615,18 +6747,18 @@ Personne seule ou couple ayant :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2021-01-01| et date_courante < |2022-01-01|:
+sous condition date_courante >= |2021-01-01| et date_courante < |2022-01-01|:
   exception article_46
-  # Normalement la règle suivante aurait du être une exception à l'étiquette
-  # "métropole". Cependant, la version de l'article 46 de l'arrêté du 27
-  # septembre 2019 en vigueur du 1er janvier 2020 au 31 décembre 2020 prévoit
-  # également dans le cas de l'outre-mer un remplacement du de la valeur de R0
-  # de l'article 15 dans le cas de une personne à charge. Pour faire exister
-  # cette règle plus précise valable uniquement pour Mayotte, nous la codons ici
-  # comme une exception au tableau de l'article 46 afin d'éviter le conflit
-  # entre deux règles qui s'activent en même temps.
-  définition abattement_forfaitaire_d823_17 sous condition
-    résidence sous forme Mayotte
+    # Normalement la règle suivante aurait du être une exception à l'étiquette
+    # "métropole". Cependant, la version de l'article 46 de l'arrêté du 27
+    # septembre 2019 en vigueur du 1er janvier 2020 au 31 décembre 2020 prévoit
+    # également dans le cas de l'outre-mer un remplacement du de la valeur de R0
+    # de l'article 15 dans le cas de une personne à charge. Pour faire exister
+    # cette règle plus précise valable uniquement pour Mayotte, nous la codons ici
+    # comme une exception au tableau de l'article 46 afin d'éviter le conflit
+    # entre deux règles qui s'activent en même temps.
+  définition abattement_forfaitaire_d823_17
+  sous condition résidence sous forme Mayotte
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -6672,7 +6804,8 @@ Personne seule ou couple ayant :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante < |2022-01-01|
+sous condition
+  date_courante < |2022-01-01|
   et date_courante >= |2020-01-01|:
 
   étiquette métropole
@@ -6730,9 +6863,10 @@ de l'habitation , dont les valeurs sont fixées à l'article 7 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception métropole
-  définition multiplicateur_majoration_plafond_loyer_d823_16_2 sous condition
+  définition multiplicateur_majoration_plafond_loyer_d823_16_2
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6744,7 +6878,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 # Cette limitation à 6 personnes à charge s'applique également aux exceptions à
 # l'article 7 que sont les articles 8 et 16 de l'arrêté pour les chambres et la
 # colocation. Cependant le barème chambre ne dépend pas du nombre de personnes à
@@ -6780,9 +6915,10 @@ aux articles 9, 34 et 40 ;
 # au 3° de cet article.
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6794,12 +6930,14 @@ champ d'application CalculAllocationLogementAccessionPropriété
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception métropole
-  définition multiplicateur_majoration_charges sous condition
+  définition multiplicateur_majoration_charges
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6811,7 +6949,8 @@ champ d'application CalculAllocationLogementFoyer
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 6,0
+  conséquence égal à
+    6,0
 ```
 
 c) Le loyer de référence " LR ", dont les valeurs sont fixées à l'article 14, intervenant
@@ -6820,9 +6959,10 @@ de l'article D. 823-17 du même code ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception base
-  définition multiplicateur_majoration_loyer_référence sous condition
+  définition multiplicateur_majoration_loyer_référence
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6834,7 +6974,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 5,0
+  conséquence égal à
+    5,0
 ```
 
 d) Le forfait " R0 ", visé au 5° de l'article D. 823-17 du même code, dont les valeurs sont
@@ -6842,10 +6983,11 @@ fixées à l'article 15 ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
 
   exception métropole
-  définition multiplicateur_majoration_r0 sous condition
+  définition multiplicateur_majoration_r0
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6857,7 +6999,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
       -- n'importe quel : faux
     )
     et nombre_personnes_à_charge >= 6
-  conséquence égal à 0,0
+  conséquence égal à
+    0,0
 ```
 
 e) Les mensualités plafonds visées à l'article D. 842-6 du même code, dont les valeurs sont
@@ -6865,20 +7008,20 @@ fixées à l'article 33 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_limitation_dom_tom
   sous condition
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
-    -- Guadeloupe : vrai
-    -- Martinique : vrai
-    -- LaRéunion : vrai
-    -- Mayotte : vrai
-    -- SaintBarthélemy : vrai
-    -- SaintMartin : vrai
-    -- n'importe quel : faux
+      -- Guadeloupe : vrai
+      -- Martinique : vrai
+      -- LaRéunion : vrai
+      -- Mayotte : vrai
+      -- SaintBarthélemy : vrai
+      -- SaintMartin : vrai
+      -- n'importe quel : faux
   conséquence égal à
     calcul_plafond_mensualité_d842_6 de date_calcul, 6
 ```
@@ -6888,9 +7031,10 @@ même code, pour un ménage ayant un enfant à charge, est remplacée par " 7 58
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception métropole
-  définition abattement_forfaitaire_d823_17 sous condition
+  définition abattement_forfaitaire_d823_17
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -6919,19 +7063,19 @@ Par personne supplémentaire à charge dans la limite de six personnes à charge
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   étiquette base_outre_mer exception base_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,14€ + 9,29€ * (décimal de nombre_personnes_à_charge)
@@ -6942,19 +7086,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   étiquette outre_mer exception copropriété
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,14€ + 9,29€ * (décimal de nombre_personnes_à_charge)
@@ -6965,19 +7109,19 @@ champ d'application CalculAllocationLogementAccessionPropriété
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception base
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       36,14€ + 9,29€ * (décimal de nombre_personnes_à_charge)
@@ -7000,19 +7144,19 @@ Majoration par personne à charge dans la limite de six personnes à charge   9,
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception colocation_métropole
-  définition montant_forfaitaire_charges_d823_16 sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges_d823_16
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -7033,19 +7177,19 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     si montant > limite alors limite sinon montant
 
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception outre_mer
-  définition montant_forfaitaire_charges sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition montant_forfaitaire_charges
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     soit montant égal à
       (
@@ -7084,19 +7228,19 @@ Couple sans enfant                  2,99%
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   exception base
-  définition taux_composition_familiale sous condition
-    (
-      selon résidence sous forme
-      -- Guadeloupe : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- SaintBarthélemy : vrai
-      -- SaintMartin : vrai
-      -- n'importe quel : faux
-    )
+  définition taux_composition_familiale
+  sous condition (
+    selon résidence sous forme
+    -- Guadeloupe : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- SaintBarthélemy : vrai
+    -- SaintMartin : vrai
+    -- n'importe quel : faux
+  )
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -7179,18 +7323,18 @@ dispositions sont applicables pour les prestations dues à compter du 1er janvie
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-  sous condition date_courante >= |2020-01-01| et date_courante < |2021-01-01|:
+sous condition date_courante >= |2020-01-01| et date_courante < |2021-01-01|:
   exception article_46
-  # Normalement la règle suivante aurait du être une exception à l'étiquette
-  # "métropole". Cependant, la version de l'article 46 de l'arrêté du 27
-  # septembre 2019 en vigueur du 1er janvier 2020 au 31 décembre 2020 prévoit
-  # également dans le cas de l'outre-mer un remplacement du de la valeur de R0
-  # de l'article 15 dans le cas de une personne à charge. Pour faire exister
-  # cette règle plus précise valable uniquement pour Mayotte, nous la codons ici
-  # comme une exception au tableau de l'article 46 afin d'éviter le conflit
-  # entre deux règles qui s'activent en même temps.
-  définition abattement_forfaitaire_d823_17 sous condition
-    résidence sous forme Mayotte
+    # Normalement la règle suivante aurait du être une exception à l'étiquette
+    # "métropole". Cependant, la version de l'article 46 de l'arrêté du 27
+    # septembre 2019 en vigueur du 1er janvier 2020 au 31 décembre 2020 prévoit
+    # également dans le cas de l'outre-mer un remplacement du de la valeur de R0
+    # de l'article 15 dans le cas de une personne à charge. Pour faire exister
+    # cette règle plus précise valable uniquement pour Mayotte, nous la codons ici
+    # comme une exception au tableau de l'article 46 afin d'éviter le conflit
+    # entre deux règles qui s'activent en même temps.
+  définition abattement_forfaitaire_d823_17
+  sous condition résidence sous forme Mayotte
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -7225,13 +7369,14 @@ soixante-deux ans pour les assurés nés à compter du 1er janvier 1955.
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante < |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    date_naissance_assuré >= |1955-01-01|
-  conséquence égal à 62 an
+sous condition date_courante < |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition date_naissance_assuré >= |1955-01-01|
+  conséquence égal à
+    62 an
 
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante < |2023-09-01|:
+sous condition date_courante < |2023-09-01|:
   définition ouverture_droits_retraite.date_naissance_assuré égal à
     demandeur.date_naissance
   définition âge_l161_17_2_sécu égal à
@@ -7265,7 +7410,7 @@ de cinq années ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante < |2023-09-01|:
+sous condition date_courante < |2023-09-01|:
   définition âge_l351_8_1_sécu égal à âge_l161_17_2_sécu + 5 an
 ```
 
@@ -7320,10 +7465,11 @@ L'âge prévu au second alinéa de l'article L. 161-17-2 est fixé à :
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante < |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    date_naissance_assuré < |1951-07-01|
-  conséquence égal à 60 an
+sous condition date_courante < |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition date_naissance_assuré < |1951-07-01|
+  conséquence égal à
+    60 an
 ```
 
 2° Soixante ans et quatre mois pour les assurés nés entre le 1er juillet
@@ -7331,41 +7477,46 @@ champ d'application OuvertureDroitsRetraite
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante < |2023-09-01|:
-  définition âge_ouverture_droit sous condition
+sous condition date_courante < |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition
     date_naissance_assuré >= |1951-07-01|
     et date_naissance_assuré <= |1951-12-31|
-  conséquence égal à 60 an + 4 mois
+  conséquence égal à
+    60 an + 4 mois
 ```
 
 3° Soixante ans et neuf mois pour les assurés nés en 1952 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante < |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1952
-  conséquence égal à 60 an + 9 mois
+sous condition date_courante < |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1952
+  conséquence égal à
+    60 an + 9 mois
 ```
 
 4° Soixante et un ans et deux mois pour les assurés nés en 1953 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante < |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1953
-  conséquence égal à 61 an + 2 mois
+sous condition date_courante < |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1953
+  conséquence égal à
+    61 an + 2 mois
 ```
 
 5° Soixante et un ans et sept mois pour les assurés nés en 1954 ;
 
 ```catala
 champ d'application OuvertureDroitsRetraite
-  sous condition date_courante < |2023-09-01|:
-  définition âge_ouverture_droit sous condition
-    Date.accès_année de date_naissance_assuré = 1954
-  conséquence égal à 61 an + 7 mois
+sous condition date_courante < |2023-09-01|:
+  définition âge_ouverture_droit
+  sous condition Date.accès_année de date_naissance_assuré = 1954
+  conséquence égal à
+    61 an + 7 mois
 ```
 
 6° Soixante deux ans pour les assurés nés à compter du 1er janvier 1955.

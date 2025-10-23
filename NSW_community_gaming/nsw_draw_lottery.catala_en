@@ -44,7 +44,7 @@ scope GamingAuthorized:
   definition maxValueOfPrizes equals drawLottery.totalValueOfThePrizes <= $30,000
 
 scope GamingAuthorized:
-  rule authorized under condition
-    benefitingOrg and minimumProceeds and maxValueOfPrizes
+  rule authorized
+  under condition benefitingOrg and minimumProceeds and maxValueOfPrizes
   consequence fulfilled
 ```

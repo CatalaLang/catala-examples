@@ -1027,7 +1027,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
     + nombre de ménage.personnes_à_charge
 
   étiquette base
-  règle condition_logement_surface sous condition
+  règle condition_logement_surface
+  sous condition
     soit condition_logement_surface_minimale_sans_seuil_m_carrés égal à
       (
         selon ménage.situation_familiale sous forme
@@ -1039,13 +1040,15 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
         -- ConcubinageDontSéparéDeFait : 16
       )
       + (
-        ménage.nombre_autres_occupants_logement
-        + nombre de ménage.personnes_à_charge
-      )
-      * 9
+          ménage.nombre_autres_occupants_logement
+          + nombre de ménage.personnes_à_charge
+        )
+        * 9
     dans
-    si condition_logement_surface_minimale_sans_seuil_m_carrés >= 70
-      et nombre_personnes_logement >= 8 alors
+    si
+      condition_logement_surface_minimale_sans_seuil_m_carrés >= 70
+      et nombre_personnes_logement >= 8
+    alors
       (ménage.logement.surface_m_carrés >= 70)
     sinon
       (
@@ -1124,7 +1127,7 @@ habituellement au foyer :
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2023-09-01|:
+sous condition date_courante >= |2023-09-01|:
   définition personnes_à_charge_prises_en_compte égal à
     liste de personne_à_charge parmi ménage.personnes_à_charge
       tel que prise_en_compte_personne_à_charge de personne_à_charge
@@ -1136,14 +1139,15 @@ l'article L. 823-2 du présent code ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2023-09-01|:
+sous condition date_courante >= |2023-09-01|:
   # L'âge limite de 21 ans établi ici vient écraser la valeur de l'âge limite
   # prévue par L512-3 du CSS et définie par défaut par R512-2 du CSS.
   étiquette r823_4_enfants
   définition prestations_familiales.âge_l512_3_2 égal à 21 an
 
   étiquette r823_4_enfants
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge contenu enfant :
       # Pour être considéré à charge pour les aides personnelles au logement,
@@ -1178,46 +1182,48 @@ code ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  règle condition_2_r823_4 de personne_à_charge sous condition
+  règle condition_2_r823_4 de personne_à_charge
+  sous condition
     date_courante >= |2023-09-01|
     et selon personne_à_charge sous forme
-    -- EnfantÀCharge contenu enfant : faux
-    -- AutrePersonneÀCharge contenu parent :
-      parent.parenté = Ascendant
-      et parent.ressources
-      <= plafond_individuel_l815_9_sécu * 1,25
-      et (
-        # VERIF: parent.date_naissance + âge_l351_8_1_sécu est ambiguë,
-        # à détecter
-        (
-          parent.date_naissance
-          + âge_l351_8_1_sécu
-          <= date_courante
-          ou (
-            parent.titulaire_allocation_personne_âgée
-            et (
-              résultat de France.VérificationÂgeInférieurOuÉgalÀ avec {
-                -- date_naissance: parent.date_naissance
-                -- date_courante: date_courante
-                -- années: 65 an
-              }
-            ).est_inférieur_ou_égal
+      -- EnfantÀCharge contenu enfant : faux
+      -- AutrePersonneÀCharge contenu parent :
+        parent.parenté = Ascendant
+        et parent.ressources
+        <= plafond_individuel_l815_9_sécu * 1,25
+        et (
+          # VERIF: parent.date_naissance + âge_l351_8_1_sécu est ambiguë,
+          # à détecter
+          (
+            parent.date_naissance
+            + âge_l351_8_1_sécu
+            <= date_courante
+            ou (
+              parent.titulaire_allocation_personne_âgée
+              et (
+                  résultat de France.VérificationÂgeInférieurOuÉgalÀ avec {
+                    -- date_naissance: parent.date_naissance
+                    -- date_courante: date_courante
+                    -- années: 65 an
+                  }
+                ).est_inférieur_ou_égal
+            )
+          )
+          ou
+            # VERIF: parent.date_naissance + âge_l351_1_5_sécu est ambiguë,
+            # à détecter
+          (
+            parent.date_naissance
+            + âge_l351_1_5_sécu
+            <= date_courante
+            et parent.bénéficiaire_l161_19_l351_8_l643_3_sécu
           )
         )
-        ou
-        # VERIF: parent.date_naissance + âge_l351_1_5_sécu est ambiguë,
-        # à détecter
-        (
-          parent.date_naissance
-          + âge_l351_1_5_sécu
-          <= date_courante
-          et parent.bénéficiaire_l161_19_l351_8_l643_3_sécu
-        )
-      )
   conséquence rempli
 
   étiquette r823_4_2
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     # On utilise le si ... alors ... sinon pour éviter que l'appel de
     # la fonction "condition_2_r823_4" soit loggué deux fois lors
     # de l'évaluation des différentes justifications de l'arbre de défauts
@@ -1241,9 +1247,10 @@ au 31 décembre de l'année de référence multiplié par 1,25.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= |2023-09-01|:
+sous condition date_courante >= |2023-09-01|:
   exception r823_4_2
-  règle prise_en_compte_personne_à_charge de personne_à_charge sous condition
+  règle prise_en_compte_personne_à_charge de personne_à_charge
+  sous condition
     selon personne_à_charge sous forme
     -- EnfantÀCharge contenu enfant : faux
     -- AutrePersonneÀCharge contenu parent :
@@ -1254,7 +1261,7 @@ champ d'application ÉligibilitéAidesPersonnelleLogement
       )
       et parent.incapacité_80_pourcent_ou_restriction_emploi
       et parent.ressources
-      <= plafond_individuel_l815_9_sécu * 1,25
+        <= plafond_individuel_l815_9_sécu * 1,25
   conséquence rempli
 ```
 
@@ -1449,11 +1456,11 @@ champ d'application CalculAllocationLogement:
   définition aide_finale_formule égal à
     sous_calcul_traitement.aide_finale_formule
   définition traitement_aide_finale de arg égal à
-    (
-      sous_calcul_traitement.
-        Traitement_formule_aide_finale.traitement_aide_finale de
-        arg
-    )
+  (
+    sous_calcul_traitement.
+      Traitement_formule_aide_finale.traitement_aide_finale de
+      arg
+  )
 
 champ d'application CalculAidePersonnaliséeLogement:
   définition catégorie_calcul_apl égal à
@@ -1470,11 +1477,11 @@ champ d'application CalculAidePersonnaliséeLogement:
   définition aide_finale_formule égal à
     sous_calcul_traitement.aide_finale_formule
   définition traitement_aide_finale de arg égal à
-    (
-      sous_calcul_traitement.
-        Traitement_formule_aide_finale.traitement_aide_finale de
-        arg
-    )
+  (
+    sous_calcul_traitement.
+      Traitement_formule_aide_finale.traitement_aide_finale de
+      arg
+  )
 ```
 
 ```catala
@@ -1884,9 +1891,9 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   exception
   définition traitement_aide_finale
     de aide_finale état diminué
-  sous condition
-    bénéficiaire_aide_adulte_ou_enfant_handicapés
-  conséquence égal à aide_finale
+  sous condition bénéficiaire_aide_adulte_ou_enfant_handicapés
+  conséquence égal à
+    aide_finale
 
   assertion plafond_dégressivité_d823_16 >= plafond_loyer_d823_16_2 * 2,5
 ```
@@ -2105,7 +2112,8 @@ de la date d'emménagement.
 
 ```catala
 champ d'application ÉligibilitéPrimeDeDéménagement:
-  règle condition_rang_enfant sous condition
+  règle condition_rang_enfant
+  sous condition
     nombre de
       (
         liste de personne_à_charge parmi ménage.personnes_à_charge
@@ -2119,21 +2127,21 @@ champ d'application ÉligibilitéPrimeDeDéménagement:
     >= 3
   conséquence rempli
 
-  règle condition_période_déménagement sous condition
-    (
-      selon informations.date_naissance_troisième_enfant_ou_dernier_si_plus sous forme
-      -- MoinsDeTroisEnfants : faux
-      -- PlusDeTroisEnfants contenu date_naissance_ou_grossesse :
-        (
-          selon date_naissance_ou_grossesse sous forme
-          -- AvantPremierJourMoisCivilTroisièmeMoisDeGrossesse : faux
-          -- AprèsPremierJourMoisCivilTroisièmeMoisDeGrossesse : vrai
-          -- DateDeNaissance contenu date_naissance :
-            # VERIF: ambigü
-            date_courante
-            <= ((Date.premier_jour_du_mois de (date_naissance + 2 an))) + (-1 jour)
-        )
-    )
+  règle condition_période_déménagement
+  sous condition (
+    selon informations.date_naissance_troisième_enfant_ou_dernier_si_plus sous forme
+    -- MoinsDeTroisEnfants : faux
+    -- PlusDeTroisEnfants contenu date_naissance_ou_grossesse :
+      (
+        selon date_naissance_ou_grossesse sous forme
+        -- AvantPremierJourMoisCivilTroisièmeMoisDeGrossesse : faux
+        -- AprèsPremierJourMoisCivilTroisièmeMoisDeGrossesse : vrai
+        -- DateDeNaissance contenu date_naissance :
+          # VERIF: ambigü
+          date_courante
+          <= ((Date.premier_jour_du_mois de (date_naissance + 2 an))) + (-1 jour)
+      )
+  )
   conséquence rempli
 
   définition délai_après_emménagement_l823_8_2 égal à 6 mois
@@ -2236,14 +2244,14 @@ brut du loyer et des charges.
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéLoyer:
+sous condition mode_occupation_impayé sous forme ImpayéLoyer:
   définition montant_impayé égal à
     si montant_dette >= seuil_impayé_dépense_de_logement alors
       montant_dette
     sinon 0€
 
-  définition seuil_impayé_dépense_de_logement sous condition
-    aide_versée sous forme Bénéficiaire
+  définition seuil_impayé_dépense_de_logement
+  sous condition aide_versée sous forme Bénéficiaire
   conséquence égal à
     selon dépense_logement_brute sous forme
     -- Loyer contenu loyer_brut : (loyer_brut + montant_charges) * 2,0
@@ -2258,9 +2266,9 @@ d'une somme au moins égale à deux fois le montant mensuel net du loyer et des 
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéLoyer:
-  définition seuil_impayé_dépense_de_logement sous condition
-    aide_versée sous forme Bailleur
+sous condition mode_occupation_impayé sous forme ImpayéLoyer:
+  définition seuil_impayé_dépense_de_logement
+  sous condition aide_versée sous forme Bailleur
   conséquence égal à
     selon dépense_logement_nette sous forme
     -- Loyer contenu loyer_net : (loyer_net + montant_charges) * 2,0
@@ -2274,7 +2282,7 @@ Le montant mensuel brut du loyer correspond au loyer figurant dans le bail.
 ```catala
 # Il n'y a pas de montant de charge brut/net
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéLoyer:
+sous condition mode_occupation_impayé sous forme ImpayéLoyer:
   définition dépense_logement_brute égal à dépense_logement
 ```
 
@@ -2283,7 +2291,7 @@ montant de l'aide personnelle au logement.
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéLoyer:
+sous condition mode_occupation_impayé sous forme ImpayéLoyer:
   définition dépense_logement_nette égal à
     selon dépense_logement_brute sous forme
     -- Loyer contenu montant_loyer : Loyer contenu (montant_loyer - montant_apl)
@@ -2301,7 +2309,7 @@ champ d'application ImpayéDépenseLogement
 ```
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéPrêt:
+sous condition mode_occupation_impayé sous forme ImpayéPrêt:
 
   définition montant_impayé égal à
     si montant_dette >= seuil_impayé_dépense_de_logement alors
@@ -2324,10 +2332,10 @@ sixième du total annuel des échéances de prêt brutes ;
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéPrêt:
+sous condition mode_occupation_impayé sous forme ImpayéPrêt:
 
-  définition seuil_impayé_dépense_de_logement sous condition
-    aide_versée sous forme Bénéficiaire
+  définition seuil_impayé_dépense_de_logement
+  sous condition aide_versée sous forme Bénéficiaire
   conséquence égal à
     selon dépense_logement_brute sous forme
     -- Loyer : 0€ # Ne devrait pas arriver
@@ -2350,10 +2358,10 @@ total annuel des échéances de prêt nettes.
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéPrêt:
+sous condition mode_occupation_impayé sous forme ImpayéPrêt:
 
-  définition seuil_impayé_dépense_de_logement sous condition
-    aide_versée sous forme ÉtablissementHabilité
+  définition seuil_impayé_dépense_de_logement
+  sous condition aide_versée sous forme ÉtablissementHabilité
   conséquence égal à
     selon dépense_logement_nette sous forme
     -- Loyer : 0€ # ne devrait pas arriver
@@ -2366,7 +2374,7 @@ L'échéance de prêt brute correspond à celle figurant dans le contrat de prê
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéPrêt:
+sous condition mode_occupation_impayé sous forme ImpayéPrêt:
   définition dépense_logement_brute égal à dépense_logement
 ```
 
@@ -2375,7 +2383,7 @@ personnelle au logement.
 
 ```catala
 champ d'application ImpayéDépenseLogement
-  sous condition mode_occupation_impayé sous forme ImpayéPrêt:
+sous condition mode_occupation_impayé sous forme ImpayéPrêt:
   définition dépense_logement_nette égal à
     selon dépense_logement sous forme
     -- Loyer contenu loyer : Loyer contenu loyer # ne devrait pas arriver
@@ -3038,7 +3046,8 @@ par l'article D. 331-64.
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  règle caractéristiques_prêt_l831_1_1 de prêt sous condition
+  règle caractéristiques_prêt_l831_1_1 de prêt
+  sous condition
     prêt.titulaire_prêt sous forme Demandeur
     et (
       prêt.type_prêt sous forme D331_32
@@ -3075,7 +3084,8 @@ défini par les articles D. 331-76-1 et suivants et que ce dernier supporte les 
 
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  règle caractéristiques_prêt_l831_1_1 de prêt sous condition
+  règle caractéristiques_prêt_l831_1_1 de prêt
+  sous condition
     prêt.titulaire_prêt sous forme VendeurQuandDemandeurAContratLocationAccession
     et (
       prêt.type_prêt sous forme D331_59_8
@@ -3441,8 +3451,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
   exception
   définition plafond_mensualité_d832_10_3
     état base
-  sous condition
-    local_habité_première_fois_bénéficiaire
+  sous condition local_habité_première_fois_bénéficiaire
   conséquence égal à
     soit plafond_signature égal à
       calcul_plafond_mensualité_d832_10_3 de date_signature_prêt
@@ -3471,7 +3480,8 @@ selon la date de signature du contrat de prêt ou de location-accession ;
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
-  définition mensualité_minimale sous condition
+  définition mensualité_minimale
+  sous condition
     type_travaux_logement sous forme TravauxPourAcquisitionD832_15_1
     ou
     # Comment interpetéter le R832-5 dans
@@ -3505,7 +3515,8 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
             si
             # Pour la tranche supérieure
               ressources_ménage_arrondies
-              >= (montant_limite_tranches_d832_15_1 * n_nombre_parts_d832_11) alors
+              >= (montant_limite_tranches_d832_15_1 * n_nombre_parts_d832_11)
+            alors
               (
                 (
                   ressources_ménage_arrondies
@@ -3519,7 +3530,8 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
             si
             # Pour la tranche inférieure
               ressources_ménage_arrondies
-              <= montant_limite_tranches_d832_15_1 * n_nombre_parts_d832_11 alors
+              <= montant_limite_tranches_d832_15_1 * n_nombre_parts_d832_11
+            alors
               ressources_ménage_arrondies * taux_tranche_inférieure_d832_15_1
             sinon
               (
@@ -3540,8 +3552,8 @@ charges " E0 ".
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
-  définition mensualité_minimale sous condition
-    type_travaux_logement sous forme TravauxSurLogementDéjàAcquisD832_15_2
+  définition mensualité_minimale
+  sous condition type_travaux_logement sous forme TravauxSurLogementDéjàAcquisD832_15_2
   conséquence égal à
     calcul_équivalence_loyer_minimale.montant
 
@@ -3591,8 +3603,8 @@ alinéas du même article.
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
   exception
-  définition dépense_nette_minimale_d832_10 de allocation_mensuelle sous condition
-    date_signature_prêt >= |1999-06-30|
+  définition dépense_nette_minimale_d832_10 de allocation_mensuelle
+  sous condition date_signature_prêt >= |1999-06-30|
   conséquence égal à
     mensualité_principale + montant_forfaitaire_charges_d832_10
     - allocation_mensuelle
@@ -3615,13 +3627,15 @@ différence constatée.
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
   définition
-    abattement_dépense_nette_minimale_d832_10
-    de allocation_mensuelle égal à
+    abattement_dépense_nette_minimale_d832_10 de allocation_mensuelle
+  égal à
     soit dépense_nette_minimale égal à
       dépense_nette_minimale_d832_10 de allocation_mensuelle
     dans
-    si dépense_nette_minimale
-      <= ressources_ménage_avec_d832_18 * coefficient_multiplicateur_d832_17_3 alors
+    si
+      dépense_nette_minimale
+      <= ressources_ménage_avec_d832_18 * coefficient_multiplicateur_d832_17_3
+    alors
       ressources_ménage_avec_d832_18 * coefficient_multiplicateur_d832_17_3
       - dépense_nette_minimale
     sinon
@@ -3648,16 +3662,19 @@ et R. 822-13 à R. 822-17 .
 # Non, selon réponse de DGALN/DHUP/FE4 du 25/05/2022.
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
   définition ressources_ménage_avec_d832_18 égal à
-    si ressources_ménage_arrondies
+    si
+      ressources_ménage_arrondies
       <= mensualité_principale
-      * coefficient_multiplicateur_d832_18 alors
+      * coefficient_multiplicateur_d832_18
+    alors
       mensualité_principale * coefficient_multiplicateur_d832_18
     sinon ressources_ménage_arrondies
 
   exception
-  définition ressources_ménage_avec_d832_18 sous condition
-    situation_r822_11_13_17
-  conséquence égal à ressources_ménage_arrondies
+  définition ressources_ménage_avec_d832_18
+  sous condition situation_r822_11_13_17
+  conséquence égal à
+    ressources_ménage_arrondies
 ```
 
 ####### Article D832-19 | LEGIARTI000038878728
@@ -3707,7 +3724,8 @@ déclaration énumération TypeLogementFoyer:
 # "Autre" soient bien exclus de l'éligibilité à l'APL.
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   exception logement_foyer
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer contenu logement_foyer :
       logement_foyer.type_logement sous forme TypeLogementFoyer.Autre
@@ -3766,7 +3784,8 @@ remplacée par la convention prévue au III de l'article R. 353-159 .
 ```catala
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
   étiquette logement_foyer
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer contenu logement_foyer :
       logement_foyer.remplit_conditions_r832_21
@@ -3934,9 +3953,9 @@ champ d'application CalculAidePersonnaliséeLogementFoyer:
       et date_conventionnement >= |1990-09-30|
     )
     ou selon type_logement_foyer sous forme
-    -- RésidenceSociale :
-      date_conventionnement >= |1994-12-31|
-    -- n'importe quel : faux
+      -- RésidenceSociale :
+        date_conventionnement >= |1994-12-31|
+      -- n'importe quel : faux
 ```
 
 1°
@@ -4055,8 +4074,7 @@ champ d'application CalculAidePersonnaliséeLogementFoyer:
   exception
   définition coefficient_prise_en_charge_d832_25
     état formule
-  sous condition
-    condition_2_du_832_25
+  sous condition condition_2_du_832_25
   conséquence égal à
     0,90
     - (
@@ -4074,8 +4092,7 @@ champ d'application CalculAidePersonnaliséeLogementFoyer:
   exception
   définition coefficient_prise_en_charge_d832_25
     état coeff_arrondi
-  sous condition
-    condition_2_du_832_25
+  sous condition condition_2_du_832_25
   conséquence égal à
     (
       arrondi de
@@ -4088,8 +4105,7 @@ champ d'application CalculAidePersonnaliséeLogementFoyer:
   exception
   définition coefficient_prise_en_charge_d832_25
     état seuil
-  sous condition
-    condition_2_du_832_25
+  sous condition condition_2_du_832_25
   conséquence égal à
     si coefficient_prise_en_charge_d832_25 >= 0,90 alors 0,90
     sinon
@@ -4117,8 +4133,8 @@ majoration par personne à charge supplémentaire	             0,5
 ```catala
 champ d'application CalculNombrePartLogementFoyer:
   exception
-  définition n_nombre_parts_d832_25_base sous condition
-    condition_2_du_832_25
+  définition n_nombre_parts_d832_25_base
+  sous condition condition_2_du_832_25
   conséquence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
@@ -4135,8 +4151,8 @@ champ d'application CalculNombrePartLogementFoyer:
       4,3
 
   étiquette d832_25_2 exception d832_25_1
-  définition n_nombre_parts_d832_25_majoration sous condition
-    condition_2_du_832_25
+  définition n_nombre_parts_d832_25_majoration
+  sous condition condition_2_du_832_25
   conséquence égal à
     si nombre_personnes_à_charge > 4 alors
       0,5 * (décimal de (nombre_personnes_à_charge - 4))
@@ -4207,7 +4223,7 @@ champ d'application CalculÉquivalenceLoyerMinimale:
             )
           )
           + décimal de montant_forfaitaire_d832_26
-          * n_nombre_parts_d832_25
+            * n_nombre_parts_d832_25
         )
         / 12,0
       )
@@ -4225,8 +4241,8 @@ douze.
 ```catala
 champ d'application CalculÉquivalenceLoyerMinimale:
   exception
-  définition montant sous condition
-    condition_2_du_832_25
+  définition montant
+  sous condition condition_2_du_832_25
   conséquence égal à
     soit ressources_ménage_arrondies égal à
       décimal de ressources_ménage_arrondies
@@ -4279,13 +4295,13 @@ l'aide est égal à la différence constatée.
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer:
   définition
-    dépense_nette_minimale_d832_27
-    de allocation_mensuelle égal à
+    dépense_nette_minimale_d832_27 de allocation_mensuelle
+  égal à
     équivalence_loyer_éligible - allocation_mensuelle
 
   définition
-    abattement_dépense_nette_minimale_d832_27
-    de allocation_mensuelle égal à
+    abattement_dépense_nette_minimale_d832_27 de allocation_mensuelle
+  égal à
     soit dépense_nette_minimale égal à
       dépense_nette_minimale_d832_27 de allocation_mensuelle
     dans
@@ -4446,7 +4462,8 @@ du 3° de l'article L. 823-1 .
 
 ```catala
 champ d'application CalculAllocationLogementLocatif
-  sous condition selon changement_logement_d842_4 sous forme
+sous condition
+  selon changement_logement_d842_4 sous forme
   -- Changement contenu infos :
     loyer_principal >= infos.ancien_loyer_principal
   -- PasDeChangement : faux:
@@ -4480,7 +4497,8 @@ L'allocation de logement est accordée au titre de la résidence principale :
 # article.
 # TODO juridique: vérifier si cela s'applique à la location-accession ou pas
 champ d'application ÉligibilitéAllocationLogement:
-  règle condition_accession_propriété sous condition
+  règle condition_accession_propriété
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- AccessionPropriétéLocalUsageExclusifHabitation : faux
     -- n'importe quel : vrai
@@ -4511,7 +4529,8 @@ conditions de décence ;
 # les travaux arrivent ultérieurement, dans ce cas c’est le 2°."
 champ d'application ÉligibilitéAllocationLogement:
   exception
-  règle condition_accession_propriété sous condition
+  règle condition_accession_propriété
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.titulaire_prêt sous forme Demandeur
@@ -4529,7 +4548,8 @@ figurant sur la liste mentionnée à l'article R. 321-15 ;
 ```catala
 champ d'application ÉligibilitéAllocationLogement:
   exception
-  règle condition_accession_propriété sous condition
+  règle condition_accession_propriété
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.titulaire_prêt sous forme Demandeur
@@ -4546,7 +4566,8 @@ mentionnés à l'article D. 331-63 .
 ```catala
 champ d'application ÉligibilitéAllocationLogement:
   exception
-  règle condition_accession_propriété sous condition
+  règle condition_accession_propriété
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- AccessionPropriétéLocalUsageExclusifHabitation contenu propriétaire :
       propriétaire.prêt.titulaire_prêt sous forme Demandeur
@@ -4768,8 +4789,8 @@ pour la première fois par l'allocataire.
 # le local est habité pour la première fois par le bénéficiaire.
 champ d'application CalculAllocationLogementAccessionPropriété:
   exception
-  définition plafond_mensualité_d842_6 sous condition
-    local_habité_première_fois_bénéficiaire
+  définition plafond_mensualité_d842_6
+  sous condition local_habité_première_fois_bénéficiaire
   conséquence égal à
     soit plafond_signature égal à
       calcul_plafond_mensualité_d842_6 de
@@ -4824,8 +4845,8 @@ des charges, le montant mensuel de l'allocation calculé selon les dispositions 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
   définition
-    dépense_nette_minimale
-    de allocation_mensuelle égal à
+    dépense_nette_minimale de allocation_mensuelle
+  égal à
     charges_mensuelles_prêt + montant_forfaitaire_charges
     - allocation_mensuelle
 ```
@@ -4837,8 +4858,8 @@ constatée.
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
   définition
-    abattement_dépense_nette_minimale
-    de allocation_mensuelle égal à
+    abattement_dépense_nette_minimale de allocation_mensuelle
+  égal à
     soit dépense_nette_minimale égal à
       dépense_nette_minimale de allocation_mensuelle
     dans
@@ -4858,7 +4879,8 @@ par arrêté.
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
-  règle condition_d842_11_3 sous condition
+  règle condition_d842_11_3
+  sous condition
     (
       type_travaux_logement sous forme TypeTravauxLogementR842_5.PasDeTravaux
       ou type_travaux_logement sous forme ObjectifDécenceLogement
@@ -4868,8 +4890,8 @@ champ d'application CalculAllocationLogementAccessionPropriété:
   conséquence rempli
 
   exception
-  définition seuil_minimal_dépense_nette_minimale sous condition
-    condition_d842_11_3
+  définition seuil_minimal_dépense_nette_minimale
+  sous condition condition_d842_11_3
   conséquence égal à
     ressources_ménage_arrondies * coefficient_d842_11
 ```
@@ -4890,21 +4912,21 @@ de l'article R. 842-5 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
-  définition seuil_minimal_ressources_ménage sous condition
+  définition seuil_minimal_ressources_ménage
+  sous condition (
     (
-      (
-        date_signature_prêt >= |1992-09-30|
-        et date_signature_prêt <= |1994-09-30|
-      )
-      ou (
-        date_signature_prêt > |1994-09-30|
-        et (
-          type_travaux_logement sous forme TypeTravauxLogementR842_5.PasDeTravaux
-          ou type_travaux_logement sous forme ObjectifDécenceLogement
-          ou type_travaux_logement sous forme AgrandirOuRendreHabitableD331_63
-        )
+      date_signature_prêt >= |1992-09-30|
+      et date_signature_prêt <= |1994-09-30|
+    )
+    ou (
+      date_signature_prêt > |1994-09-30|
+      et (
+        type_travaux_logement sous forme TypeTravauxLogementR842_5.PasDeTravaux
+        ou type_travaux_logement sous forme ObjectifDécenceLogement
+        ou type_travaux_logement sous forme AgrandirOuRendreHabitableD331_63
       )
     )
+  )
   conséquence égal à
     mensualité_principale * coefficient_d842_12
 ```
@@ -4915,7 +4937,8 @@ l'article R. 842-5 ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
-  définition seuil_minimal_ressources_ménage sous condition
+  définition seuil_minimal_ressources_ménage
+  sous condition
     date_signature_prêt > |1994-09-30|
     et type_travaux_logement sous forme PrévuDansListeR321_15
   conséquence égal à
@@ -4941,8 +4964,7 @@ champ d'application CalculAllocationLogementAccessionPropriété:
   exception
   définition ressources_ménage_arrondies
     état seuil
-  sous condition
-    situation_r822_11_13_17
+  sous condition situation_r822_11_13_17
   conséquence égal à
     ressources_ménage_arrondies
 ```
@@ -4970,7 +4992,8 @@ application du III de l'article 12 de la loi n° 57-908 du 7 août 1957 tendant
 
 ```catala
 champ d'application ÉligibilitéAllocationLogement
-  sous condition selon ménage.logement.mode_occupation sous forme
+sous condition
+  selon ménage.logement.mode_occupation sous forme
   -- RésidentLogementFoyer contenu logement_foyer :
     logement_foyer.construit_application_loi_1957_12_III
   -- n'importe quel : faux:
@@ -5188,10 +5211,12 @@ le montant mensuel de l'aide est égal à la différence constatée.
 ```catala
 champ d'application CalculAllocationLogementFoyer:
   définition
-    abattement_dépense_nette_minimale
-    de allocation_mensuelle égal à
-    si dépense_nette_minimale de allocation_mensuelle
-      < montant_minimal_dépense_nette_d842_17 alors
+    abattement_dépense_nette_minimale de allocation_mensuelle
+  égal à
+    si
+      dépense_nette_minimale de allocation_mensuelle
+      < montant_minimal_dépense_nette_d842_17
+    alors
       montant_minimal_dépense_nette_d842_17
       - dépense_nette_minimale de allocation_mensuelle
     sinon
@@ -5485,14 +5510,16 @@ plus de deux personnes.
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   étiquette r_844_4 exception base
-  règle condition_logement_surface sous condition
+  règle condition_logement_surface
+  sous condition
     ménage.personnes_âgées_handicapées_foyer_r844_4
     et ménage.logement.surface_m_carrés
-    >= (si nombre_personnes_logement = 1 alors 9 sinon 16)
+      >= (si nombre_personnes_logement = 1 alors 9 sinon 16)
   conséquence rempli
 
   exception r_844_4
-  règle condition_logement_surface sous condition
+  règle condition_logement_surface
+  sous condition
     ménage.personnes_âgées_handicapées_foyer_r844_4
     et nombre_personnes_logement > 2
   conséquence non rempli
@@ -5566,7 +5593,8 @@ personnes et plus.
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   exception base
-  règle condition_logement_surface sous condition
+  règle condition_logement_surface
+  sous condition
     ménage.résidence sous forme Mayotte
     et soit condition_logement_surface_minimale_sans_seuil_m_carrés égal à
       (
@@ -5579,13 +5607,15 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
         -- ConcubinageDontSéparéDeFait : 13
       )
       + (
-        ménage.nombre_autres_occupants_logement
-        + nombre de ménage.personnes_à_charge
-      )
-      * 9
+          ménage.nombre_autres_occupants_logement
+          + nombre de ménage.personnes_à_charge
+        )
+        * 9
     dans
-    si condition_logement_surface_minimale_sans_seuil_m_carrés >= 54
-      et nombre_personnes_logement >= 9 alors
+    si
+      condition_logement_surface_minimale_sans_seuil_m_carrés >= 54
+      et nombre_personnes_logement >= 9
+    alors
       (ménage.logement.surface_m_carrés >= 54)
     sinon
       (
@@ -5713,10 +5743,10 @@ s'appliquent aux contributions et aux prestations dues à compter du 1er janvier
 
 ```catala
 champ d'application ÉligibilitéPrimeDeDéménagement
-  sous condition date_courante >= |2022-01-01|:
+sous condition date_courante >= |2022-01-01|:
   exception
-  règle éligibilité sous condition
-    ménage.résidence sous forme Mayotte
+  règle éligibilité
+  sous condition ménage.résidence sous forme Mayotte
   conséquence non rempli
 ```
 
@@ -5732,9 +5762,10 @@ logements très sociaux, en accession à la propriété aidée par l'Etat ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-04-05|:
+sous condition date_courante >= |2023-04-05|:
   exception
-  règle condition_d842_11_3 sous condition
+  règle condition_d842_11_3
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5767,9 +5798,10 @@ du 2° de l'article D. 832-25 est limitée à six enfants ;
 # Ici nous reprenons les chiffres de D832-25, à prendre en compte lorsque
 # ceux-ci seront modifiés
 champ d'application CalculNombrePartLogementFoyer
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
   exception d832_25_2
-  définition n_nombre_parts_d832_25_majoration sous condition
+  définition n_nombre_parts_d832_25_majoration
+  sous condition
     limitation_majoration_personnes_à_charge
     et nombre_personnes_à_charge > 6
   conséquence égal à
@@ -5784,9 +5816,9 @@ champ d'application CalculNombrePartLogementFoyer
 # "limitation_majoration_personnes_à_charge" similaire qui déclenche celle de
 # CalculNombrePartLogementFoyer. C'est ce que nous faisons ci-dessous.
 champ d'application CalculAidePersonnaliséeLogementFoyer
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
-  règle calcul_nombre_parts.limitation_majoration_personnes_à_charge sous condition
-    limitation_majoration_personnes_à_charge
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+  règle calcul_nombre_parts.limitation_majoration_personnes_à_charge
+  sous condition limitation_majoration_personnes_à_charge
   conséquence rempli
 
 # Maintenant que nous avons défini notre point d'entrée dans
@@ -5794,8 +5826,9 @@ champ d'application CalculAidePersonnaliséeLogementFoyer
 # CalculAllocationLogementAccessionPropriété à la manière de D842-6.
 # C'est chose faite ci-dessous.
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
-  règle calcul_apl_logement_foyer.limitation_majoration_personnes_à_charge sous condition
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+  règle calcul_apl_logement_foyer.limitation_majoration_personnes_à_charge
+  sous condition
     selon résidence sous forme
     -- Guadeloupe : vrai
     -- Guyane : vrai
@@ -5812,9 +5845,10 @@ logements très sociaux, en accession à la propriété aidée par l'Etat ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
   exception
-  règle condition_d842_11_3 sous condition
+  règle condition_d842_11_3
+  sous condition
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
@@ -5841,8 +5875,9 @@ du 2° de l'article D. 832-25 est limitée à six enfants.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
-  règle calcul_apl_logement_foyer.limitation_majoration_personnes_à_charge sous condition
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+  règle calcul_apl_logement_foyer.limitation_majoration_personnes_à_charge
+  sous condition
     selon résidence sous forme
     -- Guadeloupe : vrai
     -- Guyane : vrai
@@ -5874,17 +5909,18 @@ fixé à vingt-deux ans.
 # s'appliquerait qu'aux AL.
 champ d'application ÉligibilitéAidesPersonnelleLogement:
   exception r823_4_enfants
-  définition prestations_familiales.âge_l512_3_2 sous condition
-    (
-      selon ménage.résidence sous forme
-      -- Guadeloupe : vrai
-      -- Guyane : vrai
-      -- Martinique : vrai
-      -- LaRéunion : vrai
-      -- Mayotte : vrai
-      -- n'importe quel : faux
-    )
-  conséquence égal à 22 an
+  définition prestations_familiales.âge_l512_3_2
+  sous condition (
+    selon ménage.résidence sous forme
+    -- Guadeloupe : vrai
+    -- Guyane : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- n'importe quel : faux
+  )
+  conséquence égal à
+    22 an
 ```
 
 ###### Article D861-10 | LEGIARTI000047985420
@@ -5943,16 +5979,18 @@ Pour leur application en Guadeloupe, en Guyane, en Martinique, à La Réunion et
 # janvier 1995. On vient donc raffiner la condition d'exclusion de
 # "condition_logement_bailleur".
 champ d'application ÉligibilitéAidePersonnaliséeLogement
-  sous condition date_courante >= |2023-04-05|
+sous condition
+  date_courante >= |2023-04-05|
   et selon ménage.résidence sous forme
-  -- Guadeloupe : vrai
-  -- Guyane : vrai
-  -- Martinique : vrai
-  -- LaRéunion : vrai
-  -- Mayotte : vrai
-  -- n'importe quel : faux:
+    -- Guadeloupe : vrai
+    -- Guyane : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- n'importe quel : faux:
   exception logement_foyer
-  règle condition_logement_bailleur sous condition
+  règle condition_logement_bailleur
+  sous condition
     selon ménage.logement.mode_occupation sous forme
     -- RésidentLogementFoyer contenu logement_foyer :
       logement_foyer.type_logement sous forme FoyerJeunesTravailleursOuMigrantsConventionnéL353_2Avant1995
@@ -6007,14 +6045,15 @@ Pour leur application en Guadeloupe, en Guyane, en Martinique, à La Réunion et
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer
-  sous condition date_courante >= |2023-04-05|
+sous condition
+  date_courante >= |2023-04-05|
   et selon résidence sous forme
-  -- Guadeloupe : vrai
-  -- Guyane : vrai
-  -- Martinique : vrai
-  -- LaRéunion : vrai
-  -- Mayotte : vrai
-  -- n'importe quel : faux:
+    -- Guadeloupe : vrai
+    -- Guyane : vrai
+    -- Martinique : vrai
+    -- LaRéunion : vrai
+    -- Mayotte : vrai
+    -- n'importe quel : faux:
   exception
   définition condition_2_du_832_25 égal à
     faux
@@ -6089,15 +6128,17 @@ présent code " ;
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement
-  sous condition date_courante >= date_entrée_vigueur_différée_cch:
+sous condition date_courante >= date_entrée_vigueur_différée_cch:
 
   exception r823_4_enfants
-  définition prestations_familiales.âge_l512_3_2 sous condition
+  définition prestations_familiales.âge_l512_3_2
+  sous condition
     selon ménage.résidence sous forme
     -- SaintBarthélemy : vrai
     -- SaintMartin : vrai
     -- n'importe quel : faux
-  conséquence égal à 22 an
+  conséquence égal à
+    22 an
 ```
 
 3° Au 2° de l'article R. 823-11 , les mots : " définies au I de l'article L. 521-2 du
@@ -6146,8 +6187,8 @@ champ d'application ÉligibilitéAidesPersonnelleLogement:
   définition date_entrée_vigueur_différée_cch égal à |2021-01-01|
 
 champ d'application ÉligibilitéAidePersonnaliséeLogement:
-  définition éligibilité_commune.date_entrée_vigueur_différée_cch sous condition
-    ménage.logement.mode_occupation sous forme AccessionPropriétéLocalUsageExclusifHabitation
+  définition éligibilité_commune.date_entrée_vigueur_différée_cch
+  sous condition ménage.logement.mode_occupation sous forme AccessionPropriétéLocalUsageExclusifHabitation
   conséquence égal à
     |2021-05-01|
 ```
@@ -6288,9 +6329,10 @@ logements très sociaux, en accession à la propriété aidée par l'Etat ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2023-04-05|:
+sous condition date_courante >= |2023-04-05|:
   exception
-  règle condition_d842_11_3 sous condition
+  règle condition_d842_11_3
+  sous condition
     (
       selon résidence sous forme
       -- SaintBarthélemy : vrai
@@ -6323,8 +6365,9 @@ au d du 2° de l'article D. 832-25 est limitée à six enfants ;
 ```catala
 # Dispositif déjà codé dans D861-8, ici on l'active succintement.
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
-  règle calcul_apl_logement_foyer.limitation_majoration_personnes_à_charge sous condition
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+  règle calcul_apl_logement_foyer.limitation_majoration_personnes_à_charge
+  sous condition
     selon résidence sous forme
     -- SaintBarthélemy : vrai
     -- SaintMartin : vrai
@@ -6338,9 +6381,10 @@ logements très sociaux, en accession à la propriété aidée par l'Etat ;
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-  sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
+sous condition date_courante >= |2019-09-01| et date_courante < |2023-04-05|:
   exception
-  règle condition_d842_11_3 sous condition
+  règle condition_d842_11_3
+  sous condition
     (
       selon résidence sous forme
       -- SaintBarthélemy : vrai
@@ -6764,11 +6808,11 @@ D. 823-19 et par les règles particulières figurant aux articles D. 842-1 à D.
 # personnalisée au logement.
 
 champ d'application CalculAllocationLogement
-  sous condition résidence sous forme SaintPierreEtMiquelon:
+sous condition résidence sous forme SaintPierreEtMiquelon:
 
   exception
-  définition sous_calcul_traitement sous condition
-    catégorie_calcul_apl sous forme LogementFoyer
+  définition sous_calcul_traitement
+  sous condition catégorie_calcul_apl sous forme LogementFoyer
   conséquence égal à
     selon catégorie_calcul_apl sous forme
     -- LogementFoyer contenu logement_foyer_ :
@@ -6830,7 +6874,8 @@ champ d'application CalculAllocationLogement
 déclaration traitement_nul_tout_le_temps
   contenu argent
   dépend de aide_finale contenu argent
-  égal à 0€
+  égal à
+    0€
 ```
 
 2° Au 5° de l'article D. 823-17, les mots : “ en fonction de l'évolution de l'indice des

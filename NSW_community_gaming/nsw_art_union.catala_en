@@ -62,7 +62,7 @@ scope GamingAuthorized:
   definition authority equals artUnion.holdsAuthority
 
 scope GamingAuthorized:
-  rule authorized under condition
-    minimumProceeds and benefitingOrg and valueOfPrizes and separatePrizeMaxValue and authority
+  rule authorized
+  under condition minimumProceeds and benefitingOrg and valueOfPrizes and separatePrizeMaxValue and authority
   consequence fulfilled
 ```

@@ -28,7 +28,8 @@ déclaration structure RésultatImputation:
 #      où l'on a diminué le déficit du montant imputé sur le revenu.
 déclaration imputation_aux_déficits_les_plus_anciens
   contenu RésultatImputation
-  dépend de revenu_déclaré contenu argent,
+  dépend de
+    revenu_déclaré contenu argent,
     déficits_antérieurs contenu liste de DéficitAntérieur
 ```
 
@@ -71,14 +72,16 @@ déclaration imputation_aux_déficits_les_plus_anciens
 #    uniformément possible dans la liste d'éléments.
 déclaration prorata_arrondi_euro
   contenu liste de argent
-  dépend de montant_à_distribuer contenu argent,
+  dépend de
+    montant_à_distribuer contenu argent,
     bases_prorata contenu liste de argent
 ```
 
 ```catala-metadata
 déclaration prorata_arrondi_euro_listes
   contenu liste de liste de argent
-  dépend de montant_à_distribuer contenu argent,
+  dépend de
+    montant_à_distribuer contenu argent,
     bases_prorata contenu liste de liste de argent
 ```
 
@@ -105,7 +108,8 @@ déclaration structure RésultatProRataArrondiEuroBranchement:
 
 déclaration prorata_arrondi_euro_branchement
   contenu RésultatProRataArrondiEuroBranchement
-  dépend de montant_à_distribuer contenu argent,
+  dépend de
+    montant_à_distribuer contenu argent,
     base_prorata_1 contenu optionnel de argent,
     base_prorata_2 contenu optionnel de argent,
     base_prorata_3 contenu optionnel de argent,

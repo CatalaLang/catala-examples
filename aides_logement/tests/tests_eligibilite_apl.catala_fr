@@ -18,12 +18,15 @@ champ d'application Exemple1:
     AL.Ménage {
       -- résidence: Métropole
       -- prestations_reçues:
-        [ AL.PrestationReçue.AllocationSoutienEnfantHandicapé ;
-          AL.PrestationReçue.ComplémentFamilial ;
-          AL.PrestationReçue.AllocationsFamiliales ]
+        [
+          AL.PrestationReçue.AllocationSoutienEnfantHandicapé;
+          AL.PrestationReçue.ComplémentFamilial;
+          AL.PrestationReçue.AllocationsFamiliales
+        ]
       -- situation_familiale: Mariés contenu |2010-11-26|
       -- personnes_à_charge:
-        [ EnfantÀCharge contenu (
+        [
+          EnfantÀCharge contenu (
             AL.EnfantÀCharge {
               -- nationalité: Française
               -- identifiant: 0
@@ -34,7 +37,8 @@ champ d'application Exemple1:
               -- obligation_scolaire: Prestations_familiales.SituationObligationScolaire.Après
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          ) ; EnfantÀCharge contenu (
+          );
+          EnfantÀCharge contenu (
             AL.EnfantÀCharge {
               -- nationalité: Française
               -- identifiant: 1
@@ -45,7 +49,8 @@ champ d'application Exemple1:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          ) ; EnfantÀCharge contenu (
+          );
+          EnfantÀCharge contenu (
             AL.EnfantÀCharge {
               -- nationalité: Française
               -- identifiant: 2
@@ -56,7 +61,8 @@ champ d'application Exemple1:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          ) ]
+          )
+        ]
       -- logement:
         AL.Logement {
           -- zone: Zone1
@@ -116,7 +122,8 @@ champ d'application Exemple2:
         [ AL.PrestationReçue.AllocationsFamiliales ]
       -- situation_familiale: Concubins
       -- personnes_à_charge:
-        [ EnfantÀCharge contenu (
+        [
+          EnfantÀCharge contenu (
             AL.EnfantÀCharge {
               -- identifiant: 0
               -- nationalité: Française
@@ -127,7 +134,8 @@ champ d'application Exemple2:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          ) ; EnfantÀCharge contenu (
+          );
+          EnfantÀCharge contenu (
             AL.EnfantÀCharge {
               -- nationalité: Française
               -- études_apprentissage_stage_formation_pro_impossibilité_travail: faux
@@ -138,7 +146,8 @@ champ d'application Exemple2:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          ) ]
+          )
+        ]
       -- logement:
         AL.Logement {
           -- zone: Zone2
@@ -199,7 +208,8 @@ champ d'application Exemple3:
         [ AL.PrestationReçue.AllocationsFamiliales ]
       -- situation_familiale: Concubins
       -- personnes_à_charge:
-        [ EnfantÀCharge contenu (
+        [
+          EnfantÀCharge contenu (
             AL.EnfantÀCharge {
               -- identifiant: 0
               -- nationalité: Française
@@ -210,7 +220,8 @@ champ d'application Exemple3:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          ) ]
+          )
+        ]
       -- logement:
         AL.Logement {
           -- zone: Zone2

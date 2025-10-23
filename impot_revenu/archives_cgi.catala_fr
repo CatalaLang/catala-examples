@@ -113,9 +113,10 @@ la première tranche du barème de l'impôt sur le revenu.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition plafond_déduction_frais_professionnels sous condition
-    année_revenus = 2022
-  conséquence égal à 13 522 €
+  définition plafond_déduction_frais_professionnels
+  sous condition année_revenus = 2022
+  conséquence égal à
+    13 522 €
 ```
 
 Le montant de la déduction forfaitaire pour frais professionnels ne peut être inférieur à 472 €,
@@ -125,11 +126,13 @@ l'article 6.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition minimum_déduction_frais_professionnels sous condition
+  définition minimum_déduction_frais_professionnels
+  sous condition
     # Ici la valeur de 472 € est implicitement valable pour 2022 comme le
     # plafond précédent
     année_revenus = 2022
-  conséquence égal à 472 €
+  conséquence égal à
+    472 €
 ```
 
 La somme figurant au troisième alinéa est révisée chaque année dans la même proportion que la
@@ -346,13 +349,14 @@ tranche du barème de l'impôt sur le revenu.
 
 ```catala
 champ d'application TraitementsSalairesFoyerFiscal:
-  définition plafond_abattement_pensions_retraites_rentes sous condition
-    année_revenus = 2022
-  # Ici, l'année des revenus est soumis à ce plafond est 2022 car le montant
-  # du plafond est remis à jour pour le millésime (N-1) en mai de l'année N
-  # suivant les évolutions du barème de l'IR votées à la fin de l'année (N-1)
-  # pour le millésime (N-1).
-  conséquence égal à 4 123€
+  définition plafond_abattement_pensions_retraites_rentes
+  sous condition année_revenus = 2022
+    # Ici, l'année des revenus est soumis à ce plafond est 2022 car le montant
+    # du plafond est remis à jour pour le millésime (N-1) en mai de l'année N
+    # suivant les évolutions du barème de l'IR votées à la fin de l'année (N-1)
+    # pour le millésime (N-1).
+  conséquence égal à
+    4 123€
 ```
 
 L'abattement indiqué au deuxième alinéa ne peut être inférieur à 422 €, sans
@@ -364,10 +368,11 @@ barème de l'impôt sur le revenu.
 
 ```catala
 champ d'application TraitementsSalairesDéclarant:
-  définition minimum_abattement_pensions_retraites_rentes sous condition
-    année_revenus = 2022
-  # Voir commentaire sur le plafond ci-dessus.
-  conséquence égal à 422€
+  définition minimum_abattement_pensions_retraites_rentes
+  sous condition année_revenus = 2022
+    # Voir commentaire sur le plafond ci-dessus.
+  conséquence égal à
+    422€
 ```
 
 b. Les dispositions du a sont applicables aux allocations et indemnités
@@ -530,13 +535,14 @@ l'article 6 bénéficie d'une demi-part supplémentaire de quotient familial par
 personne ainsi rattachée.
 
 ```catala
-champ d'application NombreDeParts sous condition année_revenus = 2022:
+champ d'application NombreDeParts
+sous condition année_revenus = 2022:
   définition nombre_de_parts
     état article_196_B
   égal à
     nombre_de_parts
     + décimal de foyer_fiscal.nombre_enfants_majeurs_célibataires_sans_enfant
-    * 0,5
+      * 0,5
 ```
 
 Si la personne rattachée est mariée ou a des enfants à charge, l'avantage
@@ -547,7 +553,8 @@ l'autre de leurs parents, l'abattement auquel ils ouvrent droit pour le
 contribuable, est égal à la moitié de cette somme.
 
 ```catala
-champ d'application NombreDeParts sous condition année_revenus = 2022:
+champ d'application NombreDeParts
+sous condition année_revenus = 2022:
   # Attention, l'année des revenus sur lesquels porte ce montant d'abattement
   # est généralement l'année N-1 si la version de cet article entre en vigueur
   # l'année N. En effet, l'abattement sur la déclaration de l'année N-1 est

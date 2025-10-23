@@ -13,13 +13,16 @@ champ d'application DéficitsAntérieurs1:
     résultat de IR.ImputationAuxDéficitsLesPlusAnciens avec {
       -- revenu_déclaré: 1000 €
       -- déficits_antérieurs:
-        [ Oracles.DéficitAntérieur {
+        [
+          Oracles.DéficitAntérieur {
             -- année: 2020
             -- valeur: 500 €
-          } ; Oracles.DéficitAntérieur {
+          };
+          Oracles.DéficitAntérieur {
             -- année: 2019
             -- valeur: 600 €
-          } ]
+          }
+        ]
     }
 ```
 

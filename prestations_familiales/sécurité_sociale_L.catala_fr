@@ -49,7 +49,8 @@ ouvre droit aux prestations familiales :
 ```catala
 champ d'application ÉligibilitéPrestationsFamiliales:
   étiquette cas_base
-  règle droit_ouvert de enfant sous condition
+  règle droit_ouvert de enfant
+  sous condition
     enfant.obligation_scolaire sous forme Avant
     ou enfant.obligation_scolaire sous forme Pendant
   conséquence rempli
@@ -61,21 +62,23 @@ dont la rémunération éventuelle n'excède pas un plafond.
 ```catala
 champ d'application ÉligibilitéPrestationsFamiliales:
   étiquette cas_base
-  règle droit_ouvert de enfant sous condition
+  règle droit_ouvert de enfant
+  sous condition
     enfant.obligation_scolaire sous forme Après
     et (enfant.rémuneration_mensuelle <= plafond_l512_3_2)
     et (
-      résultat de France.VérificationÂgeSupérieurÀ avec {
-        -- date_naissance: enfant.date_de_naissance
-        -- date_courante: date_courante
-        -- années: âge_l512_3_2
-      }
-    ).est_supérieur
+        résultat de France.VérificationÂgeSupérieurÀ avec {
+          -- date_naissance: enfant.date_de_naissance
+          -- date_courante: date_courante
+          -- années: âge_l512_3_2
+        }
+      ).est_supérieur
   conséquence rempli
 
   # On définit les conditions hors âge d'abord car elles
   # sont référencées plus tard dans l'article L521-1
-  règle conditions_hors_âge de enfant sous condition
+  règle conditions_hors_âge de enfant
+  sous condition
     (
       enfant.obligation_scolaire sous forme Avant
       ou enfant.obligation_scolaire sous forme Pendant
@@ -127,7 +130,8 @@ sociale, y compris les membres des professions agricoles.
 # générale de sécurité sociale et les membres des professions agricoles.
 
 champ d'application ÉligibilitéPrestationsFamiliales:
-  règle régime_outre_mer_l751_1 sous condition
+  règle régime_outre_mer_l751_1
+  sous condition
     (résidence = Guadeloupe)
     ou (résidence = Guyane)
     ou (résidence = Martinique)

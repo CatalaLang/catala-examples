@@ -77,8 +77,8 @@ champ d'application AllocationFamilialesAvril2008:
 
 champ d'application AllocationsFamiliales:
   exception
-  définition âge_minimum_alinéa_1_l521_3 de enfant sous condition
-    (enfant.date_de_naissance + 11 an <= |2008-04-30|)
+  définition âge_minimum_alinéa_1_l521_3 de enfant
+  sous condition (enfant.date_de_naissance + 11 an <= |2008-04-30|)
   conséquence égal à
     version_avril_2008.âge_minimum_alinéa_1_l521_3
 ```
@@ -186,8 +186,8 @@ alternée, le montant servi au titre de cette majoration est réduit de moitié.
 ```catala
 champ d'application AllocationsFamiliales:
   définition
-    montant_avec_garde_alternée_majoration
-    de enfant égal à
+    montant_avec_garde_alternée_majoration de enfant
+  égal à
     montant_initial_majoration de enfant
     * (
       selon (prise_en_compte de enfant) sous forme
@@ -216,8 +216,8 @@ multiplié par 169.
 ```catala
 champ d'application PrestationsFamiliales:
   exception
-  définition plafond_l512_3_2 sous condition
-    régime_outre_mer_l751_1
+  définition plafond_l512_3_2
+  sous condition régime_outre_mer_l751_1
   conséquence égal à
     (smic.brut_horaire * 55%) * 169,0
 ```

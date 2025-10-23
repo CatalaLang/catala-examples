@@ -58,7 +58,7 @@ scope GamingAuthorized:
   definition maxTickets equals charityHousie.maxTicketsPerParticipant <= 48
 
 scope GamingAuthorized:
-  rule authorized under condition
-    benefitingOrg and minimumProceeds and expenses and prizesTotal and maxTickets
+  rule authorized
+  under condition benefitingOrg and minimumProceeds and expenses and prizesTotal and maxTickets
   consequence fulfilled
 ```

@@ -72,10 +72,12 @@ champ d'application TraitementsSalairesDéclarant:
     état convention_internationale
   égal à
     pensions_retraites_rentes_79
-    ++ [ PensionRetraiteRente {
+    ++ [
+      PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_étrangères_impôts_imputé
         -- type_pension: TypePensionRetraiteRente.PensionsRetraitesRentes
-      } ]
+      }
+    ]
 
 champ d'application TraitementsSalairesFoyerFiscal:
   définition rentes_viagères_titre_onéreux
@@ -83,26 +85,28 @@ champ d'application TraitementsSalairesFoyerFiscal:
   égal à
     rentes_viagères_titre_onéreux
     + somme argent de (
-      transforme chaque rente_viagère
-      parmi [ RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_étrangères_imputables_percues_49moins_ans
-          -- catégorie: RenteViagèreOnéreuxMoins49Ans
-        } ;
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_étrangères_imputables_percues_50_59ans
-          -- catégorie: RenteViagèreOnéreuxEntre50Et59Ans
-        } ;
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_étrangères_imputables_percues_60_69ans
-          -- catégorie: RenteViagèreOnéreuxEntre60Et69Ans
-        } ;
-        RenteViagèreOnéreux {
-          -- valeur: revenus.rentes_étrangères_imputables_percues_70plus_ans
-          -- catégorie: RenteViagèreOnéreuxPlus70Ans
-        } ] en
-        rente_viagère.valeur
-        - calcul_déduction_rente_viagères_titre_onéreux de rente_viagère
-    )
+        transforme chaque rente_viagère
+        parmi [
+          RenteViagèreOnéreux {
+            -- valeur: revenus.rentes_étrangères_imputables_percues_49moins_ans
+            -- catégorie: RenteViagèreOnéreuxMoins49Ans
+          };
+          RenteViagèreOnéreux {
+            -- valeur: revenus.rentes_étrangères_imputables_percues_50_59ans
+            -- catégorie: RenteViagèreOnéreuxEntre50Et59Ans
+          };
+          RenteViagèreOnéreux {
+            -- valeur: revenus.rentes_étrangères_imputables_percues_60_69ans
+            -- catégorie: RenteViagèreOnéreuxEntre60Et69Ans
+          };
+          RenteViagèreOnéreux {
+            -- valeur: revenus.rentes_étrangères_imputables_percues_70plus_ans
+            -- catégorie: RenteViagèreOnéreuxPlus70Ans
+          }
+        ] en
+          rente_viagère.valeur
+          - calcul_déduction_rente_viagères_titre_onéreux de rente_viagère
+      )
 
 # Voir article 193 du CGI pour la justification du fait que les crédits
 # d'impôts sont calculés sur la base du revenu brut global ; il faut donc
