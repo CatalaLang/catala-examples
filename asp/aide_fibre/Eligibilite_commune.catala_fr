@@ -1,7 +1,7 @@
 > Module Eligibilite_commune externe
 
 ```catala-metadata
-déclaration champ d'application ÉligibilitéCommune:
-  entrée code_postal_commune contenu entier
-  résultat éligible contenu booléen
+déclaration éligibilité_commune
+  contenu booléen
+  dépend de code_postal_commune contenu entier
 ```
