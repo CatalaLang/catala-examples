@@ -1,0 +1,22 @@
+> Usage de Fonpeps en tant que F
+
+```catala
+#[test]
+déclaration champ d'application Test1:
+  résultat calcul contenu F.AidePourEmbauche
+
+champ d'application Test1:
+  définition calcul égal à
+    résultat de F.AidePourEmbauche avec {
+      -- contrat: CDD contenu 9 mois
+      -- régime_entreprise: IntermittentSpectacleParNatureActivité
+      -- artiste_lyrique_chœur_permanent: faux
+      -- artiste_voix_résidence_milieu_scolaire: faux
+      -- activité_intermittent_spectacle: vrai
+      -- salaire_annuel_brut: 30 000 €
+      -- date_courante: |2021-11-01|
+      -- date_début_exécution_contrat: |2020-12-15|
+      -- bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur: faux
+      -- temps_travail: TempsPartiel contenu (50%)
+    }
+```

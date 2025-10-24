@@ -1,0 +1,678 @@
+# Prologue
+
+> Module Aide_travaux_raccordement_fibre_optique
+
+> Usage de Eligibilite_commune
+
+```catala-metadata
+déclaration structure PersonnePhysique:
+  donnée travaux_dans_maison_individuelle_par_occupant contenu booléen
+  donnée résidence_principale contenu booléen
+  donnée code_postal_commune contenu entier
+  donnée n_a_pas_déjà_bénéficié_de_l_aide contenu booléen
+  donnée quotient_familial contenu argent
+  donnée échec_de_raccordement_constaté contenu booléen
+
+déclaration structure Entreprise:
+  donnée chiffre_affaire_dernier_exercice_clos contenu argent
+  donnée nombre_salariés contenu entier
+  donnée début_activité contenu date
+  donnée en_liquidation_judiciaire_à_la_date_demande contenu booléen
+  donnée code_postal_commune contenu entier
+  donnée n_a_pas_déjà_bénéficié_de_l_aide contenu booléen
+  donnée échec_de_raccordement_constaté contenu booléen
+
+déclaration énumération Demandeur:
+  -- PersonnePhysique contenu PersonnePhysique
+  -- Entreprise contenu Entreprise
+
+déclaration énumération AmpleurTravaux:
+  -- FaibleAmpleur
+  -- AmpleurMoyenne
+  -- GrosTravaux
+
+déclaration champ d'application CalculAide:
+  entrée demandeur contenu Demandeur
+  entrée date_achèvement contenu date
+  entrée date_demande contenu date
+  entrée ampleur_travaux contenu AmpleurTravaux
+  entrée montant_facture_raccordement contenu argent
+
+  interne seuil_quotient_familial_article_3_I_5 contenu argent
+  interne éligibilité_personne_physique condition
+    état article_3_I_1
+    état article_3_I_2
+    état article_3_I_3
+    état article_3_I_4
+    état article_3_I_5
+    état article_3_I_6
+  interne éligibilité_entreprise condition
+    état article_3_II_1
+    état article_3_II_2
+    état article_3_II_3
+    état article_3_II_4
+    état article_3_II_5
+    état article_3_II_6
+    état article_3_II_7
+
+  résultat éligibilité condition
+    état temporelle
+    état article_3
+  résultat montant contenu argent
+    état forfait
+    état plafond
+```
+
+# Décret n° 2025-674 du 18 juillet 2025 instituant une aide à la réalisation des travaux en domaine privé pour le raccordement à un réseau en fibre optique
+
+## Article 1 | JORFARTI000051921603
+
+Il est institué une aide destinée à prendre en charge tout ou partie des coûts
+de travaux de raccordement à un réseau de communications électroniques en fibre
+optique sur la propriété privée, achevés entre le 1er septembre 2025 et le 31
+mai 2027.
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité état temporelle
+  sous condition date_achèvement >= |2025-09-01| et date_achèvement <= |2027-05-31|
+  conséquence rempli
+```
+
+Cette aide bénéficie dans la limite des crédits disponibles aux personnes
+physiques et aux entreprises éligibles.
+
+
+## Article 2 | JORFARTI000051921604
+
+Au sens du présent décret :
+
+1° Le mot : « entreprises » désigne les personnes physiques et les personnes
+morales de droit privé résidentes fiscales en France exerçant une activité
+économique ;
+
+2° Les mots : « personnes physiques » désignent les personnes physiques
+résidentes fiscales en France n'exerçant pas une activité économique.
+
+## Article 3 | JORFARTI000051921605
+
+Sont éligibles à l'aide prévue à l'article 1er les personnes physiques et les
+entreprises qui répondent aux conditions suivantes à la date de dépôt de la
+demande :
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité état article_3
+  sous condition
+    éligibilité
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        éligibilité_personne_physique
+      -- Entreprise :
+        éligibilité_entreprise
+    )
+  conséquence rempli
+```
+
+I. - Pour les personnes physiques :
+
+1° Les travaux sont réalisés dans un immeuble à usage d'habitation correspondant
+à une maison individuelle au sens de l'article L. 231-1 du code de la
+construction et de l'habitation et dont le demandeur est titulaire d'un droit
+réel immobilier ou locataire ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_personne_physique état article_3_I_1
+  sous condition (
+    selon demandeur sous forme
+    -- PersonnePhysique contenu personne_physique :
+      personne_physique.travaux_dans_maison_individuelle_par_occupant
+    -- Entreprise : faux
+  )
+  conséquence rempli
+```
+
+2° L'immeuble à usage d'habitation concerné constitue la résidence principale du
+demandeur ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_personne_physique état article_3_I_2
+  sous condition
+    éligibilité_personne_physique
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique contenu personne_physique :
+        personne_physique.résidence_principale
+      -- Entreprise : faux
+    )
+  conséquence rempli
+```
+
+3° L'immeuble à usage d'habitation est situé dans une commune mentionnée à
+l'annexe du présent décret ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_personne_physique état article_3_I_3
+  sous condition
+    éligibilité_personne_physique
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique contenu personne_physique :
+        Eligibilite_commune.éligibilité_commune de
+          personne_physique.code_postal_commune
+      -- Entreprise : faux
+    )
+  conséquence rempli
+```
+
+4° L'immeuble à usage d'habitation concerné, n'a jamais fait l'objet d'une aide
+financière à la réalisation de travaux de raccordement à un réseau en fibre
+optique ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_personne_physique état article_3_I_4
+  sous condition
+    éligibilité_personne_physique
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique contenu personne_physique :
+        personne_physique.résidence_principale
+      -- Entreprise : faux
+    )
+  conséquence rempli
+```
+
+5° Le quotient familial du demandeur pour l'année de référence ou l'année de sa
+dernière déclaration auprès de l'administration fiscale, obtenu en divisant son
+revenu fiscal de référence par le nombre de parts de son foyer fiscal, ne doit
+pas dépasser un seuil annuel défini par arrêté du ministre chargé des
+communications électroniques ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_personne_physique état article_3_I_5
+  sous condition
+    éligibilité_personne_physique
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique contenu personne_physique :
+        personne_physique.quotient_familial
+        <= seuil_quotient_familial_article_3_I_5
+      -- Entreprise : faux
+    )
+  conséquence rempli
+```
+
+6° Un échec de raccordement au réseau en fibre optique a été constaté par ou
+pour le compte d'un opérateur de lignes de communications électroniques à très
+haut débit en fibre optique en raison de la nécessité de procéder à des travaux
+en partie privative.
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_personne_physique état article_3_I_6
+  sous condition
+    éligibilité_personne_physique
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique contenu personne_physique :
+        personne_physique.échec_de_raccordement_constaté
+      -- Entreprise : faux
+    )
+  conséquence rempli
+```
+
+II. - Pour les entreprises :
+
+1° Le montant de leur chiffre d'affaires annuel constaté lors de leur dernier
+exercice clos est inférieur à 2 millions d'euros ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_1
+  sous condition (
+    selon demandeur sous forme
+    -- PersonnePhysique :
+      faux
+    -- Entreprise contenu entreprise :
+      entreprise.chiffre_affaire_dernier_exercice_clos <= 2 000 000 €
+  )
+  conséquence rempli
+```
+
+2° Leur nombre de salariés est inférieur à 10 ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_2
+  sous condition
+    éligibilité_entreprise
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        faux
+      -- Entreprise contenu entreprise :
+        entreprise.nombre_salariés <= 10
+    )
+  conséquence rempli
+```
+
+3° Elles ont commencé à exercer leur activité depuis au moins un an à la date
+dépôt de la demande ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_3
+  sous condition
+    éligibilité_entreprise
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        faux
+      -- Entreprise contenu entreprise :
+        entreprise.début_activité + 1 an <= date_demande
+    )
+  conséquence rempli
+```
+
+4° Elles ne sont pas déclarées en situation de liquidation judiciaire au jour de
+la demande d'aide ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_4
+  sous condition
+    éligibilité_entreprise
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        faux
+      -- Entreprise contenu entreprise :
+        non entreprise.en_liquidation_judiciaire_à_la_date_demande
+    )
+  conséquence rempli
+```
+
+5° Le local faisant l'objet d'une demande d'aide est situé dans une commune
+mentionnée dans l'annexe au présent décret ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_5
+  sous condition
+    éligibilité_entreprise
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        faux
+      -- Entreprise contenu entreprise :
+        Eligibilite_commune.éligibilité_commune de
+          entreprise.code_postal_commune
+    )
+  conséquence rempli
+```
+
+6° Le local n'a jamais fait l'objet d'une aide financière à la réalisation de
+travaux de raccordement à un réseau en fibre optique ;
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_6
+  sous condition
+    éligibilité_entreprise
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        faux
+      -- Entreprise contenu entreprise :
+        entreprise.n_a_pas_déjà_bénéficié_de_l_aide
+    )
+  conséquence rempli
+```
+
+7° Un échec de raccordement au réseau en fibre optique a été constaté par ou
+pour le compte d'un opérateur de lignes de communications électroniques à très
+haut débit en fibre optique en raison de la nécessité de procéder à des travaux
+en partie privative.
+
+```catala
+champ d'application CalculAide:
+  règle éligibilité_entreprise état article_3_II_7
+  sous condition
+    éligibilité_entreprise
+    et (
+      selon demandeur sous forme
+      -- PersonnePhysique :
+        faux
+      -- Entreprise contenu entreprise :
+        entreprise.échec_de_raccordement_constaté
+    )
+  conséquence rempli
+```
+
+III. - Un arrêté du ministre chargé des communications électroniques fixe les
+caractéristiques de l'attestation permettant d'attester pour les particuliers et
+pour les entreprises de l'impossibilité de procéder au raccordement.
+
+## Article 4 | JORFARTI000051921607
+
+I. - Le montant de l'aide correspond à une somme forfaitaire, faisant référence
+à trois catégories de travaux :
+
+1° Travaux de faible ampleur ;
+
+2° Travaux d'ampleur moyenne ;
+
+3° Gros travaux.
+
+La somme forfaitaire associée à chaque catégorie de travaux est définie par
+arrêté du ministre chargé de des communications électroniques.
+
+La notification d'attribution d'aide prend la forme d'une décision d'octroi
+notifiée au bénéficiaire, sur laquelle est inscrite la somme forfaitaire.
+
+L'aide est avancée au bénéficiaire, par la personne qu'il a désignée pour
+réaliser les travaux de raccordement.
+
+L'aide s'impute en totalité sur le montant, toutes taxes comprises, du montant
+de la facture, après toute remise, rabais, déduction ou avantage consenti par la
+personne désignée pour effectuer les travaux de raccordement.
+
+```catala
+champ d'application CalculAide:
+  définition montant
+    état plafond
+  égal à
+    si montant > montant_facture_raccordement alors montant_facture_raccordement sinon montant
+```
+
+Après l'achèvement des travaux, la personne désignée pour les réaliser adresse
+une demande de remboursement de l'aide avancée.
+
+L'achèvement des travaux s'entend par la réalisation des travaux et prestations
+prévus dans le devis ainsi que des travaux et prestations nécessaires à
+l'utilisation des équipements, matériaux ou appareils installés conformément à
+leur destination.
+
+Le remboursement de l'aide est effectué en une seule fois sur le compte bancaire
+fourni par la personne ayant réalisé les travaux.
+
+II. - Un arrêté du ministre chargé de des communications électroniques fixe les
+modalités de détermination de la somme forfaitaire attribuée au demandeur et les
+caractéristiques minimales que toute personne désignée pour réaliser les travaux
+de raccordement doit remplir.
+
+## Article 5 | JORFARTI000051921608
+
+L'Agence de services et de paiement assure la gestion et l'attribution de l'aide
+prévue à l'article 1er du présent décret.
+
+I. - Les personnes physiques et les entreprises adressent une demande à l'Agence
+de services et de paiement avant le 31 janvier 2027. Un arrêté du ministre
+chargé des communications électroniques peut avancer ou proroger la date de
+dépôt de la demande. L'Agence de services et de paiement assure l'instruction de
+la demande d'aide, détermine son montant et notifie au bénéficiaire une décision
+d'octroi.
+
+II. - L'Agence de services et de paiement assure également l'instruction de la
+demande de remboursement présentée par la personne désignée pour réaliser les
+travaux de raccordement.
+
+Cette demande est adressée à l'Agence de services et de paiement au plus tard le
+30 juin 2027.
+
+L'Agence de services et de paiement assure l'instruction des demandes de
+remboursement de la somme inscrite sur la notification d'attribution d'aide et
+procède à son versement. Elle veille notamment à ce que les travaux nécessaires
+au raccordement à un réseau de communications électroniques en fibre optique
+aient été achevés à la date de dépôt de la demande de remboursement et que la
+personne désignée pour les réaliser réponde aux caractéristiques minimales.
+
+III. - Le ministre chargé des communications électroniques conclut une
+convention avec l'Agence de services et de paiement. Elle précise notamment le
+rôle de l'Agence de services et de paiement et les conditions dans lesquelles
+les frais exposés par l'Agence de services et de paiement au titre de cette
+gestion sont compensés par l'Etat.
+
+## Article 6 | JORFARTI000051921609
+
+Des contrôles sur pièces sont réalisés par l'Agence de services et de paiement.
+
+Ces contrôles sont suivis, s'il y a lieu, du recouvrement, par l'Agence de
+services et de paiement, des aides indûment versées, en application du I de
+l'article L. 313-1 du code rural et de la pêche maritime.
+
+## Article 7 | JORFARTI000051921611
+
+La présentation et l'instruction des demandes, notamment la liste et le contenu
+des pièces à fournir par les demandeurs, ainsi que les modalités de versement de
+l'aide sont précisées par arrêté du ministre chargé des communications
+électroniques.
+
+## Article 8 | JORFARTI000051921612
+
+Le ministre de l'économie, des finances et de la souveraineté industrielle et
+numérique et le ministre auprès du ministre de l'économie, des finances et de la
+souveraineté industrielle et numérique, chargé de l'industrie et de l'énergie,
+sont chargés, chacun en ce qui le concerne, de l'exécution du présent décret,
+qui sera publié au Journal officiel de la République française.
+
+# Arrêté du 2 septembre 2025 relatif à l'aide à la réalisation des travaux en domaine privé pour le raccordement à un réseau en fibre optique
+
+## Article 1 | JORFARTI000052281300
+
+I. - Le dossier de demande d'aide instituée par le décret susvisé est transmis
+par les personnes physiques ou morales à l'Agence de services et de paiement
+exclusivement par l'intermédiaire d'un téléservice disponible sur son site
+internet. A l'appui de leur demande, les personnes physiques ou morales
+concernées fournissent :
+
+II. - Pour les personnes physiques :
+
+1° Une copie de la carte nationale d'identité, du passeport en cours de validité
+ou de l'un des documents de séjour mentionné à l'article L. 411-1 du code de
+l'entrée et du séjour des étrangers et du droit d'asile en cours de validité, à
+l'exception de ceux prévus aux 1° et 8° de ce même article, ou un justificatif
+numérique d'identité ;
+
+2° L'adresse de la résidence principale correspondant à celle où seront réalisés
+les travaux pour le raccordement à la fibre ;
+
+3° L'attestation d'échec de raccordement mentionnée à l'alinéa 3 du décret
+susvisé comportant les mentions prévues à l'article 4 ;
+
+4° Le numéro fiscal du demandeur ;
+
+5° Un justificatif de domicile peut également être demandé par l'Agence de
+services et de paiement si le traitement du dossier révèle une non-concordance
+entre l'adresse fiscale et l'adresse de la résidence principale de l'usager.
+
+III. - Pour les entreprises :
+
+1° Le numéro du système d'identification du répertoire des établissements et sa
+dénomination sociale ;
+
+2° L'adresse du local de l'entreprise correspondant à celle où seront réalisés
+les travaux pour le raccordement à la fibre ;
+
+3° L'attestation d'échec de raccordement mentionnée au quatrième alinéa de
+l'article 3 du décret susvisé comportant les mentions précisées à l'article 3 ;
+
+4° Une déclaration sur l'honneur portant sur le nombre de salariés de
+l'entreprise ;
+
+5° Un justificatif du représentant légal de l'entreprise ;
+
+6° Une copie de la carte nationale d'identité, du passeport, en cours de
+validité ou de l'un des documents de séjour mentionné à l'article L. 411-1 du
+code de l'entrée et du séjour des étrangers et du droit d'asile en cours de
+validité, à l'exception de ceux prévus aux 1° et 8° de ce même article ou un
+justificatif numérique d'identité du représentant légal de l'entreprise.
+
+IV. - Lorsque le dossier est incomplet, l'Agence de services et de paiement
+informe le demandeur des pièces ou informations manquantes exigées par les II et
+III du présent article. Elle fixe un délai de trois mois pour la réception de
+ces pièces ou informations.
+
+## Article 2 | JORFARTI000052281303
+
+Le seuil mentionné au 5° de l'article 2 du décret susvisé est fixé à la somme de
+29 316 euros.
+
+```catala
+champ d'application CalculAide:
+  définition seuil_quotient_familial_article_3_I_5 égal à 29 316 €
+```
+
+## Article 3 | JORFARTI000052281304
+
+Pour les personnes physiques, l'attestation mentionnée à l'article 3 du décret
+susvisé comporte les mentions suivantes :
+
+1° Les nom et prénom de la personne ;
+
+2° Le numéro unique de l'attestation, selon une nomenclature établie par
+l'opérateur ;
+
+3° L'adresse du logement, incluant le numéro, le type et le nom de la voie, le
+code postal et le nom de la commune ;
+
+4° La nature du logement, qu'il s'agisse d'une maison individuelle ou d'un
+bâtiment d'habitation collectif ;
+
+5° La typologie de travaux indiquée par l'intervenant de l'opérateur
+correspondant aux typologies indiquées à l'article 5 du présent arrêté ;
+
+6° L'indication selon laquelle l'attestation constitue une pièce nécessaire à
+l'instruction de la demande par l'Agence de service et de paiement et doit être
+conservée par le demandeur ;
+
+7° Le logo et la dénomination sociale de l'opérateur commercial.
+
+## Article 4 | JORFARTI000052281305
+
+Pour les entreprises, l'attestation mentionnée à l'article 3 du décret susvisé
+comporte les mentions suivantes :
+
+1° Sa dénomination sociale et son numéro d'inscription au système
+d'identification du répertoire des établissements ;
+
+2° Le numéro unique de l'attestation, selon une nomenclature établie par
+l'opérateur ;
+
+3° L'adresse du lieu d'exercice de l'activité économique, incluant le numéro, le
+type et le nom de la voie, le code postal et le nom de la commune ;
+
+4° La typologie de travaux indiquée par l'intervenant de l'opérateur
+correspondant aux typologies indiquées à l'article 5 du présent arrêté ;
+
+5° La nature du local professionnel où seront réalisés les travaux, qu'il
+s'agisse d'un bâtiment individuel ou collectif ;
+
+6° L'indication selon laquelle l'attestation constitue une pièce nécessaire à
+l'instruction de sa demande par l'Agence de service et de paiement ;
+
+7° Le logo et la dénomination sociale de l'opérateur commercial.
+
+## Article 5 | JORFARTI000052281306
+
+Les travaux pouvant donner lieu à l'attribution de l'une des sommes forfaitaires
+mentionnées au premier alinéa de l'article 4 du décret susvisé sont classés en
+trois catégories en fonction de leur ampleur :
+
+1° Les travaux de faible ambleur, pouvant donner lieu à l'attribution de la
+somme de 400 euros ;
+
+```catala
+champ d'application CalculAide:
+  définition montant
+    état forfait
+  sous condition ampleur_travaux sous forme FaibleAmpleur
+  conséquence égal à
+    400 €
+```
+
+2° Les travaux d'ampleur moyenne, pouvant donner lieu à l'attribution de la
+somme de 800 euros ;
+
+```catala
+champ d'application CalculAide:
+  définition montant
+    état forfait
+  sous condition ampleur_travaux sous forme AmpleurMoyenne
+  conséquence égal à
+    800 €
+```
+
+3° Les gros travaux, pouvant donner lieu à l'attribution de la somme de 1 200
+euros.
+```catala
+champ d'application CalculAide:
+  définition montant
+    état forfait
+  sous condition ampleur_travaux sous forme GrosTravaux
+  conséquence égal à
+    1200 €
+```
+
+La description des travaux se rattachant à ces catégories est annexée au présent
+arrêté.
+
+## Article 6 | JORFARTI000052281307
+
+I. - Pour obtenir le remboursement de l'avance de l'aide, la personne désignée
+pour réaliser les travaux pour le raccordement à la fibre transmet une demande à
+l'Agence de services et de paiement au moyen d'un formulaire disponible sur son
+site internet.
+
+II. - Le dossier de demande de remboursement comporte les pièces et informations
+suivantes :
+
+1° La raison sociale ou sa dénomination et son numéro d'inscription au système
+d'identification du répertoire des établissements, ainsi que l'adresse de son
+siège ;
+
+2° La facture émise correspondante aux travaux pour le raccordement à la fibre.
+La facture comporte, outre les mentions prévues à l'article 289 du code général
+des impôts s'agissant de la facture, les informations suivantes :
+
+i) Le montant de l'aide attribuée à la personne physique ou l'entreprise pour
+laquelle les travaux pour le raccordement à la fibre ont été réalisés ;
+
+ii) Le nom prénom ou dénomination sociale et l'adresse de la personne physique
+ou l'entreprise pour laquelle les travaux pour le raccordement à la fibre ont
+été réalisés ;
+
+iii) La date d'achèvement des travaux ;
+
+3° Les coordonnées bancaires de la personne formulant la demande de paiement ;
+
+4° Sa raison sociale ou sa dénomination et son numéro d'inscription au système
+d'identification du répertoire des établissements ;
+
+5° Un justificatif du représentant légal du demandeur attestant de sa qualité à
+représenter l'entreprise ;
+
+6° Une copie de la carte nationale d'identité, du passeport, en cours de
+validité ou de l'un des documents de séjour mentionné à l'article L. 411-1 du
+code de l'entrée et du séjour des étrangers et du droit d'asile en cours de
+validité, à l'exception de ceux prévus aux 1° et 8° de ce même article ou un
+justificatif numérique d'identité du représentant légal du demandeur ;
+
+7° La notification d'attribution d'aide délivrée par l'Agence de services et de
+paiement à la personne physique ou l'entreprise pour laquelle les travaux pour
+le raccordement à la fibre ont été réalisés.
+
+III. - Lorsque le dossier est incomplet, l'Agence de services et de paiement
+informe le demandeur des pièces ou informations manquantes exigées par le II du
+présent article. Elle fixe un délai de trois mois pour la réception de ces
+pièces ou informations.
+
+## Article 7 | JORFARTI000052281310
+
+Le présent arrêté sera publié au Journal officiel de la République française.
