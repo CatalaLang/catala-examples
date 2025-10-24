@@ -8,14 +8,6 @@
 
 open Catala_runtime
 
-module EligibiliteCommune = struct
-  type t = { eligible : bool }
-end
-
-module EligibiliteCommune_in = struct
-  type t = { code_postal_commune_in : integer }
-end
-
 let eligible_communes =
   [
     01000;
@@ -3170,15 +3162,12 @@ let eligible_communes =
   ]
 
 (* Scope ÉligibilitéCommune *)
-let eligibilite_commune : EligibiliteCommune_in.t -> EligibiliteCommune.t =
- fun eligibilite_commune_in ->
-  let (code_postal : integer) =
-    eligibilite_commune_in.EligibiliteCommune_in.code_postal_commune_in
-  in
+let eligibilite_commune : integer -> bool =
+ fun code_postal ->
   let eligible : bool =
     List.mem (integer_to_int code_postal) eligible_communes
   in
-  { EligibiliteCommune.eligible }
+  eligible
 
 let () =
   Catala_runtime.register_module "Eligibilite_commune"

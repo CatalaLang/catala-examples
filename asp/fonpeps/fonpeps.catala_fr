@@ -90,8 +90,7 @@ du 26 juillet 2019 susvisé ;
 champ d'application AidePourEmbauche:
   définition éligibilité
     état article_1_régime_entreprise
-  sous condition
-    régime_entreprise sous forme IntermittentSpectacleParNatureActivité
+  sous condition régime_entreprise sous forme IntermittentSpectacleParNatureActivité
   conséquence égal à
     éligibilité
 ```
@@ -104,8 +103,7 @@ au décret du 26 juillet 2019 susvisé ;
 champ d'application AidePourEmbauche:
   définition éligibilité
     état article_1_régime_entreprise
-  sous condition
-    régime_entreprise sous forme IntermittentSpectacleDansStructureListée
+  sous condition régime_entreprise sous forme IntermittentSpectacleDansStructureListée
   conséquence égal à
     éligibilité
 ```
@@ -118,8 +116,7 @@ la Caisse des congés du spectacle ;
 champ d'application AidePourEmbauche:
   définition éligibilité
     état article_1_régime_entreprise
-  sous condition
-    régime_entreprise sous forme EntrepreneurSpectacleVivant
+  sous condition régime_entreprise sous forme EntrepreneurSpectacleVivant
   conséquence égal à
     éligibilité
 ```
@@ -135,8 +132,7 @@ du ministre chargé de la culture.
 champ d'application AidePourEmbauche:
   définition éligibilité
     état article_1_régime_entreprise
-  sous condition
-    régime_entreprise sous forme ArtisteLyriqueDansStructureListée
+  sous condition régime_entreprise sous forme ArtisteLyriqueDansStructureListée
   conséquence égal à
     éligibilité
     et (
@@ -179,7 +175,7 @@ champ d'application AidePourEmbauche:
   égal à
     éligibilité
     et salaire_annuel_brut
-    <= 4 * smic.brut_horaire * 35 * (13,0 / 3,0) * 12
+      <= 4 * smic.brut_horaire * 35 * (13,0 / 3,0) * 12
 # Smic annuel = Smic horaire * 35 heures * 13/3 = 4,3 semaines * 12 mois
 ```
 
@@ -213,8 +209,8 @@ changement de fonctions sans toutefois changer d'employeur.
 
 ```catala
 champ d'application AidePourEmbauche:
-  règle majoration_due sous condition
-    bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur
+  règle majoration_due
+  sous condition bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur
   conséquence rempli
 ```
 
@@ -228,10 +224,11 @@ champ d'application AidePourEmbauche:
   définition éligibilité
     état article_2_II
   égal à
-    si artiste_voix_résidence_milieu_scolaire
+    si
+      artiste_voix_résidence_milieu_scolaire
       et selon contrat sous forme
-      -- CDI : faux
-      -- CDD contenu durée_contrat : durée_contrat <= 6 mois
+        -- CDI : faux
+        -- CDD contenu durée_contrat : durée_contrat <= 6 mois
     # TODO: nombre de jours plutôt ?
     alors
       faux
@@ -248,12 +245,11 @@ champ d'application AidePourEmbauche:
   étiquette cdi
   définition montant
     état forfait
-  sous condition
-    (
-      selon contrat sous forme
-      -- CDI : temps_travail sous forme TempsPlein
-      -- CDD : faux
-    )
+  sous condition (
+    selon contrat sous forme
+    -- CDI : temps_travail sous forme TempsPlein
+    -- CDD : faux
+  )
   conséquence égal à
     MontantAide {
       -- montant: 10 000 €
@@ -297,12 +293,11 @@ champ d'application AidePourEmbauche:
   étiquette cdd
   définition montant
     état forfait
-  sous condition
-    (
-      selon contrat sous forme
-      -- CDI : faux
-      -- CDD contenu durée_contrat : durée_contrat >= 1 mois et durée_contrat < 4 mois
-    )
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 1 mois et durée_contrat < 4 mois
+  )
   conséquence égal à
     selon contrat sous forme
     -- CDI : impossible
@@ -321,12 +316,11 @@ champ d'application AidePourEmbauche:
   étiquette cdd
   définition montant
     état forfait
-  sous condition
-    (
-      selon contrat sous forme
-      -- CDI : faux
-      -- CDD contenu durée_contrat : durée_contrat >= 4 mois et durée_contrat < 8 mois
-    )
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 4 mois et durée_contrat < 8 mois
+  )
   conséquence égal à
     selon contrat sous forme
     -- CDI : impossible
@@ -344,12 +338,11 @@ champ d'application AidePourEmbauche:
   étiquette cdd
   définition montant
     état forfait
-  sous condition
-    (
-      selon contrat sous forme
-      -- CDI : faux
-      -- CDD contenu durée_contrat : durée_contrat >= 8 mois et durée_contrat < 12 mois
-    )
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 8 mois et durée_contrat < 12 mois
+  )
   conséquence égal à
     selon contrat sous forme
     -- CDI : impossible
@@ -368,12 +361,11 @@ champ d'application AidePourEmbauche:
   étiquette cdd
   définition montant
     état forfait
-  sous condition
-    (
-      selon contrat sous forme
-      -- CDI : faux
-      -- CDD contenu durée_contrat : durée_contrat >= 12 mois
-    )
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 12 mois
+  )
   conséquence égal à
     selon contrat sous forme
     -- CDI : impossible
@@ -395,14 +387,13 @@ champ d'application AidePourEmbauche:
   exception cdd
   définition montant
     état forfait
-  sous condition
-    (
-      selon contrat sous forme
-      -- CDI : faux
-      -- CDD :
-        temps_travail sous forme TempsPlein
-        et artiste_voix_résidence_milieu_scolaire
-    )
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD :
+      temps_travail sous forme TempsPlein
+      et artiste_voix_résidence_milieu_scolaire
+  )
   conséquence égal à
     MontantAide {
       -- montant: 9 000 €
@@ -422,8 +413,7 @@ champ d'application AidePourEmbauche:
   étiquette temps_partiel exception base
   définition montant
     état proratisation
-  sous condition
-    temps_travail sous forme TempsPartiel
+  sous condition temps_travail sous forme TempsPartiel
   conséquence égal à
     selon temps_travail sous forme
     -- TempsPlein : impossible
@@ -436,13 +426,15 @@ champ d'application AidePourEmbauche:
   définition éligibilité
     état article_3
   égal à
-    si selon contrat sous forme
+    si
+      selon contrat sous forme
       -- CDI : faux
       -- CDD contenu durée_contrat :
         # TODO: nombre de jours plutôt ?
         durée_contrat >= 1 mois
         et durée_contrat < 2 mois
-        et temps_travail sous forme TempsPartiel alors
+        et temps_travail sous forme TempsPartiel
+    alors
       faux
     sinon éligibilité
 ```

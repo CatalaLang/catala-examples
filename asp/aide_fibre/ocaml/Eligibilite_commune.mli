@@ -8,13 +8,5 @@
 
 open Catala_runtime
 
-module EligibiliteCommune : sig
-  type t = { eligible : bool }
-end
-
-module EligibiliteCommune_in : sig
-  type t = { code_postal_commune_in : integer }
-end
-
-val eligibilite_commune : EligibiliteCommune_in.t -> EligibiliteCommune.t
+val eligibilite_commune : integer -> bool
 (** Scope ÉligibilitéCommune *)

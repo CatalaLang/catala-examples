@@ -74,8 +74,8 @@ mai 2027.
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité état temporelle sous condition
-    date_achèvement >= |2025-09-01| et date_achèvement <= |2027-05-31|
+  règle éligibilité état temporelle
+  sous condition date_achèvement >= |2025-09-01| et date_achèvement <= |2027-05-31|
   conséquence rempli
 ```
 
@@ -102,7 +102,8 @@ demande :
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité état article_3 sous condition
+  règle éligibilité état article_3
+  sous condition
     éligibilité
     et (
       selon demandeur sous forme
@@ -123,13 +124,13 @@ réel immobilier ou locataire ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_personne_physique état article_3_I_1 sous condition
-    (
-      selon demandeur sous forme
-      -- PersonnePhysique contenu personne_physique :
-        personne_physique.travaux_dans_maison_individuelle_par_occupant
-      -- Entreprise : faux
-    )
+  règle éligibilité_personne_physique état article_3_I_1
+  sous condition (
+    selon demandeur sous forme
+    -- PersonnePhysique contenu personne_physique :
+      personne_physique.travaux_dans_maison_individuelle_par_occupant
+    -- Entreprise : faux
+  )
   conséquence rempli
 ```
 
@@ -138,7 +139,8 @@ demandeur ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_personne_physique état article_3_I_2 sous condition
+  règle éligibilité_personne_physique état article_3_I_2
+  sous condition
     éligibilité_personne_physique
     et (
       selon demandeur sous forme
@@ -154,16 +156,14 @@ l'annexe du présent décret ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_personne_physique état article_3_I_3 sous condition
+  règle éligibilité_personne_physique état article_3_I_3
+  sous condition
     éligibilité_personne_physique
     et (
       selon demandeur sous forme
       -- PersonnePhysique contenu personne_physique :
-        (
-          résultat de Eligibilite_commune.ÉligibilitéCommune avec {
-            -- code_postal_commune: personne_physique.code_postal_commune
-          }
-        ).éligible
+        Eligibilite_commune.éligibilité_commune de
+          personne_physique.code_postal_commune
       -- Entreprise : faux
     )
   conséquence rempli
@@ -175,7 +175,8 @@ optique ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_personne_physique état article_3_I_4 sous condition
+  règle éligibilité_personne_physique état article_3_I_4
+  sous condition
     éligibilité_personne_physique
     et (
       selon demandeur sous forme
@@ -194,7 +195,8 @@ communications électroniques ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_personne_physique état article_3_I_5 sous condition
+  règle éligibilité_personne_physique état article_3_I_5
+  sous condition
     éligibilité_personne_physique
     et (
       selon demandeur sous forme
@@ -213,7 +215,8 @@ en partie privative.
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_personne_physique état article_3_I_6 sous condition
+  règle éligibilité_personne_physique état article_3_I_6
+  sous condition
     éligibilité_personne_physique
     et (
       selon demandeur sous forme
@@ -231,14 +234,14 @@ exercice clos est inférieur à 2 millions d'euros ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_1 sous condition
-    (
-      selon demandeur sous forme
-      -- PersonnePhysique :
-        faux
-      -- Entreprise contenu entreprise :
-        entreprise.chiffre_affaire_dernier_exercice_clos <= 2 000 000 €
-    )
+  règle éligibilité_entreprise état article_3_II_1
+  sous condition (
+    selon demandeur sous forme
+    -- PersonnePhysique :
+      faux
+    -- Entreprise contenu entreprise :
+      entreprise.chiffre_affaire_dernier_exercice_clos <= 2 000 000 €
+  )
   conséquence rempli
 ```
 
@@ -246,7 +249,8 @@ champ d'application CalculAide:
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_2 sous condition
+  règle éligibilité_entreprise état article_3_II_2
+  sous condition
     éligibilité_entreprise
     et (
       selon demandeur sous forme
@@ -263,7 +267,8 @@ dépôt de la demande ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_3 sous condition
+  règle éligibilité_entreprise état article_3_II_3
+  sous condition
     éligibilité_entreprise
     et (
       selon demandeur sous forme
@@ -280,7 +285,8 @@ la demande d'aide ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_4 sous condition
+  règle éligibilité_entreprise état article_3_II_4
+  sous condition
     éligibilité_entreprise
     et (
       selon demandeur sous forme
@@ -297,18 +303,16 @@ mentionnée dans l'annexe au présent décret ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_5 sous condition
+  règle éligibilité_entreprise état article_3_II_5
+  sous condition
     éligibilité_entreprise
     et (
       selon demandeur sous forme
       -- PersonnePhysique :
         faux
       -- Entreprise contenu entreprise :
-        (
-          résultat de Eligibilite_commune.ÉligibilitéCommune avec {
-            -- code_postal_commune: entreprise.code_postal_commune
-          }
-        ).éligible
+        Eligibilite_commune.éligibilité_commune de
+          entreprise.code_postal_commune
     )
   conséquence rempli
 ```
@@ -318,7 +322,8 @@ travaux de raccordement à un réseau en fibre optique ;
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_6 sous condition
+  règle éligibilité_entreprise état article_3_II_6
+  sous condition
     éligibilité_entreprise
     et (
       selon demandeur sous forme
@@ -337,7 +342,8 @@ en partie privative.
 
 ```catala
 champ d'application CalculAide:
-  règle éligibilité_entreprise état article_3_II_7 sous condition
+  règle éligibilité_entreprise état article_3_II_7
+  sous condition
     éligibilité_entreprise
     et (
       selon demandeur sous forme
@@ -586,9 +592,9 @@ somme de 400 euros ;
 champ d'application CalculAide:
   définition montant
     état forfait
-  sous condition
-    ampleur_travaux sous forme FaibleAmpleur
-  conséquence égal à 400 €
+  sous condition ampleur_travaux sous forme FaibleAmpleur
+  conséquence égal à
+    400 €
 ```
 
 2° Les travaux d'ampleur moyenne, pouvant donner lieu à l'attribution de la
@@ -598,9 +604,9 @@ somme de 800 euros ;
 champ d'application CalculAide:
   définition montant
     état forfait
-  sous condition
-    ampleur_travaux sous forme AmpleurMoyenne
-  conséquence égal à 800 €
+  sous condition ampleur_travaux sous forme AmpleurMoyenne
+  conséquence égal à
+    800 €
 ```
 
 3° Les gros travaux, pouvant donner lieu à l'attribution de la somme de 1 200
@@ -609,9 +615,9 @@ euros.
 champ d'application CalculAide:
   définition montant
     état forfait
-  sous condition
-    ampleur_travaux sous forme GrosTravaux
-  conséquence égal à 1200 €
+  sous condition ampleur_travaux sous forme GrosTravaux
+  conséquence égal à
+    1200 €
 ```
 
 La description des travaux se rattachant à ces catégories est annexée au présent
