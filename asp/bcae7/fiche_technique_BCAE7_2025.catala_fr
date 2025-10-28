@@ -606,6 +606,69 @@ Triticale d’hiver                                                TTH
 Triticale de printemps                                           TTP
 -----------------------------------------------------------------------------------------------------------------------
 
+```catala
+champ d'application CultureBCAE7:
+  définition culture égal à
+    selon code_culture sous forme
+    -- LOT : AutresLégumineusesFourragèresYComprisEnMélange
+    -- MLF : AutresLégumineusesFourragèresYComprisEnMélange
+    -- SAI : AutresLégumineusesFourragèresYComprisEnMélange
+    -- TRE : AutresLégumineusesFourragèresYComprisEnMélange
+    -- VES : AutresLégumineusesFourragèresYComprisEnMélange
+    -- CAG : AutresCéréalesEtMélangesDePrintemps
+    -- MCS : AutresCéréalesEtMélangesDePrintemps
+    -- CAH : AutresCéréalesEtMélangesDHiver
+    -- MCR : AutresCéréalesEtMélangesDHiver
+    -- AFG : AutresFourrages
+    -- CPL : AutresFourrages
+    -- OAG : AutresOléagineuxDHiverEtDePrintemps
+    -- OHR : AutresOléagineuxDHiverEtDePrintemps
+    -- CML : AutresOléagineuxDHiverEtDePrintemps
+    -- ARA : AutresProtéagineux
+    -- PAG : AutresProtéagineux
+    -- GES : AutresProtéagineux
+    -- FNU : AutresProtéagineux
+    -- PHF : AutresProtéagineux
+    -- PHS : AutresProtéagineux
+    -- AVH : AvoineDHiver
+    -- AVP : AvoineDePrintemps
+    -- BTN : Betteraves
+    -- BDH : BléDurDHiver
+    -- BDP : BléDurDePrintemps
+    -- BTH : BléTendreDHiver
+    -- BTP : BléTendreDePrintemps
+    -- CHV : Chanvre
+    -- CZH : ColzaDHiver
+    -- CZP : ColzaDePrintemps
+    -- CIT : CulturesAssociéesDéclaréesAvecLeCodeCIDCIT
+    -- CID : CulturesAssociéesDéclaréesAvecLeCodeCIDCIT
+    -- EPE : Epeautre
+    -- FEV : FèveEtFéverole
+    -- FVP : FèveEtFéverole
+    -- FVL : FèveEtFéverole
+    -- AIL : Ail
+    -- ANA : Ananas
+    -- ART : Artichaut
+    -- CCN : ConcombreCornichonEtCourgette
+    -- CEL : Céleri
+    -- CHU : Chou
+    -- EPI : EpinardOseilleEtBette
+    -- FLA : AutreLégumeOuFruitAnnuel
+    -- FRA : FraiseEnPleineTerre
+    -- LBF : LaitueEndiveEtAutresSalades
+    -- MDI : MaraîchageDiversifié
+    -- MLO : MelonEtPastèque
+    -- NVT : NavetRutabagaEtAutresLégumesRacinesHorsCarotteRadisBetterave
+    -- OIG : OignonEtÉchalote
+    -- POR : Poireau
+    -- POT : PotironCitrouilleEtAutresCourges
+    -- PVP : PoivronPimentEtAubergine
+    -- RDI : Radis
+    -- TBT : TuberculeTropical
+    -- TOM : TomatesEnPleineTerre
+    -- n'importe quel : impossible
+```
+
 ## Annexe 5 : Diversification des cultures - Barème de points défini selon l’assolement de l’exploitation
 
 La notion de surface mobilisée dans le tableau ci-dessous doit être entendue comme une surface
