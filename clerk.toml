@@ -10,6 +10,7 @@ include_dirs = [
   "impot_revenu",
   "asp/aide_fibre",
   "asp/fonpeps",
+  "asp/bcae7",
 ]
 
 [[target]]
@@ -45,3 +46,9 @@ name = "fonpeps"
 modules = ["Fonpeps"]
 backends = ["ocaml"]           # External module 'Oracle' exists only in OCaml
 tests = ["asp/fonpeps/tests/"]
+
+[[target]]
+name = "BCAE7"
+modules = ["BCAE7"]
+backends = ["ocaml", "java", "python"]
+tests = ["asp/bcae7/tests/"]
