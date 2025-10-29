@@ -1,0 +1,7 @@
+> Module Eligibilite_commune externe
+
+```catala-metadata
+déclaration éligibilité_commune
+  contenu booléen
+  dépend de code_postal_commune contenu entier
+```

@@ -1,0 +1,565 @@
+> Module Fonpeps
+
+> Usage de Smic
+> Usage de France
+
+# Décret n° 2019-1011 du 1er octobre 2019 relatif au Fonds national pour l'emploi pérenne dans le spectacle (FONPEPS)
+
+## Chapitre Ier : Aides à l'emploi
+
+### Section 1 : Aides à l'embauche en contrats à durée indéterminée ou en contrats à durée déterminée
+
+```catala-metadata
+déclaration énumération Contrat:
+  -- CDI
+  -- CDD contenu durée
+
+déclaration énumération RégimeEntreprise:
+  -- IntermittentSpectacleParNatureActivité
+  -- IntermittentSpectacleDansStructureListée
+  -- EntrepreneurSpectacleVivant
+  -- ArtisteLyriqueDansStructureListée
+
+déclaration énumération FréquenceVersement:
+  -- Annuelle contenu durée
+  -- Mensuelle contenu durée
+  -- Unique
+
+déclaration structure MontantAide:
+  donnée montant contenu argent
+  donnée fréquence_versement contenu FréquenceVersement
+
+déclaration énumération TempsDeTravail:
+  -- TempsPlein
+  -- TempsPartiel contenu décimal
+
+déclaration champ d'application AidePourEmbauche:
+  entrée contrat contenu Contrat
+  entrée régime_entreprise contenu RégimeEntreprise
+  entrée artiste_lyrique_chœur_permanent contenu booléen
+  entrée bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur contenu booléen
+  entrée artiste_voix_résidence_milieu_scolaire contenu booléen
+  entrée activité_intermittent_spectacle contenu booléen
+  entrée salaire_annuel_brut contenu argent
+  entrée date_courante contenu date
+  entrée date_début_exécution_contrat contenu date
+  entrée temps_travail contenu TempsDeTravail
+
+  interne majoration_due condition
+
+  smic champ d'application Smic.Smic
+
+  résultat éligibilité contenu booléen
+    état article_1_nature_contrat
+    état article_1_régime_entreprise
+    état article_2_I_1
+    état article_2_I_2
+    état article_2_I_3
+    état article_2_II
+    état article_3
+
+  résultat montant contenu MontantAide
+    état forfait
+    état proratisation
+```
+
+##### Article 1 | JORFARTI000039165383
+
+Les entreprises uniques telles que définies par le définitionment du 18 décembre 2013
+susvisé, ainsi que les groupements d'employeurs visés aux articles L. 1253-1 et
+suivants du code du travail, peuvent demander le bénéfice d'une aide financière
+de l'Etat pour l'embauche en contrat à durée indéterminée ou en contrat à durée
+déterminée d'une durée d'au moins un mois, sous réserve de égal à vrair au moins
+l'une des conditions suivantes :
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_1_nature_contrat
+  égal à
+    selon contrat sous forme
+    -- CDI : vrai
+    -- CDD contenu durée : durée > 1 mois
+```
+
+1° Soit ils relèvent à titre principal d'une convention collective mentionnée à
+l'article 71 de l'annexe VIII au définitionment d'assurance chômage annexé au décret
+du 26 juillet 2019 susvisé ;
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_1_régime_entreprise
+  sous condition régime_entreprise sous forme IntermittentSpectacleParNatureActivité
+  conséquence égal à
+    éligibilité
+```
+
+2° Soit ils appartiennent à la liste des entreprises et établissements publics
+figurant à l'article 71 de l'annexe VIII au définitionment d'assurance chômage annexé
+au décret du 26 juillet 2019 susvisé ;
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_1_régime_entreprise
+  sous condition régime_entreprise sous forme IntermittentSpectacleDansStructureListée
+  conséquence égal à
+    éligibilité
+```
+
+3° Soit ils exercent en tant qu'entrepreneur de spectacles vivants, conformément
+aux dispositions de l'article L. 7122-3 du code du travail, et sont affiliés à
+la Caisse des congés du spectacle ;
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_1_régime_entreprise
+  sous condition régime_entreprise sous forme EntrepreneurSpectacleVivant
+  conséquence égal à
+    éligibilité
+```
+
+4° Soit, lorsque la demande d'aide concerne l'embauche par contrat à durée
+indéterminée d'un artiste lyrique de chœur permanent ou l'embauche par contrat à
+durée déterminée d'un artiste de la voix en résidence en milieu scolaire pour la
+conception et la réalisation d'un projet artistique de pratique vocale
+collective, ils appartiennent à la liste des structures figurant dans un arrêté
+du ministre chargé de la culture.
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_1_régime_entreprise
+  sous condition régime_entreprise sous forme ArtisteLyriqueDansStructureListée
+  conséquence égal à
+    éligibilité
+    et (
+      selon contrat sous forme
+      -- CDI : artiste_lyrique_chœur_permanent
+      -- CDD : artiste_voix_résidence_milieu_scolaire
+    )
+```
+
+##### Article 2 | JORFARTI000039165386
+
+I. - Une aide à l'embauche en contrat à durée indéterminée ou en contrat à durée
+déterminée d'une durée d'au moins un mois est octroyée sous réserve que les
+conditions cumulatives suivantes soient respectées :
+
+1° L'embauche concerne un emploi portant sur des fonctions relevant des annexes
+VIII et X du définitionment d'assurance chômage annexé au décret du 26 juillet 2019
+susvisé ;
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_2_I_1
+  égal à
+    éligibilité
+    et activité_intermittent_spectacle
+```
+
+2° Le salaire annuel brut prévu par le contrat de travail est inférieur à quatre
+fois le montant annuel brut du salaire minimum de croissance ;
+
+```catala
+champ d'application AidePourEmbauche:
+  définition smic.date_courante égal à date_courante
+  définition smic.résidence égal à Métropole
+  # TODO: quid des outre-mer ?
+
+  définition éligibilité
+    état article_2_I_2
+  égal à
+    éligibilité
+    et salaire_annuel_brut
+      <= 4 * smic.brut_horaire * 35 * (13,0 / 3,0) * 12
+# Smic annuel = Smic horaire * 35 heures * 13/3 = 4,3 semaines * 12 mois
+```
+
+3° La date de début d'exécution du contrat ouvrant droit à l'aide est comprise
+entre le 1er octobre 2019 et le 31 décembre 2022.
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_2_I_3
+  égal à
+    éligibilité
+    et date_début_exécution_contrat >= |2019-10-01|
+    et date_début_exécution_contrat <= |2022-12-31|
+```
+
+II. - Pour les groupements d'employeurs, l'embauche concerne un emploi qui ne
+fait pas l'objet d'une mise à disposition et qui est pris en compte dans
+l'effectif du groupement dans les conditions de l'article L. 1253-8-1 du code du
+travail.
+
+```catala
+# TODO: doit-on vérifier quelque chose ici ?
+```
+
+Pour l'embauche à durée indéterminée d'un artiste lyrique de chœur permanent, la
+majoration prévue au deuxième alinéa de l'article 3 est due lorsque le
+recrutement est justifié par le remplacement d'un artiste lyrique de chœur
+permanent qui a bénéficié d'une modification de son contrat de travail pour un
+changement de fonctions sans toutefois changer d'employeur.
+
+```catala
+champ d'application AidePourEmbauche:
+  règle majoration_due
+  sous condition bénéficié_modification_contrat_travail_changement_fonctions_sans_changer_employeur
+  conséquence rempli
+```
+
+Lorsque la demande concerne l'embauche par contrat à durée déterminée d'un
+artiste de la voix en résidence en milieu scolaire pour la conception et la
+réalisation d'un projet artistique de pratique vocale collective, le contrat est
+d'au minimum six mois.
+
+```catala
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_2_II
+  égal à
+    si
+      artiste_voix_résidence_milieu_scolaire
+      et selon contrat sous forme
+        -- CDI : faux
+        -- CDD contenu durée_contrat : durée_contrat <= 6 mois
+    # TODO: nombre de jours plutôt ?
+    alors
+      faux
+    sinon éligibilité
+```
+
+##### Article 3 | JORFARTI000039165388
+
+Pour un contrat à durée indéterminé à temps plein, le montant de l'aide est égal
+à 10 000 euros par an pendant trois ans.
+
+```catala
+champ d'application AidePourEmbauche:
+  étiquette cdi
+  définition montant
+    état forfait
+  sous condition (
+    selon contrat sous forme
+    -- CDI : temps_travail sous forme TempsPlein
+    -- CDD : faux
+  )
+  conséquence égal à
+    MontantAide {
+      -- montant: 10 000 €
+      -- fréquence_versement: Annuelle contenu 3 an
+    }
+```
+
+Lorsque la demande d'aide concerne l'embauche par contrat à durée indéterminée
+d'un artiste lyrique de chœur permanent, le montant de l'aide visé à l'alinéa
+précédent est porté à 16 000 euros par an pendant trois ans.
+
+```catala
+champ d'application AidePourEmbauche:
+  exception cdi
+  définition montant
+    état forfait
+  sous condition
+    (
+      selon contrat sous forme
+      -- CDI : artiste_lyrique_chœur_permanent
+      -- CDD : faux
+    )
+    et majoration_due
+  conséquence égal à
+    MontantAide {
+      -- montant: 16 000 €
+      -- fréquence_versement: Annuelle contenu 3 an
+    }
+# Quid de l'artiste de chœur permanent à temps partiel pour lequel
+# la majoration n'est pas due ? Doit-il percevoir 10000 € ou 16000 €
+```
+
+Pour un contrat à durée déterminée à temps plein, le montant de l'aide est égal
+à :
+
+- 200 euros par mois pour un contrat dont la durée est supérieure ou égale à un
+  mois et inférieure à quatre mois,
+
+```catala
+champ d'application AidePourEmbauche:
+  étiquette cdd
+  définition montant
+    état forfait
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 1 mois et durée_contrat < 4 mois
+  )
+  conséquence égal à
+    selon contrat sous forme
+    -- CDI : impossible
+    -- CDD contenu durée_contrat :
+      MontantAide {
+        -- montant: 200 €
+        -- fréquence_versement: Mensuelle contenu durée_contrat
+      }
+```
+
+- 300 euros par mois pour un contrat dont la durée est supérieure ou égale à
+  quatre mois et inférieure à huit mois,
+
+```catala
+champ d'application AidePourEmbauche:
+  étiquette cdd
+  définition montant
+    état forfait
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 4 mois et durée_contrat < 8 mois
+  )
+  conséquence égal à
+    selon contrat sous forme
+    -- CDI : impossible
+    -- CDD contenu durée_contrat :
+      MontantAide {
+        -- montant: 300 €
+        -- fréquence_versement: Mensuelle contenu durée_contrat
+      }
+```
+- 400 euros par mois pour un contrat dont la durée est supérieure ou égale à
+  huit mois et inférieure à douze mois,
+
+```catala
+champ d'application AidePourEmbauche:
+  étiquette cdd
+  définition montant
+    état forfait
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 8 mois et durée_contrat < 12 mois
+  )
+  conséquence égal à
+    selon contrat sous forme
+    -- CDI : impossible
+    -- CDD contenu durée_contrat :
+      MontantAide {
+        -- montant: 400 €
+        -- fréquence_versement: Mensuelle contenu durée_contrat
+      }
+```
+
+- 500 euros par mois pour un contrat dont la durée est supérieure ou égale à
+  douze mois.
+
+```catala
+champ d'application AidePourEmbauche:
+  étiquette cdd
+  définition montant
+    état forfait
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD contenu durée_contrat : durée_contrat >= 12 mois
+  )
+  conséquence égal à
+    selon contrat sous forme
+    -- CDI : impossible
+    -- CDD contenu durée_contrat :
+      MontantAide {
+        -- montant: 500 €
+        -- fréquence_versement: Mensuelle contenu durée_contrat
+      }
+```
+
+Par dérogation à l'alinéa précédent, lorsque la demande d'aide concerne
+l'embauche par contrat à durée déterminée à temps plein d'un artiste de la voix
+en résidence en milieu scolaire pour la conception et la réalisation d'un projet
+artistique de pratique vocale collective, le montant total de l'aide est porté à
+9 000 euros.
+
+```catala
+champ d'application AidePourEmbauche:
+  exception cdd
+  définition montant
+    état forfait
+  sous condition (
+    selon contrat sous forme
+    -- CDI : faux
+    -- CDD :
+      temps_travail sous forme TempsPlein
+      et artiste_voix_résidence_milieu_scolaire
+  )
+  conséquence égal à
+    MontantAide {
+      -- montant: 9 000 €
+      -- fréquence_versement: Unique
+    }
+```
+
+Le montant de l'aide est proratisé en fonction de la durée du travail du salarié
+lorsque cette durée est inférieure au temps plein, excepté pour les contrats à
+durée déterminée dont la durée est supérieure ou égale à un mois et inférieure à
+deux mois pour lesquels l'aide n'est due que pour des contrats à temps plein.
+
+```catala
+champ d'application AidePourEmbauche:
+  étiquette base définition montant état proratisation égal à montant
+
+  étiquette temps_partiel exception base
+  définition montant
+    état proratisation
+  sous condition temps_travail sous forme TempsPartiel
+  conséquence égal à
+    selon temps_travail sous forme
+    -- TempsPlein : impossible
+    -- TempsPartiel contenu quotité :
+      montant mais en remplaçant {
+          -- montant: montant.montant * quotité
+        }
+
+champ d'application AidePourEmbauche:
+  définition éligibilité
+    état article_3
+  égal à
+    si
+      selon contrat sous forme
+      -- CDI : faux
+      -- CDD contenu durée_contrat :
+        # TODO: nombre de jours plutôt ?
+        durée_contrat >= 1 mois
+        et durée_contrat < 2 mois
+        et temps_travail sous forme TempsPartiel
+    alors
+      faux
+    sinon éligibilité
+```
+
+Le montant de l'aide dû au titre des premiers et dernier mois d'exécution du
+contrat est versé au prorata des jours d'exécution du contrat.
+
+```catala
+# TODO: utiliser Date.split_by_month
+```
+
+L'aide est versée sous réserve du respect du plafond de 200 000 euros sur trois
+exercices fiscaux prévu par le définitionment du 18 décembre 2013 susvisé.
+
+```catala
+# TODO: Aggreger les aides sur l'entreprise ?
+```
+
+##### Article 4 | JORFARTI000039165389
+
+L'aide ne peut se cumuler avec une autre aide de l'Etat à l'insertion, à l'accès
+ou au retour à l'emploi versée au titre du même salarié.
+
+
+### Section 2 : Gestion des aides
+
+##### Article 5 | JORFARTI000039165390
+
+Les aides prévues à la section 1 du présent chapitre sont confiées à l'Agence de
+services et de paiement, ou, après publication et mise en concurrence, à un
+autre opérateur, dans le respect du code de la commande publique.
+
+Les demandes tendant au bénéfice des aides sont signées et adressées par
+l'employeur à l'opérateur mentionné au premier alinéa dans un délai maximal de
+six mois suivant la date de début d'exécution du contrat.
+
+L'aide est versée à l'échéance de chaque période de trois mois civils
+d'exécution du contrat de travail ou à l'échéance du contrat si celui-ci est
+inférieur à trois mois sur la base du versement du dernier bulletin de salaire
+du salarié.
+
+
+##### Article 6 | JORFARTI000039165391
+
+I. - En cas de rupture d'un contrat de travail à durée indéterminée à
+l'initiative de l'employeur dans les douze premiers mois d'exécution du contrat,
+l'aide n'est pas due. Sous réserve des cas mentionnés au II du présent article,
+l'employeur reverse alors à l'opérateur mentionné à l'article 5 l'intégralité
+des sommes déjà perçues au titre de l'aide.
+
+II. - Toutefois, les montants perçus au titre de l'aide ne font pas l'objet d'un
+reversement et l'employeur conserve le bénéficie des aides correspondant au
+nombre de jours travaillés dans les cas suivants :
+
+1° Licenciement pour faute grave du salarié ;
+
+2° Licenciement pour inaptitude médicalement constatée ;
+
+3° Licenciement pour motif économique notifié dans le cadre d'une procédure de
+redressement ou de liquidation judiciaire ;
+
+4° Rupture du contrat au cours de la période d'essai.
+
+
+## Chapitre II
+
+#### Article 7 | JORFARTI000039165374
+
+Le décret du 4 juillet 2018 susviséest ainsi modifié :
+
+1° L'article 1er est complété par les dispositions suivantes :
+
+« Les entreprises dont l'activité principale relève de la convention collective
+nationale des hôtels cafés restaurants sont exclues de la présente mesure. » ;
+
+2° Le premier alinéa de l'article 2 est remplacé par les dispositions suivantes
+:
+
+« Pour bénéficier de l'aide définie à l'article 3, les représentations de
+spectacle vivant doivent être réalisées dans une salle dont la jauge, définie
+comme l'effectif maximal du public qu'il est possible d'admettre, est inférieure
+à 300 personnes. »
+
+
+#### Article 8 | JORFARTI000039165377
+
+Le décret du 10 mai 2017 susvisé est ainsi modifié :
+
+1° Au huitième alinéa de l'article 2, la date du « 30 septembre 2019 » est
+remplacée par la date du « 31 décembre 2022 » ;
+
+2° Le premier alinéa de l'article 3 est complété par les dispositions suivantes
+:
+
+« A partir du 1er janvier 2020, l'Etat peut confier cette aide à l'établissement
+public venant aux droits du Centre national de la chanson des variétés et du
+jazz. »
+
+
+## Chapitre III
+
+#### Article 9 | JORFARTI000039165379
+
+L'établissement public mentionné à l'article 5 contrôle l'exactitude des
+déclarations des bénéficiaires des aides.
+
+Le bénéficiaire de l'aide tient à la disposition du même établissement public
+tout document permettant d'effectuer ce contrôle.
+
+Le versement de l'aide est suspendu lorsque l'employeur ne produit pas dans le
+délai d'un mois les documents demandés par l'établissement public mentionné au
+1er alinéa.
+
+En cas d'erreur ou d'omission dans leurs déclarations, les employeurs sont tenus
+de reverser à l'établissement public les versements indus.
+
+
+#### Article 10 | JORFARTI000039165380
+
+Le présent décret entre en vigueur le 1er octobre 2019.
+
+
+#### Article 11 | JORFARTI000039165382
+
+Le ministre de l'économie et des finances, la ministre du travail, le ministre
+de l'action et des comptes publics et le ministre de la culture sont chargés,
+chacun en ce qui le concerne, de l'exécution du présent décret, qui sera publié
+au Journal officiel de la République française.
