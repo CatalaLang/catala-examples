@@ -1,9 +1,56 @@
 # Prologue
 
+## Modèle d'une exploitation
+
 ```catala-metadata
+déclaration énumération QualificationCulture:
+  -- Principale
+  -- Secondaire
+
+déclaration structure Culture:
+  donnée code contenu CodeCulture
+  donnée période contenu Période.Période
+  donnée qualification contenu QualificationCulture
+
+déclaration structure ParcelleTerreArable:
+  donnée surface_hectares contenu décimal
+  donnée cultures contenu liste de Culture
+
+déclaration énumération AgricultureBiologique:
+  -- CertificationObtenue
+  -- EnCoursDeConversion
+  -- Conventionnelle
+
 déclaration champ d'application CultureBCAE7:
   entrée code_culture contenu CodeCulture
   résultat culture contenu CulturesDifférentesRotationDiversification
+```
+
+## Champs d'application
+
+```catala-metadata
+déclaration énumération ModeRespectBCAE7:
+  -- RotationDesCultures
+  -- DiversificationDesCultures
+
+déclaration champ d'application ConditionnalitéBCAE7Pour2025:
+  entrée agriculture_biologique contenu AgricultureBiologique
+  entrée terres_arables contenu liste de ParcelleTerreArable
+  entrée est_située_dans_la_plaine_du_Rhin contenu booléen
+  entrée mode_respect_norme contenu ModeRespectBCAE7
+
+  interne critère_annuel condition
+  interne critère_pluriannuel condition
+  résultat conditionnalité_satisfaite condition
+
+déclaration champ d'application CritèrePluriannuelConditionnalitéBCAE7Pour2025:
+  entrée parcelle contenu ParcelleTerreArable
+  résultat critère_satisfait condition
+```
+
+## Classifications cultures
+
+```catala-metadata
 
 déclaration énumération CodeCulture:
   -- AAR
@@ -142,7 +189,8 @@ déclaration énumération CulturesDifférentesRotationDiversification:
   -- LupinDHiver
   -- MélangeDeLégumineusesProtéagineuxPrépondérantsEtDeCéréalesOléagineux
   -- PoisProtéagineuxDePrintemps
-  -- SorghoPoisProtéagineuxDHiver
+  -- Sorgho
+  -- PoisProtéagineuxDHiver
   -- OrgeDHiver
   -- OrgeDePrintemps
   -- SeigleDHiver
@@ -161,7 +209,10 @@ déclaration énumération CulturesDifférentesRotationDiversification:
   -- Chanvre
   -- FruitsLégumesFleurs
   -- Moutarde
-  -- PlantesÀParfumAromatiquesEtMédicinales
+  -- PlantesAromatiquesHerbacéesNonPérennesHorsPersil
+  -- PlantesMédicinalesEtÀParfumNonPérennes
+  -- Persil
+  -- HorticultureOrnementale
   -- CulturesAssociéesDéclaréesAvecLeCodeCIDCIT
   -- Riz
   -- Ail
