@@ -12,9 +12,34 @@ déclaration structure Culture:
   donnée période contenu Période.Période
   donnée qualification contenu QualificationCulture
 
+déclaration énumération SystèmeParcelle:
+  -- MonoculturePrintemps
+  -- MonocultureHiver
+  -- Autre
+
 déclaration structure ParcelleTerreArable:
   donnée surface_hectares contenu décimal
+  # On suppose que la liste des cultures est triées par ordre
+  # chronologique
   donnée cultures contenu liste de Culture
+  donnée système contenu SystèmeParcelle
+
+déclaration surface_parcelles_hectares
+  contenu décimal
+  dépend de parcelles contenu liste de ParcelleTerreArable
+  égal à
+    somme décimal de transforme chaque parcelle parmi parcelles en
+        parcelle.surface_hectares
+
+déclaration culture_date
+  contenu optionnel de Culture
+  dépend de cultures contenu liste de Culture, date_référence contenu date
+  égal à
+    Liste.premier_element de
+      (
+        liste de culture parmi cultures
+          tel que Période.est_contenue de culture.période, date_référence
+      )
 
 déclaration énumération AgricultureBiologique:
   -- CertificationObtenue
@@ -37,10 +62,26 @@ déclaration champ d'application ConditionnalitéBCAE7Pour2025:
   entrée agriculture_biologique contenu AgricultureBiologique
   entrée terres_arables contenu liste de ParcelleTerreArable
   entrée est_située_dans_la_plaine_du_Rhin contenu booléen
-  entrée mode_respect_norme contenu ModeRespectBCAE7
+  entrée choix_critère_hors_plaine_du_Rhin contenu ModeRespectBCAE7
 
-  interne critère_annuel condition
-  interne critère_pluriannuel condition
+  interne terres_arables_cultivées contenu liste de ParcelleTerreArable
+  interne terres_arables_cultivées_respectant_critère_annuel contenu liste de ParcelleTerreArable
+  interne culture_annexe_1 condition dépend de code_culture contenu CodeCulture
+
+  interne rotation_cultures condition
+  interne rotation_cultures_critère_annuel condition
+  interne rotation_cultures_critère_pluriannuel condition
+  interne rotation_cultures_critère_pluriannuel_parcelle condition
+  dépend de parcelle contenu ParcelleTerreArable état base
+    état monoculture
+  interne période_inclue_période_évaluation_pluriannuelle condition dépend de période contenu Période.Période
+  interne diversification_alsace condition
+  interne diversification_général condition
+  interne exempté_respect condition
+  interne surface_terres_arables_hectares contenu décimal
+  interne culture_prise_en_compte_exemption_herbe_fourragères condition dépend de code_culture contenu CodeCulture
+  interne culture_prise_en_compte_exemption_prairies_sous_eau condition dépend de code_culture contenu CodeCulture
+
   résultat conditionnalité_satisfaite condition
 
 déclaration champ d'application CritèrePluriannuelConditionnalitéBCAE7Pour2025:
@@ -69,9 +110,11 @@ déclaration énumération CodeCulture:
   -- BTH
   -- BTP
   -- BTN
+  -- CAE
   -- CAG
   -- CAH
   -- CAR
+  -- CEE
   -- CEL
   -- CID
   -- CIT
@@ -137,6 +180,7 @@ déclaration énumération CodeCulture:
   -- PME
   -- POR
   -- POT
+  -- PPH
   -- PPR
   -- PRF
   -- PSL
@@ -148,8 +192,11 @@ déclaration énumération CodeCulture:
   -- SAI
   -- SGH
   -- SGP
+  -- SNE
   -- SOG
   -- SOJ
+  -- SPH
+  -- SPL
   -- SRS
   -- TAB
   -- TBT

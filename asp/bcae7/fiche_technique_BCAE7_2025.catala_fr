@@ -43,22 +43,117 @@ Sont soumis au respect des normes et exigences de la conditionnalité, les agric
 Toutefois, les exploitants qui satisfont au moins à l’un des quatre critères suivants sont exemptés du
 respect de cette norme :
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle conditionnalité_satisfaite
+  sous condition exempté_respect
+  conséquence rempli
+```
+
 - La totalité de l’exploitation est certifiée (ou en cours de conversion) en agriculture biologique
   (critère identique à la voie certification bio de l’écorégime) ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle exempté_respect
+  sous condition
+    selon agriculture_biologique sous forme
+    -- CertificationObtenue : vrai
+    -- EnCoursDeConversion : vrai
+    -- Conventionnelle : faux
+  conséquence rempli
+```
+
 - La surface de terres arables est inférieure ou égale à 10 hectares ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition surface_terres_arables_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables en
+        parcelle.surface_hectares
+
+  règle exempté_respect
+  sous condition surface_terres_arables_hectares <= 10,0
+  conséquence rempli
+```
+
 - Plus de 75% de la surface en terres arables est consacrée à la production d’herbe (dont prairies
   temporaires) ou d’autres plantes fourragères herbacées, à la culture de légumineuses, à de la
   jachère ou dédiée à une combinaison de ces différentes utilisations (cf. annexe 2) ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle exempté_respect
+  sous condition
+    soit surface_herbes_hectares égal à
+      somme décimal de transforme chaque parcelle parmi terres_arables en
+          # TODO: Quelle date de réference utiliser pour déterminer ce critère ?
+          (
+            selon (culture_date de parcelle.cultures, |2025-01-01|) sous forme
+            -- Absent : 0,0
+            -- Présent contenu culture :
+              (
+                si
+                  culture_prise_en_compte_exemption_herbe_fourragères de
+                    culture.code
+                alors
+                  parcelle.surface_hectares
+                sinon 0,0
+              )
+          )
+    dans
+    (surface_herbes_hectares / surface_terres_arables_hectares) >= 75%
+  conséquence rempli
+```
+
 - Plus de 75% de la surface agricole admissible sont constitués de prairies permanentes, utilisés
   pour la production d'herbe ou d'autres plantes fourragères herbacées (dont prairies
   temporaires), ou pour des cultures sous eau pendant une grande partie de l'année ou pendant
   une grande partie du cycle de culture ou sont soumis à une combinaison de ces différentes
   utilisations (cf. annexe 2).
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle exempté_respect
+  sous condition
+    soit surface_herbes_hectares égal à
+      somme décimal de transforme chaque parcelle parmi terres_arables en
+          # TODO: Quelle date de réference utiliser pour déterminer ce critère ?
+          (
+            selon (culture_date de parcelle.cultures, |2025-01-01|) sous forme
+            -- Absent : 0,0
+            -- Présent contenu culture :
+              (
+                si
+                  culture_prise_en_compte_exemption_prairies_sous_eau de
+                    culture.code
+                alors
+                  parcelle.surface_hectares
+                sinon 0,0
+              )
+          )
+    dans
+    (surface_herbes_hectares / surface_terres_arables_hectares) >= 75%
+  conséquence rempli
+```
+
 Attention : les exploitations de certaines communes de la plaine du Rhin doivent respecter la
 diversification des cultures spécifique à l’Alsace (point II de la fiche) d’après le barème en annexe 5.
 Pour les autres exploitants, à compter de la campagne PAC 2025, il convient de choisir entre le critère
 de rotation et le critère de diversification.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle conditionnalité_satisfaite
+  sous condition
+    si est_située_dans_la_plaine_du_Rhin alors
+      diversification_alsace
+    sinon
+      selon choix_critère_hors_plaine_du_Rhin sous forme
+      -- RotationDesCultures : rotation_cultures
+      -- DiversificationDesCultures : diversification_général
+  conséquence rempli
+```
 
 ## La rotation des cultures
 
@@ -67,7 +162,16 @@ de rotation et le critère de diversification.
 Pour respecter la rotation des cultures, deux critères cumulatifs doivent être satisfaits : le premier
 critère est vérifié chaque année au niveau de l’exploitation et le second critère, pluriannuel, est vérifié
 au niveau de la parcelle à compter de l’année 2025, en tenant compte de la succession des cultures les
-années antérieures
+années antérieures.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle rotation_cultures
+  sous condition
+    rotation_cultures_critère_annuel
+    et rotation_cultures_critère_pluriannuel
+  conséquence rempli
+```
 
 ### Critère annuel
 
@@ -75,6 +179,21 @@ années antérieures
 
 Les terres arables cultivées sont des terres arables autres que des cultures pluriannuelles, des prairies
 temporaires, des terres mises en jachères ou des cultures se développant sous eau (cf. annexe 1).
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition terres_arables_cultivées égal à
+    liste de parcelle parmi terres_arables
+      tel que
+      # TODO: Quelle date de réference utiliser pour déterminer ce critère ?
+      (
+        selon (culture_date de parcelle.cultures, |2025-01-01|) sous forme
+        -- Absent : faux
+        -- Présent contenu culture :
+          culture_annexe_1 de
+            culture.code
+      )
+```
 
 Est définie comme culture principale toute culture pour laquelle l’agriculteur demande le versement
 d’une aide de la PAC et qui est présente au moins en partie sur la période du 1er mars au 15 juillet. Les
@@ -98,6 +217,11 @@ privilégier le travail mécanique pour des raisons environnementales.
 Les CIPAN peuvent être retenues comme cultures secondaires si elles satisfont les modalités relatives
 à la norme BCAE7 et à toute autre réglementation qui mobilise ce type de couvert.
 
+```catala
+# Nous supposons que la qualification entre cultures principales et secondaires
+# a déjà été effectuée en entrée de notre moteur de calcul.
+```
+
 #### Règles
 
 Pour ce qui concerne le critère annuel, il sera vérifié que pour au moins 35% de la surface en terres
@@ -116,9 +240,83 @@ administratif et sur place. Il sera ainsi vérifié que :
   catégories de cultures ;
 - le taux de 35 % de rotation est bien atteint.
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition terres_arables_cultivées_respectant_critère_annuel égal à
+    liste de parcelle parmi terres_arables_cultivées
+      tel que (
+        soit (culture_précédente, rotation_satisfaite) égal à
+          (
+            combine tout culture parmi parcelle.cultures
+              dans (culture_précédente, rotation_satisfaite_avant)
+              initialement (Absent, vrai)
+              avec (
+                  si
+                    culture.période.début >= |2025-12-31|
+                    ou culture.période.fin <= |2025-01-01|
+                  alors
+                    # Cette culture date d'avant 2025, on la stocke comme
+                    # culture précédente mais on ne l'étudie pas pour le
+                    # critère annuel.
+                    (Présent contenu culture.code, rotation_satisfaite_avant)
+                  sinon
+                    # On contrôle le critère annuel
+                    soit culture_en_place_correctement égal à
+                      selon culture.qualification sous forme
+                      -- Secondaire :
+                        culture.période.début <= |2025-11-15|
+                      -- Principale :
+                        (
+                          culture.période.début <= |2025-03-01|
+                          et culture.période.fin >= |2025-07-15|
+                        )
+                    dans
+                    soit code_actuel égal à culture.code dans
+                    soit rotation_satisfaite égal à
+                      selon culture_précédente sous forme
+                      -- Absent : vrai
+                      -- Présent contenu code_précédent :
+                        soit culture_actuelle égal à
+                          (
+                            résultat de CultureBCAE7 avec {
+                              -- code_culture: code_actuel
+                            }
+                          ).culture
+                        dans
+                        soit culture_précédente égal à
+                          (
+                            résultat de CultureBCAE7 avec {
+                              -- code_culture: code_actuel
+                            }
+                          ).culture
+                        dans
+                        culture_précédente != culture_actuelle
+                    dans
+                    (
+                      Présent contenu culture.code,
+                      rotation_satisfaite_avant et rotation_satisfaite
+                    )
+                )
+          )
+        dans
+        rotation_satisfaite
+      )
+
+  règle rotation_cultures_critère_annuel
+  sous condition
+    surface_parcelles_hectares de terres_arables_cultivées
+    / (
+      surface_parcelles_hectares de
+        terres_arables_cultivées_respectant_critère_annuel
+    )
+    >= 35%
+  conséquence rempli
+```
+
 Le contrôle de la culture secondaire consiste à vérifier par contrôle sur place en 2025 qu’une culture
 différente de la culture principale a bien été implantée à l’automne 2025, que les dates d’implantation
 et de destruction, ainsi que la nature des couverts, sont bien respectées.
+
 
 #### Exemple de rotation annuelle sur une exploitation de 125 ha dont 25 ha en jachère et prairies temporaires
 
@@ -146,6 +344,91 @@ que sur les automnes 2023, 2024 et 2025 (puisque les cultures secondaires n’on
 sur la télédéclaration de 2022). En revanche, à partir de 2026, il sera vérifié dans ce cas qu’une culture
 secondaire a été implantée aux automnes suivants de 2023, 2024, 2025 et 2026.
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle période_inclue_période_évaluation_pluriannuelle de période
+  sous condition
+    période.début >= |2025-12-31|
+    ou période.fin <= |2022-01-01|
+  conséquence rempli
+
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  sous condition
+    soit au_moins_deux_cultures_principales égal à
+      soit (culture_principale_précédente, rotation_satisfaite) égal à
+        (
+          combine tout culture parmi parcelle.cultures
+            dans (culture_principale_précédente, rotation_satisfaite_avant)
+            initialement (Absent, faux)
+            avec (
+                si
+                  période_inclue_période_évaluation_pluriannuelle de
+                    culture.période
+                alors
+                  # Cette culture date d'avant 2025, on la stocke comme
+                  # culture précédente mais on ne l'étudie pas pour le
+                  # critère annuel.
+                  (culture_principale_précédente, rotation_satisfaite_avant)
+                sinon
+                  # On contrôle la différence des cultures annuel
+                  soit code_actuel égal à culture.code dans
+                  soit rotation_satisfaite égal à
+                    selon culture_principale_précédente sous forme
+                    -- Absent : faux
+                    -- Présent contenu code_précédent :
+                      soit culture_actuelle égal à
+                        (
+                          résultat de CultureBCAE7 avec {
+                            -- code_culture: code_actuel
+                          }
+                        ).culture
+                      dans
+                      soit culture_précédente égal à
+                        (
+                          résultat de CultureBCAE7 avec {
+                            -- code_culture: code_actuel
+                          }
+                        ).culture
+                      dans
+                      culture_précédente != culture_actuelle
+                  dans
+                  (
+                    selon culture.qualification sous forme
+                    -- Secondaire : culture_principale_précédente
+                    -- Principale : Présent contenu culture.code,
+                    rotation_satisfaite_avant ou rotation_satisfaite
+                  )
+              )
+        )
+      dans
+      rotation_satisfaite
+    dans
+    soit culture_secondaire_tous_les_ans égal à
+      # On ne contrôle pas 2022
+      pour tout année parmi [ 2023; 2024; 2025 ]
+        on a (
+          existe culture parmi parcelle.cultures
+            tel que (
+              selon culture.qualification sous forme
+              -- Principale : faux
+              -- Secondaire :
+                # On vérifie que cette culture secondaire était présente sur
+                # l'automne de cette année
+                culture.période.début <= |0000-11-15| + 1 an * année
+              # TODO : autre chose à vérifier ici ?
+            )
+        )
+    dans
+    au_moins_deux_cultures_principales ou culture_secondaire_tous_les_ans
+  conséquence rempli
+
+  règle rotation_cultures_critère_pluriannuel
+  sous condition
+    pour tout parcelle parmi terres_arables_cultivées
+      on a rotation_cultures_critère_pluriannuel_parcelle de parcelle
+  conséquence rempli
+```
+
 Remarque : en cas de changement de détenteur de la parcelle sur la période d’évaluation du critère
 pluriannuel, le critère sera vérifié en tenant compte des assolements sur la parcelle de l’ancien
 détenteur. En cas de reprise de tout ou partie d’une exploitation, le repreneur doit donc se renseigner
@@ -157,15 +440,36 @@ Les surfaces temporairement non exploitées (et déclarées avec le code « SNE 
 cours de la période d’évaluation du critère pluriannuel (par exemple maïs, maïs, SNE, maïs) seront
 considérées comme respectant le critère de rotation pluriannuelle par défaut.
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  sous condition
+    existe culture parmi parcelle.cultures
+      tel que période_inclue_période_évaluation_pluriannuelle de culture.période
+      et culture.code = SNE
+  conséquence rempli
+```
+
 Les surfaces non déclarées durant une année au cours de la période d’évaluation du critère (par
 exemple à l’occasion d’un changement de détenteur de la parcelle) seront considérées comme
 respectant le critère de rotation pluriannuelle par défaut. Il est rappelé que les exploitants doivent
 déclarer toutes les parcelles qu’ils exploitent et que la non déclaration d’une parcelle exploitée pour
 éviter des réductions au titre de la conditionnalité sera sanctionnée.
 
+```catala
+# TODO détecter dans la liste des cultures les "trous" de déclaration et
+# appliquer ce cas paerticulier.
+```
+
 Dans le cas où l’exploitation est exemptée du critère de rotation au cours de la période d’évaluation
 (cf. paragraphe « qui est concerné ? »), les parcelles seront considérées comme respectant la rotation
 pluriannuelle.
+
+```catala
+# TODO: où stocker l'information que l'exploitation dont dépendait la parcelle
+# a bien été exemptée les années précédentes. Une fois décidé, on peut
+# implémenter ce cas particulier.
+```
 
 NB : comme la BCAE7 n’est applicable que depuis la campagne 2024 (une dérogation liée à la situation
 en Ukraine avait été mise en place en 2023), ce cas particulier ne pourra être mis en œuvre en 2025
@@ -180,6 +484,16 @@ comme elle a été exemptée deux années sur les 4 années d’évaluation du c
 Les parcelles cultivées en maïs semence sont exclues de l’obligation de respect du critère pluriannuel
 de rotation. En revanche le critère de rotation annuel au niveau de l’exploitation est maintenu.
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  sous condition
+    existe culture parmi parcelle.cultures
+      tel que période_inclue_période_évaluation_pluriannuelle de culture.période
+      et culture.code = MIS
+  conséquence rempli
+```
+
 ####  Respect du critère pluriannuel pour les cultures pluriannuelles, les jachères et les prairies temporaires implantées pendant une période de 4 ans
 
 Bien qu’étant des terres arables, les cultures pluriannuelles, les jachères et les prairies temporaires ne
@@ -193,9 +507,24 @@ rotation annuel ou pluriannuel. En effet, le respect du critère pluriannuel de 
 en 2025 que sur les parcelles implantées en 2025 avec une cuture arable autre que prairie temporaire,
 jachère et culture pluriannuelle.
 
+```catala
+# Déjà implémenté plus haut
+```
+
 Pour les parcelles sur lesquelles une culture pluriannuelle, une jachère ou une prairie temporaire a été
 intégrée dans la rotation sur la période de 4 ans, cela signifie qu’il y a eu deux cultures sur cette période
 et le critère de rotation pluriannuel est considéré comme respecté
+
+```catala
+# Déjà implémenté pour les jachères ou prairies temporaires.
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  sous condition
+    existe culture parmi parcelle.cultures
+      tel que période_inclue_période_évaluation_pluriannuelle de culture.période
+      et culture.période.fin - culture.période.début >= 365 jour # TODO vérifier ce critère
+  conséquence rempli
+```
 
 ##### Exemple de rotation pluriannuelle sur une parcelle entre 2022 et 2025
 
@@ -225,9 +554,29 @@ principales différentes sur une période de 4 ans. Le critère pluriannuel est 
 
 ##### Les systèmes en monoculture et l’obligation de rotation pluriannuelle
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  # Ce critère supplémentaire pour les systèmes en monoculture
+  # ne s'applique pas par défaut, voir les exceptions ci-après.
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
+  sous condition
+    parcelle.système sous forme Autre
+    et rotation_cultures_critère_pluriannuel_parcelle de parcelle
+  conséquence rempli
+```
+
 Concernant les systèmes en monoculture de printemps, il sera vérifié qu’une culture secondaire a été
 implantée chaque année à l’automne au plus tard le 15 novembre et qu’elle est restée en place
 jusqu’au 15 février.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
+  sous condition
+    parcelle.système sous forme MonoculturePrintemps
+    et vrai # TODO implem
+  conséquence rempli
+```
 
 Concernant les systèmes en monoculture d’hiver, les cultures secondaires ne pouvant pas être
 implantées et demeurer entre le 15 novembre et le 15 février, une culture principale différente de
@@ -383,11 +732,39 @@ de Perse (ou trèfle renversé), trèfle des prés (ou trèfle violet), trèfle 
 
 Codes cultures : LOT, LDH, LDP, LUZ, VES, SAI, TRE.
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- LOT : vrai
+    -- LDH : vrai
+    -- LDP : vrai
+    -- LUZ : vrai
+    -- VES : vrai
+    -- SAI : vrai
+    -- TRE : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
+
 #### Cultures industrielles et plantes sarclées
 
 Betterave (sucrière, fourragère, potagère et autre),  canne à sucre, houblon
 
 Codes cultures : BTN, CSA, HBL
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- BTN : vrai
+    -- CSA : vrai
+    -- HBL : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
 
 #### Légumes et fruits (sauf légumineuses)
 
@@ -395,13 +772,44 @@ Artichaut, Céleri, Fraise de plein champ
 
 Codes cultures : ART, CEL, FRA
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- ART : vrai
+    -- CEL : vrai
+    -- FRA : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
+
 #### Plantes aromatiques herbacées, plantes médicinales et à parfum non pérennes
 
 Codes cultures : AME, AAR et PSL
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- AME : vrai
+    -- AAR : vrai
+    -- PSL : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
+
 #### Horticulture ornementale
 
 Code culture : HPC
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition code_culture sous forme HPC
+  conséquence rempli
+```
 
 ### Surfaces herbacées temporaires et mélanges avec graminées suivantes
 
@@ -409,17 +817,45 @@ Code culture : HPC
 
 Code culture : MLG
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition code_culture sous forme MLG
+  conséquence rempli
+```
+
 #### Prairie temporaire de 5 ans au moins et autre mélange avec graminées
 
 Code culture : PTR
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition code_culture sous forme PTR
+  conséquence rempli
+```
 
 #### Jachère
 
 Code culture : JAC
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition code_culture sous forme JAC
+  conséquence rempli
+```
+
 ### Riz
 
 Code culture : RIZ
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_annexe_1 de code_culture
+  sous condition code_culture sous forme RIZ
+  conséquence rempli
+```
 
 ## Annexe 2 : Cultures prises en compte pour le calcul des critères d’exemption au niveau de l’exploitation à l’application de la BCAE 7
 
@@ -429,13 +865,55 @@ de légumineuses, à de la jachère ou dédiée à une combinaison de ces diffé
 retenues :
 
 * toutes les surfaces en légumineuses de la liste 1.3 de la notice « Cultures et précisions »
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_prise_en_compte_exemption_herbe_fourragères de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- ARA : vrai
+    -- FEV : vrai
+    -- FVL : vrai
+    -- FVP : vrai
+    -- GES : vrai
+    -- LEC : vrai
+    -- LDH : vrai
+    -- LDP : vrai
+    -- LOT : vrai
+    -- PCH : vrai
+    -- PHI : vrai
+    -- PPR : vrai
+    -- PHS : vrai
+    -- PHF : vrai
+    -- LUZ : vrai
+    -- SAI : vrai
+    -- SOJ : vrai
+    -- TRE : vrai
+    -- VES : vrai
+    -- PAG : vrai
+    -- MLF : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
+
 * les surfaces herbacées temporaires et mélanges avec graminées suivantes de la liste 1.5 de
-  la notice « culture set précisions » suivantes :
+  la notice « cultures et précisions » suivantes :
   * Mélange de légumineuses prépondérantes et de graminées fourragères de 5
     ans ou moins
   * Prairie temporaire de 5 ans ou moins et autre mélange avec graminées
   * Jachère
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_prise_en_compte_exemption_herbe_fourragères de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- MLG : vrai
+    -- PTR : vrai
+    -- JAC : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
 
 Au titre de l’exemption définie par plus de 75% de la surface agricole admissible constitués de
 prairies permanentes, utilisés pour la production d’herbe ou d’autres plantes fourragères herbacées,
@@ -443,12 +921,49 @@ ou des cultures sous eau :
 
 * toutes les prairies et les pâturages permanents de la liste 1.6 de la notice « Cultures et
   précisions »
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_prise_en_compte_exemption_prairies_sous_eau de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- PPH : vrai
+    -- SPH : vrai
+    -- SPL : vrai
+    -- CAE : vrai
+    -- CEE : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
+
 * les surfaces herbacées temporaires et mélanges avec graminées suivantes de la liste 1.5
   de la notice « cultures et précisions » suivantes :
   * Mélange de légumineuses prépondérantes et de graminées fourragères de 5 ans
     ou moins
   * Prairie temporaire de 5 ans ou moins et autre mélange avec graminées
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_prise_en_compte_exemption_prairies_sous_eau de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- MLG : vrai
+    -- PTR : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
+
 * riz
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle culture_prise_en_compte_exemption_prairies_sous_eau de code_culture
+  sous condition
+    selon code_culture sous forme
+    -- RIZ : vrai
+    -- n'importe quel : faux
+  conséquence rempli
+```
 
 ## Annexe 3 : Liste des catégories de culture considérées comme cultures différentes pour la rotation et la diversification
 
