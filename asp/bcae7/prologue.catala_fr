@@ -74,8 +74,25 @@ déclaration champ d'application ConditionnalitéBCAE7Pour2025:
   interne rotation_cultures_critère_pluriannuel_parcelle condition
   dépend de parcelle contenu ParcelleTerreArable état base
     état monoculture
+  interne années_évaluation_pluriannuelle contenu liste de entier
   interne période_inclue_période_évaluation_pluriannuelle condition dépend de période contenu Période.Période
-  interne diversification_alsace condition
+  interne diversification_Rhin condition
+  interne surfaces_céréales_hiver_hectares contenu décimal
+  interne surfaces_céréales_printemps_hectares contenu décimal
+  interne surfaces_plantes_sarclées_hectares contenu décimal
+  interne surfaces_oléagineux_hiver_hectares contenu décimal
+  interne surfaces_oléagineux_printemps_hectares contenu décimal
+  interne points_diversification_Rhin_céréales_oléagineux_plantes_sarclées contenu entier
+    état céréales_hiver
+    état céréales_printemps
+    état plates_sarclées
+    état oléagineux_hiver
+    état oléagineux_printemps
+  interne points_diversification_Rhin contenu entier
+    état prairie_temporaires_jachères
+    état légumineuses
+    état céréales_oléagineux_plantes_sarclées
+    état autres_cultures
   interne diversification_général condition
   interne exempté_respect condition
   interne surface_terres_arables_hectares contenu décimal

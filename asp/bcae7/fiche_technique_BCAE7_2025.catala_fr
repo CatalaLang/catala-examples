@@ -147,7 +147,7 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   règle conditionnalité_satisfaite
   sous condition
     si est_située_dans_la_plaine_du_Rhin alors
-      diversification_alsace
+      diversification_Rhin
     sinon
       selon choix_critère_hors_plaine_du_Rhin sous forme
       -- RotationDesCultures : rotation_cultures
@@ -352,6 +352,9 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     ou période.fin <= |2022-01-01|
   conséquence rempli
 
+  # On ne contrôle pas 2022
+  définition années_évaluation_pluriannuelle égal à [ 2023; 2024; 2025 ]
+
   règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
   sous condition
     soit au_moins_deux_cultures_principales égal à
@@ -404,8 +407,7 @@ champ d'application ConditionnalitéBCAE7Pour2025:
       rotation_satisfaite
     dans
     soit culture_secondaire_tous_les_ans égal à
-      # On ne contrôle pas 2022
-      pour tout année parmi [ 2023; 2024; 2025 ]
+      pour tout année parmi années_évaluation_pluriannuelle
         on a (
           existe culture parmi parcelle.cultures
             tel que (
@@ -574,7 +576,21 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
   sous condition
     parcelle.système sous forme MonoculturePrintemps
-    et vrai # TODO implem
+    et pour tout année parmi années_évaluation_pluriannuelle
+      on a soit culture_15_novembre égal à
+        culture_date de parcelle.cultures, (|0000-11-15| + 1 an * année)
+      dans
+      soit culture_15_février égal à
+        culture_date de parcelle.cultures, (|0000-02-15| + 1 an * (année + 1))
+      dans
+      selon culture_15_novembre sous forme
+      -- Absent : faux
+      -- Présent contenu culture_15_novembre_présente :
+        (
+          selon culture_15_novembre_présente.qualification sous forme
+          -- Principale : faux
+          -- Secondaire : culture_15_février = culture_15_novembre
+        )
   conséquence rempli
 ```
 
@@ -583,6 +599,18 @@ implantées et demeurer entre le 15 novembre et le 15 février, une culture prin
 celle de la monoculture devra être mise en place au moins une année sur une période glissante de
 quatre ans. Ainsi lors du 1er contrôle de 2025, deux cultures principales devront être constatées entre
 2022 et 2025.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  # Ce critère pour la monoculture d'hiver correspond exactement à ce qui
+  # a déjà été vérifié précédemment pour la rotation pluriannuelle.
+  # TODO vérifier que c'est bien le cas ?
+  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
+  sous condition
+    parcelle.système sous forme MonocultureHiver
+    et rotation_cultures_critère_pluriannuel_parcelle de parcelle
+  conséquence rempli
+```
 
 Exemple : une exploitation de 100 ha est composée de 4 parcelles dont l’assolement a évolué entre
 2022 et 2025 sauf pour ce qui concerne la parcelle de 15 ha, restée en monoculture de maïs.
@@ -609,6 +637,13 @@ barème définit le nombre de points à accorder selon les grands types de cultu
 (annexe 5).
 
 Il sera vérifié qu’un minimum de trois points est bien atteint.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle diversification_Rhin
+  sous condition points_diversification_Rhin >= 3
+  conséquence rempli
+```
 
 Exemple : un agriculteur détient une exploitation à cheval sur une commune du Haut Rhin, listée dans
 l’arrêté BCAE du 14 mars 2023 et une commune des Vosges. Il détient une parcelle de blé dont l’ilot
@@ -1266,25 +1301,296 @@ admissible au sens de l’article D. 614-9 du code rural et de la pêche maritim
 * Surface en PT supérieure ou égale à 30 % de la surface en TA : 3 points
 * Surface en PT supérieure ou égale à 50 % de la surface en TA : 4 points
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition points_diversification_Rhin
+    état prairie_temporaires_jachères
+  égal à
+    soit surface_prairies_temporaires_jachères égal à
+      somme décimal de transforme chaque parcelle parmi terres_arables en
+          soit culture égal à
+            # TODO: quelle date prendre en compte ici ?
+            culture_date de (parcelle.cultures, |2025-07-01|)
+          dans
+          selon culture sous forme
+          -- Absent : 0,0
+          -- Présent contenu culture :
+            (
+              selon culture.code sous forme
+              -- JAC : parcelle.surface_hectares
+              -- PTR : parcelle.surface_hectares
+              -- n'importe quel : 0,0
+            )
+    dans
+    soit ratio égal à
+      surface_prairies_temporaires_jachères / surface_terres_arables_hectares
+    dans
+    si ratio >= 50% alors 4
+    sinon si ratio >= 30% alors 3
+    sinon si ratio >= 5% alors 2 sinon 0
+```
+
 ### Légumineuses à graines et légumineuses fourragères
 
 * Surface en légumineuses supérieure ou égale 5% de la surface en TA : 2 points ; OU
 * Surface en légumineuses supérieure à 5 ha : 2 points ; OU
 * Surface en légumineuses supérieure ou égale 10% de la surface en TA : 3 points.
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition points_diversification_Rhin
+    état légumineuses
+  égal à
+    soit surfaces_légumineuses_hectares égal à
+      somme décimal de transforme chaque parcelle parmi terres_arables en
+          soit culture égal à
+            # TODO: quelle date prendre en compte ici ?
+            culture_date de (parcelle.cultures, |2025-07-01|)
+          dans
+          selon culture sous forme
+          -- Absent : 0,0
+          -- Présent contenu culture :
+            (
+              selon culture.code sous forme
+              -- ARA : parcelle.surface_hectares
+              -- FEV : parcelle.surface_hectares
+              -- FNU : parcelle.surface_hectares
+              -- FVL : parcelle.surface_hectares
+              -- FVP : parcelle.surface_hectares
+              -- GES : parcelle.surface_hectares
+              -- LEC : parcelle.surface_hectares
+              -- LDH : parcelle.surface_hectares
+              -- LDP : parcelle.surface_hectares
+              -- LOT : parcelle.surface_hectares
+              -- PCH : parcelle.surface_hectares
+              -- PHI : parcelle.surface_hectares
+              -- PPR : parcelle.surface_hectares
+              -- PHS : parcelle.surface_hectares
+              -- PHF : parcelle.surface_hectares
+              -- LUZ : parcelle.surface_hectares
+              -- SAI : parcelle.surface_hectares
+              -- SOJ : parcelle.surface_hectares
+              -- TRE : parcelle.surface_hectares
+              -- VES : parcelle.surface_hectares
+              -- PAG : parcelle.surface_hectares
+              -- MLF : parcelle.surface_hectares
+              -- n'importe quel : 0,0
+            )
+    dans
+    soit ratio égal à
+      surfaces_légumineuses_hectares / surface_terres_arables_hectares
+    dans
+    points_diversification_Rhin
+    + (
+      si ratio >= 10% alors 3
+      sinon si ratio >= 5% alors 2
+      sinon si surfaces_légumineuses_hectares >= 5,0 alors 2
+      sinon 0
+    )
+```
+
 ### Céréales d'hiver, céréales de printemps, plantes sarclées, oléagineux de printemps, oléagineux d'hiver
 
 * Surface en Céréales d’hiver supérieure ou égale à 10% de la surface en TA : 1 point ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition surfaces_céréales_hiver_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables en
+        soit culture égal à
+          # TODO: quelle date prendre en compte ici ?
+          culture_date de (parcelle.cultures, |2025-07-01|)
+        dans
+        selon culture sous forme
+        -- Absent : 0,0
+        -- Présent contenu culture :
+          (
+            selon culture.code sous forme
+            -- AVH : parcelle.surface_hectares
+            -- BDH : parcelle.surface_hectares
+            -- BTH : parcelle.surface_hectares
+            -- EPE : parcelle.surface_hectares
+            -- ORH : parcelle.surface_hectares
+            -- SGH : parcelle.surface_hectares
+            -- TTH : parcelle.surface_hectares
+            -- CAH : parcelle.surface_hectares
+            -- MCR : parcelle.surface_hectares
+            -- n'importe quel : 0,0
+          )
+
+  définition points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    état céréales_hiver
+  égal à
+    soit ratio égal à
+      surfaces_céréales_hiver_hectares / surface_terres_arables_hectares
+    dans
+    si ratio >= 10% alors 1 sinon 0
+```
+
 * Surface en Céréales de printemps supérieure ou égale à 10% de la surface en TA : 1 point ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+
+  définition surfaces_céréales_printemps_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables en
+        soit culture égal à
+          # TODO: quelle date prendre en compte ici ?
+          culture_date de (parcelle.cultures, |2025-07-01|)
+        dans
+        selon culture sous forme
+        -- Absent : 0,0
+        -- Présent contenu culture :
+          (
+            selon culture.code sous forme
+            -- AVP : parcelle.surface_hectares
+            -- BDP : parcelle.surface_hectares
+            -- BTP : parcelle.surface_hectares
+            -- MIS : parcelle.surface_hectares
+            -- ORP : parcelle.surface_hectares
+            -- SGP : parcelle.surface_hectares
+            -- SOG : parcelle.surface_hectares
+            -- TTP : parcelle.surface_hectares
+            -- CAG : parcelle.surface_hectares
+            -- MCR : parcelle.surface_hectares
+            -- n'importe quel : 0,0
+          )
+
+  définition points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    état céréales_printemps
+  égal à
+    soit ratio égal à
+      surfaces_céréales_printemps_hectares / surface_terres_arables_hectares
+    dans
+    points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    + (si ratio >= 10% alors 1 sinon 0)
+```
+
 * Surface en Plantes sarclées supérieure ou égale 10% de la surface en TA : 1 point ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition surfaces_plantes_sarclées_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables en
+        soit culture égal à
+          # TODO: quelle date prendre en compte ici ?
+          culture_date de (parcelle.cultures, |2025-07-01|)
+        dans
+        selon culture sous forme
+        -- Absent : 0,0
+        -- Présent contenu culture :
+          (
+            selon culture.code sous forme
+            -- BTN : parcelle.surface_hectares
+            -- PTC : parcelle.surface_hectares
+            -- n'importe quel : 0,0
+          )
+
+  définition points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    état plates_sarclées
+  égal à
+    soit ratio égal à
+      surfaces_plantes_sarclées_hectares / surface_terres_arables_hectares
+    dans
+    points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    + (si ratio >= 10% alors 1 sinon 0)
+```
+
 * Surface en Oléagineux d’hiver supérieure ou égale à 7% de la surface en TA : 1 point ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition surfaces_oléagineux_hiver_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables en
+        soit culture égal à
+          # TODO: quelle date prendre en compte ici ?
+          culture_date de (parcelle.cultures, |2025-07-01|)
+        dans
+        selon culture sous forme
+        -- Absent : 0,0
+        -- Présent contenu culture :
+          (
+            selon culture.code sous forme
+            -- CZH : parcelle.surface_hectares
+            -- MOT : parcelle.surface_hectares
+            -- OHR : parcelle.surface_hectares
+            -- n'importe quel : 0,0
+          )
+
+  définition points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    état oléagineux_hiver
+  égal à
+    soit ratio égal à
+      surfaces_oléagineux_hiver_hectares / surface_terres_arables_hectares
+    dans
+    points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    + (si ratio >= 7% alors 1 sinon 0)
+```
+
 * Surface en Oléagineux de printemps supérieure ou égale à 5% des TA : 1 point.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition surfaces_oléagineux_printemps_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables en
+        soit culture égal à
+          # TODO: quelle date prendre en compte ici ?
+          culture_date de (parcelle.cultures, |2025-07-01|)
+        dans
+        selon culture sous forme
+        -- Absent : 0,0
+        -- Présent contenu culture :
+          (
+            selon culture.code sous forme
+            -- CML : parcelle.surface_hectares
+            -- CZP : parcelle.surface_hectares
+            -- TRN : parcelle.surface_hectares
+            -- OAG : parcelle.surface_hectares
+            -- n'importe quel : 0,0
+          )
+
+  définition points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    état oléagineux_printemps
+  égal à
+    soit ratio égal à
+      surfaces_oléagineux_printemps_hectares / surface_terres_arables_hectares
+    dans
+    points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    + (si ratio >= 5% alors 1 sinon 0)
+```
 
 Les points attribués ci-dessus au sein du bloc « céréales, plantes sarclées et
 oléagineux » sont cumulables à l’échelle de l’exploitation, dans la limite de 4 points.
 Si aucun des 5 critères n’est satisfait, un point est accordé dès lors où la surface
 totale des cinq catégories de culture ci-contre est supérieure ou égale à 10% de la
 surface en TA.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition points_diversification_Rhin
+    état céréales_oléagineux_plantes_sarclées
+  égal à
+    points_diversification_Rhin
+    + (
+      si points_diversification_Rhin_céréales_oléagineux_plantes_sarclées > 4 alors
+        4
+      sinon si points_diversification_Rhin_céréales_oléagineux_plantes_sarclées < 1 alors
+        si
+          (
+            surfaces_céréales_hiver_hectares
+            + surfaces_céréales_printemps_hectares
+            + surfaces_plantes_sarclées_hectares
+            + surfaces_oléagineux_hiver_hectares
+            + surfaces_oléagineux_printemps_hectares
+          )
+          / surface_terres_arables_hectares
+          >= 10%
+        alors
+          1
+        sinon 0
+      sinon points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+    )
+```
 
 ### Autres cultures, dont cultures à potentiel de diversification
 
@@ -1307,3 +1613,44 @@ Barème :
 * Surface en Autres cultures supérieure ou égale à 25% de la surface en TA : 3 points ;
 * Surface en Autres cultures supérieure ou égale à 50% de la surface en TA : 4 points ;
 * Surface en Autres cultures supérieure ou égale à 75% de la surface en TA : 5 points.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition points_diversification_Rhin
+    état autres_cultures
+  égal à
+    soit surface_autres_cultures_hectares égal à
+      somme décimal de transforme chaque parcelle parmi terres_arables en
+          soit culture égal à
+            # TODO: quelle date prendre en compte ici ?
+            culture_date de (parcelle.cultures, |2025-07-01|)
+          dans
+          selon culture sous forme
+          -- Absent : 0,0
+          -- Présent contenu culture :
+            (
+              selon culture.code sous forme
+              -- HBL : parcelle.surface_hectares
+              -- FLP : parcelle.surface_hectares
+              -- ARP : parcelle.surface_hectares
+              -- PRF : parcelle.surface_hectares
+              -- LAV : parcelle.surface_hectares
+              -- PME : parcelle.surface_hectares
+              -- MSW : parcelle.surface_hectares
+              -- ACP : parcelle.surface_hectares
+              -- PEV : parcelle.surface_hectares
+              -- n'importe quel : 0,0
+            )
+    dans
+    soit ratio égal à
+      surface_autres_cultures_hectares / surface_terres_arables_hectares
+    dans
+    points_diversification_Rhin
+    + (
+      si ratio >= 75% alors 5
+      sinon si ratio >= 50% alors 4
+      sinon si ratio >= 25% alors 3
+      sinon si ratio >= 10% alors 2
+      sinon si ratio >= 5% alors 1 sinon 0
+    )
+```
