@@ -321,7 +321,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 
   règle rotation_cultures_critère_annuel
   sous condition
-    surface_parcelles_hectares de terres_arables_cultivées_respectant_critère_annuel
+    surface_parcelles_hectares de
+      terres_arables_cultivées_respectant_critère_annuel
     / (
       surface_parcelles_hectares de
         terres_arables_cultivées
@@ -733,7 +734,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     et (
       # La culture principale ne couvrant pas plus de 75 % des terres arables
       (
-        somme décimal de transforme chaque parcelle parmi terres_arables_cultivées en
+        somme décimal de transforme chaque parcelle
+          parmi terres_arables_cultivées en
             soit culture_courante égal à
               # TODO: quelle date prendre en compte ici ?
               culture_date de parcelle.cultures, |2025-07-15|
@@ -1793,9 +1795,14 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   égal à
     points_diversification_Rhin
     + (
-      si points_diversification_Rhin_céréales_oléagineux_plantes_sarclées > 4 alors
+      si
+        points_diversification_Rhin_céréales_oléagineux_plantes_sarclées
+        > 4
+      alors
         4
-      sinon si points_diversification_Rhin_céréales_oléagineux_plantes_sarclées < 1 alors
+      sinon si
+        points_diversification_Rhin_céréales_oléagineux_plantes_sarclées < 1
+      alors
         si
           (
             surfaces_céréales_hiver_hectares
