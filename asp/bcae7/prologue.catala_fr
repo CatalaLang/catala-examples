@@ -35,7 +35,7 @@ déclaration culture_date
   contenu optionnel de Culture
   dépend de cultures contenu liste de Culture, date_référence contenu date
   égal à
-    Liste.premier_element de
+    Liste.premier_élément de
       (
         liste de culture parmi cultures
           tel que Période.est_contenue de culture.période, date_référence
