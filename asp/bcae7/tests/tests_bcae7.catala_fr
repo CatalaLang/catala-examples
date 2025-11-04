@@ -1,0 +1,264 @@
+> Usage de BCAE7
+
+#### Exemple de rotation annuelle sur une exploitation de 125 ha dont 25 ha en jachère et prairies temporaires
+
+La sole en terres arables cultivée s’élève à 100 ha (puisqu’on ne tient pas compte des jachères et prairies
+temporaires) ; il est donc attendu une culture différente pour 35 hectares. En 2025, seules deux
+parcelles de 22 ha (12 ha de blé tendre de printemps et 10 ha de blé tendre d’hiver) au total
+accueilleront une culture principale différente de celle de 2024 (les féveroles d’hiver et de printemps
+sont considérées comme une même culture principale).
+
+Une culture secondaire doit par conséquent être mise en place à l’automne 2025 sur la parcelle de maïs
+grain, par exemple, pour 15 ha afin de satisfaire le taux de rotation de 35%.
+
+```catala
+#[test]
+déclaration champ d'application Exemple1:
+  résultat calcul contenu BCAE7.ConditionnalitéBCAE7Pour2025
+
+champ d'application Exemple1:
+  définition calcul égal à
+    résultat de BCAE7.ConditionnalitéBCAE7Pour2025 avec {
+      -- choix_critère_hors_plaine_du_Rhin: RotationDesCultures
+      -- est_située_dans_la_plaine_du_Rhin: faux
+      -- terres_arables:
+        [
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 25,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: PTR
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-01-01|
+                      -- fin: |2025-12-31|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 12,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: FVP
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-03-01|
+                      -- fin: |2024-10-31|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: BTP
+                  -- période:
+                    Période.Période {
+                      -- début: |2025-03-01|
+                      -- fin: |2025-10-31|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 10,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: SOJ
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-12-01|
+                      -- fin: |2024-06-30|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: BTH
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-12-01|
+                      -- fin: |2025-06-30|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 78,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: MID
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-12-01|
+                      -- fin: |2024-09-30|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: MID
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-12-01|
+                      -- fin: |2025-09-30|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          }
+        ]
+      -- agriculture_biologique: Conventionnelle
+    }
+
+  assertion non calcul.rotation_cultures_critère_annuel
+
+#[test]
+déclaration champ d'application Exemple2:
+  résultat calcul contenu BCAE7.ConditionnalitéBCAE7Pour2025
+
+champ d'application Exemple2:
+  définition calcul égal à
+    résultat de BCAE7.ConditionnalitéBCAE7Pour2025 avec {
+      -- choix_critère_hors_plaine_du_Rhin: RotationDesCultures
+      -- est_située_dans_la_plaine_du_Rhin: faux
+      -- terres_arables:
+        [
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 25,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: PTR
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-01-01|
+                      -- fin: |2025-12-31|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 12,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: FVP
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-03-01|
+                      -- fin: |2024-10-31|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: BTP
+                  -- période:
+                    Période.Période {
+                      -- début: |2025-03-01|
+                      -- fin: |2025-10-31|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 10,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: SOJ
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-12-01|
+                      -- fin: |2024-06-30|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: BTH
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-12-01|
+                      -- fin: |2025-06-30|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 63,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: MID
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-12-01|
+                      -- fin: |2024-09-30|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: MID
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-12-01|
+                      -- fin: |2025-09-30|
+                    }
+                  -- qualification: Principale
+                }
+              ]
+          };
+          BCAE7.ParcelleTerreArable {
+            -- système: Autre
+            -- surface_hectares: 15,0
+            -- cultures:
+              [
+                BCAE7.Culture {
+                  -- code: MID
+                  -- période:
+                    Période.Période {
+                      -- début: |2023-12-01|
+                      -- fin: |2024-09-30|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: MID
+                  -- période:
+                    Période.Période {
+                      -- début: |2024-12-01|
+                      -- fin: |2025-09-30|
+                    }
+                  -- qualification: Principale
+                };
+                BCAE7.Culture {
+                  -- code: TTH
+                  -- période:
+                    Période.Période {
+                      -- début: |2025-10-01|
+                      -- fin: |2026-02-28|
+                    }
+                  -- qualification: Secondaire
+                }
+              ]
+          }
+        ]
+      -- agriculture_biologique: Conventionnelle
+    }
+
+  assertion calcul.rotation_cultures_critère_annuel
+```

@@ -186,13 +186,21 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     liste de parcelle parmi terres_arables
       tel que
       # TODO: Quelle date de réference utiliser pour déterminer ce critère ?
-      (
-        selon (culture_date de parcelle.cultures, |2025-01-01|) sous forme
-        -- Absent : faux
-        -- Présent contenu culture :
-          culture_annexe_1 de
-            culture.code
-      )
+      soit cultures_2025 égal à
+        liste de culture parmi parcelle.cultures
+          tel que (
+            (
+              Période.intersection de
+                culture.période,
+                Période.Période {
+                  -- début: |2025-01-01|
+                  -- fin: |2025-12-31|
+                }
+            ) sous forme Présent
+          )
+      dans
+      pour tout culture parmi cultures_2025
+        on a non (culture_annexe_1 de culture.code)
 ```
 
 Est définie comme culture principale toute culture pour laquelle l’agriculteur demande le versement
@@ -245,11 +253,11 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   définition terres_arables_cultivées_respectant_critère_annuel égal à
     liste de parcelle parmi terres_arables_cultivées
       tel que (
-        soit (culture_précédente, rotation_satisfaite) égal à
+        soit (culture_précédente, cultures_en_place, rotation) égal à
           (
             combine tout culture parmi parcelle.cultures
-              dans (culture_précédente, rotation_satisfaite_avant)
-              initialement (Absent, vrai)
+              dans (culture_précédente, cultures_en_place_avant, rotation_avant)
+              initialement (Absent, vrai, faux)
               avec (
                   si
                     culture.période.début >= |2025-12-31|
@@ -258,7 +266,11 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                     # Cette culture date d'avant 2025, on la stocke comme
                     # culture précédente mais on ne l'étudie pas pour le
                     # critère annuel.
-                    (Présent contenu culture.code, rotation_satisfaite_avant)
+                    (
+                      Présent contenu culture.code,
+                      cultures_en_place_avant,
+                      rotation_avant
+                    )
                   sinon
                     # On contrôle le critère annuel
                     soit culture_en_place_correctement égal à
@@ -267,9 +279,13 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                         culture.période.début <= |2025-11-15|
                       -- Principale :
                         (
-                          culture.période.début <= |2025-03-01|
-                          et culture.période.fin >= |2025-07-15|
-                        )
+                          Période.intersection de
+                            culture.période,
+                            Période.Période {
+                              -- début: |2025-03-01|
+                              -- fin: |2025-07-15|
+                            }
+                        ) sous forme Présent
                     dans
                     soit code_actuel égal à culture.code dans
                     soit rotation_satisfaite égal à
@@ -286,7 +302,7 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                         soit culture_précédente égal à
                           (
                             résultat de CultureBCAE7 avec {
-                              -- code_culture: code_actuel
+                              -- code_culture: code_précédent
                             }
                           ).culture
                         dans
@@ -294,20 +310,21 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                     dans
                     (
                       Présent contenu culture.code,
-                      rotation_satisfaite_avant et rotation_satisfaite
+                      cultures_en_place_avant et culture_en_place_correctement,
+                      rotation_avant ou rotation_satisfaite
                     )
                 )
           )
         dans
-        rotation_satisfaite
+        cultures_en_place et rotation
       )
 
   règle rotation_cultures_critère_annuel
   sous condition
-    surface_parcelles_hectares de terres_arables_cultivées
+    surface_parcelles_hectares de terres_arables_cultivées_respectant_critère_annuel
     / (
       surface_parcelles_hectares de
-        terres_arables_cultivées_respectant_critère_annuel
+        terres_arables_cultivées
     )
     >= 35%
   conséquence rempli
@@ -328,6 +345,7 @@ sont considérées comme une même culture principale).
 
 Une culture secondaire doit par conséquent être mise en place à l’automne 2025 sur la parcelle de maïs
 grain, par exemple, pour 15 ha afin de satisfaire le taux de rotation de 35%.
+
 
 ### Critère pluriannuel
 
@@ -652,17 +670,213 @@ diversification des cultures calculée sur le barème à points.
 
 ## La diversification des cultures sur le reste du territoire
 
- Dans le reste du territoire, les agriculteurs peuvent choisir de respecter la BCAE7 en respectant une
+Dans le reste du territoire, les agriculteurs peuvent choisir de respecter la BCAE7 en respectant une
 rotation des cultures ou en diversifiant leurs cultures. S’ils font le choix de la diversification des
 cultures, celle-ci doit se faire selon les modalités suivantes :
 
 a) lorsque les terres arables de l’exploitation couvrent entre 10 et 30 hectares, la diversification des
    cultures consiste à pratiquer au moins deux cultures différentes ; la culture principale ne couvrant pas
    plus de 75 % des terres arables ;
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle diversification_général
+  sous condition
+    surface_terres_arables_hectares > 10,0
+    et surface_terres_arables_hectares <= 30,0
+    et (
+      # Pratiquer au moins deux cultures différentes
+      soit (code_précédent, rotation_satisfaite) égal à
+        (
+          combine tout parcelle parmi terres_arables_cultivées
+            dans (code_précédent, rotation_satisfaite_avant)
+            initialement (Absent, faux)
+            avec (
+                soit culture_courante égal à
+                  # TODO: quelle date prendre en compte ici ?
+                  culture_date de parcelle.cultures, |2025-07-15|
+                dans
+                selon culture_courante sous forme
+                -- Absent :
+                  (code_précédent, rotation_satisfaite_avant)
+                -- Présent contenu culture_courante :
+                  soit code_courant égal à culture_courante.code dans
+                  soit rotation_satisfaite égal à
+                    selon code_précédent sous forme
+                    -- Absent : faux
+                    -- Présent contenu code_précédent :
+                      soit culture_actuelle égal à
+                        (
+                          résultat de CultureBCAE7 avec {
+                            -- code_culture: code_courant
+                          }
+                        ).culture
+                      dans
+                      soit culture_précédente égal à
+                        (
+                          résultat de CultureBCAE7 avec {
+                            -- code_culture: code_précédent
+                          }
+                        ).culture
+                      dans
+                      culture_précédente != culture_actuelle
+                  dans
+                  (
+                    Présent contenu culture_courante.code,
+                    rotation_satisfaite_avant ou rotation_satisfaite
+                  )
+              )
+        )
+      dans
+      rotation_satisfaite
+    )
+    et (
+      # La culture principale ne couvrant pas plus de 75 % des terres arables
+      (
+        somme décimal de transforme chaque parcelle parmi terres_arables_cultivées en
+            soit culture_courante égal à
+              # TODO: quelle date prendre en compte ici ?
+              culture_date de parcelle.cultures, |2025-07-15|
+            dans
+            selon culture_courante sous forme
+            -- Absent : 0,0
+            -- Présent contenu culture_courante :
+              (
+                selon culture_courante.qualification sous forme
+                -- Secondaire : 0,0
+                -- Principale : parcelle.surface_hectares
+              )
+      )
+      / surface_terres_arables_hectares
+      <= 75%
+    )
+  conséquence rempli
+```
+
 b) lorsque les terres arables de l’exploitation couvrent plus de 30 hectares, la diversification des
    cultures consiste à pratiquer au moins trois cultures différentes ; la culture principale ne couvrant pas
    plus de 75 % des terres arables et les deux cultures principales ne couvrant pas, ensemble, plus de 95
    % des terres arables.
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  règle diversification_général
+  sous condition
+    surface_terres_arables_hectares > 30,0
+    et (
+      # Pratiquer au moins trois cultures différentes
+      soit (code_précédent_1, code_précédent_2, rotation_satisfaite) égal à
+        (
+          combine tout parcelle parmi terres_arables_cultivées
+            dans (code_précédent_1, code_précédent_2, rotation_satisfaite_avant)
+            initialement (Absent, Absent, faux)
+            avec (
+                soit culture_courante égal à
+                  # TODO: quelle date prendre en compte ici ?
+                  culture_date de parcelle.cultures, |2025-07-15|
+                dans
+                selon culture_courante sous forme
+                -- Absent :
+                  (
+                    code_précédent_1,
+                    code_précédent_2,
+                    rotation_satisfaite_avant
+                  )
+                -- Présent contenu culture_courante :
+                  soit code_courant égal à culture_courante.code dans
+                  selon code_précédent_1 sous forme
+                  -- Absent :
+                    (
+                      Présent contenu culture_courante.code,
+                      code_précédent_2,
+                      rotation_satisfaite_avant
+                    )
+                  -- Présent contenu code_précédent_1 :
+                    (
+                      soit culture_actuelle égal à
+                        (
+                          résultat de CultureBCAE7 avec {
+                            -- code_culture: code_courant
+                          }
+                        ).culture
+                      dans
+                      soit culture_précédente_1 égal à
+                        (
+                          résultat de CultureBCAE7 avec {
+                            -- code_culture: code_précédent_1
+                          }
+                        ).culture
+                      dans
+                      selon code_précédent_2 sous forme
+                      -- Absent :
+                        si culture_actuelle != culture_précédente_1 alors
+                          (
+                            Présent contenu code_précédent_1,
+                            Présent contenu code_courant,
+                            rotation_satisfaite_avant
+                          )
+                        sinon
+                          (
+                            Présent contenu code_précédent_1,
+                            Absent,
+                            rotation_satisfaite_avant
+                          )
+                      -- Présent contenu code_précédent_2 :
+                        (
+                          soit culture_précédente_2 égal à
+                            (
+                              résultat de CultureBCAE7 avec {
+                                -- code_culture: code_précédent_2
+                              }
+                            ).culture
+                          dans
+                          si
+                            culture_actuelle != culture_précédente_1
+                            et culture_actuelle != culture_précédente_2
+                          alors
+                            (
+                              Présent contenu code_précédent_1,
+                              Présent contenu code_précédent_2,
+                              vrai
+                            )
+                          sinon
+                            (
+                              Présent contenu code_précédent_1,
+                              Présent contenu code_précédent_2,
+                              rotation_satisfaite_avant
+                            )
+                        )
+                    )
+              )
+        )
+      dans
+      rotation_satisfaite
+    )
+    et (
+      # La culture principale ne couvrant pas plus de 75 % des terres arables
+      # et les deux cultures principales ne couvrant pas, ensemble, plus de 95 %
+      # des terres arables.
+      (
+        somme décimal de transforme chaque parcelle
+          parmi terres_arables_cultivées en
+            soit culture_courante égal à
+              # TODO: quelle date prendre en compte ici ?
+              culture_date de parcelle.cultures, |2025-07-15|
+            dans
+            selon culture_courante sous forme
+            -- Absent : 0,0
+            -- Présent contenu culture_courante :
+              (
+                selon culture_courante.qualification sous forme
+                -- Secondaire : 0,0
+                -- Principale : parcelle.surface_hectares
+              )
+      )
+      / surface_terres_arables_hectares
+      <= 95% # TODO comment implémenter plusieurs cultures principales ?
+    )
+  conséquence rempli
+```
 
 La liste des catégories de culture considérées comme cultures différentes pour la rotation figure en
 annexe 3.
@@ -673,6 +887,13 @@ Sont inclus dans les terres arables : les cultures pluriannuelles, les prairies 
 
 Les exploitants choisissant en 2025 le critère de diversification ne seront pas soumis au critère
 pluriannuel de la rotation pour 2025.
+
+```catala
+# TODO: qu'est-ce que ça veut dire ? Ligne 150, il est dit qu'on choisit entre
+# critère de rotation et diversification. Faut-il dans tous les cas toujours
+# vérifier le critère annuel de rotation, même si l'on a choisi la
+# diversification ?
+```
 
 Si un exploitant alterne une année avec le choix du critère de la rotation, et une autre année avec le
 choix du critère de la diversification, il devra respecter le critère de rotation pluriannuel l’année où
