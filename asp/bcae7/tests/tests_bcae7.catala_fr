@@ -118,7 +118,7 @@ champ d'application Exemple1:
       -- agriculture_biologique: Conventionnelle
     }
 
-  assertion non calcul.rotation_cultures_critère_annuel
+  assertion calcul.rotation_cultures_critère_annuel sous forme NonRespecté
 
 #[test]
 déclaration champ d'application Exemple2:
@@ -260,7 +260,7 @@ champ d'application Exemple2:
       -- agriculture_biologique: Conventionnelle
     }
 
-  assertion calcul.rotation_cultures_critère_annuel
+  assertion calcul.rotation_cultures_critère_annuel sous forme Respecté
 ```
 
 ##### Exemple de rotation pluriannuelle sur une parcelle entre 2022 et 2025
@@ -336,8 +336,8 @@ champ d'application Exemple3:
       -- agriculture_biologique: Conventionnelle
     }
 
-  assertion calcul.rotation_cultures_critère_annuel
-  assertion calcul.rotation_cultures_critère_pluriannuel
+  assertion calcul.rotation_cultures_critère_annuel sous forme Respecté
+  assertion calcul.rotation_cultures_critère_pluriannuel sous forme Respecté
 ```
 
 ###### Cas 2
@@ -411,7 +411,7 @@ champ d'application Exemple4:
       -- agriculture_biologique: Conventionnelle
     }
 
-  assertion calcul.rotation_cultures_critère_pluriannuel
+  assertion calcul.rotation_cultures_critère_pluriannuel sous forme Respecté
 ```
 
 ## Les systèmes en monoculture et l’obligation de rotation pluriannuelle
@@ -707,7 +707,7 @@ champ d'application Exemple5:
       -- agriculture_biologique: Conventionnelle
     }
 
-  assertion non calcul.rotation_cultures_critère_pluriannuel
+  assertion calcul.rotation_cultures_critère_pluriannuel sous forme NonRespecté
 
 déclaration champ d'application Exemple5bis:
   résultat calcul contenu BCAE7.ConditionnalitéBCAE7Pour2025
@@ -727,5 +727,5 @@ champ d'application Exemple5bis:
       -- agriculture_biologique: Conventionnelle
     }
 
-  assertion calcul.rotation_cultures_critère_pluriannuel
+  assertion calcul.rotation_cultures_critère_pluriannuel sous forme Respecté
 ```

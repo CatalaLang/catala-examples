@@ -54,6 +54,22 @@ déclaration énumération ModeRespectBCAE7:
   -- RotationDesCultures
   -- DiversificationDesCultures
 
+déclaration structure SanctionsNonRespectConditionnalité:
+  donnée alerte_informative contenu booléen
+  donnée pénalité_proportion_aide contenu décimal
+
+déclaration structure ÉcartRespect:
+  donnée proportion contenu décimal
+  donnée surface_hectares contenu décimal
+
+déclaration énumération RespectCritère:
+  -- Respecté
+  -- NonRespecté contenu ÉcartRespect
+
+déclaration structure RespectCritèreDiversificationGénéral:
+  donnée au_moins_deux_cultures_principales contenu booléen
+  donnée surface_culture_principale contenu RespectCritère
+
 déclaration champ d'application ConditionnalitéBCAE7Pour2025:
   entrée agriculture_biologique contenu AgricultureBiologique
   entrée terres_arables contenu liste de ParcelleTerreArable
@@ -65,9 +81,9 @@ déclaration champ d'application ConditionnalitéBCAE7Pour2025:
   interne culture_annexe_1 condition dépend de code_culture contenu CodeCulture
 
   résultat rotation_cultures condition
-  résultat rotation_cultures_critère_annuel condition
-  résultat rotation_cultures_critère_pluriannuel condition
-  interne rotation_cultures_critère_pluriannuel_parcelle condition
+  résultat rotation_cultures_critère_annuel contenu RespectCritère
+  résultat rotation_cultures_critère_pluriannuel contenu RespectCritère
+  interne rotation_cultures_critère_pluriannuel_parcelle contenu RespectCritère
   dépend de parcelle contenu ParcelleTerreArable état base
     état monoculture
   interne culture_diversification
@@ -91,13 +107,19 @@ déclaration champ d'application ConditionnalitéBCAE7Pour2025:
     état légumineuses
     état céréales_oléagineux_plantes_sarclées
     état autres_cultures
-  résultat diversification_général condition
+  résultat diversification_général contenu RespectCritèreDiversificationGénéral
   résultat exempté_respect condition
   interne surface_terres_arables_hectares contenu décimal
+  interne surface_terres_arables_cultivées_hectares contenu décimal
   interne culture_prise_en_compte_exemption_herbe_fourragères condition dépend de code_culture contenu CodeCulture
   interne culture_prise_en_compte_exemption_prairies_sous_eau condition dépend de code_culture contenu CodeCulture
 
   résultat conditionnalité_satisfaite condition
+  résultat sanctions contenu SanctionsNonRespectConditionnalité
+    état rotation_annuel
+    état rotation_pluriannuel
+    état diversification
+    état final
 ```
 
 ## Classifications cultures

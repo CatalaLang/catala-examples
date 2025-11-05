@@ -151,7 +151,9 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     sinon
       selon choix_critère_hors_plaine_du_Rhin sous forme
       -- RotationDesCultures : rotation_cultures
-      -- DiversificationDesCultures : diversification_général
+      -- DiversificationDesCultures :
+        diversification_général.au_moins_deux_cultures_principales
+        et diversification_général.surface_culture_principale sous forme Respecté
   conséquence rempli
 ```
 
@@ -168,8 +170,8 @@ années antérieures.
 champ d'application ConditionnalitéBCAE7Pour2025:
   règle rotation_cultures
   sous condition
-    rotation_cultures_critère_annuel
-    et rotation_cultures_critère_pluriannuel
+    rotation_cultures_critère_annuel sous forme Respecté
+    et rotation_cultures_critère_pluriannuel sous forme Respecté
   conséquence rempli
 ```
 
@@ -311,18 +313,34 @@ champ d'application ConditionnalitéBCAE7Pour2025:
         cultures_en_place et rotation
       )
 
-  règle rotation_cultures_critère_annuel
-  sous condition
+  définition rotation_cultures_critère_annuel
+  égal à
     soit surface_terres_arables_cultivées_hectares égal à
       surface_parcelles_hectares de
-        terres_arables_cultivées dans
+        terres_arables_cultivées
+    dans
+    soit surface_terres_arables_cultivées_respectant_critère_annuel_hectares égal à
+      surface_parcelles_hectares de
+        terres_arables_cultivées_respectant_critère_annuel
+    dans
     si surface_terres_arables_cultivées_hectares = 0,0 alors
-      vrai
-    sinon
-      surface_parcelles_hectares de terres_arables_cultivées_respectant_critère_annuel
+      Respecté
+    sinon si
+      surface_terres_arables_cultivées_respectant_critère_annuel_hectares
       / surface_terres_arables_cultivées_hectares
       >= 35%
-  conséquence rempli
+    alors
+      Respecté
+    sinon
+      NonRespecté contenu ÉcartRespect {
+        -- proportion:
+          35%
+          - surface_terres_arables_cultivées_respectant_critère_annuel_hectares
+            / surface_terres_arables_cultivées_hectares
+        -- surface_hectares:
+          surface_terres_arables_cultivées_hectares * 35%
+          - surface_terres_arables_cultivées_respectant_critère_annuel_hectares
+      }
 ```
 
 Le contrôle de la culture secondaire consiste à vérifier par contrôle sur place en 2025 qu’une culture
@@ -376,8 +394,9 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   # On ne contrôle pas 2022
   définition années_évaluation_pluriannuelle égal à [ 2023; 2024; 2025 ]
 
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
-  sous condition
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état base
+  égal à
     soit au_moins_deux_cultures_principales égal à
       soit (culture_principale_précédente, rotation_satisfaite) égal à
         (
@@ -436,14 +455,59 @@ champ d'application ConditionnalitéBCAE7Pour2025:
             )
         )
     dans
-    au_moins_deux_cultures_principales ou culture_secondaire_tous_les_ans
-  conséquence rempli
+    si
+      au_moins_deux_cultures_principales ou culture_secondaire_tous_les_ans
+    alors
+      Respecté
+    sinon
+      NonRespecté contenu ÉcartRespect {
+        -- proportion: 0%
+        -- surface_hectares: parcelle.surface_hectares
+      }
 
-  règle rotation_cultures_critère_pluriannuel
-  sous condition
-    pour tout parcelle parmi terres_arables_cultivées
-      on a rotation_cultures_critère_pluriannuel_parcelle de parcelle
-  conséquence rempli
+  définition surface_terres_arables_cultivées_hectares égal à
+    somme décimal de transforme chaque parcelle parmi terres_arables_cultivées en
+        parcelle.surface_hectares
+
+  définition rotation_cultures_critère_pluriannuel
+  égal à
+    combine tout parcelle parmi terres_arables_cultivées
+      dans respect initialement Respecté
+      avec
+        soit respect_parcelle égal à
+          rotation_cultures_critère_pluriannuel_parcelle de parcelle
+        dans
+        selon respect_parcelle sous forme
+        -- Respecté :
+          (
+            selon respect sous forme
+            -- Respecté : Respecté
+            -- NonRespecté contenu écart : NonRespecté contenu écart
+          )
+        -- NonRespecté contenu écart_parcelle :
+          (
+            selon respect sous forme
+            -- Respecté :
+              NonRespecté contenu ÉcartRespect {
+                -- surface_hectares:
+                  écart_parcelle.surface_hectares
+                -- proportion:
+                  écart_parcelle.surface_hectares
+                  / surface_terres_arables_cultivées_hectares
+              }
+            -- NonRespecté contenu écart :
+              NonRespecté contenu ÉcartRespect {
+                -- surface_hectares:
+                  écart.surface_hectares
+                  + écart_parcelle.surface_hectares
+                -- proportion:
+                  (
+                    écart.surface_hectares
+                    + écart_parcelle.surface_hectares
+                  )
+                  / surface_terres_arables_cultivées_hectares
+              }
+          )
 ```
 
 Remarque : en cas de changement de détenteur de la parcelle sur la période d’évaluation du critère
@@ -459,12 +523,15 @@ considérées comme respectant le critère de rotation pluriannuelle par défaut
 
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  exception
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état base
   sous condition
     existe culture parmi parcelle.cultures
       tel que période_inclue_période_évaluation_pluriannuelle de culture.période
       et culture.code = SNE
-  conséquence rempli
+  conséquence égal à
+    Respecté
 ```
 
 Les surfaces non déclarées durant une année au cours de la période d’évaluation du critère (par
@@ -503,12 +570,15 @@ de rotation. En revanche le critère de rotation annuel au niveau de l’exploit
 
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  exception
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état base
   sous condition
     existe culture parmi parcelle.cultures
       tel que période_inclue_période_évaluation_pluriannuelle de culture.période
       et culture.code = MIS
-  conséquence rempli
+  conséquence égal à
+    Respecté
 ```
 
 ####  Respect du critère pluriannuel pour les cultures pluriannuelles, les jachères et les prairies temporaires implantées pendant une période de 4 ans
@@ -535,12 +605,15 @@ et le critère de rotation pluriannuel est considéré comme respecté
 ```catala
 # Déjà implémenté pour les jachères ou prairies temporaires.
 champ d'application ConditionnalitéBCAE7Pour2025:
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état base
+  exception
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état base
   sous condition
     existe culture parmi parcelle.cultures
       tel que période_inclue_période_évaluation_pluriannuelle de culture.période
       et culture.période.fin - culture.période.début >= 365 jour # TODO vérifier ce critère
-  conséquence rempli
+  conséquence égal à
+    Respecté
 ```
 
 ##### Exemple de rotation pluriannuelle sur une parcelle entre 2022 et 2025
@@ -575,11 +648,11 @@ principales différentes sur une période de 4 ans. Le critère pluriannuel est 
 champ d'application ConditionnalitéBCAE7Pour2025:
   # Ce critère supplémentaire pour les systèmes en monoculture
   # ne s'applique pas par défaut, voir les exceptions ci-après.
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
-  sous condition
-    parcelle.système sous forme Autre
-    et rotation_cultures_critère_pluriannuel_parcelle de parcelle
-  conséquence rempli
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état monoculture
+  sous condition parcelle.système sous forme Autre
+  conséquence égal à
+    rotation_cultures_critère_pluriannuel_parcelle de parcelle
 ```
 
 Concernant les systèmes en monoculture de printemps, il sera vérifié qu’une culture secondaire a été
@@ -588,25 +661,38 @@ jusqu’au 15 février.
 
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
-  sous condition
-    parcelle.système sous forme MonoculturePrintemps
-    et pour tout année parmi années_évaluation_pluriannuelle
-      on a soit culture_15_novembre égal à
-        culture_date de parcelle.cultures, (|0000-11-15| + 1 an * année)
-      dans
-      soit culture_15_février égal à
-        culture_date de parcelle.cultures, (|0000-02-15| + 1 an * (année + 1))
-      dans
-      selon culture_15_novembre sous forme
-      -- Absent : faux
-      -- Présent contenu culture_15_novembre_présente :
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état monoculture
+  sous condition parcelle.système sous forme MonoculturePrintemps
+  conséquence égal à
+    selon (rotation_cultures_critère_pluriannuel_parcelle de parcelle) sous forme
+    -- Respecté :
+      si
         (
-          selon culture_15_novembre_présente.qualification sous forme
-          -- Principale : faux
-          -- Secondaire : culture_15_février = culture_15_novembre
+          pour tout année parmi années_évaluation_pluriannuelle
+            on a soit culture_15_novembre égal à
+              culture_date de parcelle.cultures, (|0000-11-15| + 1 an * année)
+            dans
+            soit culture_15_février égal à
+              culture_date de parcelle.cultures, (|0000-02-15| + 1 an * (année + 1))
+            dans
+            selon culture_15_novembre sous forme
+            -- Absent : faux
+            -- Présent contenu culture_15_novembre_présente :
+              (
+                selon culture_15_novembre_présente.qualification sous forme
+                -- Principale : faux
+                -- Secondaire : culture_15_février = culture_15_novembre
+              )
         )
-  conséquence rempli
+      alors
+        Respecté
+      sinon
+        NonRespecté contenu ÉcartRespect {
+          -- proportion: 0%
+          -- surface_hectares: parcelle.surface_hectares
+        }
+    -- NonRespecté contenu écart : NonRespecté contenu écart
 ```
 
 Concernant les systèmes en monoculture d’hiver, les cultures secondaires ne pouvant pas être
@@ -620,11 +706,11 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   # Ce critère pour la monoculture d'hiver correspond exactement à ce qui
   # a déjà été vérifié précédemment pour la rotation pluriannuelle.
   # TODO vérifier que c'est bien le cas ?
-  règle rotation_cultures_critère_pluriannuel_parcelle de parcelle état monoculture
-  sous condition
-    parcelle.système sous forme MonocultureHiver
-    et rotation_cultures_critère_pluriannuel_parcelle de parcelle
-  conséquence rempli
+  définition rotation_cultures_critère_pluriannuel_parcelle
+    de parcelle état monoculture
+  sous condition parcelle.système sous forme MonocultureHiver
+  conséquence égal à
+    rotation_cultures_critère_pluriannuel_parcelle de parcelle
 ```
 
 Exemple : une exploitation de 100 ha est composée de 4 parcelles dont l’assolement a évolué entre
@@ -671,23 +757,38 @@ Dans le reste du territoire, les agriculteurs peuvent choisir de respecter la BC
 rotation des cultures ou en diversifiant leurs cultures. S’ils font le choix de la diversification des
 cultures, celle-ci doit se faire selon les modalités suivantes :
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition diversification_général
+  sous condition surface_terres_arables_hectares <= 10,0
+  conséquence égal à
+    RespectCritèreDiversificationGénéral {
+      -- au_moins_deux_cultures_principales: vrai
+      -- surface_culture_principale: Respecté
+    }
+```
+
 a) lorsque les terres arables de l’exploitation couvrent entre 10 et 30 hectares, la diversification des
    cultures consiste à pratiquer au moins deux cultures différentes ; la culture principale ne couvrant pas
    plus de 75 % des terres arables ;
 
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
-  règle diversification_général
+  définition diversification_général
   sous condition
     surface_terres_arables_hectares > 10,0
     et surface_terres_arables_hectares <= 30,0
-    et (
+  conséquence égal à
+    soit rotation_satisfaite égal à
       # Pratiquer au moins deux cultures différentes
       soit (code_précédent, rotation_satisfaite) égal à
         (
           combine tout parcelle parmi terres_arables_cultivées
             dans (code_précédent, rotation_satisfaite_avant)
-            initialement (Absent, faux)
+            initialement (
+              Absent,
+              faux
+            )
             avec (
                 soit culture_courante égal à
                   # TODO: quelle date prendre en compte ici ?
@@ -712,35 +813,43 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                   dans
                   (
                     Présent contenu culture_courante.code,
-                    rotation_satisfaite_avant ou rotation_satisfaite
+                    rotation_satisfaite ou rotation_satisfaite_avant
                   )
               )
         )
       dans
       rotation_satisfaite
-    )
-    et (
-      # La culture principale ne couvrant pas plus de 75 % des terres arables
-      (
-        somme décimal de transforme chaque parcelle
-          parmi terres_arables_cultivées en
-            soit culture_courante égal à
-              # TODO: quelle date prendre en compte ici ?
-              culture_date de parcelle.cultures, |2025-07-15|
-            dans
-            selon culture_courante sous forme
-            -- Absent : 0,0
-            -- Présent contenu culture_courante :
-              (
-                selon culture_courante.qualification sous forme
-                -- Secondaire : 0,0
-                -- Principale : parcelle.surface_hectares
-              )
-      )
-      / surface_terres_arables_hectares
-      <= 75%
-    )
-  conséquence rempli
+    dans
+    soit surface_culture_principale égal à
+      somme décimal de transforme chaque parcelle
+        parmi terres_arables_cultivées en
+          soit culture_courante égal à
+            # TODO: quelle date prendre en compte ici ?
+            culture_date de parcelle.cultures, |2025-07-15|
+          dans
+          selon culture_courante sous forme
+          -- Absent : 0,0
+          -- Présent contenu culture_courante :
+            (
+              selon culture_courante.qualification sous forme
+              -- Secondaire : 0,0
+              -- Principale : parcelle.surface_hectares
+            )
+    dans
+    RespectCritèreDiversificationGénéral {
+      -- au_moins_deux_cultures_principales: rotation_satisfaite
+      -- surface_culture_principale:
+        si
+          surface_culture_principale / surface_terres_arables_hectares
+          <= 75%
+        alors
+          Respecté
+        sinon
+          NonRespecté contenu ÉcartRespect {
+            -- surface_hectares: surface_culture_principale - surface_terres_arables_hectares * 75%
+            -- proportion: surface_culture_principale / surface_terres_arables_hectares - 75%
+          }
+    }
 ```
 
 b) lorsque les terres arables de l’exploitation couvrent plus de 30 hectares, la diversification des
@@ -750,10 +859,10 @@ b) lorsque les terres arables de l’exploitation couvrent plus de 30 hectares, 
 
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
-  règle diversification_général
-  sous condition
-    surface_terres_arables_hectares > 30,0
-    et (
+  définition diversification_général
+  sous condition surface_terres_arables_hectares > 30,0
+  conséquence égal à
+    soit rotation_satisfaite égal à
       # Pratiquer au moins trois cultures différentes
       soit (code_précédent_1, code_précédent_2, rotation_satisfaite) égal à
         (
@@ -829,31 +938,41 @@ champ d'application ConditionnalitéBCAE7Pour2025:
         )
       dans
       rotation_satisfaite
-    )
-    et (
+    dans
+    soit surface_culture_principale égal à
       # La culture principale ne couvrant pas plus de 75 % des terres arables
       # et les deux cultures principales ne couvrant pas, ensemble, plus de 95 %
       # des terres arables.
-      (
-        somme décimal de transforme chaque parcelle
-          parmi terres_arables_cultivées en
-            soit culture_courante égal à
-              # TODO: quelle date prendre en compte ici ?
-              culture_date de parcelle.cultures, |2025-07-15|
-            dans
-            selon culture_courante sous forme
-            -- Absent : 0,0
-            -- Présent contenu culture_courante :
-              (
-                selon culture_courante.qualification sous forme
-                -- Secondaire : 0,0
-                -- Principale : parcelle.surface_hectares
-              )
-      )
-      / surface_terres_arables_hectares
-      <= 95% # TODO comment implémenter plusieurs cultures principales ?
-    )
-  conséquence rempli
+      # TODO comment implémenter plusieurs cultures principales ?
+      somme décimal de transforme chaque parcelle
+        parmi terres_arables_cultivées en
+          soit culture_courante égal à
+            # TODO: quelle date prendre en compte ici ?
+            culture_date de parcelle.cultures, |2025-07-15|
+          dans
+          selon culture_courante sous forme
+          -- Absent : 0,0
+          -- Présent contenu culture_courante :
+            (
+              selon culture_courante.qualification sous forme
+              -- Secondaire : 0,0
+              -- Principale : parcelle.surface_hectares
+            )
+    dans
+    RespectCritèreDiversificationGénéral {
+      -- au_moins_deux_cultures_principales: rotation_satisfaite
+      -- surface_culture_principale:
+        si
+          surface_culture_principale / surface_terres_arables_hectares
+          <= 95%
+        alors
+          Respecté
+        sinon
+          NonRespecté contenu ÉcartRespect {
+            -- surface_hectares: -surface_culture_principale - surface_terres_arables_hectares * 95%
+            -- proportion: surface_culture_principale / surface_terres_arables_hectares - 95%
+          }
+    }
 ```
 
 La liste des catégories de culture considérées comme cultures différentes pour la rotation figure en
@@ -884,6 +1003,41 @@ années 2023, 2024, 2025 et 2026 (même s’il avait choisi la diversification e
 
 BCAE 7 : Rotation et diversification des terres arables hors cultures se développant sous eau
 
+```catala
+déclaration sanction_vide contenu SanctionsNonRespectConditionnalité
+  égal à
+    SanctionsNonRespectConditionnalité {
+      -- alerte_informative: faux
+      -- pénalité_proportion_aide: 0%
+    }
+
+déclaration accumuler_sanctions
+  contenu SanctionsNonRespectConditionnalité
+  dépend de
+    sanction1 contenu SanctionsNonRespectConditionnalité,
+    sanction2 contenu SanctionsNonRespectConditionnalité
+  égal à
+    SanctionsNonRespectConditionnalité {
+      -- alerte_informative: sanction1.alerte_informative ou sanction2.alerte_informative
+      -- pénalité_proportion_aide: sanction1.pénalité_proportion_aide + sanction2.pénalité_proportion_aide
+    }
+
+champ d'application ConditionnalitéBCAE7Pour2025:
+  # TODO: dans toute cette section, on ne donne les sanctions que si le
+  # critère calculé est réellement effectif pour déterminer la
+  # conditionnalité. Il faut donc reproduire ici la logique du code de
+  # "conditionnalité_satisfaite", ce qui peut conduire à des erreurs par
+  # la suite. Il faudrait refactorer plus proprement par exemple en stockant
+  # la logique des critères à activer dans un type algébrique.
+  définition sanctions
+    état final
+  égal à
+    si conditionnalité_satisfaite alors
+      sanction_vide
+    sinon
+      sanctions
+```
+
 ### Rotation des cultures
 
 Sur au moins 35% des terres arables, autres que les surfaces en cultures pluri-
@@ -902,6 +1056,52 @@ inférieures ou égales à 20 % ET supérieures à 2 ha
 Surfaces en écart supérieures à 20 % ET supérieures à 2 ha 3%                 9%
 ------------------------------------------------------------------------------------------------
 
+```catala
+# TODO: pourquoi deux colonnes dans le tableau ? Sous quelles conditions
+# on utilise les valeurs de la deuxième colonne ?
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition sanctions
+    état rotation_annuel
+  égal à
+    si est_située_dans_la_plaine_du_Rhin alors
+      sanction_vide
+    sinon
+      selon choix_critère_hors_plaine_du_Rhin sous forme
+      -- RotationDesCultures :
+        (
+          selon rotation_cultures_critère_annuel sous forme
+          -- Respecté : sanction_vide
+          -- NonRespecté contenu écart :
+            si
+              écart.proportion > 20% et écart.surface_hectares > 2,0
+            alors
+              SanctionsNonRespectConditionnalité {
+                -- alerte_informative: faux
+                -- pénalité_proportion_aide: 3%
+              }
+            sinon si
+              écart.proportion <= 20%
+              et écart.proportion > 3%
+              et écart.surface_hectares > 2,0
+            alors
+              SanctionsNonRespectConditionnalité {
+                -- alerte_informative: faux
+                -- pénalité_proportion_aide: 3%
+              }
+            sinon si
+              écart.proportion <= 3%
+              et écart.surface_hectares <= 2,0
+            alors
+              SanctionsNonRespectConditionnalité {
+                -- alerte_informative: vrai
+                -- pénalité_proportion_aide: 0%
+              }
+            sinon sanction_vide
+        )
+      -- DiversificationDesCultures :
+        sanction_vide
+```
+
 Non-respect de la présence sur la période [n, n-1, n-2 et n-3] et sur 100% des
 terres arables autres que les surfaces en cultures pluriannuelles, les surfaces en
 herbe ou autres plantes fourragères herbacées et les surfaces en jachère d’au moins
@@ -918,12 +1118,76 @@ inférieures ou égales à 20 % ET supérieures à 2 ha
 Surfaces en écart supérieures à 20 % ET supérieures à 2 ha 3%                 9%
 ------------------------------------------------------------------------------------------------
 
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition sanctions
+    état rotation_pluriannuel
+  égal à
+    si est_située_dans_la_plaine_du_Rhin alors
+      sanctions
+    sinon
+      selon choix_critère_hors_plaine_du_Rhin sous forme
+      -- RotationDesCultures :
+        (
+          selon rotation_cultures_critère_pluriannuel sous forme
+          -- Respecté : sanctions
+          -- NonRespecté contenu écart :
+            soit nouvelles_sanctions égal à
+              si
+                écart.proportion > 20% et écart.surface_hectares > 2,0
+              alors
+                SanctionsNonRespectConditionnalité {
+                  -- alerte_informative: faux
+                  -- pénalité_proportion_aide: 3%
+                }
+              sinon si
+                écart.proportion <= 20%
+                et écart.proportion > 3%
+                et écart.surface_hectares > 2,0
+              alors
+                SanctionsNonRespectConditionnalité {
+                  -- alerte_informative: faux
+                  -- pénalité_proportion_aide: 3%
+                }
+              sinon si
+                écart.proportion <= 3%
+                et écart.surface_hectares <= 2,0
+              alors
+                SanctionsNonRespectConditionnalité {
+                  -- alerte_informative: vrai
+                  -- pénalité_proportion_aide: 0%
+                }
+              sinon sanction_vide
+            dans
+            accumuler_sanctions de sanctions, nouvelles_sanctions
+        )
+      -- DiversificationDesCultures :
+        sanctions
+```
+
 ### Diversification des cultures en Alsace
 
 ------------------------------------- -- --
 Non-respect du seuil des trois points 3% 9%
 au titre du barème de l’écorégime
 -------------------------------------------
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition sanctions
+    état diversification
+  sous condition est_située_dans_la_plaine_du_Rhin
+  conséquence égal à
+    si diversification_Rhin alors
+      sanctions
+    sinon
+      accumuler_sanctions de
+        sanctions,
+        SanctionsNonRespectConditionnalité {
+          -- alerte_informative: faux
+          -- pénalité_proportion_aide: 3%
+        }
+```
 
 ### Diversification des cultures
 
@@ -954,6 +1218,78 @@ principales ensemble couvrent plus de 95% des
 terres arables ; ET la surface en écart cumulée est
 supérieure à 2 ha.
 ----------------------------------------------------------------------------------------------
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition sanctions
+    état diversification
+  sous condition non est_située_dans_la_plaine_du_Rhin
+  conséquence égal à
+    si
+      choix_critère_hors_plaine_du_Rhin sous forme DiversificationDesCultures
+    alors
+      si
+        diversification_général.au_moins_deux_cultures_principales
+        et selon diversification_général.surface_culture_principale sous forme
+          -- Respecté : faux
+          -- NonRespecté contenu écart :
+            écart.surface_hectares > 0,5
+      alors
+        accumuler_sanctions de
+          sanctions,
+          SanctionsNonRespectConditionnalité {
+            -- alerte_informative: vrai
+            -- pénalité_proportion_aide: 0%
+          }
+      sinon si
+      # TODO vérifier si le texte de la spec est bon, l'enchaînement des ET et
+      # des OU laisserait entendre qu'on peut avoir une mesure de la surface
+      # en écart pour le respect du nombre de cultures alors que ça n'a pas
+      # de sens. Nous avons codé ce qui était raisonnable.
+        surface_terres_arables_hectares > 10,0
+        et surface_terres_arables_hectares <= 30,0
+        et non diversification_général.au_moins_deux_cultures_principales
+        et selon diversification_général.surface_culture_principale sous forme
+          -- Respecté : faux
+          -- NonRespecté contenu écart :
+            écart.surface_hectares > 0,5
+      alors
+        accumuler_sanctions de
+          sanctions,
+          SanctionsNonRespectConditionnalité {
+            -- alerte_informative: faux
+            -- pénalité_proportion_aide: 3%
+          }
+      sinon si
+        surface_terres_arables_hectares > 30,0
+        et selon diversification_général.surface_culture_principale sous forme
+          -- Respecté : faux
+          -- NonRespecté contenu écart :
+            écart.surface_hectares > 2,0
+      alors
+        accumuler_sanctions de
+          sanctions,
+          SanctionsNonRespectConditionnalité {
+            -- alerte_informative: vrai
+            -- pénalité_proportion_aide: 0%
+          }
+      sinon si
+        surface_terres_arables_hectares > 30,0
+        et non diversification_général.au_moins_deux_cultures_principales
+        et selon diversification_général.surface_culture_principale sous forme
+          -- Respecté : faux
+          -- NonRespecté contenu écart :
+            écart.surface_hectares > 2,0
+      alors
+        accumuler_sanctions de
+          sanctions,
+          SanctionsNonRespectConditionnalité {
+            -- alerte_informative: faux
+            -- pénalité_proportion_aide: 3%
+          }
+      sinon sanctions
+    sinon sanctions
+```
 
 ## Annexe 1 : Liste des cultures exclues de la vérification de la rotation au titre de la BCAE 7 (cultures pluriannuelles, surfaces herbacées, jachères et cultures sous l’eau)
 
