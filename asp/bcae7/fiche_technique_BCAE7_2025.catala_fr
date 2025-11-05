@@ -321,13 +321,15 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 
   règle rotation_cultures_critère_annuel
   sous condition
-    surface_parcelles_hectares de
-      terres_arables_cultivées_respectant_critère_annuel
-    / (
+    soit surface_terres_arables_cultivées_hectares égal à
       surface_parcelles_hectares de
-        terres_arables_cultivées
-    )
-    >= 35%
+        terres_arables_cultivées dans
+    si surface_terres_arables_cultivées_hectares = 0,0 alors
+      vrai
+    sinon
+      surface_parcelles_hectares de terres_arables_cultivées_respectant_critère_annuel
+      / surface_terres_arables_cultivées_hectares
+      >= 35%
   conséquence rempli
 ```
 
@@ -367,8 +369,16 @@ secondaire a été implantée aux automnes suivants de 2023, 2024, 2025 et 2026.
 champ d'application ConditionnalitéBCAE7Pour2025:
   règle période_inclue_période_évaluation_pluriannuelle de période
   sous condition
-    période.début >= |2025-12-31|
-    ou période.fin <= |2022-01-01|
+    (
+      Période.intersection de
+        (
+          période,
+          Période.Période {
+            -- début: |2022-01-01|
+            -- fin: |2025-12-31|
+          }
+        )
+    ) sous forme Présent
   conséquence rempli
 
   # On ne contrôle pas 2022
@@ -384,10 +394,12 @@ champ d'application ConditionnalitéBCAE7Pour2025:
             initialement (Absent, faux)
             avec (
                 si
-                  période_inclue_période_évaluation_pluriannuelle de
-                    culture.période
+                  non (
+                    période_inclue_période_évaluation_pluriannuelle de
+                      culture.période
+                  )
                 alors
-                  # Cette culture date d'avant 2025, on la stocke comme
+                  # Cette culture date d'avant 2022, on la stocke comme
                   # culture précédente mais on ne l'étudie pas pour le
                   # critère annuel.
                   (culture_principale_précédente, rotation_satisfaite_avant)
@@ -408,7 +420,7 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                       soit culture_précédente égal à
                         (
                           résultat de CultureBCAE7 avec {
-                            -- code_culture: code_actuel
+                            -- code_culture: code_précédent
                           }
                         ).culture
                       dans
