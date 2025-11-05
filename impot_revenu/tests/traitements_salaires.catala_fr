@@ -2124,21 +2124,21 @@ déclaration champ d'application TraitementsSalaires10:
   déclarant1 champ d'application Interface.TraitementsSalairesDéclarant
   déclarant2 champ d'application Interface.TraitementsSalairesDéclarant
 
- foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
+  foyer champ d'application Interface.TraitementsSalairesFoyerFiscal
 
   résultat sortie contenu IR.TraitementsSalairesFoyerFiscal
 
 champ d'application TraitementsSalaires10:
- définition déclarant1.traitements_salaires égal à  40000 €
+  définition déclarant1.traitements_salaires égal à 40000 €
   définition foyer.rentes_percues_49moins_ans égal à 15 000 €
 
-  définition déclarant2.traitements_salaires égal à  20000 €
+  définition déclarant2.traitements_salaires égal à 20000 €
   définition sortie égal à
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
-      -- déclarant1 : déclarant1.sortie
-      -- déclarant2 : Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge : []
-      -- année_revenus  : 2022
+      -- déclarant1: déclarant1.sortie
+      -- déclarant2: Déclaration contenu déclarant2.sortie
+      -- déclarations_personnes_à_charge: []
+      -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
 ```
