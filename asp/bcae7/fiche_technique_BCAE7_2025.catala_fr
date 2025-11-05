@@ -466,7 +466,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
       }
 
   définition surface_terres_arables_cultivées_hectares égal à
-    somme décimal de transforme chaque parcelle parmi terres_arables_cultivées en
+    somme décimal de transforme chaque parcelle
+      parmi terres_arables_cultivées en
         parcelle.surface_hectares
 
   définition rotation_cultures_critère_pluriannuel
@@ -665,7 +666,10 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     de parcelle état monoculture
   sous condition parcelle.système sous forme MonoculturePrintemps
   conséquence égal à
-    selon (rotation_cultures_critère_pluriannuel_parcelle de parcelle) sous forme
+    selon (
+      rotation_cultures_critère_pluriannuel_parcelle de
+        parcelle
+    ) sous forme
     -- Respecté :
       si
         (
@@ -674,7 +678,9 @@ champ d'application ConditionnalitéBCAE7Pour2025:
               culture_date de parcelle.cultures, (|0000-11-15| + 1 an * année)
             dans
             soit culture_15_février égal à
-              culture_date de parcelle.cultures, (|0000-02-15| + 1 an * (année + 1))
+              culture_date de
+                parcelle.cultures,
+                (|0000-02-15| + 1 an * (année + 1))
             dans
             selon culture_15_novembre sous forme
             -- Absent : faux
@@ -846,8 +852,13 @@ champ d'application ConditionnalitéBCAE7Pour2025:
           Respecté
         sinon
           NonRespecté contenu ÉcartRespect {
-            -- surface_hectares: surface_culture_principale - surface_terres_arables_hectares * 75%
-            -- proportion: surface_culture_principale / surface_terres_arables_hectares - 75%
+            -- surface_hectares:
+              surface_culture_principale
+              - surface_terres_arables_hectares * 75%
+            -- proportion:
+              surface_culture_principale
+              / surface_terres_arables_hectares
+              - 75%
           }
     }
 ```
@@ -969,8 +980,13 @@ champ d'application ConditionnalitéBCAE7Pour2025:
           Respecté
         sinon
           NonRespecté contenu ÉcartRespect {
-            -- surface_hectares: -surface_culture_principale - surface_terres_arables_hectares * 95%
-            -- proportion: surface_culture_principale / surface_terres_arables_hectares - 95%
+            -- surface_hectares:
+              -surface_culture_principale
+              - surface_terres_arables_hectares * 95%
+            -- proportion:
+              surface_culture_principale
+              / surface_terres_arables_hectares
+              - 95%
           }
     }
 ```
@@ -1018,8 +1034,12 @@ déclaration accumuler_sanctions
     sanction2 contenu SanctionsNonRespectConditionnalité
   égal à
     SanctionsNonRespectConditionnalité {
-      -- alerte_informative: sanction1.alerte_informative ou sanction2.alerte_informative
-      -- pénalité_proportion_aide: sanction1.pénalité_proportion_aide + sanction2.pénalité_proportion_aide
+      -- alerte_informative:
+        sanction1.alerte_informative
+        ou sanction2.alerte_informative
+      -- pénalité_proportion_aide:
+        sanction1.pénalité_proportion_aide
+        + sanction2.pénalité_proportion_aide
     }
 
 champ d'application ConditionnalitéBCAE7Pour2025:
