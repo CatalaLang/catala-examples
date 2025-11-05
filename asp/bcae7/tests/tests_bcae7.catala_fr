@@ -413,3 +413,319 @@ champ d'application Exemple4:
 
   assertion calcul.rotation_cultures_critère_pluriannuel
 ```
+
+## Les systèmes en monoculture et l’obligation de rotation pluriannuelle
+
+Exemple : une exploitation de 100 ha est composée de 4 parcelles dont l’assolement a évolué entre
+2022 et 2025 sauf pour ce qui concerne la parcelle de 15 ha, restée en monoculture de maïs.
+
+En 2025, il sera vérifié que la rotation pluriannuelle est respectée :
+
+- La parcelle en maïs grain satisfait la norme car une culture secondaire a été mise en place
+  chaque année à compter de 2023 ;
+- La parcelle en colza a été emblavée en blé tendre en 2023 et 2024, deux cultures principales
+  différentes sont donc recensées ;
+- La parcelle en blé tendre est semée en tournesol en 2025, deux cultures principales se sont donc
+  bien succédées sur la période de 4 ans ;
+- La parcelle en tournesol en 2022 accueille une culture différente chaque année.
+
+```catala
+déclaration exemple_5_parcelle_maïs_grain contenu BCAE7.ParcelleTerreArable
+  égal à
+    BCAE7.ParcelleTerreArable {
+      -- système: Autre
+      -- surface_hectares: 25,0
+      -- cultures:
+        [
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2021-12-01|
+                -- fin: |2022-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2022-12-01|
+                -- fin: |2023-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: LUZ
+            -- période:
+              Période.Période {
+                -- début: |2023-09-01|
+                -- fin: |2023-11-15|
+              }
+            -- qualification: Secondaire
+          };
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2023-12-01|
+                -- fin: |2024-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: LUZ
+            -- période:
+              Période.Période {
+                -- début: |2024-09-01|
+                -- fin: |2024-11-15|
+              }
+            -- qualification: Secondaire
+          };
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2024-12-01|
+                -- fin: |2025-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: LUZ
+            -- période:
+              Période.Période {
+                -- début: |2025-09-01|
+                -- fin: |2025-11-15|
+              }
+            -- qualification: Secondaire
+          }
+        ]
+    }
+
+déclaration exemple_5_parcelle_monoculture_maïs contenu BCAE7.ParcelleTerreArable
+  égal à
+    BCAE7.ParcelleTerreArable {
+      -- système: Autre
+      -- surface_hectares: 15,0
+      -- cultures:
+        [
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2021-12-01|
+                -- fin: |2022-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2022-12-01|
+                -- fin: |2023-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2023-12-01|
+                -- fin: |2024-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: MID
+            -- période:
+              Période.Période {
+                -- début: |2024-12-01|
+                -- fin: |2025-08-15|
+              }
+            -- qualification: Principale
+          }
+        ]
+    }
+
+déclaration exemple_5_parcelle_colza_blé contenu BCAE7.ParcelleTerreArable
+  égal à
+    BCAE7.ParcelleTerreArable {
+      -- système: Autre
+      -- surface_hectares: 20,0
+      -- cultures:
+        [
+          BCAE7.Culture {
+            -- code: CZH
+            -- période:
+              Période.Période {
+                -- début: |2021-12-01|
+                -- fin: |2022-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: CZH
+            -- période:
+              Période.Période {
+                -- début: |2022-12-01|
+                -- fin: |2023-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: BTH
+            -- période:
+              Période.Période {
+                -- début: |2023-12-01|
+                -- fin: |2024-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: BTH
+            -- période:
+              Période.Période {
+                -- début: |2024-12-01|
+                -- fin: |2025-08-15|
+              }
+            -- qualification: Principale
+          }
+        ]
+    }
+
+déclaration exemple_5_parcelle_blé_tournesol contenu BCAE7.ParcelleTerreArable
+  égal à
+    BCAE7.ParcelleTerreArable {
+      -- système: Autre
+      -- surface_hectares: 20,0
+      -- cultures:
+        [
+          BCAE7.Culture {
+            -- code: BTH
+            -- période:
+              Période.Période {
+                -- début: |2021-12-01|
+                -- fin: |2022-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: BTH
+            -- période:
+              Période.Période {
+                -- début: |2022-12-01|
+                -- fin: |2023-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: BTH
+            -- période:
+              Période.Période {
+                -- début: |2023-12-01|
+                -- fin: |2024-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: TRN
+            -- période:
+              Période.Période {
+                -- début: |2024-12-01|
+                -- fin: |2025-08-15|
+              }
+            -- qualification: Principale
+          }
+        ]
+    }
+
+déclaration exemple_5_parcelle_tournesol_rotation contenu BCAE7.ParcelleTerreArable
+  égal à
+    BCAE7.ParcelleTerreArable {
+      -- système: Autre
+      -- surface_hectares: 20,0
+      -- cultures:
+        [
+          BCAE7.Culture {
+            -- code: TRN
+            -- période:
+              Période.Période {
+                -- début: |2021-12-01|
+                -- fin: |2022-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: BTH
+            -- période:
+              Période.Période {
+                -- début: |2022-12-01|
+                -- fin: |2023-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: CZH
+            -- période:
+              Période.Période {
+                -- début: |2023-12-01|
+                -- fin: |2024-08-15|
+              }
+            -- qualification: Principale
+          };
+          BCAE7.Culture {
+            -- code: LIH
+            -- période:
+              Période.Période {
+                -- début: |2024-12-01|
+                -- fin: |2025-08-15|
+              }
+            -- qualification: Principale
+          }
+        ]
+    }
+
+#[test]
+déclaration champ d'application Exemple5:
+  résultat calcul contenu BCAE7.ConditionnalitéBCAE7Pour2025
+
+champ d'application Exemple5:
+  définition calcul égal à
+    résultat de BCAE7.ConditionnalitéBCAE7Pour2025 avec {
+      -- choix_critère_hors_plaine_du_Rhin: RotationDesCultures
+      -- est_située_dans_la_plaine_du_Rhin: faux
+      -- terres_arables:
+        [
+          exemple_5_parcelle_blé_tournesol;
+          exemple_5_parcelle_colza_blé;
+          exemple_5_parcelle_maïs_grain;
+          exemple_5_parcelle_monoculture_maïs;
+          exemple_5_parcelle_tournesol_rotation
+        ]
+      -- agriculture_biologique: Conventionnelle
+    }
+
+  assertion non calcul.rotation_cultures_critère_pluriannuel
+
+déclaration champ d'application Exemple5bis:
+  résultat calcul contenu BCAE7.ConditionnalitéBCAE7Pour2025
+
+champ d'application Exemple5bis:
+  définition calcul égal à
+    résultat de BCAE7.ConditionnalitéBCAE7Pour2025 avec {
+      -- choix_critère_hors_plaine_du_Rhin: RotationDesCultures
+      -- est_située_dans_la_plaine_du_Rhin: faux
+      -- terres_arables:
+        [
+          exemple_5_parcelle_blé_tournesol;
+          exemple_5_parcelle_colza_blé;
+          exemple_5_parcelle_maïs_grain;
+          exemple_5_parcelle_tournesol_rotation
+        ]
+      -- agriculture_biologique: Conventionnelle
+    }
+
+  assertion calcul.rotation_cultures_critère_pluriannuel
+```
