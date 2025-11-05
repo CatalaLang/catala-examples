@@ -293,18 +293,10 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                       -- Absent : vrai
                       -- Présent contenu code_précédent :
                         soit culture_actuelle égal à
-                          (
-                            résultat de CultureBCAE7 avec {
-                              -- code_culture: code_actuel
-                            }
-                          ).culture
+                          culture_diversification de code_actuel
                         dans
                         soit culture_précédente égal à
-                          (
-                            résultat de CultureBCAE7 avec {
-                              -- code_culture: code_précédent
-                            }
-                          ).culture
+                          culture_diversification de code_précédent
                         dans
                         culture_précédente != culture_actuelle
                     dans
@@ -411,18 +403,10 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                     -- Absent : faux
                     -- Présent contenu code_précédent :
                       soit culture_actuelle égal à
-                        (
-                          résultat de CultureBCAE7 avec {
-                            -- code_culture: code_actuel
-                          }
-                        ).culture
+                        culture_diversification de code_actuel
                       dans
                       soit culture_précédente égal à
-                        (
-                          résultat de CultureBCAE7 avec {
-                            -- code_culture: code_précédent
-                          }
-                        ).culture
+                        culture_diversification de code_précédent
                       dans
                       culture_précédente != culture_actuelle
                   dans
@@ -719,18 +703,10 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                     -- Absent : faux
                     -- Présent contenu code_précédent :
                       soit culture_actuelle égal à
-                        (
-                          résultat de CultureBCAE7 avec {
-                            -- code_culture: code_courant
-                          }
-                        ).culture
+                        culture_diversification de code_courant
                       dans
                       soit culture_précédente égal à
-                        (
-                          résultat de CultureBCAE7 avec {
-                            -- code_culture: code_précédent
-                          }
-                        ).culture
+                        culture_diversification de code_précédent
                       dans
                       culture_précédente != culture_actuelle
                   dans
@@ -808,18 +784,10 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                   -- Présent contenu code_précédent_1 :
                     (
                       soit culture_actuelle égal à
-                        (
-                          résultat de CultureBCAE7 avec {
-                            -- code_culture: code_courant
-                          }
-                        ).culture
+                        culture_diversification de code_courant
                       dans
                       soit culture_précédente_1 égal à
-                        (
-                          résultat de CultureBCAE7 avec {
-                            -- code_culture: code_précédent_1
-                          }
-                        ).culture
+                        culture_diversification de code_précédent_1
                       dans
                       selon code_précédent_2 sous forme
                       -- Absent :
@@ -838,11 +806,7 @@ champ d'application ConditionnalitéBCAE7Pour2025:
                       -- Présent contenu code_précédent_2 :
                         (
                           soit culture_précédente_2 égal à
-                            (
-                              résultat de CultureBCAE7 avec {
-                                -- code_culture: code_précédent_2
-                              }
-                            ).culture
+                            culture_diversification de code_précédent_2
                           dans
                           si
                             culture_actuelle != culture_précédente_1
@@ -1424,9 +1388,9 @@ Triticale de printemps                                           TTP
 -----------------------------------------------------------------------------------------------------------------------
 
 ```catala
-champ d'application CultureBCAE7:
-  définition culture égal à
-    selon code_culture sous forme
+champ d'application ConditionnalitéBCAE7Pour2025:
+  définition culture_diversification de culture égal à
+    selon culture sous forme
     -- LOT : AutresLégumineusesFourragèresYComprisEnMélange
     -- MLF : AutresLégumineusesFourragèresYComprisEnMélange
     -- SAI : AutresLégumineusesFourragèresYComprisEnMélange

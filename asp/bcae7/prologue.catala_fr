@@ -45,10 +45,6 @@ déclaration énumération AgricultureBiologique:
   -- CertificationObtenue
   -- EnCoursDeConversion
   -- Conventionnelle
-
-déclaration champ d'application CultureBCAE7:
-  entrée code_culture contenu CodeCulture
-  résultat culture contenu CulturesDifférentesRotationDiversification
 ```
 
 ## Champs d'application
@@ -74,6 +70,8 @@ déclaration champ d'application ConditionnalitéBCAE7Pour2025:
   interne rotation_cultures_critère_pluriannuel_parcelle condition
   dépend de parcelle contenu ParcelleTerreArable état base
     état monoculture
+  interne culture_diversification
+    contenu CulturesDifférentesRotationDiversification dépend de culture contenu CodeCulture
   interne années_évaluation_pluriannuelle contenu liste de entier
   interne période_inclue_période_évaluation_pluriannuelle condition dépend de période contenu Période.Période
   interne diversification_Rhin condition
