@@ -1,0 +1,135 @@
+> Usage de BCAE7
+
+```catala-metadata
+#[test]
+#[testcase.test_description = "Exemple page 5 fiche conditionnalité BCAE7 pour 2025"]
+#[testcase.test_title = "ConditionnalitéBCAE7Pour2025"]
+déclaration champ d'application ConditionnalitéBCAE7Pour2025_test:
+  résultat conditionnalite_b_c_a_e7_pour2025 champ d'application BCAE7.ConditionnalitéBCAE7Pour2025
+```
+
+```catala
+champ d'application ConditionnalitéBCAE7Pour2025_test:
+  définition conditionnalite_b_c_a_e7_pour2025.agriculture_biologique égal à
+    BCAE7.AgricultureBiologique.CertificationObtenue
+  définition conditionnalite_b_c_a_e7_pour2025.terres_arables égal à
+    [
+      #[testcase.uid = "cb3ed55c-db97-4042-9c10-64cc792b2838"]
+      BCAE7.ParcelleTerreArable {
+        -- surface_hectares: 15,1
+        -- cultures:
+          [
+            #[testcase.uid = "0895934f-bd1d-44d4-be8f-472550a48292"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.MID
+              -- période:
+                Période.Période {
+                  -- début: |2022-02-03|
+                  -- fin: |2022-10-03|
+                }
+              -- qualification: BCAE7.QualificationCulture.Principale
+            };
+            #[testcase.uid = "71271974-e02b-47ce-bdad-4249889b213d"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.MID
+              -- période:
+                Période.Période {
+                  -- début: |2023-02-03|
+                  -- fin: |2023-10-03|
+                }
+              -- qualification: BCAE7.QualificationCulture.Principale
+            };
+            #[testcase.uid = "659faaef-197f-486d-9a29-7662c6d0fb16"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.FVL
+              -- période:
+                Période.Période {
+                  -- début: |2023-10-12|
+                  -- fin: |2023-12-30|
+                }
+              -- qualification: BCAE7.QualificationCulture.Secondaire
+            };
+            #[testcase.uid = "cf2c1642-2585-4f8b-a3fa-3b39ae00a92e"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.MID
+              -- période:
+                Période.Période {
+                  -- début: |2024-02-03|
+                  -- fin: |2024-10-03|
+                }
+              -- qualification: BCAE7.QualificationCulture.Principale
+            };
+            #[testcase.uid = "f29025dd-043c-423e-8726-87cc265fcc2b"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.FVL
+              -- période:
+                Période.Période {
+                  -- début: |2024-10-12|
+                  -- fin: |2024-12-30|
+                }
+              -- qualification: BCAE7.QualificationCulture.Secondaire
+            };
+            #[testcase.uid = "77751d2d-fb60-4a09-82a0-3aebba92309f"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.MID
+              -- période:
+                Période.Période {
+                  -- début: |2025-02-03|
+                  -- fin: |2025-10-03|
+                }
+              -- qualification: BCAE7.QualificationCulture.Principale
+            };
+            #[testcase.uid = "1eac0f4b-cb9d-4c77-9b22-5a1d4afcfe2f"]
+            BCAE7.Culture {
+              -- code: BCAE7.CodeCulture.FVL
+              -- période:
+                Période.Période {
+                  -- début: |2025-10-12|
+                  -- fin: |2025-12-30|
+                }
+              -- qualification: BCAE7.QualificationCulture.Secondaire
+            }
+          ]
+        -- système: BCAE7.SystèmeParcelle.MonoculturePrintemps
+      }
+    ]
+  définition conditionnalite_b_c_a_e7_pour2025.est_située_dans_la_plaine_du_Rhin égal à
+    faux
+  définition conditionnalite_b_c_a_e7_pour2025.choix_critère_hors_plaine_du_Rhin égal à
+    BCAE7.ModeRespectBCAE7.RotationDesCultures
+  assertion (conditionnalite_b_c_a_e7_pour2025.rotation_cultures = faux)
+  assertion (
+    conditionnalite_b_c_a_e7_pour2025.rotation_cultures_critère_annuel
+    = BCAE7.RespectCritère.Respecté
+  )
+  assertion (
+    conditionnalite_b_c_a_e7_pour2025.rotation_cultures_critère_pluriannuel
+    = BCAE7.RespectCritère.NonRespecté contenu BCAE7.ÉcartRespect {
+      -- proportion: 1,0
+      -- surface_hectares: 15,1
+    }
+  )
+  assertion (
+    conditionnalite_b_c_a_e7_pour2025.diversification_général
+    = BCAE7.RespectCritèreDiversificationGénéral {
+      -- au_moins_deux_cultures_principales: faux
+      -- surface_culture_principale:
+        BCAE7.RespectCritère.NonRespecté contenu BCAE7.ÉcartRespect {
+          -- proportion: 0,26
+          -- surface_hectares: 3,775
+        }
+    }
+  )
+  assertion (conditionnalite_b_c_a_e7_pour2025.exempté_respect = vrai)
+  assertion (
+    conditionnalite_b_c_a_e7_pour2025.conditionnalité_satisfaite
+    = vrai
+  )
+  assertion (
+    conditionnalite_b_c_a_e7_pour2025.sanctions
+    = BCAE7.SanctionsNonRespectConditionnalité {
+      -- alerte_informative: faux
+      -- pénalité_proportion_aide: 0,0
+    }
+  )
+```
