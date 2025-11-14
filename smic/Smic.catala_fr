@@ -413,6 +413,7 @@ champ d'application Smic:
   définition brut_horaire
   sous condition
     date_courante >= |2024-01-01|
+    et date_courante < |2024-11-01|
     et (
       (résidence = Métropole)
       ou (résidence = Guadeloupe)
@@ -434,9 +435,56 @@ champ d'application Smic:
   définition brut_horaire
   sous condition
     date_courante >= |2024-01-01|
+    et date_courante < |2024-11-01|
     et (
       (résidence = Mayotte)
     )
   conséquence égal à
     8,80 €
+```
+
+## Décret n° 2024-951 du 23 octobre 2024 portant relèvement du salaire minimum de croissance
+
+### Article 1 | JORFARTI000050392696
+
+
+A compter du 1er novembre 2024, pour les catégories de travailleurs mentionnés
+à l'article L. 2211-1 du code du travail, le montant du salaire minimum de
+croissance est relevé dans les conditions ci-après :
+
+1° En métropole, en Guadeloupe, en Guyane, en Martinique, à La Réunion, à
+Saint-Barthélemy, à Saint-Martin et à Saint-Pierre-et-Miquelon, son montant
+est porté à 11,88 euros l'heure ;
+
+```catala
+champ d'application Smic:
+  définition brut_horaire
+  sous condition
+    date_courante >= |2024-11-01|
+    et (
+      (résidence = Métropole)
+      ou (résidence = Guadeloupe)
+      ou (résidence = Guyane)
+      ou (résidence = Martinique)
+      ou (résidence = LaRéunion)
+      ou (résidence = SaintBarthélemy)
+      ou (résidence = SaintMartin)
+      ou (résidence = SaintPierreEtMiquelon)
+    )
+  conséquence égal à
+    11,88 €
+```
+
+2° A Mayotte, son montant est fixé à 8,98 euros l'heure.
+
+```catala
+champ d'application Smic:
+  définition brut_horaire
+  sous condition
+    date_courante >= |2024-01-01|
+    et (
+      (résidence = Mayotte)
+    )
+  conséquence égal à
+    8,98 €
 ```

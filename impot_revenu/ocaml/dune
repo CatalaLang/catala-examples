@@ -1,4 +1,5 @@
 (library
- (public_name ir_catala.oracles)
+ (public_name catala-examples.oracles)
  (name oracles)
+ (modules oracles)
  (libraries catala.runtime_ocaml))

@@ -1,0 +1,318 @@
+# Prologue
+
+## Modèle d'une exploitation
+
+```catala-metadata
+déclaration énumération QualificationCulture:
+  -- Principale
+  -- Secondaire
+
+déclaration structure Culture:
+  donnée code contenu CodeCulture
+  donnée période contenu Période.Période
+  donnée qualification contenu QualificationCulture
+
+déclaration énumération SystèmeParcelle:
+  -- MonoculturePrintemps
+  -- MonocultureHiver
+  -- Autre
+
+déclaration structure ParcelleTerreArable:
+  donnée surface_hectares contenu décimal
+  # On suppose que la liste des cultures est triées par ordre
+  # chronologique
+  donnée cultures contenu liste de Culture
+  donnée système contenu SystèmeParcelle
+
+déclaration surface_parcelles_hectares
+  contenu décimal
+  dépend de parcelles contenu liste de ParcelleTerreArable
+  égal à
+    somme décimal de transforme chaque parcelle parmi parcelles en
+        parcelle.surface_hectares
+
+déclaration culture_date
+  contenu optionnel de Culture
+  dépend de cultures contenu liste de Culture, date_référence contenu date
+  égal à
+    Liste.premier_élément de
+      (
+        liste de culture parmi cultures
+          tel que Période.est_contenue de culture.période, date_référence
+      )
+
+déclaration énumération AgricultureBiologique:
+  -- CertificationObtenue
+  -- EnCoursDeConversion
+  -- Conventionnelle
+```
+
+## Champs d'application
+
+```catala-metadata
+déclaration énumération ModeRespectBCAE7:
+  -- RotationDesCultures
+  -- DiversificationDesCultures
+
+déclaration structure SanctionsNonRespectConditionnalité:
+  donnée alerte_informative contenu booléen
+  donnée pénalité_proportion_aide contenu décimal
+
+déclaration structure ÉcartRespect:
+  donnée proportion contenu décimal
+  donnée surface_hectares contenu décimal
+
+déclaration énumération RespectCritère:
+  -- Respecté
+  -- NonRespecté contenu ÉcartRespect
+
+déclaration structure RespectCritèreDiversificationGénéral:
+  donnée au_moins_deux_cultures_principales contenu booléen
+  donnée surface_culture_principale contenu RespectCritère
+
+déclaration champ d'application ConditionnalitéBCAE7Pour2025:
+  entrée agriculture_biologique contenu AgricultureBiologique
+  entrée terres_arables contenu liste de ParcelleTerreArable
+  entrée est_située_dans_la_plaine_du_Rhin contenu booléen
+  entrée choix_critère_hors_plaine_du_Rhin contenu ModeRespectBCAE7
+
+  interne terres_arables_cultivées contenu liste de ParcelleTerreArable
+  interne terres_arables_cultivées_respectant_critère_annuel contenu liste de ParcelleTerreArable
+  interne culture_annexe_1 condition dépend de code_culture contenu CodeCulture
+
+  résultat rotation_cultures condition
+  résultat rotation_cultures_critère_annuel contenu RespectCritère
+  résultat rotation_cultures_critère_pluriannuel contenu RespectCritère
+  interne rotation_cultures_critère_pluriannuel_parcelle contenu RespectCritère
+  dépend de parcelle contenu ParcelleTerreArable état base
+    état monoculture
+  interne culture_diversification
+    contenu CulturesDifférentesRotationDiversification dépend de culture contenu CodeCulture
+  interne années_évaluation_pluriannuelle contenu liste de entier
+  interne période_inclue_période_évaluation_pluriannuelle condition dépend de période contenu Période.Période
+  interne diversification_Rhin condition
+  interne surfaces_céréales_hiver_hectares contenu décimal
+  interne surfaces_céréales_printemps_hectares contenu décimal
+  interne surfaces_plantes_sarclées_hectares contenu décimal
+  interne surfaces_oléagineux_hiver_hectares contenu décimal
+  interne surfaces_oléagineux_printemps_hectares contenu décimal
+  interne points_diversification_Rhin_céréales_oléagineux_plantes_sarclées contenu entier
+    état céréales_hiver
+    état céréales_printemps
+    état plates_sarclées
+    état oléagineux_hiver
+    état oléagineux_printemps
+  interne points_diversification_Rhin contenu entier
+    état prairie_temporaires_jachères
+    état légumineuses
+    état céréales_oléagineux_plantes_sarclées
+    état autres_cultures
+  résultat diversification_général contenu RespectCritèreDiversificationGénéral
+  résultat exempté_respect condition
+  interne surface_terres_arables_hectares contenu décimal
+  interne surface_terres_arables_cultivées_hectares contenu décimal
+  interne culture_prise_en_compte_exemption_herbe_fourragères condition dépend de code_culture contenu CodeCulture
+  interne culture_prise_en_compte_exemption_prairies_sous_eau condition dépend de code_culture contenu CodeCulture
+
+  résultat conditionnalité_satisfaite condition
+  résultat sanctions contenu SanctionsNonRespectConditionnalité
+    état rotation_annuel
+    état rotation_pluriannuel
+    état diversification
+    état final
+```
+
+## Classifications cultures
+
+```catala-metadata
+
+déclaration énumération CodeCulture:
+  -- AAR
+  -- ACP
+  -- AFG
+  -- AIL
+  -- ANA
+  -- AME
+  -- ARA
+  -- ARP
+  -- ART
+  -- AVH
+  -- AVP
+  -- BDH
+  -- BDP
+  -- BTH
+  -- BTP
+  -- BTN
+  -- CAE
+  -- CAG
+  -- CAH
+  -- CAR
+  -- CEE
+  -- CEL
+  -- CID
+  -- CIT
+  -- CHU
+  -- CHV
+  -- CCN
+  -- CML
+  -- CPL
+  -- CSA
+  -- CZH
+  -- CZP
+  -- EPE
+  -- EPI
+  -- FEV
+  -- FLA
+  -- FLP
+  -- FNU
+  -- FRA
+  -- FVL
+  -- FVP
+  -- GES
+  -- GRA
+  -- JAC
+  -- HBL
+  -- HPC
+  -- LAV
+  -- LBF
+  -- LDH
+  -- LDP
+  -- LEC
+  -- LIF
+  -- LIH
+  -- LIP
+  -- LOT
+  -- LUZ
+  -- MCR
+  -- MCS
+  -- MDI
+  -- MID
+  -- MIS
+  -- MLC
+  -- MLO
+  -- MLF
+  -- MLG
+  -- MLT
+  -- MOH
+  -- MOT
+  -- MPC
+  -- MSW
+  -- NVT
+  -- OAG
+  -- OEI
+  -- OIG
+  -- OHR
+  -- ORH
+  -- ORP
+  -- PAG
+  -- PCH
+  -- PEV
+  -- PHI
+  -- PHF
+  -- PHS
+  -- PME
+  -- POR
+  -- POT
+  -- PPH
+  -- PPR
+  -- PRF
+  -- PSL
+  -- PTC
+  -- PTR
+  -- PVP
+  -- RDI
+  -- RIZ
+  -- SAI
+  -- SGH
+  -- SGP
+  -- SNE
+  -- SOG
+  -- SOJ
+  -- SPH
+  -- SPL
+  -- SRS
+  -- TAB
+  -- TBT
+  -- TRN
+  -- TOM
+  -- TTH
+  -- TTP
+  -- TRE
+  -- VES
+
+déclaration énumération CulturesDifférentesRotationDiversification:
+  -- BléTendreDePrintemps
+  -- BléTendreDHiver
+  -- BléDurDePrintemps
+  -- BléDurDHiver
+  -- AvoineDePrintemps
+  -- AvoineDHiver
+  -- Epeautre
+  -- AutresCéréalesEtMélangesDePrintemps
+  -- MaïsEtMaïsSemence
+  -- Moha
+  -- Millet
+  -- TriticaleDePrintemps
+  -- TriticaleDHiver
+  -- AutresCéréalesEtMélangesDHiver
+  -- ColzaDePrintemps
+  -- Sarrasin
+  -- ColzaDHiver
+  -- Tournesol
+  -- Œillette
+  -- AutresOléagineuxDHiverEtDePrintemps
+  -- FèveEtFéverole
+  -- Lentille
+  -- AutresLégumineusesFourragèresYComprisEnMélange
+  -- Luzerne
+  -- LupinDePrintemps
+  -- LupinDHiver
+  -- MélangeDeLégumineusesProtéagineuxPrépondérantsEtDeCéréalesOléagineux
+  -- PoisProtéagineuxDePrintemps
+  -- Sorgho
+  -- PoisProtéagineuxDHiver
+  -- OrgeDHiver
+  -- OrgeDePrintemps
+  -- SeigleDHiver
+  -- SeigleDePrintemps
+  -- PoisChiche
+  -- Soja
+  -- AutresProtéagineux
+  -- HerbePrédominantePrairiesJachèresMélangesLégumineusesGraminées
+  -- AutresFourrages
+  -- Tabac
+  -- PommeDeTerre
+  -- LinFibres
+  -- LinDePrintemps
+  -- LinDHiver
+  -- Betteraves
+  -- Chanvre
+  -- FruitsLégumesFleurs
+  -- Moutarde
+  -- PlantesAromatiquesHerbacéesNonPérennesHorsPersil
+  -- PlantesMédicinalesEtÀParfumNonPérennes
+  -- Persil
+  -- HorticultureOrnementale
+  -- CulturesAssociéesDéclaréesAvecLeCodeCIDCIT
+  -- Riz
+  -- Ail
+  -- Ananas
+  -- Artichaut
+  -- ConcombreCornichonEtCourgette
+  -- Céleri
+  -- Chou
+  -- EpinardOseilleEtBette
+  -- AutreLégumeOuFruitAnnuel
+  -- FraiseEnPleineTerre
+  -- LaitueEndiveEtAutresSalades
+  -- MaraîchageDiversifié
+  -- NavetRutabagaEtAutresLégumesRacinesHorsCarotteRadisBetterave
+  -- OignonEtÉchalote
+  -- Poireau
+  -- PotironCitrouilleEtAutresCourges
+  -- PoivronPimentEtAubergine
+  -- Radis
+  -- TuberculeTropical
+  -- TomatesEnPleineTerre
+  -- MelonEtPastèque
+```
