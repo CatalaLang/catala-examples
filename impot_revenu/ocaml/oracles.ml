@@ -337,47 +337,47 @@ let prorata_arrondi_euro_branchement
     ResultatProRataArrondiEuroBranchement.t =
   let base_prorata_1 =
     match base_prorata_1 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_2 =
     match base_prorata_2 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_3 =
     match base_prorata_3 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_4 =
     match base_prorata_4 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_5 =
     match base_prorata_5 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_6 =
     match base_prorata_6 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_7 =
     match base_prorata_7 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_8 =
     match base_prorata_8 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let base_prorata_9 =
     match base_prorata_9 with
-    | Absent () -> money_of_units_int 0
+    | Absent -> money_of_units_int 0
     | Present x -> x
   in
   let bases_prorata =
