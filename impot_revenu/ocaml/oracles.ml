@@ -133,7 +133,8 @@ let prorata_arrondi_euro
                end_column = 27;
                law_headings = ["Calcul de pro-rata"];
              };
-           ] ));
+           ],
+           None ));
   if
     (not (o_eq_mon_mon montant_a_distribuer (money_of_units_int 0)))
     && Array.for_all
@@ -152,7 +153,8 @@ let prorata_arrondi_euro
                end_column = 55;
                law_headings = ["Calcul de pro-rata"];
              };
-           ] ));
+           ],
+           None ));
   if money_round montant_a_distribuer <> montant_a_distribuer then
     raise
       (Error
@@ -166,7 +168,8 @@ let prorata_arrondi_euro
                end_column = 61;
                law_headings = ["Calcul de pro-rata"];
              };
-           ] ));
+           ],
+         None ));
   let valeurs_proratisees_ : money array =
     let assiette_totale_prorata =
       Array.fold_left o_add_mon_mon (money_of_units_int 0) bases_prorata
@@ -195,7 +198,7 @@ let prorata_arrondi_euro
                      }
                      (decimal_of_money base_prorata)
                      (decimal_of_money assiette_totale_prorata))
-              with Catala_runtime.Error (Catala_runtime.DivisionByZero, _) ->
+              with Catala_runtime.Error (Catala_runtime.DivisionByZero, _, _) ->
                 Catala_runtime.decimal_of_float 0.0
           in
           let arrondi = decimal_round brut in
