@@ -1,17 +1,17 @@
-> Include: ../section_132.catala_en
+> Using Us_tax_code as T
 
 ### Test
 
 ```catala
 #[test]
 declaration scope TestSection132_1:
-  section_132 scope QualifiedEmployeeDiscount
+  section_132 scope T.QualifiedEmployeeDiscount
 
 scope TestSection132_1:
   definition section_132.customer_price equals $1500
   definition section_132.employee_price equals $1000
   definition section_132.aggregate_cost equals $900
-  definition section_132.discount_type equals Property
+  definition section_132.discount_type equals T.DiscountType.Property
   assertion section_132.employee_discount = $500
   assertion section_132.gross_profit_percentage = 0.4
   assertion section_132.qualified_employee_discount = $500
@@ -20,13 +20,13 @@ scope TestSection132_1:
 ```catala
 #[test]
 declaration scope TestSection132_2:
-  section_132 scope QualifiedEmployeeDiscount
+  section_132 scope T.QualifiedEmployeeDiscount
 
 scope TestSection132_2:
   definition section_132.customer_price equals $1500
   definition section_132.employee_price equals $1000
   definition section_132.aggregate_cost equals $1200
-  definition section_132.discount_type equals Property
+  definition section_132.discount_type equals T.DiscountType.Property
   assertion section_132.employee_discount = $500
   assertion section_132.gross_profit_percentage = 0.2
   assertion section_132.qualified_employee_discount = $300.00
@@ -35,12 +35,12 @@ scope TestSection132_2:
 ```catala
 #[test]
 declaration scope TestSection132_3:
-  section_132 scope QualifiedEmployeeDiscount
+  section_132 scope T.QualifiedEmployeeDiscount
 
 scope TestSection132_3:
   definition section_132.customer_price equals $1500
   definition section_132.employee_price equals $1000
-  definition section_132.discount_type equals Services
+  definition section_132.discount_type equals T.DiscountType.Services
   assertion section_132.employee_discount = $500
   assertion section_132.qualified_employee_discount = $300
 ```

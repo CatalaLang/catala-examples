@@ -11,6 +11,7 @@ include_dirs = [
   "asp/aide_fibre",
   "asp/fonpeps",
   "asp/bcae7",
+  "us_tax_code",
 ]
 
 [[target]]
@@ -52,3 +53,9 @@ name = "BCAE7"
 modules = ["BCAE7"]
 backends = ["ocaml", "java", "python"]
 tests = ["asp/bcae7/tests/"]
+
+[[target]]
+name = "us-tax-code"
+modules = ["Us_tax_code"]
+backends = ["ocaml"]
+tests = ["us_tax_code/tests/"]
