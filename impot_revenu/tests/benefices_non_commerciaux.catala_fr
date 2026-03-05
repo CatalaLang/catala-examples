@@ -352,10 +352,7 @@ $ catala test-scope BénéficesNonCommerciaux2
 │     -- déficit_brut_global_professionnel: 0,00 €
 │     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour:
 │       [
-│         Impot_revenu.Oracles.DéficitAntérieur {
-│           -- année: 2 021
-│           -- valeur: 6 202,00 €
-│         }
+│         Oracles.DéficitAntérieur { -- année: 2 021 -- valeur: 6 202,00 € }
 │       ]
 │   }
 └─
