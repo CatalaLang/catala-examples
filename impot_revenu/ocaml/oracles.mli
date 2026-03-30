@@ -3,9 +3,8 @@ open Catala_runtime
 [@@@ocaml.warning "-4-26-27-32-41-42"]
 
 module DeficitAnterieur : sig
-  type t = { annee : integer; valeur : money }
-
-  val embed : t -> runtime_value
+  type t = { annee: integer; valeur: money; }
+  val rtype: t Value.ty
 end
 
 module ResultatProRataArrondiEuroBranchement : sig
@@ -29,8 +28,7 @@ module ResultatProRataArrondiEuroBranchement : sig
     valeurs_proratisees_liste_8 : money array;
     valeurs_proratisees_liste_9 : money array;
   }
-
-  val embed : t -> runtime_value
+  val rtype: t Value.ty
 end
 
 module ResultatImputation : sig
@@ -38,8 +36,7 @@ module ResultatImputation : sig
     revenu_impute : money;
     deficits_anterieurs_restants : DeficitAnterieur.t array;
   }
-
-  val embed : t -> runtime_value
+  val rtype: t Value.ty
 end
 
 val imputation_aux_deficits_les_plus_anciens :
