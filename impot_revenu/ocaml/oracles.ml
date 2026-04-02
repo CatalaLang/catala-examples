@@ -3,12 +3,14 @@ open Catala_runtime
 [@@@ocaml.warning "-4-26-27-32-41-42"]
 
 module DeficitAnterieur = struct
-  type t = { annee : integer; valeur : money }
-
-  let embed (x : t) : runtime_value =
-    Struct
-      ( "DeficitAnterieur",
-        ["annee", embed_integer x.annee; "valeur", embed_money x.valeur] )
+  type t = { annee: integer; valeur: money; }
+  let rtype = Value.Struct {
+    name = "Oracles.D\195\169ficitAnt\195\169rieur";
+    fields = fun t -> [
+      "annee", Value.embed (Value.Integer) t.annee;
+      "valeur", Value.embed (Value.Money) t.valeur;
+    ]
+  }
 end
 
 module ResultatProRataArrondiEuroBranchement = struct
@@ -32,39 +34,29 @@ module ResultatProRataArrondiEuroBranchement = struct
     valeurs_proratisees_liste_8 : money array;
     valeurs_proratisees_liste_9 : money array;
   }
-
-  let embed (x : t) : runtime_value =
-    Struct
-      ( "ResultatProRataArrondiEuroBranchement",
-        [
-          "valeur_proratisee_1", embed_money x.valeur_proratisee_1;
-          "valeur_proratisee_2", embed_money x.valeur_proratisee_2;
-          "valeur_proratisee_3", embed_money x.valeur_proratisee_3;
-          "valeur_proratisee_4", embed_money x.valeur_proratisee_4;
-          "valeur_proratisee_5", embed_money x.valeur_proratisee_5;
-          "valeur_proratisee_6", embed_money x.valeur_proratisee_6;
-          "valeur_proratisee_7", embed_money x.valeur_proratisee_7;
-          "valeur_proratisee_8", embed_money x.valeur_proratisee_8;
-          "valeur_proratisee_9", embed_money x.valeur_proratisee_9;
-          ( "valeurs_proratisees_liste_1",
-            embed_array embed_money x.valeurs_proratisees_liste_1 );
-          ( "valeurs_proratisees_liste_2",
-            embed_array embed_money x.valeurs_proratisees_liste_2 );
-          ( "valeurs_proratisees_liste_3",
-            embed_array embed_money x.valeurs_proratisees_liste_3 );
-          ( "valeurs_proratisees_liste_4",
-            embed_array embed_money x.valeurs_proratisees_liste_4 );
-          ( "valeurs_proratisees_liste_5",
-            embed_array embed_money x.valeurs_proratisees_liste_5 );
-          ( "valeurs_proratisees_liste_6",
-            embed_array embed_money x.valeurs_proratisees_liste_6 );
-          ( "valeurs_proratisees_liste_7",
-            embed_array embed_money x.valeurs_proratisees_liste_7 );
-          ( "valeurs_proratisees_liste_8",
-            embed_array embed_money x.valeurs_proratisees_liste_8 );
-          ( "valeurs_proratisees_liste_9",
-            embed_array embed_money x.valeurs_proratisees_liste_9 );
-        ] )
+  let rtype = Value.Struct {
+    name = "Oracles.R\195\169sultatProRataArrondiEuroBranchement";
+    fields = fun t -> [
+      "valeur_proratisee_1", Value.embed (Value.Money) t.valeur_proratisee_1;
+      "valeur_proratisee_2", Value.embed (Value.Money) t.valeur_proratisee_2;
+      "valeur_proratisee_3", Value.embed (Value.Money) t.valeur_proratisee_3;
+      "valeur_proratisee_4", Value.embed (Value.Money) t.valeur_proratisee_4;
+      "valeur_proratisee_5", Value.embed (Value.Money) t.valeur_proratisee_5;
+      "valeur_proratisee_6", Value.embed (Value.Money) t.valeur_proratisee_6;
+      "valeur_proratisee_7", Value.embed (Value.Money) t.valeur_proratisee_7;
+      "valeur_proratisee_8", Value.embed (Value.Money) t.valeur_proratisee_8;
+      "valeur_proratisee_9", Value.embed (Value.Money) t.valeur_proratisee_9;
+      "valeurs_proratisees_liste_1", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_1;
+      "valeurs_proratisees_liste_2", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_2;
+      "valeurs_proratisees_liste_3", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_3;
+      "valeurs_proratisees_liste_4", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_4;
+      "valeurs_proratisees_liste_5", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_5;
+      "valeurs_proratisees_liste_6", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_6;
+      "valeurs_proratisees_liste_7", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_7;
+      "valeurs_proratisees_liste_8", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_8;
+      "valeurs_proratisees_liste_9", Value.embed (Value.Array(Value.embed (Value.Money))) t.valeurs_proratisees_liste_9;
+    ]
+  }
 end
 
 module ResultatImputation = struct
@@ -72,15 +64,13 @@ module ResultatImputation = struct
     revenu_impute : money;
     deficits_anterieurs_restants : DeficitAnterieur.t array;
   }
-
-  let embed (x : t) : runtime_value =
-    Struct
-      ( "ResultatImputation",
-        [
-          "revenu_impute", embed_money x.revenu_impute;
-          ( "deficits_anterieurs_restants",
-            embed_array DeficitAnterieur.embed x.deficits_anterieurs_restants );
-        ] )
+  let rtype = Value.Struct {
+    name = "Oracles.R\195\169sultatImputation";
+    fields = fun t -> [
+      "revenu_impute", Value.embed (Value.Money) t.revenu_impute;
+      "deficits_anterieurs_restants", Value.embed (Value.Array(Value.embed (DeficitAnterieur.rtype))) t.deficits_anterieurs_restants;
+    ]
+  }
 end
 
 let imputation_aux_deficits_les_plus_anciens
@@ -92,7 +82,7 @@ let imputation_aux_deficits_les_plus_anciens
     match deficits_anterieurs with
     | [] -> revenu_declare, []
     | hd :: tl ->
-      if o_gt_mon_mon hd.valeur revenu_declare then
+      if hd.valeur > revenu_declare then
         ( money_of_units_int 0,
           { hd with valeur = o_sub_mon_mon hd.valeur revenu_declare } :: tl )
       else aux (o_sub_mon_mon revenu_declare hd.valeur) tl
@@ -118,7 +108,7 @@ let prorata_arrondi_euro
     (bases_prorata : money array) : money array =
   if
     Array.exists
-      (fun base -> o_lt_mon_mon base (money_of_units_int 0))
+      (fun base -> base < money_of_units_int 0)
       bases_prorata
   then
     raise
@@ -136,9 +126,9 @@ let prorata_arrondi_euro
            ],
            None ));
   if
-    (not (o_eq_mon_mon montant_a_distribuer (money_of_units_int 0)))
+    (not (montant_a_distribuer = money_of_units_int 0))
     && Array.for_all
-         (fun base -> o_eq_mon_mon base (money_of_units_int 0))
+         (fun base -> base = money_of_units_int 0)
          bases_prorata
   then
     raise
@@ -182,7 +172,7 @@ let prorata_arrondi_euro
             let assiette_totale_rat =
               decimal_of_money assiette_totale_prorata
             in
-            if o_eq_rat_rat assiette_totale_rat zero then zero
+            if assiette_totale_rat = zero then zero
             else
               try
                 o_mult_rat_rat
@@ -203,8 +193,8 @@ let prorata_arrondi_euro
           in
           let arrondi = decimal_round brut in
           ( money_of_decimal arrondi,
-            if o_eq_rat_rat arrondi brut then Nul
-            else if o_gt_rat_rat arrondi brut then Haut
+            if arrondi = brut then Nul
+            else if o_gt Value.Decimal {filename=__FILE__; start_line=__LINE__; end_line=__LINE__; start_column=0; end_column=0; law_headings=[]} arrondi brut then Haut
             else Bas ))
         bases_prorata
     in
