@@ -4201,7 +4201,7 @@ champ d'application CalculÉquivalenceLoyerMinimale:
       (
         (
           (
-            somme décimal de (
+            Décimal.somme de (
               transforme chaque tranche parmi tranches_revenus_d832_26_multipliées en
                 (
                   si ressources_ménage_arrondies <= tranche.bas alors 0,0
@@ -4251,7 +4251,7 @@ champ d'application CalculÉquivalenceLoyerMinimale:
       (
         (
           (
-            somme décimal de (
+            Décimal.somme de (
               transforme chaque tranche parmi tranches_revenus_d832_26_multipliées en
                 (
                   si ressources_ménage_arrondies <= tranche.bas alors 0,0

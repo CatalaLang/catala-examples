@@ -84,7 +84,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
     état étrangères_imputables
   égal à
     rentes_viagères_titre_onéreux
-    + somme argent de (
+    + Argent.somme de (
         transforme chaque rente_viagère
         parmi [
           RenteViagèreOnéreux {
