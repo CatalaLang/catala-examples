@@ -256,42 +256,35 @@ $ catala test-scope BénéficesIndustrielsCommerciaux1
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux1 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_industriels_commerciaux:
-│       [
-│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
-│           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
-│             630,00 €
-│           -- abattement_forfaitaire_micro_professionnel_marchandises:
-│             0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_marchandises:
-│             5 335,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées:
-│             2 840,00 €
-│           -- abattement_forfaitaire_micro_professionnel_services: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_services:
-│             1 930,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées:
-│             0,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- solde_net_professionnel: 50 000,00 €
-│           -- solde_net_non_professionnel_hors_locations_meublées:
-│             15 333,00 €
-│           -- solde_net_non_professionnel_locations_meublées: 530,00 €
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- prélèvement_libératoire_revenus_concession_brevets: 50,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés: [[]; []]
+│     -- résultats_liquidation_bénéfices_industriels_commerciaux: [
+│       Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│         -- abattement_spécial_micro_location_meublées_rurales_spéciales: 630,00 €
+│         -- abattement_forfaitaire_micro_professionnel_marchandises: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_marchandises: 5 335,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées: 2 840,00 €
+│         -- abattement_forfaitaire_micro_professionnel_services: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_services: 1 930,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées: 0,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- solde_net_professionnel: 50 000,00 €
+│         -- solde_net_non_professionnel_hors_locations_meublées: 15 333,00 €
+│         -- solde_net_non_professionnel_locations_meublées: 530,00 €
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- prélèvement_libératoire_revenus_concession_brevets: 50,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [];
+│       [];
+│     ]
 │     -- revenu_brut_global: 65 863,00 €
-│     -- déficit_brut_global_non_professionnel_hors_locations_meublées:
-│       0,00 €
+│     -- déficit_brut_global_non_professionnel_hors_locations_meublées: 0,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €
 │     -- déficit_brut_global_non_professionnel_locations_meublées: 0,00 €
 │     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
-│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour:
-│       []
+│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour: []
 │   }
 └─
 ```
@@ -508,63 +501,49 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux2 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_industriels_commerciaux:
-│       [
-│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
-│           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
-│             735,00 €
-│           -- abattement_forfaitaire_micro_professionnel_marchandises:
-│             0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_marchandises:
-│             21 300,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées:
-│             2 485,00 €
-│           -- abattement_forfaitaire_micro_professionnel_services: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_services:
-│             0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées:
-│             12 500,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels:
-│             [
-│               Impot_revenu.RevenuQuotienté {
-│                 -- valeur_nette: 3 200,00 €
-│                 -- déduction: 36 800,00 €
-│                 -- coefficient: 4
-│                 -- catégorie:
-│                   MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-│               }
-│             ]
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel_hors_locations_meublées:
-│             8 700,00 €
-│           -- solde_net_non_professionnel_locations_meublées: 12 780,00 €
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- prélèvement_libératoire_revenus_concession_brevets: 0,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés:
-│       [
-│         [];
-│         [
+│     -- résultats_liquidation_bénéfices_industriels_commerciaux: [
+│       Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│         -- abattement_spécial_micro_location_meublées_rurales_spéciales: 735,00 €
+│         -- abattement_forfaitaire_micro_professionnel_marchandises: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_marchandises: 21 300,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées: 2 485,00 €
+│         -- abattement_forfaitaire_micro_professionnel_services: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_services: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées: 12 500,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: [
 │           Impot_revenu.RevenuQuotienté {
 │             -- valeur_nette: 3 200,00 €
 │             -- déduction: 36 800,00 €
 │             -- coefficient: 4
-│             -- catégorie:
-│               MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-│           }
+│             -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+│           };
 │         ]
-│       ]
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel_hors_locations_meublées: 8 700,00 €
+│         -- solde_net_non_professionnel_locations_meublées: 12 780,00 €
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- prélèvement_libératoire_revenus_concession_brevets: 0,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [];
+│       [
+│         Impot_revenu.RevenuQuotienté {
+│           -- valeur_nette: 3 200,00 €
+│           -- déduction: 36 800,00 €
+│           -- coefficient: 4
+│           -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
+│         };
+│       ];
+│     ]
 │     -- revenu_brut_global: 21 480,00 €
-│     -- déficit_brut_global_non_professionnel_hors_locations_meublées:
-│       0,00 €
+│     -- déficit_brut_global_non_professionnel_hors_locations_meublées: 0,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €
 │     -- déficit_brut_global_non_professionnel_locations_meublées: 0,00 €
 │     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
-│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour:
-│       []
+│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour: []
 │   }
 └─
 ```
@@ -857,61 +836,49 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux3 ─
 │ sortie =
 │   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_industriels_commerciaux:
-│       [
-│         Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
-│           -- abattement_spécial_micro_location_meublées_rurales_spéciales:
-│             279,00 €
-│           -- abattement_forfaitaire_micro_professionnel_marchandises:
-│             5 571,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_marchandises:
-│             31 090,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées:
-│             943,00 €
-│           -- abattement_forfaitaire_micro_professionnel_services:
-│             6 222,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_services:
-│             4 944,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées:
-│             323,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels:
-│             [
-│               Impot_revenu.RevenuQuotienté {
-│                 -- valeur_nette: 28 922,00 €
-│                 -- déduction: 28 921,00 €
-│                 -- coefficient: 4
-│                 -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
-│               }
-│             ]
-│           -- solde_net_professionnel: 32 629,00 €
-│           -- solde_net_non_professionnel_hors_locations_meublées:
-│             17 643,00 €
-│           -- solde_net_non_professionnel_locations_meublées: 428,00 €
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- prélèvement_libératoire_revenus_concession_brevets: 0,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés:
-│       [
-│         [
+│     -- résultats_liquidation_bénéfices_industriels_commerciaux: [
+│       Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│         -- abattement_spécial_micro_location_meublées_rurales_spéciales: 279,00 €
+│         -- abattement_forfaitaire_micro_professionnel_marchandises: 5 571,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_marchandises: 31 090,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_marchandises_locations_meublées: 943,00 €
+│         -- abattement_forfaitaire_micro_professionnel_services: 6 222,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_services: 4 944,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées: 323,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: [
 │           Impot_revenu.RevenuQuotienté {
 │             -- valeur_nette: 28 922,00 €
 │             -- déduction: 28 921,00 €
 │             -- coefficient: 4
 │             -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
-│           }
-│         ]; []
-│       ]
+│           };
+│         ]
+│         -- solde_net_professionnel: 32 629,00 €
+│         -- solde_net_non_professionnel_hors_locations_meublées: 17 643,00 €
+│         -- solde_net_non_professionnel_locations_meublées: 428,00 €
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- prélèvement_libératoire_revenus_concession_brevets: 0,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [
+│         Impot_revenu.RevenuQuotienté {
+│           -- valeur_nette: 28 922,00 €
+│           -- déduction: 28 921,00 €
+│           -- coefficient: 4
+│           -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
+│         };
+│       ];
+│       [];
+│     ]
 │     -- revenu_brut_global: 50 700,00 €
-│     -- déficit_brut_global_non_professionnel_hors_locations_meublées:
-│       0,00 €
+│     -- déficit_brut_global_non_professionnel_hors_locations_meublées: 0,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €
 │     -- déficit_brut_global_non_professionnel_locations_meublées: 0,00 €
 │     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: []
-│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour:
-│       []
+│     -- déficits_réels_années_antérieures_non_professionnels_locations_meublées_mis_à_jour: []
 │   }
 └─
 ```

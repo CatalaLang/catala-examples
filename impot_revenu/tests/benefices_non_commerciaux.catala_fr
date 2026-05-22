@@ -168,32 +168,34 @@ $ catala test-scope BénéficesNonCommerciaux1
 ┌─[RESULT]─ BénéficesNonCommerciaux1 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_non_commerciaux:
-│       [
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: -14 000,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         };
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 1 020,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: 1 980,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés: [[]; []]
+│     -- résultats_liquidation_bénéfices_non_commerciaux: [
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: -14 000,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 1 020,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: 1 980,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [];
+│       [];
+│     ]
 │     -- revenu_brut_global: 0,00 €
 │     -- déficit_brut_global_non_professionnel: 12 020,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €
@@ -332,28 +334,31 @@ $ catala test-scope BénéficesNonCommerciaux2
 ┌─[RESULT]─ BénéficesNonCommerciaux2 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_non_commerciaux:
-│       [
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: 15 798,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés: [[]]
+│     -- résultats_liquidation_bénéfices_non_commerciaux: [
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: 15 798,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [];
+│     ]
 │     -- revenu_brut_global: 0,00 €
 │     -- déficit_brut_global_non_professionnel: 0,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €
-│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour:
-│       [
-│         Oracles.DéficitAntérieur { -- année: 2 021 -- valeur: 6 202,00 € }
-│       ]
+│     -- déficits_réels_années_antérieures_non_professionnels_mis_à_jour: [
+│       Oracles.DéficitAntérieur {
+│         -- année: 2 021
+│         -- valeur: 6 202,00 €
+│       };
+│     ]
 │   }
 └─
 ```
@@ -600,43 +605,46 @@ $ catala test-scope BénéficesNonCommerciaux3
 ┌─[RESULT]─ BénéficesNonCommerciaux3 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_non_commerciaux:
-│       [
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: 18 540,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         };
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: 10 000,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         };
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 340,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: 360,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés: [[]; []; []]
+│     -- résultats_liquidation_bénéfices_non_commerciaux: [
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: 18 540,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 0,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: 10 000,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 340,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 0,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: 360,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [];
+│       [];
+│       [];
+│     ]
 │     -- revenu_brut_global: 2 900,00 €
 │     -- déficit_brut_global_non_professionnel: 0,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €
@@ -770,21 +778,22 @@ $ catala test-scope BénéficesNonCommerciaux4
 ┌─[RESULT]─ BénéficesNonCommerciaux4 ─
 │ sortie =
 │   Impot_revenu.BénéficesNonCommerciauxFoyerFiscal {
-│     -- résultats_liquidation_bénéfices_non_commerciaux:
-│       [
-│         Impot_revenu.BénéficesNonCommerciauxDéclarant {
-│           -- abattement_forfaitaire_micro_professionnel: 0,00 €
-│           -- abattement_forfaitaire_micro_non_professionnel: 4 216,00 €
-│           -- revenus_quotientés_professionnels: []
-│           -- revenus_quotientés_non_professionnels: []
-│           -- prélèvement_libératoire_auto_entreprise: 0,00 €
-│           -- prélèvement_libératoire_plus_values_long_terme: 176,00 €
-│           -- solde_net_professionnel: 0,00 €
-│           -- solde_net_non_professionnel: -16 129,00 €
-│           -- impôt_taux_forfaitaire: 0,00 €
-│         }
-│       ]
-│     -- revenus_non_professionnels_quotientés_imputés: [[]]
+│     -- résultats_liquidation_bénéfices_non_commerciaux: [
+│       Impot_revenu.BénéficesNonCommerciauxDéclarant {
+│         -- abattement_forfaitaire_micro_professionnel: 0,00 €
+│         -- abattement_forfaitaire_micro_non_professionnel: 4 216,00 €
+│         -- revenus_quotientés_professionnels: []
+│         -- revenus_quotientés_non_professionnels: []
+│         -- prélèvement_libératoire_auto_entreprise: 0,00 €
+│         -- prélèvement_libératoire_plus_values_long_terme: 176,00 €
+│         -- solde_net_professionnel: 0,00 €
+│         -- solde_net_non_professionnel: -16 129,00 €
+│         -- impôt_taux_forfaitaire: 0,00 €
+│       };
+│     ]
+│     -- revenus_non_professionnels_quotientés_imputés: [
+│       [];
+│     ]
 │     -- revenu_brut_global: 0,00 €
 │     -- déficit_brut_global_non_professionnel: 16 129,00 €
 │     -- déficit_brut_global_professionnel: 0,00 €

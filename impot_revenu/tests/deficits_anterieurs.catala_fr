@@ -32,8 +32,12 @@ $ catala test-scope DéficitsAntérieurs1 --disable-warnings
 │ sortie =
 │   Impot_revenu.ImputationAuxDéficitsLesPlusAnciens {
 │     -- revenu_imputé: 0,00 €
-│     -- déficits_antérieurs_restants:
-│       [Oracles.DéficitAntérieur { -- année: 2 020 -- valeur: 100,00 € }]
+│     -- déficits_antérieurs_restants: [
+│       Oracles.DéficitAntérieur {
+│         -- année: 2 020
+│         -- valeur: 100,00 €
+│       };
+│     ]
 │   }
 └─
 ```

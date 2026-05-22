@@ -31,7 +31,12 @@ $ catala test-scope ProRata1 --disable-warnings
 ┌─[RESULT]─ ProRata1 ─
 │ sortie =
 │   ProRataArrondiEuro {
-│     -- valeurs_proratisées: [10,00 €; 20,00 €; 30,00 €; 40,00 €]
+│     -- valeurs_proratisées: [
+│       10,00 €;
+│       20,00 €;
+│       30,00 €;
+│       40,00 €;
+│     ]
 │   }
 └─
 ```
@@ -55,7 +60,12 @@ $ catala test-scope ProRata2 --disable-warnings
 ┌─[RESULT]─ ProRata2 ─
 │ sortie =
 │   ProRataArrondiEuro {
-│     -- valeurs_proratisées: [2,00 €; 3,00 €; 4,00 €; 6,00 €]
+│     -- valeurs_proratisées: [
+│       2,00 €;
+│       3,00 €;
+│       4,00 €;
+│       6,00 €;
+│     ]
 │   }
 └─
 ```
@@ -79,11 +89,16 @@ $ catala test-scope ProRata3 --disable-warnings
 ┌─[RESULT]─ ProRata3 ─
 │ sortie =
 │   ProRataArrondiEuro {
-│     -- valeurs_proratisées:
-│       [
-│         11,00 €; 65,00 €; 10,00 €; 219,00 €; 20,00 €; 106,00 €;
-│         30,00 €; 106,00 €
-│       ]
+│     -- valeurs_proratisées: [
+│       11,00 €;
+│       65,00 €;
+│       10,00 €;
+│       219,00 €;
+│       20,00 €;
+│       106,00 €;
+│       30,00 €;
+│       106,00 €;
+│     ]
 │   }
 └─
 ```
