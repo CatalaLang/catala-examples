@@ -38,7 +38,7 @@ champ d'application AllocationsFamiliales:
     si droit_ouvert_base alors montant_avec_garde_alternée_base sinon 0€
   définition montant_versé_majoration égal à
     si droit_ouvert_base alors
-      somme argent de
+      Argent.somme de
         transforme chaque enfant parmi enfants_à_charge en montant_avec_garde_alternée_majoration de enfant
     sinon 0€
 

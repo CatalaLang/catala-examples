@@ -139,7 +139,7 @@ disponible.
 champ d'application RéserveHéréditaire:
   définition patrimoine_assiette_réserve_héréditaire égal à
     patrimoine_total
-    - somme argent de (
+    - Argent.somme de (
         transforme chaque bien parmi biens_usufruit_rente_viagère en
           si bien.prise_en_compte_pour_réserve_héréditaire alors
             0 €

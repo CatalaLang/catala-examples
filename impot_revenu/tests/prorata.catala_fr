@@ -23,7 +23,7 @@ champ d'application ProRata1:
       -- montant_à_distribuer: 100 €
       -- bases_prorata: [ 1 €; 2 €; 3 €; 4 € ]
     }
-  assertion somme argent de sortie.valeurs_proratisées = 100 €
+  assertion Argent.somme de sortie.valeurs_proratisées = 100 €
 ```
 
 ```catala-test-cli
@@ -47,7 +47,7 @@ champ d'application ProRata2:
       -- montant_à_distribuer: 15 €
       -- bases_prorata: [ 1 €; 2 €; 3 €; 4 € ]
     }
-  assertion somme argent de sortie.valeurs_proratisées = 15 €
+  assertion Argent.somme de sortie.valeurs_proratisées = 15 €
 ```
 
 ```catala-test-cli
@@ -71,7 +71,7 @@ champ d'application ProRata3:
       -- montant_à_distribuer: 567 €
       -- bases_prorata: [ 46 €; 284 €; 44 €; 956 €; 86 €; 465 €; 129 €; 465 € ]
     }
-  assertion somme argent de sortie.valeurs_proratisées = 567 €
+  assertion Argent.somme de sortie.valeurs_proratisées = 567 €
 ```
 
 ```catala-test-cli

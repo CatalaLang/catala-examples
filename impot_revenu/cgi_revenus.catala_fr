@@ -116,7 +116,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
     solde_revenu_brut_global_hors_quotient_avant_déficit_quotient
   égal à
     (
-      somme argent de
+      Argent.somme de
         transforme chaque résultats
         parmi déclarations_avec_résultats_traitements_salaires en
           résultats.revenu_brut_déclarant_hors_quotient
@@ -181,13 +181,13 @@ champ d'application BénéficesNonCommerciauxFoyerFiscal:
   définition solde_net_global_non_professionnel
     état agrégation
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque résultat_liquidation
       parmi résultats_liquidation_bénéfices_non_commerciaux en
         résultat_liquidation.solde_net_non_professionnel
 
   définition solde_net_global_professionnel égal à
-    somme argent de
+    Argent.somme de
       transforme chaque résultat_liquidation
       parmi résultats_liquidation_bénéfices_non_commerciaux en
         résultat_liquidation.solde_net_professionnel
@@ -214,13 +214,13 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   définition solde_net_global_non_professionnel_hors_locations_meublées
     état agrégation
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque résultat_liquidation
       parmi résultats_liquidation_bénéfices_industriels_commerciaux en
         résultat_liquidation.solde_net_non_professionnel_hors_locations_meublées
 
   définition solde_net_global_professionnel égal à
-    somme argent de
+    Argent.somme de
       transforme chaque résultat_liquidation
       parmi résultats_liquidation_bénéfices_industriels_commerciaux en
         résultat_liquidation.solde_net_professionnel
@@ -228,7 +228,7 @@ champ d'application BénéficesIndustrielsCommerciauxFoyerFiscal:
   définition solde_net_global_non_professionnel_locations_meublées
     état agrégation
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque résultat_liquidation
       parmi résultats_liquidation_bénéfices_industriels_commerciaux en
         résultat_liquidation.solde_net_non_professionnel_locations_meublées
@@ -952,20 +952,20 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition assiette_abattement_forfaitaire_micro_marchandises égal à
     revenus.professionnels.revenus_imposables_micro_marchandises
     + (
-      somme argent de
+      Argent.somme de
         transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_professionnels_abattement_micro_marchandises en
           revenu_exceptionnel_ou_différé.valeur
     )
     + revenus.non_professionnels.généraux.revenus_imposables_micro_marchandises
     + (
-      somme argent de
+      Argent.somme de
         transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_abattement_micro_marchandises en
           revenu_exceptionnel_ou_différé.valeur
     )
     + (
-      somme argent de transforme chaque revenu_exceptionnel_ou_différé
+      Argent.somme de transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
           revenu_exceptionnel_ou_différé.valeur
     )
@@ -1053,14 +1053,14 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   définition assiette_abattement_forfaitaire_micro_services égal à
     revenus.professionnels.revenus_imposables_micro_services
     + (
-      somme argent de
+      Argent.somme de
         transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_professionnels_abattement_micro_services en
           revenu_exceptionnel_ou_différé.valeur
     )
     + revenus.non_professionnels.généraux.revenus_imposables_micro_services
     + (
-      somme argent de transforme chaque revenu_exceptionnel_ou_différé
+      Argent.somme de transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_abattement_micro_services en
           revenu_exceptionnel_ou_différé.valeur
     )
@@ -1134,7 +1134,7 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   égal à
     revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
     + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
-    + somme argent de transforme chaque revenu_exceptionnel_ou_différé
+    + Argent.somme de transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
           revenu_exceptionnel_ou_différé.valeur
 
@@ -2356,7 +2356,7 @@ champ d'application TraitementsSalairesDéclarant:
     état non_plafonnée_83_3_2
   égal à
     (
-      somme argent de
+      Argent.somme de
         transforme chaque r_quotienté parmi revenus.revenus_exceptionnels_ou_différés en
           (
             selon r_quotienté.catégorie sous forme
@@ -2393,7 +2393,7 @@ champ d'application TraitementsSalairesDéclarant:
     # en compte des frais réels pour prendre en compte la dernière étape
     # de calcul où l'on applique les frais réels.
     déduction_frais_professionnels_totale
-    - somme argent de transforme chaque r_quotienté parmi revenus_quotientés en
+    - Argent.somme de transforme chaque r_quotienté parmi revenus_quotientés en
           (
             selon r_quotienté.catégorie sous forme
             -- TraitementsSalaires : r_quotienté.déduction
@@ -2577,7 +2577,7 @@ champ d'application TraitementsSalairesDéclarant:
         revenu_quotienté
         / (
           traitements_salaires_avec_déduction_frais_professionnels
-          + somme argent de
+          + Argent.somme de
               transforme chaque autre_revenu_quotienté
               parmi revenus.revenus_exceptionnels_ou_différés en
                 (
@@ -2993,9 +2993,9 @@ champ d'application BénéficesNonCommerciauxDéclarant:
 
   définition assiette_abattement_forfaitaire_micro_total égal à
     revenus.professionnels.généraux.revenus_imposables_micro
-    + (somme argent de transforme chaque revenu parmi revenus_exceptionnels_professionnels_abattement_micro en revenu.valeur)
+    + (Argent.somme de transforme chaque revenu parmi revenus_exceptionnels_professionnels_abattement_micro en revenu.valeur)
     + revenus.non_professionnels.généraux.revenus_imposables_micro
-    + somme argent de transforme chaque revenu
+    + Argent.somme de transforme chaque revenu
         parmi revenus_exceptionnels_non_professionnels_abattement_micro en
           revenu.valeur
 
@@ -3397,11 +3397,11 @@ champ d'application ImputationDéficitSurRevenusQuotientés:
   # quotients au global prenant également les revenus au quotients nettement
   # négatifs ? [Denis : normalement pas de revenu négatif...]
   définition base_d_imputation_déficit_catégoriel égal à
-    somme argent de
+    Argent.somme de
       transforme chaque revenus_quotientés_catégoriels_déclarant
       parmi revenus_quotientés_catégoriels en
         (
-          somme argent de transforme chaque revenu_quotienté_catégoriel
+          Argent.somme de transforme chaque revenu_quotienté_catégoriel
             parmi revenus_quotientés_catégoriels_déclarant en
               revenu_quotienté_catégoriel.valeur_nette
         )
@@ -4166,13 +4166,13 @@ champ d'application TraitementsSalairesDéclarant:
   définition
     abattement_pensions_retraites_rentes_total_non_plafonné
   égal à
-    somme argent de (
+    Argent.somme de (
       transforme chaque p parmi pensions_retraites_rentes_79 en
         si abattement_selon_158_5_a de p.type_pension alors
           calcul_abattement_pensions_retraites_rentes de p.valeur_initiale
         sinon 0 €
     )
-    + somme argent de (
+    + Argent.somme de (
         transforme chaque r_quotienté parmi revenus.revenus_exceptionnels_ou_différés en
           selon r_quotienté.catégorie sous forme
           -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes :
@@ -4219,7 +4219,7 @@ champ d'application TraitementsSalairesDéclarant:
   égal à
     abattement_pensions_retraites_rentes_total_plafonné
     - (
-      somme argent de
+      Argent.somme de
         transforme chaque r_quotienté parmi revenus_quotientés en
           (
             selon r_quotienté.catégorie sous forme
@@ -4250,7 +4250,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
   # Une fois la liquidation faite, nous pouvons aggréger les abattements
   # sur tout le foyer fiscal.
   définition abbattement_total_déplafonné_pensions_retraites_rentes égal à
-    somme argent de
+    Argent.somme de
       transforme chaque résultats
       parmi résultats_liquidations_plafond_pensions_retraites_rentes en
         résultats.abattement_pensions_retraites_rentes
@@ -4487,7 +4487,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
   définition rentes_viagères_titre_onéreux
     état base
   égal à
-    somme argent de
+    Argent.somme de
       transforme chaque rente_viagère
       parmi [
         RenteViagèreOnéreux {

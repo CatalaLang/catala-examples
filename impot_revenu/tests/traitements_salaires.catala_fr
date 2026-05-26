@@ -517,7 +517,7 @@ champ d'application TraitementsSalaires4:
   # Le total des abattements doit être le plafond
   assertion
     (
-      somme argent de transforme chaque résultats
+      Argent.somme de transforme chaque résultats
         parmi sortie.déclarations_avec_résultats_traitements_salaires en
           résultats.abattement_pensions_retraites_rentes
     )

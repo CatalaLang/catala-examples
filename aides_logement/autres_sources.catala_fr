@@ -307,7 +307,7 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
             )
             * (
               (
-                somme décimal de coefficients_enfants_garde_alternée_pris_en_compte
+                Décimal.somme de coefficients_enfants_garde_alternée_pris_en_compte
               )
               / (
                 décimal de
