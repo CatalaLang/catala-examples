@@ -3334,7 +3334,7 @@ ces dispositions, dans leur rédaction issue de l’arrêté précité, sont
 applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
-champ d’application CalculAidePersonnaliséeLogementAccessionPropriété
+champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
 sous condition date_courante >= |2025-10-01|:
 
   étiquette base
@@ -5366,7 +5366,7 @@ ces dispositions, dans leur rédaction issue de l’arrêté précité, sont
 applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
-champ d’application CalculAllocationLogementAccessionPropriété
+champ d'application CalculAllocationLogementAccessionPropriété
 sous condition date_courante >= |2025-10-01|:
 
   étiquette métropole
@@ -5516,7 +5516,7 @@ ces dispositions, dans leur rédaction issue de l’arrêté précité, sont
 applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
-champ d’application CalculAllocationLogementFoyer
+champ d'application CalculAllocationLogementFoyer
 sous condition date_courante >= |2025-10-01|:
 
   étiquette métropole
