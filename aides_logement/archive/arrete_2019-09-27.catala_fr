@@ -3524,7 +3524,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-10-01|:
             sinon
               (
                 si nombre_personnes_à_charge = 2 alors
-                  666,42 €
+                  660,42 €
                 sinon
                   (
                     si nombre_personnes_à_charge = 3 alors
@@ -3582,7 +3582,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-10-01|:
             sinon
               (
                 si nombre_personnes_à_charge = 2 alors
-                  563,66 €
+                  563,55 €
                 sinon
                   (
                     si nombre_personnes_à_charge = 3 alors
