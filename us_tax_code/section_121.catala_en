@@ -177,7 +177,7 @@ scope Section121SinglePerson:
   # - either the 5 years mark is inside the period and we only
   #   cound the half after 5 years
   definition aggregate_periods_from_last_five_years of periods equals
-    sum duration of (
+    Duration.sum of (
       map each period among periods to
         if date_of_sale_or_exchange <= period.begin + 5 year then
           period.end - period.begin
