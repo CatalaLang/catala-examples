@@ -195,15 +195,15 @@ champ d'application Exemple2:
 ```catala-test-cli
 $ catala test-scope Exemple1
 ┌─[RESULT]─ Exemple1 ─
-│ montant_versé = 246,23 €
 │ éligibilité = vrai
+│ montant_versé = 246,23 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple2
 ┌─[RESULT]─ Exemple2 ─
-│ montant_versé = 230,63 €
 │ éligibilité = vrai
+│ montant_versé = 230,63 €
 └─
 ```
