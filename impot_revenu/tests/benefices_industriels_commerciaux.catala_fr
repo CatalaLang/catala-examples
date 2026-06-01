@@ -255,9 +255,9 @@ des différents membres du foyer fiscal soit :
 $ catala test-scope BénéficesIndustrielsCommerciaux1
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux1 ─
 │ sortie =
-│   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
+│   BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux: [
-│       Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│       BénéficesIndustrielsCommerciauxDéclarant {
 │         -- abattement_spécial_micro_location_meublées_rurales_spéciales: 630,00 €
 │         -- abattement_forfaitaire_micro_professionnel_marchandises: 0,00 €
 │         -- abattement_forfaitaire_micro_non_professionnel_marchandises: 5 335,00 €
@@ -500,9 +500,9 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 $ catala test-scope BénéficesIndustrielsCommerciaux2
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux2 ─
 │ sortie =
-│   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
+│   BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux: [
-│       Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│       BénéficesIndustrielsCommerciauxDéclarant {
 │         -- abattement_spécial_micro_location_meublées_rurales_spéciales: 735,00 €
 │         -- abattement_forfaitaire_micro_professionnel_marchandises: 0,00 €
 │         -- abattement_forfaitaire_micro_non_professionnel_marchandises: 21 300,00 €
@@ -512,7 +512,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │         -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées: 12 500,00 €
 │         -- revenus_quotientés_professionnels: []
 │         -- revenus_quotientés_non_professionnels: [
-│           Impot_revenu.RevenuQuotienté {
+│           RevenuQuotienté {
 │             -- valeur_nette: 3 200,00 €
 │             -- déduction: 36 800,00 €
 │             -- coefficient: 4
@@ -530,7 +530,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux2
 │     -- revenus_non_professionnels_quotientés_imputés: [
 │       [];
 │       [
-│         Impot_revenu.RevenuQuotienté {
+│         RevenuQuotienté {
 │           -- valeur_nette: 3 200,00 €
 │           -- déduction: 36 800,00 €
 │           -- coefficient: 4
@@ -835,9 +835,9 @@ seul revenu net global « ordinaire » imposable : DS1 + DS3\_”.
 $ catala test-scope BénéficesIndustrielsCommerciaux3
 ┌─[RESULT]─ BénéficesIndustrielsCommerciaux3 ─
 │ sortie =
-│   Impot_revenu.BénéficesIndustrielsCommerciauxFoyerFiscal {
+│   BénéficesIndustrielsCommerciauxFoyerFiscal {
 │     -- résultats_liquidation_bénéfices_industriels_commerciaux: [
-│       Impot_revenu.BénéficesIndustrielsCommerciauxDéclarant {
+│       BénéficesIndustrielsCommerciauxDéclarant {
 │         -- abattement_spécial_micro_location_meublées_rurales_spéciales: 279,00 €
 │         -- abattement_forfaitaire_micro_professionnel_marchandises: 5 571,00 €
 │         -- abattement_forfaitaire_micro_non_professionnel_marchandises: 31 090,00 €
@@ -847,7 +847,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │         -- abattement_forfaitaire_micro_non_professionnel_services_locations_meublées: 323,00 €
 │         -- revenus_quotientés_professionnels: []
 │         -- revenus_quotientés_non_professionnels: [
-│           Impot_revenu.RevenuQuotienté {
+│           RevenuQuotienté {
 │             -- valeur_nette: 28 922,00 €
 │             -- déduction: 28 921,00 €
 │             -- coefficient: 4
@@ -864,7 +864,7 @@ $ catala test-scope BénéficesIndustrielsCommerciaux3
 │     ]
 │     -- revenus_non_professionnels_quotientés_imputés: [
 │       [
-│         Impot_revenu.RevenuQuotienté {
+│         RevenuQuotienté {
 │           -- valeur_nette: 28 922,00 €
 │           -- déduction: 28 921,00 €
 │           -- coefficient: 4

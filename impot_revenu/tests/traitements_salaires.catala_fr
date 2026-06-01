@@ -102,7 +102,7 @@ Le test ci-dessus doit donner le résultat suivant à l'exécution.
 $ catala test-scope TraitementsSalaires1 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires1 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesDéclarant {
+│   TraitementsSalairesDéclarant {
 │     -- abattement_pensions_retraites_rentes: 0,00 €
 │     -- déduction_frais_professionnels_traitements_salaires: 1 000,00 €
 │     -- exonérations_81_quater: 0,00 €
@@ -215,7 +215,7 @@ Le test ci-dessus doit donner le résultat suivant à l'exécution.
 $ catala test-scope TraitementsSalaires2 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires2 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesDéclarant {
+│   TraitementsSalairesDéclarant {
 │     -- abattement_pensions_retraites_rentes: 0,00 €
 │     -- déduction_frais_professionnels_traitements_salaires: 2 000,00 €
 │     -- exonérations_81_quater: 0,00 €
@@ -420,13 +420,12 @@ champ d'application TraitementsSalaires3:
 ```catala-test-cli
 $ catala test-scope TraitementsSalaires3 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires3 ─
-│ parts =
-│   Impot_revenu.NombreDeParts {
-│     -- nombre_de_parts: 1,0
-│     -- abattement: 0,00 €
-│   }
+│ parts = NombreDeParts {
+│           -- nombre_de_parts: 1,0
+│           -- abattement: 0,00 €
+│         }
 │ traitements_salaires =
-│   Impot_revenu.TraitementsSalairesDéclarant {
+│   TraitementsSalairesDéclarant {
 │     -- abattement_pensions_retraites_rentes: 2 000,00 €
 │     -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │     -- exonérations_81_quater: 0,00 €
@@ -526,9 +525,9 @@ champ d'application TraitementsSalaires4:
 $ catala test-scope TraitementsSalaires4 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires4 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 1 914,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -537,7 +536,7 @@ $ catala test-scope TraitementsSalaires4 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 50 086,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 2 209,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -693,9 +692,9 @@ champ d'application TraitementsSalaires5:
 $ catala test-scope TraitementsSalaires5 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires5 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 3 958,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -704,7 +703,7 @@ $ catala test-scope TraitementsSalaires5 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 68 042,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 165,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -713,7 +712,7 @@ $ catala test-scope TraitementsSalaires5 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 135,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -901,9 +900,9 @@ champ d'application TraitementsSalaires6:
 $ catala test-scope TraitementsSalaires6 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires6 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 4 800,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -912,7 +911,7 @@ $ catala test-scope TraitementsSalaires6 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 43 200,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 4 123,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -921,7 +920,7 @@ $ catala test-scope TraitementsSalaires6 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 41 377,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 472,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1360,9 +1359,9 @@ champ d'application TraitementsSalaires7:
 $ catala test-scope TraitementsSalaires7 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires7 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 2 203,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1370,7 +1369,7 @@ $ catala test-scope TraitementsSalaires7 --disable-warnings
 │         -- traitements_salaires_avec_déduction_frais_professionnels: 48 650,00 €
 │         -- revenu_brut_déclarant_hors_quotient: 46 447,00 €
 │         -- revenus_quotientés: [
-│           Impot_revenu.RevenuQuotienté {
+│           RevenuQuotienté {
 │             -- valeur_nette: 238 681,00 €
 │             -- déduction: 11 319,00 €
 │             -- coefficient: 5
@@ -1378,7 +1377,7 @@ $ catala test-scope TraitementsSalaires7 --disable-warnings
 │           };
 │         ]
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 895,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1387,7 +1386,7 @@ $ catala test-scope TraitementsSalaires7 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 8 055,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 150,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1669,9 +1668,9 @@ champ d'application TraitementsSalaires8:
 $ catala test-scope TraitementsSalaires8 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires8 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 986,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1679,7 +1678,7 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 │         -- traitements_salaires_avec_déduction_frais_professionnels: 72 360,00 €
 │         -- revenu_brut_déclarant_hors_quotient: 71 374,00 €
 │         -- revenus_quotientés: [
-│           Impot_revenu.RevenuQuotienté {
+│           RevenuQuotienté {
 │             -- valeur_nette: 907 464,00 €
 │             -- déduction: 12 536,00 €
 │             -- coefficient: 6
@@ -1687,7 +1686,7 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 │           };
 │         ]
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 5 000,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1696,7 +1695,7 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 41 544,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 694,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1777,9 +1776,9 @@ ce cas de test si (issue #56).
 $ catala test-scope TraitementsSalaires9 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires9 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 94,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -1787,7 +1786,7 @@ $ catala test-scope TraitementsSalaires9 --disable-warnings
 │         -- traitements_salaires_avec_déduction_frais_professionnels: 350,00 €
 │         -- revenu_brut_déclarant_hors_quotient: 256,00 €
 │         -- revenus_quotientés: [
-│           Impot_revenu.RevenuQuotienté {
+│           RevenuQuotienté {
 │             -- valeur_nette: 486 572,00 €
 │             -- déduction: 13 428,00 €
 │             -- coefficient: 6
@@ -2115,9 +2114,9 @@ champ d'application TraitementsSalaires10:
 $ catala test-scope TraitementsSalaires10 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires10 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 4 000,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -2126,7 +2125,7 @@ $ catala test-scope TraitementsSalaires10 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 36 000,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 2 000,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -2776,9 +2775,9 @@ champ d'application TraitementsSalaires11:
 $ catala test-scope TraitementsSalaires11 --disable-warnings
 ┌─[RESULT]─ TraitementsSalaires11 ─
 │ sortie =
-│   Impot_revenu.TraitementsSalairesFoyerFiscal {
+│   TraitementsSalairesFoyerFiscal {
 │     -- déclarations_avec_résultats_traitements_salaires: [
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 13 133,00 €
 │         -- exonérations_81_quater: 7 500,00 €
@@ -2786,7 +2785,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │         -- traitements_salaires_avec_déduction_frais_professionnels: 139 045,00 €
 │         -- revenu_brut_déclarant_hors_quotient: 125 912,00 €
 │         -- revenus_quotientés: [
-│           Impot_revenu.RevenuQuotienté {
+│           RevenuQuotienté {
 │             -- valeur_nette: 3 734,00 €
 │             -- déduction: 389,00 €
 │             -- coefficient: 5
@@ -2794,7 +2793,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │           };
 │         ]
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 1 000,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -2803,7 +2802,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 9 000,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 350,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -2812,7 +2811,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 0,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 0,00 €
 │         -- exonérations_81_quater: 0,00 €
@@ -2821,7 +2820,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │         -- revenu_brut_déclarant_hors_quotient: 0,00 €
 │         -- revenus_quotientés: []
 │       };
-│       Impot_revenu.TraitementsSalairesDéclarant {
+│       TraitementsSalairesDéclarant {
 │         -- abattement_pensions_retraites_rentes: 0,00 €
 │         -- déduction_frais_professionnels_traitements_salaires: 850,00 €
 │         -- exonérations_81_quater: 0,00 €
