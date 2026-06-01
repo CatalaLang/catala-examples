@@ -936,8 +936,7 @@ $ catala test-scope TraitementsSalaires6 --disable-warnings
 │         };
 │         Impot_revenu.TraitementsSalairesDéclarant {
 │           -- abattement_pensions_retraites_rentes: 0,00 €
-│           -- déduction_frais_professionnels_traitements_salaires:
-│             472,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 472,00 €
 │           -- exonérations_81_quater: 0,00 €
 │           -- prélèvement_libératoire: 0,00 €
 │           -- traitements_salaires_avec_déduction_frais_professionnels:
@@ -1399,8 +1398,7 @@ $ catala test-scope TraitementsSalaires7 --disable-warnings
 │         };
 │         Impot_revenu.TraitementsSalairesDéclarant {
 │           -- abattement_pensions_retraites_rentes: 0,00 €
-│           -- déduction_frais_professionnels_traitements_salaires:
-│             895,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 895,00 €
 │           -- exonérations_81_quater: 0,00 €
 │           -- prélèvement_libératoire: 0,00 €
 │           -- traitements_salaires_avec_déduction_frais_professionnels:
@@ -1696,8 +1694,7 @@ $ catala test-scope TraitementsSalaires8 --disable-warnings
 │       [
 │         Impot_revenu.TraitementsSalairesDéclarant {
 │           -- abattement_pensions_retraites_rentes: 0,00 €
-│           -- déduction_frais_professionnels_traitements_salaires:
-│             986,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 986,00 €
 │           -- exonérations_81_quater: 0,00 €
 │           -- prélèvement_libératoire: 0,00 €
 │           -- traitements_salaires_avec_déduction_frais_professionnels:
@@ -2868,8 +2865,7 @@ $ catala test-scope TraitementsSalaires11 --disable-warnings
 │         };
 │         Impot_revenu.TraitementsSalairesDéclarant {
 │           -- abattement_pensions_retraites_rentes: 0,00 €
-│           -- déduction_frais_professionnels_traitements_salaires:
-│             850,00 €
+│           -- déduction_frais_professionnels_traitements_salaires: 850,00 €
 │           -- exonérations_81_quater: 0,00 €
 │           -- prélèvement_libératoire: 0,00 €
 │           -- traitements_salaires_avec_déduction_frais_professionnels:

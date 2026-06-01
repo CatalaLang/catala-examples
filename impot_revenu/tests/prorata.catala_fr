@@ -81,8 +81,8 @@ $ catala test-scope ProRata3 --disable-warnings
 │   ProRataArrondiEuro {
 │     -- valeurs_proratisées:
 │       [
-│         11,00 €; 65,00 €; 10,00 €; 219,00 €; 20,00 €; 106,00 €;
-│         30,00 €; 106,00 €
+│         11,00 €; 65,00 €; 10,00 €; 219,00 €; 20,00 €; 106,00 €; 30,00 €;
+│         106,00 €
 │       ]
 │   }
 └─
