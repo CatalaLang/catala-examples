@@ -30,7 +30,7 @@ champ d'application NombreDeParts:
         foyer_fiscal.célibataire;
         foyer_fiscal.pacsées;
         foyer_fiscal.divorcée_séparées;
-        foyer_fiscal.veuve
+        foyer_fiscal.veuve;
       ]
         tel que case = vrai
   )

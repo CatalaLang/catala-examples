@@ -177,6 +177,15 @@ CATALA_SRC=$(shell find . -path ./_build -prune -o -type f -name '*.catala_*' -p
 
 check-format: $(addsuffix .format,$(CATALA_SRC))
 
+%.catala_pl.fix-format: %.catala_pl
+	@catala-format -i  $<
+%.catala_en.fix-format: %.catala_en
+	@catala-format -i $<
+%.catala_fr.fix-format: %.catala_fr
+	@catala-format -i $<
+
+fix-format: $(addsuffix .fix-format,$(CATALA_SRC))
+
 .FORCE:
 
 .PHONY: all pass_all_tests reset_all_tests check-format

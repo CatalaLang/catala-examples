@@ -3706,7 +3706,7 @@ sous condition date_courante > |2019-10-01|:
         -- haut: LimiteTranche.Infini
         -- bas: 6 331,29€
         -- taux: 48%
-      }
+      };
     ]
 ```
 
@@ -3754,7 +3754,7 @@ sous condition date_courante > |2019-10-01|:
         -- haut: LimiteTranche.Infini
         -- bas: 4095,05€
         -- taux: 32,80%
-      }
+      };
     ]
 ```
 

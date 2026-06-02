@@ -965,7 +965,8 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
           revenu_exceptionnel_ou_différé.valeur
     )
     + (
-      Argent.somme de transforme chaque revenu_exceptionnel_ou_différé
+      Argent.somme de
+        transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
           revenu_exceptionnel_ou_différé.valeur
     )
@@ -1060,7 +1061,8 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
     )
     + revenus.non_professionnels.généraux.revenus_imposables_micro_services
     + (
-      Argent.somme de transforme chaque revenu_exceptionnel_ou_différé
+      Argent.somme de
+        transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_abattement_micro_services en
           revenu_exceptionnel_ou_différé.valeur
     )
@@ -1134,7 +1136,8 @@ champ d'application BénéficesIndustrielsCommerciauxDéclarant:
   égal à
     revenus.non_professionnels.locations_meublées_micro_classées_rurales_spéciales
     + revenus.non_professionnels.locations_meublées_micro_cotisations_classées_rurales_spéciales
-    + Argent.somme de transforme chaque revenu_exceptionnel_ou_différé
+    + Argent.somme de
+        transforme chaque revenu_exceptionnel_ou_différé
         parmi revenus_exceptionnels_non_professionnels_locations_meublées_rurales_spéciales en
           revenu_exceptionnel_ou_différé.valeur
 
@@ -1380,7 +1383,7 @@ champ d'application TraitementsSalairesDéclarant:
       PensionRetraiteRente {
         -- valeur_initiale: revenus.pensions_alimentaires_perçues
         -- type_pension: PensionAlimentairePercue
-      }
+      };
     ]
 # Ici on conserve une collection plutôt de calculer la somme, car les différents
 # types d'entrées vont nécessiter des calculs d'abattements différents par la
@@ -2393,7 +2396,8 @@ champ d'application TraitementsSalairesDéclarant:
     # en compte des frais réels pour prendre en compte la dernière étape
     # de calcul où l'on applique les frais réels.
     déduction_frais_professionnels_totale
-    - Argent.somme de transforme chaque r_quotienté parmi revenus_quotientés en
+    - Argent.somme de
+        transforme chaque r_quotienté parmi revenus_quotientés en
           (
             selon r_quotienté.catégorie sous forme
             -- TraitementsSalaires : r_quotienté.déduction
@@ -2995,7 +2999,8 @@ champ d'application BénéficesNonCommerciauxDéclarant:
     revenus.professionnels.généraux.revenus_imposables_micro
     + (Argent.somme de transforme chaque revenu parmi revenus_exceptionnels_professionnels_abattement_micro en revenu.valeur)
     + revenus.non_professionnels.généraux.revenus_imposables_micro
-    + Argent.somme de transforme chaque revenu
+    + Argent.somme de
+        transforme chaque revenu
         parmi revenus_exceptionnels_non_professionnels_abattement_micro en
           revenu.valeur
 
@@ -3401,7 +3406,8 @@ champ d'application ImputationDéficitSurRevenusQuotientés:
       transforme chaque revenus_quotientés_catégoriels_déclarant
       parmi revenus_quotientés_catégoriels en
         (
-          Argent.somme de transforme chaque revenu_quotienté_catégoriel
+          Argent.somme de
+            transforme chaque revenu_quotienté_catégoriel
             parmi revenus_quotientés_catégoriels_déclarant en
               revenu_quotienté_catégoriel.valeur_nette
         )
@@ -4166,19 +4172,21 @@ champ d'application TraitementsSalairesDéclarant:
   définition
     abattement_pensions_retraites_rentes_total_non_plafonné
   égal à
-    Argent.somme de (
-      transforme chaque p parmi pensions_retraites_rentes_79 en
-        si abattement_selon_158_5_a de p.type_pension alors
-          calcul_abattement_pensions_retraites_rentes de p.valeur_initiale
-        sinon 0 €
-    )
-    + Argent.somme de (
-        transforme chaque r_quotienté parmi revenus.revenus_exceptionnels_ou_différés en
-          selon r_quotienté.catégorie sous forme
-          -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes :
-            calcul_abattement_pensions_retraites_rentes de r_quotienté.valeur
-          -- n'importe quel : 0 €
+    Argent.somme de
+      (
+        transforme chaque p parmi pensions_retraites_rentes_79 en
+          si abattement_selon_158_5_a de p.type_pension alors
+            calcul_abattement_pensions_retraites_rentes de p.valeur_initiale
+          sinon 0 €
       )
+    + Argent.somme de
+        (
+          transforme chaque r_quotienté parmi revenus.revenus_exceptionnels_ou_différés en
+            selon r_quotienté.catégorie sous forme
+            -- CatégorieRevenuExceptionnelOuDifféré.PensionsRetraitesRentes :
+              calcul_abattement_pensions_retraites_rentes de r_quotienté.valeur
+            -- n'importe quel : 0 €
+        )
 
   # Comment coder la cumulativité du plafond d'abbattement au global sur toutes
   # les pensions et retraites du foyer fiscal ? On pourrait sommer les
@@ -4505,7 +4513,7 @@ champ d'application TraitementsSalairesFoyerFiscal:
         RenteViagèreOnéreux {
           -- valeur: revenus.rentes_percues_70plus_ans
           -- catégorie: RenteViagèreOnéreuxPlus70Ans
-        }
+        };
       ] en
         rente_viagère.valeur
         - calcul_déduction_rente_viagères_titre_onéreux de rente_viagère
@@ -5978,7 +5986,7 @@ champ d'application TraitementsSalairesDéclarant:
       PensionRetraiteRente {
         -- valeur_initiale: revenus.autre_pensions_imposables_source_étrangère
         -- type_pension: TypePensionRetraiteRente.PensionsRetraitesRentes
-      }
+      };
     ]
 ```
 

@@ -36,7 +36,7 @@ champ d'application Exemple1:
                       -- fin: |2025-12-31|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -61,7 +61,7 @@ champ d'application Exemple1:
                       -- fin: |2025-10-31|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -86,7 +86,7 @@ champ d'application Exemple1:
                       -- fin: |2025-06-30|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -111,9 +111,9 @@ champ d'application Exemple1:
                       -- fin: |2025-09-30|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
-          }
+          };
         ]
       -- agriculture_biologique: Conventionnelle
     }
@@ -144,7 +144,7 @@ champ d'application Exemple2:
                       -- fin: |2025-12-31|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -169,7 +169,7 @@ champ d'application Exemple2:
                       -- fin: |2025-10-31|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -194,7 +194,7 @@ champ d'application Exemple2:
                       -- fin: |2025-06-30|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -219,7 +219,7 @@ champ d'application Exemple2:
                       -- fin: |2025-09-30|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
           };
           BCAE7.ParcelleTerreArable {
@@ -253,9 +253,9 @@ champ d'application Exemple2:
                       -- fin: |2026-02-28|
                     }
                   -- qualification: Secondaire
-                }
+                };
               ]
-          }
+          };
         ]
       -- agriculture_biologique: Conventionnelle
     }
@@ -329,9 +329,9 @@ champ d'application Exemple3:
                       -- fin: |2025-08-15|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
-          }
+          };
         ]
       -- agriculture_biologique: Conventionnelle
     }
@@ -404,9 +404,9 @@ champ d'application Exemple4:
                       -- fin: |2025-08-15|
                     }
                   -- qualification: Principale
-                }
+                };
               ]
-          }
+          };
         ]
       -- agriculture_biologique: Conventionnelle
     }
@@ -499,7 +499,7 @@ déclaration exemple_5_parcelle_maïs_grain contenu BCAE7.ParcelleTerreArable
                 -- fin: |2025-11-15|
               }
             -- qualification: Secondaire
-          }
+          };
         ]
     }
 
@@ -545,7 +545,7 @@ déclaration exemple_5_parcelle_monoculture_maïs contenu BCAE7.ParcelleTerreAra
                 -- fin: |2025-08-15|
               }
             -- qualification: Principale
-          }
+          };
         ]
     }
 
@@ -591,7 +591,7 @@ déclaration exemple_5_parcelle_colza_blé contenu BCAE7.ParcelleTerreArable
                 -- fin: |2025-08-15|
               }
             -- qualification: Principale
-          }
+          };
         ]
     }
 
@@ -637,7 +637,7 @@ déclaration exemple_5_parcelle_blé_tournesol contenu BCAE7.ParcelleTerreArable
                 -- fin: |2025-08-15|
               }
             -- qualification: Principale
-          }
+          };
         ]
     }
 
@@ -683,7 +683,7 @@ déclaration exemple_5_parcelle_tournesol_rotation contenu BCAE7.ParcelleTerreAr
                 -- fin: |2025-08-15|
               }
             -- qualification: Principale
-          }
+          };
         ]
     }
 
@@ -702,7 +702,7 @@ champ d'application Exemple5:
           exemple_5_parcelle_colza_blé;
           exemple_5_parcelle_maïs_grain;
           exemple_5_parcelle_monoculture_maïs;
-          exemple_5_parcelle_tournesol_rotation
+          exemple_5_parcelle_tournesol_rotation;
         ]
       -- agriculture_biologique: Conventionnelle
     }
@@ -722,7 +722,7 @@ champ d'application Exemple5bis:
           exemple_5_parcelle_blé_tournesol;
           exemple_5_parcelle_colza_blé;
           exemple_5_parcelle_maïs_grain;
-          exemple_5_parcelle_tournesol_rotation
+          exemple_5_parcelle_tournesol_rotation;
         ]
       -- agriculture_biologique: Conventionnelle
     }

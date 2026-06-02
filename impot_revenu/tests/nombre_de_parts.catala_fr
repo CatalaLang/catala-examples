@@ -132,11 +132,10 @@ Le test ci-dessus doit donner le résultat suivant à l'exécution.
 ```catala-test-cli
 $ catala test-scope NombreDeParts1 --disable-warnings
 ┌─[RESULT]─ NombreDeParts1 ─
-│ sortie =
-│   Impot_revenu.NombreDeParts {
-│     -- nombre_de_parts: 3,0
-│     -- abattement: 0,00 €
-│   }
+│ sortie = NombreDeParts {
+│            -- nombre_de_parts: 3,0
+│            -- abattement: 0,00 €
+│          }
 └─
 ```
 
@@ -292,11 +291,10 @@ Le test ci-dessus doit donner le résultat suivant à l'exécution.
 ```catala-test-cli
 $ catala test-scope NombreDeParts2 --disable-warnings
 ┌─[RESULT]─ NombreDeParts2 ─
-│ sortie =
-│   Impot_revenu.NombreDeParts {
-│     -- nombre_de_parts: 4,5
-│     -- abattement: 0,00 €
-│   }
+│ sortie = NombreDeParts {
+│            -- nombre_de_parts: 4,5
+│            -- abattement: 0,00 €
+│          }
 └─
 ```
 
@@ -538,7 +536,7 @@ Le nombre de parts du foyer est donc de 4,5 parts.
 $ catala test-scope NombreDeParts3 --disable-warnings
 ┌─[RESULT]─ NombreDeParts3 ─
 │ sortie =
-│   Impot_revenu.NombreDeParts {
+│   NombreDeParts {
 │     -- nombre_de_parts: 4,0
 │     -- abattement: 9 552,00 €
 │   }
@@ -690,7 +688,7 @@ Soit une majoration de 0.25 par pour l'enfant à charge.
 $ catala test-scope NombreDeParts4 --disable-warnings
 ┌─[RESULT]─ NombreDeParts4 ─
 │ sortie =
-│   Impot_revenu.NombreDeParts {
+│   NombreDeParts {
 │     -- nombre_de_parts: 2,25
 │     -- abattement: 0,00 €
 │   }
@@ -865,7 +863,7 @@ prévoit une majoration supplémentaire d'un quart de part.
 $ catala test-scope NombreDeParts5 --disable-warnings
 ┌─[RESULT]─ NombreDeParts5 ─
 │ sortie =
-│   Impot_revenu.NombreDeParts {
+│   NombreDeParts {
 │     -- nombre_de_parts: 3,75
 │     -- abattement: 0,00 €
 │   }

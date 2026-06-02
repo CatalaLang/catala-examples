@@ -147,7 +147,7 @@ champ d'application Test6:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 78 830 €
   définition f.i_date_courante égal à |2020-05-01|
@@ -191,7 +191,7 @@ champ d'application Test8:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 69945 €
   définition f.i_date_courante égal à |2021-01-01|
@@ -221,7 +221,7 @@ champ d'application Test9:
         -- d_prise_en_charge: ServicesSociauxAllocationVerséeAuxServicesSociaux
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 75786 €
   définition f.i_date_courante égal à |2020-05-01|
@@ -251,7 +251,7 @@ champ d'application Test10:
         -- d_prise_en_charge: GardeAlternéePartageAllocations
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 30000 €
   définition f.i_date_courante égal à |2020-04-20|
@@ -289,7 +289,7 @@ champ d'application Test11:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 30000 €
   définition f.i_date_courante égal à |2021-12-31|
@@ -335,7 +335,7 @@ champ d'application Test12:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 20000 €
   définition f.i_date_courante égal à |2019-08-26|
@@ -358,7 +358,7 @@ champ d'application Test13:
         -- d_prise_en_charge: EffectiveEtPermanente
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 65000 €
   définition f.i_date_courante égal à |2019-08-26|
@@ -388,7 +388,7 @@ champ d'application Test14:
         -- d_prise_en_charge: GardeAlternéeAllocataireUnique
         -- d_a_déjà_ouvert_droit_aux_allocations_familiales: vrai
         -- d_bénéficie_titre_personnel_aide_personnelle_logement: faux
-      }
+      };
     ]
   définition f.i_ressources_ménage égal à 64033 €
   définition f.i_date_courante égal à |2022-05-01|

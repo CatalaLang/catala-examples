@@ -22,7 +22,7 @@ champ d'application Exemple1:
         [
           AL.PrestationReçue.AllocationSoutienEnfantHandicapé;
           AL.PrestationReçue.ComplémentFamilial;
-          AL.PrestationReçue.AllocationsFamiliales
+          AL.PrestationReçue.AllocationsFamiliales;
         ]
       -- situation_familiale: Mariés contenu |2010-11-26|
       -- personnes_à_charge:
@@ -62,7 +62,7 @@ champ d'application Exemple1:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          )
+          );
         ]
       -- logement:
         AL.Logement {
@@ -150,7 +150,7 @@ champ d'application Exemple2:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          )
+          );
         ]
       -- logement:
         AL.Logement {
@@ -195,15 +195,15 @@ champ d'application Exemple2:
 ```catala-test-cli
 $ catala test-scope Exemple1
 ┌─[RESULT]─ Exemple1 ─
-│ montant_versé = 246,23 €
 │ éligibilité = vrai
+│ montant_versé = 246,23 €
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Exemple2
 ┌─[RESULT]─ Exemple2 ─
-│ montant_versé = 230,63 €
 │ éligibilité = vrai
+│ montant_versé = 230,63 €
 └─
 ```
