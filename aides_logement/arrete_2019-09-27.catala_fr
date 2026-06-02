@@ -5860,10 +5860,10 @@ sous condition date_courante >= |2025-10-01|:
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 20,71€
-      -- Couple : 40,26€
+      -- PersonneSeule : 20,93€
+      -- Couple : 40,68€
     )
-    + 10,36€ * multiplicateur_majoration_charges
+    + 10,47€ * multiplicateur_majoration_charges
 ```
 
 3° Les valeurs du taux " TF " fixées à l'article 14, taux fonction de la taille
