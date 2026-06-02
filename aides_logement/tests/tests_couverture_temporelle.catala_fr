@@ -7,19 +7,13 @@
 
 Ces tests n'effectuent **aucune assertion sur les valeurs calculées**. Ils
 vérifient uniquement que le calcul se termine sans lever d'exception pour
-un ensemble de dates représentatives couvrant la période 2023–2027.
+un ensemble de dates représentatives couvrant plusieurs trimestres.
 
 Leur rôle est de détecter les **lacunes et conflits d'archivage** : si une
 règle est manquante pour une plage donnée ou si deux règles se chevauchent
 pour la même date, le moteur Catala lèvera respectivement une erreur
 « aucune règle applicable » ou « conflit », et le test échouera. Ils ne se
 substituent pas à des tests de régression vérifiés par un expert juridique.
-
-La période couverte démarre en octobre 2023 (entrée en vigueur de l'arrêté
-précédant le 2024) et s'étend jusqu'en juillet 2027, par pas de trois mois.
-Les règles actives à partir du 1er octobre 2025 étant non bornées
-supérieurement, la liste peut être allongée librement; elle devra l'être à
-chaque mise à jour annuelle pour couvrir la nouvelle fenêtre archivée.
 
 ## APL locatif — résidence en Métropole, sans colocation
 
