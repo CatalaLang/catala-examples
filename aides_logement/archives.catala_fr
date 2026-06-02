@@ -7549,7 +7549,6 @@ Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR :
 LRUL2420421A), ces dispositions sont applicables aux prestations dues à
 compter du 1er octobre 2024.
 
-
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
 sous condition date_courante >= |2024-10-01| et date_courante < |2025-10-01|:
@@ -8604,4 +8603,3 @@ NOTA :
 
 Conformément à l’article 2 de l’arrêté du 30 décembre 2024 (NOR : ATDL2429209A), ces dispositions
 sont applicables aux prestations dues à compter du 1er janvier 2025.
-
