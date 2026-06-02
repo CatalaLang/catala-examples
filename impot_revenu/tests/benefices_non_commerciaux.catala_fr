@@ -322,7 +322,7 @@ champ d'application BénéficesNonCommerciaux2:
           Oracles.DéficitAntérieur {
             -- année: 2021
             -- valeur: 15 000 €
-          }
+          };
         ]
       -- revenus: [ déclarant1.sortie ]
       -- année_revenus: 2022
@@ -593,7 +593,7 @@ champ d'application BénéficesNonCommerciaux3:
           Oracles.DéficitAntérieur {
             -- année: 2021
             -- valeur: 25 000 €
-          }
+          };
         ]
       -- revenus: [ déclarant1.sortie; déclarant2.sortie; déclarant3.sortie ]
       -- année_revenus: 2022

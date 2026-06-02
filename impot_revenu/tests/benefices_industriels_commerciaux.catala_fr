@@ -320,7 +320,7 @@ champ d'application BénéficesIndustrielsCommerciaux2:
                     -- régime: Article163_0_A
                     -- échéance: RevenuExceptionnel
                     -- catégorie: MicroBénéficesIndustrielsCommerciauxLocationsMeubléesRuralesSpéciales
-                  }
+                  };
                 ]
             }
           ).sortie
@@ -602,7 +602,7 @@ champ d'application BénéficesIndustrielsCommerciaux3:
                     -- régime: Article163_0_A
                     -- échéance: RevenuExceptionnel
                     -- catégorie: MicroBénéficesIndustrielsCommerciauxServices
-                  }
+                  };
                 ]
             }
           ).sortie

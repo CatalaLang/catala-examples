@@ -11,7 +11,7 @@ la fonction du bloc de code ci-dessous.
 champ d'application EnfantLePlusÂgé:
   définition le_plus_âgé égal à
     contenu de potentiel_plus_âgé parmi enfants
-      tel que potentiel_plus_âgé.date_de_naissance est minimum
+    tel que potentiel_plus_âgé.date_de_naissance est minimum
       ou si liste vide alors Enfant {
         -- identifiant: -1
         -- obligation_scolaire: Pendant

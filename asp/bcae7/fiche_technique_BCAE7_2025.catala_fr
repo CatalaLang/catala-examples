@@ -69,7 +69,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
   définition surface_terres_arables_hectares égal à
-    Décimal.somme de transforme chaque parcelle parmi terres_arables en
+    Décimal.somme de
+      transforme chaque parcelle parmi terres_arables en
         parcelle.surface_hectares
 
   règle exempté_respect
@@ -86,7 +87,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   règle exempté_respect
   sous condition
     soit surface_herbes_hectares égal à
-      Décimal.somme de transforme chaque parcelle parmi terres_arables en
+      Décimal.somme de
+        transforme chaque parcelle parmi terres_arables en
           # TODO: Quelle date de réference utiliser pour déterminer ce critère ?
           (
             selon (culture_date de parcelle.cultures, |2025-01-01|) sous forme
@@ -117,7 +119,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   règle exempté_respect
   sous condition
     soit surface_herbes_hectares égal à
-      Décimal.somme de transforme chaque parcelle parmi terres_arables en
+      Décimal.somme de
+        transforme chaque parcelle parmi terres_arables en
           # TODO: Quelle date de réference utiliser pour déterminer ce critère ?
           (
             selon (culture_date de parcelle.cultures, |2025-01-01|) sous forme
@@ -466,7 +469,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
       }
 
   définition surface_terres_arables_cultivées_hectares égal à
-    Décimal.somme de transforme chaque parcelle
+    Décimal.somme de
+      transforme chaque parcelle
       parmi terres_arables_cultivées en
         parcelle.surface_hectares
 
@@ -827,7 +831,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
       rotation_satisfaite
     dans
     soit surface_culture_principale égal à
-      Décimal.somme de transforme chaque parcelle
+      Décimal.somme de
+        transforme chaque parcelle
         parmi terres_arables_cultivées en
           soit culture_courante égal à
             # TODO: quelle date prendre en compte ici ?
@@ -955,7 +960,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
       # et les deux cultures principales ne couvrant pas, ensemble, plus de 95 %
       # des terres arables.
       # TODO comment implémenter plusieurs cultures principales ?
-      Décimal.somme de transforme chaque parcelle
+      Décimal.somme de
+        transforme chaque parcelle
         parmi terres_arables_cultivées en
           soit culture_courante égal à
             # TODO: quelle date prendre en compte ici ?
@@ -1862,7 +1868,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     état prairie_temporaires_jachères
   égal à
     soit surface_prairies_temporaires_jachères égal à
-      Décimal.somme de transforme chaque parcelle parmi terres_arables en
+      Décimal.somme de
+        transforme chaque parcelle parmi terres_arables en
           soit culture égal à
             # TODO: quelle date prendre en compte ici ?
             culture_date de (parcelle.cultures, |2025-07-01|)
@@ -1897,7 +1904,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     état légumineuses
   égal à
     soit surfaces_légumineuses_hectares égal à
-      Décimal.somme de transforme chaque parcelle parmi terres_arables en
+      Décimal.somme de
+        transforme chaque parcelle parmi terres_arables en
           soit culture égal à
             # TODO: quelle date prendre en compte ici ?
             culture_date de (parcelle.cultures, |2025-07-01|)
@@ -1951,7 +1959,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
   définition surfaces_céréales_hiver_hectares égal à
-    Décimal.somme de transforme chaque parcelle parmi terres_arables en
+    Décimal.somme de
+      transforme chaque parcelle parmi terres_arables en
         soit culture égal à
           # TODO: quelle date prendre en compte ici ?
           culture_date de (parcelle.cultures, |2025-07-01|)
@@ -1988,7 +1997,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 champ d'application ConditionnalitéBCAE7Pour2025:
 
   définition surfaces_céréales_printemps_hectares égal à
-    Décimal.somme de transforme chaque parcelle parmi terres_arables en
+    Décimal.somme de
+      transforme chaque parcelle parmi terres_arables en
         soit culture égal à
           # TODO: quelle date prendre en compte ici ?
           culture_date de (parcelle.cultures, |2025-07-01|)
@@ -2026,7 +2036,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
   définition surfaces_plantes_sarclées_hectares égal à
-    Décimal.somme de transforme chaque parcelle parmi terres_arables en
+    Décimal.somme de
+      transforme chaque parcelle parmi terres_arables en
         soit culture égal à
           # TODO: quelle date prendre en compte ici ?
           culture_date de (parcelle.cultures, |2025-07-01|)
@@ -2056,7 +2067,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
   définition surfaces_oléagineux_hiver_hectares égal à
-    Décimal.somme de transforme chaque parcelle parmi terres_arables en
+    Décimal.somme de
+      transforme chaque parcelle parmi terres_arables en
         soit culture égal à
           # TODO: quelle date prendre en compte ici ?
           culture_date de (parcelle.cultures, |2025-07-01|)
@@ -2087,7 +2099,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
 ```catala
 champ d'application ConditionnalitéBCAE7Pour2025:
   définition surfaces_oléagineux_printemps_hectares égal à
-    Décimal.somme de transforme chaque parcelle parmi terres_arables en
+    Décimal.somme de
+      transforme chaque parcelle parmi terres_arables en
         soit culture égal à
           # TODO: quelle date prendre en compte ici ?
           culture_date de (parcelle.cultures, |2025-07-01|)
@@ -2180,7 +2193,8 @@ champ d'application ConditionnalitéBCAE7Pour2025:
     état autres_cultures
   égal à
     soit surface_autres_cultures_hectares égal à
-      Décimal.somme de transforme chaque parcelle parmi terres_arables en
+      Décimal.somme de
+        transforme chaque parcelle parmi terres_arables en
           soit culture égal à
             # TODO: quelle date prendre en compte ici ?
             culture_date de (parcelle.cultures, |2025-07-01|)

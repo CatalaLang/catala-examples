@@ -4201,26 +4201,27 @@ champ d'application CalculÉquivalenceLoyerMinimale:
       (
         (
           (
-            Décimal.somme de (
-              transforme chaque tranche parmi tranches_revenus_d832_26_multipliées en
-                (
-                  si ressources_ménage_arrondies <= tranche.bas alors 0,0
-                  sinon
-                    selon tranche.haut sous forme
-                    -- LimiteTrancheDécimal.Revenu contenu tranche_haut :
-                      (
-                        si ressources_ménage_arrondies >= tranche_haut alors
-                          (tranche_haut - tranche.bas)
-                          * tranche.taux
-                        sinon
-                          (ressources_ménage_arrondies - tranche.bas)
-                          * tranche.taux
-                      )
-                    -- LimiteTrancheDécimal.Infini :
-                      (ressources_ménage_arrondies - tranche.bas)
-                      * tranche.taux
-                )
-            )
+            Décimal.somme de
+              (
+                transforme chaque tranche parmi tranches_revenus_d832_26_multipliées en
+                  (
+                    si ressources_ménage_arrondies <= tranche.bas alors 0,0
+                    sinon
+                      selon tranche.haut sous forme
+                      -- LimiteTrancheDécimal.Revenu contenu tranche_haut :
+                        (
+                          si ressources_ménage_arrondies >= tranche_haut alors
+                            (tranche_haut - tranche.bas)
+                            * tranche.taux
+                          sinon
+                            (ressources_ménage_arrondies - tranche.bas)
+                            * tranche.taux
+                        )
+                      -- LimiteTrancheDécimal.Infini :
+                        (ressources_ménage_arrondies - tranche.bas)
+                        * tranche.taux
+                  )
+              )
           )
           + décimal de montant_forfaitaire_d832_26
             * n_nombre_parts_d832_25
@@ -4251,28 +4252,29 @@ champ d'application CalculÉquivalenceLoyerMinimale:
       (
         (
           (
-            Décimal.somme de (
-              transforme chaque tranche parmi tranches_revenus_d832_26_multipliées en
-                (
-                  si ressources_ménage_arrondies <= tranche.bas alors 0,0
-                  sinon
-                    (
-                      selon tranche.haut sous forme
-                      -- LimiteTrancheDécimal.Revenu contenu tranche_haut :
-                        (
-                          si ressources_ménage_arrondies >= tranche_haut alors
-                            (tranche_haut - tranche.bas)
-                            * tranche.taux
-                          sinon
-                            (ressources_ménage_arrondies - tranche.bas)
-                            * tranche.taux
-                        )
-                      -- LimiteTrancheDécimal.Infini :
-                        (ressources_ménage_arrondies - tranche.bas)
-                        * tranche.taux
-                    )
-                )
-            )
+            Décimal.somme de
+              (
+                transforme chaque tranche parmi tranches_revenus_d832_26_multipliées en
+                  (
+                    si ressources_ménage_arrondies <= tranche.bas alors 0,0
+                    sinon
+                      (
+                        selon tranche.haut sous forme
+                        -- LimiteTrancheDécimal.Revenu contenu tranche_haut :
+                          (
+                            si ressources_ménage_arrondies >= tranche_haut alors
+                              (tranche_haut - tranche.bas)
+                              * tranche.taux
+                            sinon
+                              (ressources_ménage_arrondies - tranche.bas)
+                              * tranche.taux
+                          )
+                        -- LimiteTrancheDécimal.Infini :
+                          (ressources_ménage_arrondies - tranche.bas)
+                          * tranche.taux
+                      )
+                  )
+              )
           )
           + décimal de montant_forfaitaire_d832_26
         )

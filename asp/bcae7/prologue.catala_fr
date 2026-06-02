@@ -28,7 +28,8 @@ déclaration surface_parcelles_hectares
   contenu décimal
   dépend de parcelles contenu liste de ParcelleTerreArable
   égal à
-    Décimal.somme de transforme chaque parcelle parmi parcelles en
+    Décimal.somme de
+      transforme chaque parcelle parmi parcelles en
         parcelle.surface_hectares
 
 déclaration culture_date

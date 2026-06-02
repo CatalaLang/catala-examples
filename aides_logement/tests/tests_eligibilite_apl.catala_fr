@@ -21,7 +21,7 @@ champ d'application Exemple1:
         [
           AL.PrestationReçue.AllocationSoutienEnfantHandicapé;
           AL.PrestationReçue.ComplémentFamilial;
-          AL.PrestationReçue.AllocationsFamiliales
+          AL.PrestationReçue.AllocationsFamiliales;
         ]
       -- situation_familiale: Mariés contenu |2010-11-26|
       -- personnes_à_charge:
@@ -61,7 +61,7 @@ champ d'application Exemple1:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          )
+          );
         ]
       -- logement:
         AL.Logement {
@@ -146,7 +146,7 @@ champ d'application Exemple2:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          )
+          );
         ]
       -- logement:
         AL.Logement {
@@ -220,7 +220,7 @@ champ d'application Exemple3:
               -- obligation_scolaire: Pendant
               -- situation_garde_alternée: PasDeGardeAlternée
             }
-          )
+          );
         ]
       -- logement:
         AL.Logement {
