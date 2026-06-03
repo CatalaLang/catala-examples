@@ -1,0 +1,115 @@
+> Usage de France
+> Usage de Aides_logement en tant que AL
+
+# Tests de couverture temporelle — arrêté du 27 septembre 2019
+
+## Avertissement sur la nature de ces tests
+
+Ces tests n'effectuent **aucune assertion sur les valeurs calculées**. Ils
+vérifient uniquement que le calcul se termine sans lever d'exception pour
+un ensemble de dates représentatives couvrant plusieurs trimestres.
+
+Leur rôle est de détecter les **lacunes et conflits d'archivage** : si une
+règle est manquante pour une plage donnée ou si deux règles se chevauchent
+pour la même date, le moteur Catala lèvera respectivement une erreur
+« aucune règle applicable » ou « conflit », et le test échouera. Ils ne se
+substituent pas à des tests de régression vérifiés par un expert juridique.
+
+## APL locatif — résidence en Métropole, sans colocation
+
+```catala
+#[test]
+déclaration champ d'application CouvertureAPLLocatifMétropole:
+  résultat montants contenu liste de argent
+
+champ d'application CouvertureAPLLocatifMétropole:
+  définition montants égal à
+    transforme chaque date_test
+    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01| ] en
+      (
+        résultat de AL.CalculAidePersonnaliséeLogementLocatif avec {
+          -- date_courante: date_test
+          -- loyer_principal: 700 €
+          -- ressources_ménage_arrondies: 20 000 €
+          -- bénéficiaire_aide_adulte_ou_enfant_handicapés: faux
+          -- nombre_personnes_à_charge: 2
+          -- situation_familiale_calcul_apl: AL.SituationFamilialeCalculAPL.PersonneSeule
+          -- zone: AL.ZoneDHabitation.Zone2
+          -- logement_est_chambre: faux
+          -- âgées_ou_handicap_adultes_hébergées_onéreux_particuliers: faux
+          -- type_aide: AL.TypeAidesPersonnelleLogement.AidePersonnaliséeLogement
+          -- colocation: faux
+          -- réduction_loyer_solidarité: 0 €
+          -- logement_meublé_d842_2: faux
+          -- résidence: France.Collectivité.Métropole
+        }
+      ).aide_finale_formule
+```
+
+## APL locatif — résidence en Métropole, avec colocation
+
+Ce test cible spécifiquement les règles de colocation (art. 16) dont les
+bornes d'archivage sont distinctes des règles générales.
+
+```catala
+#[test]
+déclaration champ d'application CouvertureAPLLocatifColocation:
+  résultat montants contenu liste de argent
+
+champ d'application CouvertureAPLLocatifColocation:
+  définition montants égal à
+    transforme chaque date_test
+    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01| ] en
+      (
+        résultat de AL.CalculAidePersonnaliséeLogementLocatif avec {
+          -- date_courante: date_test
+          -- loyer_principal: 700 €
+          -- ressources_ménage_arrondies: 20 000 €
+          -- bénéficiaire_aide_adulte_ou_enfant_handicapés: faux
+          -- nombre_personnes_à_charge: 0
+          -- situation_familiale_calcul_apl: AL.SituationFamilialeCalculAPL.PersonneSeule
+          -- zone: AL.ZoneDHabitation.Zone2
+          -- logement_est_chambre: faux
+          -- âgées_ou_handicap_adultes_hébergées_onéreux_particuliers: faux
+          -- type_aide: AL.TypeAidesPersonnelleLogement.AidePersonnaliséeLogement
+          -- colocation: vrai
+          -- réduction_loyer_solidarité: 0 €
+          -- logement_meublé_d842_2: faux
+          -- résidence: France.Collectivité.Métropole
+        }
+      ).aide_finale_formule
+```
+
+## APL locatif — résidence dans les DROM
+
+Ces tests couvrent spécifiquement les règles de l'article 46 (outre-mer),
+dont les conditions débutent au 1er janvier 2025.
+
+```catala
+#[test]
+déclaration champ d'application CouvertureAPLLocatifDROM:
+  résultat montants contenu liste de argent
+
+champ d'application CouvertureAPLLocatifDROM:
+  définition montants égal à
+    transforme chaque date_test
+    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01| ] en
+      (
+        résultat de AL.CalculAidePersonnaliséeLogementLocatif avec {
+          -- date_courante: date_test
+          -- loyer_principal: 700 €
+          -- ressources_ménage_arrondies: 20 000 €
+          -- bénéficiaire_aide_adulte_ou_enfant_handicapés: faux
+          -- nombre_personnes_à_charge: 1
+          -- situation_familiale_calcul_apl: AL.SituationFamilialeCalculAPL.PersonneSeule
+          -- zone: AL.ZoneDHabitation.Zone1
+          -- logement_est_chambre: faux
+          -- âgées_ou_handicap_adultes_hébergées_onéreux_particuliers: faux
+          -- type_aide: AL.TypeAidesPersonnelleLogement.AidePersonnaliséeLogement
+          -- colocation: faux
+          -- réduction_loyer_solidarité: 0 €
+          -- logement_meublé_d842_2: faux
+          -- résidence: France.Collectivité.Guadeloupe
+        }
+      ).aide_finale_formule
+```

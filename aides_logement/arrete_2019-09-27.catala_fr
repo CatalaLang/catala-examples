@@ -27,12 +27,12 @@ L'abattement forfaitaire prévu par l'article R. 822-8 du même code est fixé �
 ### Article 6 | LEGIARTI000050931816
 
 Pour l'application de l'article D. 822-21 du même code, le montant forfaitaire auquel sont réputées
-égales les ressources du bénéficiaire et, le cas échéant, de son conjoint, est fixé à 8 400 euros
-pour la location et à 6 400 euros pour la résidence en logement-foyer.
+égales les ressources du bénéficiaire et, le cas échéant, de son conjoint, est fixé à 8 600 euros
+pour la location et à 6 600 euros pour la résidence en logement-foyer.
 
 Toutefois, lorsque le demandeur est titulaire d'une bourse de l'enseignement supérieur qui n'est
-pas assujettie à l'impôt sur le revenu, le montant forfaitaire de ressources est fixé à 6 700 euros
-pour la location et à 5 300 euros pour la résidence en logement-foyer.
+pas assujettie à l'impôt sur le revenu, le montant forfaitaire de ressources est fixé à 6 900 euros
+pour la location et à 5 400 euros pour la résidence en logement-foyer.
 
 ```catala
 # Nous choissisons par manque de ressources (sic) de développement de laisser
@@ -49,7 +49,7 @@ compter du 1er janvier 2025.
 
 ## Chapitre III : Calcul des aides personnelles au logement en secteur locatif
 
-### Article 7 | LEGIARTI000050286647
+### Article 7 | LEGIARTI000052233874
 
 Les plafonds de loyers visés au 2° de l'article D. 823-16 du même code sont fixés comme suit (en euros) :
 
@@ -57,19 +57,19 @@ Les plafonds de loyers visés au 2° de l'article D. 823-16 du même code sont f
 Zone Personne seule Couple sans personne à charge Personne seule ou couple    Par personne à
                                                   ayant une personne à charge charge supplémentaire
 ---- -------------- ----------------------------- --------------------------- ---------------------
-I	   329,71         397,64                        449,43	                    65,21
+I	   333,14         401,78                        454,10	                    65,89
 
-II   287,35         351,72                        395,77                      57,61
+II   290,34         355,38                        399,89                      58,21
 
-III  269,32         326,48                        366,07                      52,47
+III  272,12         329,88                        369,88                      53,01
 ---------------------------------------------------------------------------------------------------
 
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR :
-LRUL2420421A), ces dispositions sont applicables aux prestations dues à
-compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR :
+ATDL2523110A), ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala-metadata
 # Dans la suite de l'arrêté, il n'est pas fait référence à la situation
@@ -104,7 +104,7 @@ champ d'application CalculAllocationLogement:
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
 
   # Colonne 1
   étiquette base
@@ -114,9 +114,9 @@ sous condition date_courante >= |2024-10-01|:
     et nombre_personnes_à_charge = 0
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 329,71€
-    -- Zone2 : 287,35€
-    -- Zone3 : 269,32€
+    -- Zone1 : 333,14€
+    -- Zone2 : 290,34€
+    -- Zone3 : 272,12€
 
   # Colonne 2
   étiquette base
@@ -126,9 +126,9 @@ sous condition date_courante >= |2024-10-01|:
     et nombre_personnes_à_charge = 0
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 397,64€
-    -- Zone2 : 351,72€
-    -- Zone3 : 326,48€
+    -- Zone1 : 401,78€
+    -- Zone2 : 355,38€
+    -- Zone3 : 329,88€
 
   étiquette métropole
   définition multiplicateur_majoration_plafond_loyer_d823_16_2 égal à
@@ -141,14 +141,14 @@ sous condition date_courante >= |2024-10-01|:
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
-      449,43€ + 65,21€ * multiplicateur_majoration_plafond_loyer_d823_16_2
+      454,10€ + 65,89€ * multiplicateur_majoration_plafond_loyer_d823_16_2
     -- Zone2 :
-      395,77€ + 57,61€ * multiplicateur_majoration_plafond_loyer_d823_16_2
+      399,89€ + 58,21€ * multiplicateur_majoration_plafond_loyer_d823_16_2
     -- Zone3 :
-      366,07€ + 52,47€ * multiplicateur_majoration_plafond_loyer_d823_16_2
+      369,88€ + 53,01€ * multiplicateur_majoration_plafond_loyer_d823_16_2
 ```
 
-### Article 8 | LEGIARTI000050286643
+### Article 8 | LEGIARTI000052233869
 
 Dans le cas où le logement occupé est une chambre, les plafonds
 de loyers visés au 2° de l'article D. 823-16 du même code sont
@@ -167,54 +167,54 @@ MONTANTS DES LOYERS PLAFONDS CHAMBRE EN APL ET EN AL
 ----------------------------------------
 Bénéficiaires	            Zones	Montants
 ------------------------- ----- --------
-Cas général	              I	    296,74
+Cas général	              I	    299,83
 
-                          II	  258,62
+                          II	  261,31
 
-                          III   242,39
+                          III   244,91
 
 
-Cas des personnes âgées   I     247,28
+Cas des personnes âgées   I     249,86
 ou handicapées adultes
 hébergées à titre onéreux
 chez des particuliers
 
-                          II    215,51
+                          II    217,76
 
-                          III   201,99
+                          III   204,09
 ----------------------------------------
 
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR :
-LRUL2420421A), ces dispositions sont applicables aux prestations dues à
-compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR :
+ATDL2523110A), ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
 sous condition
-  date_courante >= |2024-10-01|
+  date_courante >= |2025-10-01|
   et logement_est_chambre:
 
   étiquette chambre exception base
   définition plafond_loyer_d823_16_2 égal à
     selon zone sous forme
-    -- Zone1 : 296,74€
-    -- Zone2 : 258,62€
-    -- Zone3 : 242,39€
+    -- Zone1 : 299,83€
+    -- Zone2 : 261,31€
+    -- Zone3 : 244,91€
 
   exception chambre
   définition plafond_loyer_d823_16_2
   sous condition âgées_ou_handicap_adultes_hébergées_onéreux_particuliers
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 247,28€
-    -- Zone2 : 215,51€
-    -- Zone3 : 201,99€
+    -- Zone1 : 249,86€
+    -- Zone2 : 217,76€
+    -- Zone3 : 204,09€
 ```
 
-### Article 9 | LEGIARTI000050286639
+### Article 9 | LEGIARTI000052233864
 
 Les montants forfaitaires au titre des charges visés au 3° de
 l'article D. 823-16 du même code sont fixés comme suit (en euros) :
@@ -222,24 +222,24 @@ l'article D. 823-16 du même code sont fixés comme suit (en euros) :
 ----------------------------------
 Désignation	          Toutes zones
 --------------------- ------------
-Bénéficiaire isolé ou 59,97
+Bénéficiaire isolé ou 60,59
 couple sans personne
 à charge
 
-Par personne          13,60
+Par personne          13,74
 supplémentaire
 à charge
 ----------------------------------
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR :
-LRUL2420421A), ces dispositions sont applicables aux prestations dues à
-compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR :
+ATDL2523110A), ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges_d823_16 égal à
@@ -247,7 +247,7 @@ sous condition date_courante >= |2024-10-01|:
 
   étiquette base_métropole
   définition montant_forfaitaire_charges_d823_16 égal à
-    59,97€ + 13,60€ * multiplicateur_majoration_charges_d823_16
+    60,59€ + 13,74€ * multiplicateur_majoration_charges_d823_16
 ```
 
 ### Article 10 | LEGIARTI000039160745
@@ -314,32 +314,33 @@ sous condition date_courante >= |2019-10-01|:
     -- TypeAidesPersonnelleLogement.AllocationLogementSociale : 10 €
 ```
 
-### Article 13 | LEGIARTI000050286634
+### Article 13 | LEGIARTI000052233857
 
 La participation minimale P0 définie au 2° de l'article D. 823-17 du même code est
 égale à la plus élevée des deux valeurs suivantes : 8,5 % de la somme du loyer éligible
-défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 39,15 euros.
+défini au 2° de l'article D. 823-16 du même code et du forfait charge ou 39,56 euros.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2023-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition participation_minimale égal à
     si
       (loyer_éligible + montant_forfaitaire_charges_d823_16)
       * 8,5%
-      >= 39,15 €
+      >= 39,56 €
     alors
       (loyer_éligible + montant_forfaitaire_charges_d823_16) * 8,5%
     sinon
-      39,15 €
+      39,56 €
 ```
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
-### Article 14 | LEGIARTI000050286630
+### Article 14 | LEGIARTI000052233852
 
 Pour l'application de l'article D. 823-17 du même code, le taux de participation
 personnelle Tp du ménage, exprimé en pourcentage, est calculé selon la formule suivante :
@@ -368,7 +369,7 @@ Majoration par personne à charge supplémentaire     -0,06 %
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   étiquette base
   définition taux_composition_familiale égal à
     si nombre_personnes_à_charge = 0 alors
@@ -405,7 +406,7 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition rapport_loyers égal à
     arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
 ```
@@ -428,7 +429,7 @@ $\textrm{TL}=0 \%$    $\textrm{TL}=0,45 \%\times (\textrm{RL}-45\%)$ $\textrm{TL
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   # Ici on choisit de mettre des >= pour inclure le résultat sur la crête
   # dans la case de droite ; nous avons bien vérifié que sur la crête le
   # résultat est le même à gauche et à droite.
@@ -458,14 +459,14 @@ Le loyer de référence LR est défini selon le tableau suivant (en euros) :
 
 Composition du ménage	                                Montant
 ---------------------------------------------------- --------
-Bénéficiaire isolé                                    287,35
-Couple sans personne à charge	                        351,72
-Personne seule ou couple ayant une personne à charge  395,77
-Majoration par personne à charge	                    57,61
+Bénéficiaire isolé                                    290,34
+Couple sans personne à charge	                        355,38
+Personne seule ou couple ayant une personne à charge  399,89
+Majoration par personne à charge	                    58,21
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
 
   étiquette base
   définition multiplicateur_majoration_loyer_référence égal à
@@ -474,15 +475,16 @@ sous condition date_courante >= |2024-10-01|:
   définition loyer_référence égal à
     si nombre_personnes_à_charge = 0 alors
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 287,35€
-      -- Couple : 351,72€
-    sinon 395,77€ + 57,61€ * multiplicateur_majoration_loyer_référence
+      -- PersonneSeule : 290,34€
+      -- Couple : 355,38€
+    sinon 399,89€ + 58,21€ * multiplicateur_majoration_loyer_référence
 ```
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ### Article 15 | LEGIARTI000050931814
 
@@ -538,7 +540,7 @@ Conformément à l’article 2 de l’arrêté du 30 décembre 2024 (NOR :
 ATDL2429209A), ces dispositions sont applicables aux prestations dues à
 compter du 1er janvier 2025.
 
-### Article 16 | LEGIARTI000050286625
+### Article 16 | LEGIARTI000052233845
 
 Dans le cas des colocataires prévus à l'article D. 823-18 du même code :
 
@@ -551,20 +553,20 @@ On obtient les loyers plafonds suivants (en euros) :
 --------------------------------------------------------
 Zone	                             I      II     III
 ---------------------------------- ------ ------ ------
-Personne seule	                   247,28 215,51 201,99
+Personne seule	                   249,86 217,76 204,09
 
-Couple sans personne à charge	     298,23 263,79 244,86
+Couple sans personne à charge	     301,34 266,54 247,41
 
 Personne seule ou couple ayant une
-personne à charge	                 337,07 296,83 274,55
+personne à charge	                 340,58 299,92 277,41
 
 Par personne à
-charge supplémentaire              48,91  43,21  39,35
+charge supplémentaire              49,42  43,66  39,76
 --------------------------------------------------------
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2024-10-01| et colocation:
+sous condition date_courante >= |2025-10-01| et colocation:
 
   # Ici l'exception est rapportée au cas de base puisqu'on suppose
   # qu'on ne peut pas être en colocation dans un logement constitué
@@ -577,9 +579,9 @@ sous condition date_courante >= |2024-10-01| et colocation:
     et nombre_personnes_à_charge = 0
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 247,28€
-    -- Zone2 : 215,51€
-    -- Zone3 : 201,99€
+    -- Zone1 : 249,86€
+    -- Zone2 : 217,76€
+    -- Zone3 : 204,09€
 
   exception base
   définition plafond_loyer_d823_16_2
@@ -588,9 +590,9 @@ sous condition date_courante >= |2024-10-01| et colocation:
     et nombre_personnes_à_charge = 0
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 298,23€
-    -- Zone2 : 263,79€
-    -- Zone3 : 244,86€
+    -- Zone1 : 301,34€
+    -- Zone2 : 266,54€
+    -- Zone3 : 247,41€
 
   exception base
   définition plafond_loyer_d823_16_2
@@ -598,38 +600,39 @@ sous condition date_courante >= |2024-10-01| et colocation:
   conséquence égal à
     selon zone sous forme
     -- Zone1 :
-      337,07€ + 48,91€ * multiplicateur_majoration_plafond_loyer_d823_16_2
+      340,58€ + 49,42€ * multiplicateur_majoration_plafond_loyer_d823_16_2
     -- Zone2 :
-      296,83€ + 43,21€ * multiplicateur_majoration_plafond_loyer_d823_16_2
+      299,92€ + 43,66€ * multiplicateur_majoration_plafond_loyer_d823_16_2
     -- Zone3 :
-      274,55€ + 39,35€ * multiplicateur_majoration_plafond_loyer_d823_16_2
+      277,41€ + 39,76€ * multiplicateur_majoration_plafond_loyer_d823_16_2
 ```
 
 2° Le montant forfaitaire au titre des charges est fixé comme suit (en euros) :
 
 Composition du foyer	           Montant
 -------------------------------- -------
-Bénéficiaire isolé               29,98
-Couple sans personne à charge	   59,97
-Majoration par personne à charge 13,60
+Bénéficiaire isolé               30,29
+Couple sans personne à charge	   60,59
+Majoration par personne à charge 13,74
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2023-10-01| et colocation:
+sous condition date_courante >= |2025-10-01| et colocation:
   étiquette colocation_métropole exception base_outre_mer
   définition montant_forfaitaire_charges_d823_16 égal à
     (
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 29,98€
-      -- Couple : 59,97€
+      -- PersonneSeule : 30,29€
+      -- Couple : 60,59€
     )
-    + 13,60€ * multiplicateur_majoration_charges_d823_16
+    + 13,74€ * multiplicateur_majoration_charges_d823_16
 ```
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ## Chapitre IV : Calcul de l'aide personnalisée au logement en secteur accession
 
@@ -3313,7 +3316,7 @@ sous condition date_courante >= |2019-10-01|:
   )
 ```
 
-### Article 19 | LEGIARTI000050286620
+### Article 19 | LEGIARTI000052233840
 
 Pour l'application du 4° de l'article D. 832-10 du code de la construction et
 de l'habitation , le montant forfaitaire des charges est fixé comme suit
@@ -3321,21 +3324,22 @@ de l'habitation , le montant forfaitaire des charges est fixé comme suit
 
 Désignation                                         Toutes zones
 --------------------------------------------------- ------------
-Bénéficiaire isolé ou couple sans personne à charge 59,97
-Par personne supplémentaire à charge	              13,60
+Bénéficiaire isolé ou couple sans personne à charge 60,59
+Par personne supplémentaire à charge	              13,74
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
 
   étiquette base
   définition montant_forfaitaire_charges_d832_10 égal à
-    59,97 € + 13,60 € * (décimal de nombre_personnes_à_charge)
+    60,59 € + 13,74 € * (décimal de nombre_personnes_à_charge)
 ```
 
 ### Article 20 | LEGIARTI000039160765
@@ -3393,7 +3397,7 @@ sous condition date_courante >= |2019-10-01|:
   définition taux_tranche_supérieure_d832_15_1 égal à 41,60%
 ```
 
-### Article 24 | LEGIARTI000050286616
+### Article 24 | LEGIARTI000052233835
 
 Dans le cas des copropriétaires prévus à l'article D. 832-16 du même code :
 
@@ -3401,7 +3405,7 @@ Dans le cas des copropriétaires prévus à l'article D. 832-16 du même code :
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition plafond_mensualité_d832_10_3
     état copropriétaires
   égal à
@@ -3415,29 +3419,30 @@ sous condition date_courante >= |2024-10-01|:
 
 Composition du foyer	           Montant
 -------------------------------- -------
-Bénéficiaire isolé	             29,98
-Couple sans personne à charge	   59,97
-Majoration par personne à charge 13,60
+Bénéficiaire isolé	             30,29
+Couple sans personne à charge	   60,59
+Majoration par personne à charge 13,74
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   exception base
   définition montant_forfaitaire_charges_d832_10
   sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 29,98€
-      -- Couple : 59,97€
+      -- PersonneSeule : 30,29€
+      -- Couple : 60,59€
     )
-    + 13,60 € * (décimal de nombre_personnes_à_charge)
+    + 13,74 € * (décimal de nombre_personnes_à_charge)
 ```
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ### Article 25 | LEGIARTI000039160775
 
@@ -3482,29 +3487,30 @@ sous condition date_courante >= |2019-10-01|:
 
 ## Chapitre V : Calcul de l'aide personnalisée au logement en secteur logement-foyer
 
-### Article 27 | LEGIARTI000050286612
+### Article 27 | LEGIARTI000052233830
 
 Pour l'application de l'article D. 832-24 du même code, les équivalences de loyer et de charges locatives plafonds
 sont fixées comme suit (en euros) :
 
 Désignation                                                  Zone I Zone II Zone III
 ------------------------------------------------------------ ------ ------- --------
-Bénéficiaire isolé	                                         493,68 451,45  428,52
-Couple sans personne à charge	                               578,74 526,87  498,39
-Bénéficiaire isolé ou couple ayant une personne à charge     617,10 561,79  528,76
-Bénéficiaire isolé ou couple ayant deux personnes à charge   660,42 601,36  563,55
-Bénéficiaire isolé ou couple ayant trois personnes à charge  703,89 640,78  598,54
-Bénéficiaire isolé ou couple ayant quatre personnes à charge 759,22 682,79  637,78
-Par personne supplémentaire à charge	                       78,75  71,17	  66,05
+Bénéficiaire isolé	                                         498,81 456,15  432,98
+Couple sans personne à charge	                               584,76 532,35  503,57
+Bénéficiaire isolé ou couple ayant une personne à charge     623,52 567,63  534,26
+Bénéficiaire isolé ou couple ayant deux personnes à charge   667,29 607,61  569,52
+Bénéficiaire isolé ou couple ayant trois personnes à charge  711,21 647,44  604,76
+Bénéficiaire isolé ou couple ayant quatre personnes à charge 767,12 689,89  644,41
+Par personne supplémentaire à charge	                       79,57  71,91	  66,74
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition plafond_équivalence_loyer_éligible égal à
   (
     selon zone sous forme
@@ -3513,25 +3519,25 @@ sous condition date_courante >= |2024-10-01|:
         si nombre_personnes_à_charge = 0 alors
           (
             selon situation_familiale_calcul_apl sous forme
-            -- PersonneSeule : 493,68 €
-            -- Couple : 578,74€
+            -- PersonneSeule : 498,81 €
+            -- Couple : 584,76€
           )
         sinon
           (
             si nombre_personnes_à_charge = 1 alors
-              617,10 €
+              623,52 €
             sinon
               (
                 si nombre_personnes_à_charge = 2 alors
-                  666,42 €
+                  667,29 €
                 sinon
                   (
                     si nombre_personnes_à_charge = 3 alors
-                      703,89 €
+                      711,21 €
                     sinon
                       (
-                        759,22 €
-                        + 78,75€ * (décimal de (nombre_personnes_à_charge - 4))
+                        767,12 €
+                        + 79,57€ * (décimal de (nombre_personnes_à_charge - 4))
                       )
                   )
               )
@@ -3542,25 +3548,25 @@ sous condition date_courante >= |2024-10-01|:
         si nombre_personnes_à_charge = 0 alors
           (
             selon situation_familiale_calcul_apl sous forme
-            -- PersonneSeule : 451,45 €
-            -- Couple : 526,87€
+            -- PersonneSeule : 456,15 €
+            -- Couple : 532,35€
           )
         sinon
           (
             si nombre_personnes_à_charge = 1 alors
-              561,79 €
+              567,63 €
             sinon
               (
                 si nombre_personnes_à_charge = 2 alors
-                  601,36 €
+                  607,61 €
                 sinon
                   (
                     si nombre_personnes_à_charge = 3 alors
-                      640,78 €
+                      647,44 €
                     sinon
                       (
-                        682,79 €
-                        + 71,17 € * (décimal de (nombre_personnes_à_charge - 4))
+                        689,89 €
+                        + 71,91 € * (décimal de (nombre_personnes_à_charge - 4))
                       )
                   )
               )
@@ -3571,25 +3577,25 @@ sous condition date_courante >= |2024-10-01|:
         si nombre_personnes_à_charge = 0 alors
           (
             selon situation_familiale_calcul_apl sous forme
-            -- PersonneSeule : 428,52 €
-            -- Couple : 498,39€
+            -- PersonneSeule : 432,98 €
+            -- Couple : 503,57€
           )
         sinon
           (
             si nombre_personnes_à_charge = 1 alors
-              528,76 €
+              534,26 €
             sinon
               (
                 si nombre_personnes_à_charge = 2 alors
-                  563,66 €
+                  569,52 €
                 sinon
                   (
                     si nombre_personnes_à_charge = 3 alors
-                      598,54 €
+                      604,76 €
                     sinon
                       (
-                        637,78 €
-                        + 66,05€ * (décimal de (nombre_personnes_à_charge - 4))
+                        644,41 €
+                        + 66,74€ * (décimal de (nombre_personnes_à_charge - 4))
                       )
                   )
               )
@@ -5343,24 +5349,25 @@ juillet 2022.
 # cet article.
 ```
 
-### Article 34 | LEGIARTI000050286608
+### Article 34 | LEGIARTI000052233825
 
 Les montants forfaitaires au titre des charges visés au 4° de l'article D. 842-6 du même code sont fixés comme
 suit (en euros) :
 
 Désignation                                         Toutes zones
 --------------------------------------------------- ------------
-Bénéficiaire isolé ou couple sans personne à charge 59,97
-Par personne supplémentaire à charge                13,60
+Bénéficiaire isolé ou couple sans personne à charge 60,59
+Par personne supplémentaire à charge                13,74
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges égal à
@@ -5368,8 +5375,8 @@ sous condition date_courante >= |2024-10-01|:
 
   étiquette base
   définition montant_forfaitaire_charges égal à
-    si nombre_personnes_à_charge = 0 alors 59,97 €
-    sinon 59,97 € + 13,60 € * multiplicateur_majoration_charges
+    si nombre_personnes_à_charge = 0 alors 60,59 €
+    sinon 60,59 € + 13,74 € * multiplicateur_majoration_charges
 ```
 
 ### Article 35 | LEGIARTI000039160693
@@ -5395,7 +5402,7 @@ sous condition date_courante >= |2019-10-01|:
   définition montant_minimal_aide_d842_6 égal à 10 €
 ```
 
-### Article 37 | LEGIARTI000050286604
+### Article 37 | LEGIARTI000052233820
 
 Dans le cas des copropriétaires prévus à l'article D. 842-10 du même code :
 
@@ -5403,7 +5410,7 @@ Dans le cas des copropriétaires prévus à l'article D. 842-10 du même code :
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   exception
   définition calcul_plafond_mensualité_d842_6
     de date_calcul, nombre_personnes_à_charge état avec_copropriété
@@ -5421,29 +5428,30 @@ sous condition date_courante >= |2024-10-01|:
 
 Composition du ménage                                   Montant
 --------------------------------------------------- ----------------
-Bénéficiaire isolé                                       29,98
-Couple sans personne à charge                            59,97
-Majoration par personne à charge                         13,60
+Bénéficiaire isolé                                       30,29
+Couple sans personne à charge                            60,59
+Majoration par personne à charge                         13,74
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   étiquette copropriété exception base
   définition montant_forfaitaire_charges
   sous condition copropriété
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 29,98 €
-      -- Couple : 59,97€
+      -- PersonneSeule : 30,29 €
+      -- Couple : 60,59€
     )
-    + 13,60 € * multiplicateur_majoration_charges
+    + 13,74 € * multiplicateur_majoration_charges
 ```
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ### Article 38 | LEGIARTI000039160699
 
@@ -5491,24 +5499,25 @@ sous condition date_courante >= |2019-10-01|:
 
 ## Chapitre VII : Calcul des allocations de logement en secteur logement-foyer
 
-### Article 40 | LEGIARTI000050286600
+### Article 40 | LEGIARTI000052233815
 
 Les montants forfaitaires au titre des charges visés au 4° de l'article D. 842-15
 du même code sont fixés comme suit (en euros) :
 
 Composition du ménage                                            Toutes zones
 ------------------------------------------------------------ --------------------
-Bénéficiaire isolé ou couple sans personne à charge                  59,97
-Par personne supplémentaire à charge                                 13,60
+Bénéficiaire isolé ou couple sans personne à charge                  60,59
+Par personne supplémentaire à charge                                 13,74
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
 
   étiquette métropole
   définition multiplicateur_majoration_charges égal à
@@ -5516,8 +5525,8 @@ sous condition date_courante >= |2024-10-01|:
 
   étiquette base
   définition montant_forfaitaire_charges égal à
-    si nombre_personnes_à_charge = 0 alors 59,97 €
-    sinon 59,97 € + 13,60 € * multiplicateur_majoration_charges
+    si nombre_personnes_à_charge = 0 alors 60,59 €
+    sinon 60,59 € + 13,74 € * multiplicateur_majoration_charges
 ```
 
 ### Article 41 | LEGIARTI000039160703
@@ -5545,83 +5554,84 @@ sous condition date_courante >= |2019-10-01|:
   définition montant_minimal_aide_d842_15 égal à 10 €
 ```
 
-### Article 43 | LEGIARTI000050286596
+### Article 43 | LEGIARTI000052233810
 
 L'équivalence de loyer L pour chacune des catégories de personnes mentionnées à l'article
 D. 842-16 du même code est égal à :
 
 1° Pour les étudiants logés en chambre :
 
-a) 93,07 euros lorsqu'il s'agit d'une personne seule ;
+a) 94,04 euros lorsqu'il s'agit d'une personne seule ;
 
-b) 144,92 euros euros lorsqu'il s'agit d'un couple ;
+b) 146,43 euros euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition équivalence_loyer
   sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUS
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
-    -- PersonneSeule : 93,07 €
-    -- Couple : 144,92 €
+    -- PersonneSeule : 94,04 €
+    -- Couple : 146,43 €
 ```
 
 2° Pour les étudiants logés dans une chambre ayant fait l'objet d'une réhabilitation :
 
-a) 188,17 euros lorsqu'il s'agit d'une personne seule ;
+a) 190,13 euros lorsqu'il s'agit d'une personne seule ;
 
-b) 292,46 euros lorsqu'il s'agit d'un couple ;
+b) 295,50 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition équivalence_loyer
   sous condition catégorie_équivalence_loyer_d842_16 sous forme ÉtudiantLogéEnChambreCROUSRéhabilitée
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
-    -- PersonneSeule : 188,17 €
-    -- Couple : 292,46 €
+    -- PersonneSeule : 190,13 €
+    -- Couple : 295,50 €
 ```
 
 3° Pour les personnes mentionnées au 3° :
 
-a) 228,31 euros lorsqu'il s'agit d'une personne seule ;
+a) 230,68 euros lorsqu'il s'agit d'une personne seule ;
 
-b) 354,78 euros lorsqu'il s'agit d'un couple ;
+b) 358,47 euros lorsqu'il s'agit d'un couple ;
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition équivalence_loyer
   sous condition catégorie_équivalence_loyer_d842_16 sous forme PersonnesÂgéesSelon3DeD842_16
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
-    -- PersonneSeule : 228,31 €
-    -- Couple : 354,78 €
+    -- PersonneSeule : 230,68 €
+    -- Couple : 358,47 €
 ```
 
 4° Pour les autres personnes :
 
-a) 188,17 euros lorsqu'il s'agit d'une personne seule ;
+a) 190,13 euros lorsqu'il s'agit d'une personne seule ;
 
-b) 292,46 euros lorsqu'il s'agit d'un couple.
+b) 295,50 euros lorsqu'il s'agit d'un couple.
 
 ```catala
 champ d'application CalculAllocationLogementFoyer
-sous condition date_courante >= |2024-10-01|:
+sous condition date_courante >= |2025-10-01|:
   définition équivalence_loyer
   sous condition catégorie_équivalence_loyer_d842_16 sous forme AutresPersonnes
   conséquence égal à
     selon situation_familiale_calcul_apl sous forme
-    -- PersonneSeule : 188,17 €
-    -- Couple : 292,46 €
+    -- PersonneSeule : 190,13 €
+    -- Couple : 295,50 €
 ```
 
 NOTA :
 
-Conformément à l’article 3 de l’arrêté du 27 septembre 2024 (NOR : LRUL2420421A), ces dispositions
-sont applicables aux prestations dues à compter du 1er octobre 2024.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ### Article 44 | LEGIARTI000039160711
 
@@ -5679,7 +5689,7 @@ sous condition date_courante >= |2019-10-01|:
 
 ## Chapitre IX : Calcul des allocations de logement en outre-mer
 
-### Article 46 | LEGIARTI000050931798
+### Article 46 | LEGIARTI000052233795
 
 Pour l'application en Guadeloupe, en Guyane, en Martinique, à La Réunion, à
 Mayotte, à Saint-Barthélemy et à Saint-Martin des dispositions des chapitres
@@ -5698,7 +5708,7 @@ enfant à charge, est remplacée par " 8 656 euros " ;
 # locatif. Notamment le paramètre R0 est défini dans le calcul des APL,
 # pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   exception métropole
   définition abattement_forfaitaire_d823_17
   sous condition
@@ -5726,8 +5736,8 @@ D. 842-6 et D. 842-15 du même code, dont les valeurs sont fixées aux articles 
 
 Désignation                                         Toutes zones
 --------------------------------------------------- ------------
-Bénéficiaire isolé ou couple sans personne à charge 40,26
-Par personne supplémentaire à charge                10,36
+Bénéficiaire isolé ou couple sans personne à charge 40,68
+Par personne supplémentaire à charge                10,47
 
 ```catala
 # Ici nous modifions le champ d'application
@@ -5738,7 +5748,7 @@ Par personne supplémentaire à charge                10,36
 # locatif. Notamment le paramètre du montant des charges est défini dans le
 # calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   étiquette base_outre_mer exception base_métropole
   définition montant_forfaitaire_charges_d823_16
   sous condition (
@@ -5752,10 +5762,10 @@ sous condition date_courante >= |2025-01-01|:
     -- n'importe quel : faux
   )
   conséquence égal à
-    40,26€ + 10,36€ * multiplicateur_majoration_charges_d823_16
+    40,68€ + 10,47€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   étiquette outre_mer exception copropriété
   définition montant_forfaitaire_charges
   sous condition (
@@ -5769,10 +5779,10 @@ sous condition date_courante >= |2025-01-01|:
     -- n'importe quel : faux
   )
   conséquence égal à
-    40,26 € + 10,36 € * multiplicateur_majoration_charges
+    40,68 € + 10,47 € * multiplicateur_majoration_charges
 
 champ d'application CalculAllocationLogementFoyer
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   exception base
   définition montant_forfaitaire_charges
   sous condition (
@@ -5786,7 +5796,7 @@ sous condition date_courante >= |2025-01-01|:
     -- n'importe quel : faux
   )
   conséquence égal à
-    40,26 € + 10,36 € * multiplicateur_majoration_charges
+    40,68 € + 10,47 € * multiplicateur_majoration_charges
 ```
 
 b) Les montants des colocataires et des copropriétaires prévus respectivement
@@ -5795,9 +5805,9 @@ aux articles 16 et 37, sont remplacés par les valeurs suivantes (en euros) :
 
 Composition du ménage            Montant
 -------------------------------- -------
-Bénéficiaire isolé               20,71
-Couple sans personne à charge    40,26
-Majoration par personne à charge 10,36
+Bénéficiaire isolé               20,93
+Couple sans personne à charge    40,68
+Majoration par personne à charge 10,47
 
 ```catala
 # Ici nous modifions le champ d'application
@@ -5808,7 +5818,7 @@ Majoration par personne à charge 10,36
 # locatif. Notamment le paramètre du montant des charges colocation est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   exception colocation_métropole
   définition montant_forfaitaire_charges_d823_16
   sous condition
@@ -5826,13 +5836,13 @@ sous condition date_courante >= |2025-01-01|:
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 20,71€
-      -- Couple : 40,26€
+      -- PersonneSeule : 20,93€
+      -- Couple : 40,68€
     )
-    + 10,36€ * multiplicateur_majoration_charges_d823_16
+    + 10,47€ * multiplicateur_majoration_charges_d823_16
 
 champ d'application CalculAllocationLogementAccessionPropriété
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   exception outre_mer
   définition montant_forfaitaire_charges
   sous condition
@@ -5850,10 +5860,10 @@ sous condition date_courante >= |2025-01-01|:
   conséquence égal à
     (
       selon situation_familiale_calcul_apl sous forme
-      -- PersonneSeule : 20,71€
-      -- Couple : 40,26€
+      -- PersonneSeule : 20,93€
+      -- Couple : 40,68€
     )
-    + 10,36€ * multiplicateur_majoration_charges
+    + 10,47€ * multiplicateur_majoration_charges
 ```
 
 3° Les valeurs du taux " TF " fixées à l'article 14, taux fonction de la taille
@@ -5898,7 +5908,7 @@ Majoration par personne à charge supplémentaire     -0,06 %
 # locatif. Notamment le paramètre TF est défini
 # dans le calcul des APL pas celui des AL.
 champ d'application CalculAidePersonnaliséeLogementLocatif
-sous condition date_courante >= |2025-01-01|:
+sous condition date_courante >= |2025-10-01|:
   exception base
   définition taux_composition_familiale
   sous condition (
@@ -5946,8 +5956,9 @@ D. 823-17 du même code, le forfait “ R0 ” applicable à Mayotte est identiq
 
 NOTA :
 
-Conformément à l’article 2 de l’arrêté du 30 décembre 2024 (NOR : ATDL2429209A), ces dispositions
-sont applicables aux prestations dues à compter du 1er janvier 2025.
+Conformément à l’article 3 de l’arrêté du 5 septembre 2025 (NOR : ATDL2523110A),
+ces dispositions, dans leur rédaction issue de l'arrêté précité, sont
+applicables aux prestations dues à compter du 1er octobre 2025.
 
 ### Article 47 | LEGIARTI000050931796
 
