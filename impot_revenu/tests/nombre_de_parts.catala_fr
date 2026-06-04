@@ -687,11 +687,10 @@ Soit une majoration de 0.25 par pour l'enfant à charge.
 ```catala-test-cli
 $ catala test-scope NombreDeParts4 --disable-warnings
 ┌─[RESULT]─ NombreDeParts4 ─
-│ sortie =
-│   NombreDeParts {
-│     -- nombre_de_parts: 2,25
-│     -- abattement: 0,00 €
-│   }
+│ sortie = NombreDeParts {
+│            -- nombre_de_parts: 2,25
+│            -- abattement: 0,00 €
+│          }
 └─
 ```
 
@@ -862,10 +861,9 @@ prévoit une majoration supplémentaire d'un quart de part.
 ```catala-test-cli
 $ catala test-scope NombreDeParts5 --disable-warnings
 ┌─[RESULT]─ NombreDeParts5 ─
-│ sortie =
-│   NombreDeParts {
-│     -- nombre_de_parts: 3,75
-│     -- abattement: 0,00 €
-│   }
+│ sortie = NombreDeParts {
+│            -- nombre_de_parts: 3,75
+│            -- abattement: 0,00 €
+│          }
 └─
 ```
