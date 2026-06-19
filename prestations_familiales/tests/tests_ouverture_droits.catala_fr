@@ -60,7 +60,7 @@ champ d'application Test1:
 
 ```catala-test-cli
 $ catala test-scope Test1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test1 ─
 │ Computation successful!
 └─
 ```

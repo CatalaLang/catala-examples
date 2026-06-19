@@ -27,7 +27,7 @@ scope Test1:
 
 ```catala-test-cli
 $ catala test-scope Test1
-┌─[RESULT]─
+┌─[RESULT]─ Test1 ─
 │ Computation successful!
 └─
 ```
@@ -55,7 +55,7 @@ scope Test2:
 
 ```catala-test-cli
 $ catala test-scope Test2
-┌─[RESULT]─
+┌─[RESULT]─ Test2 ─
 │ Computation successful!
 └─
 ```
@@ -83,7 +83,7 @@ scope Test3:
 
 ```catala-test-cli
 $ catala test-scope Test3
-┌─[RESULT]─
+┌─[RESULT]─ Test3 ─
 │ Computation successful!
 └─
 ```
@@ -111,7 +111,7 @@ scope Test4:
 
 ```catala-test-cli
 $ catala test-scope Test4
-┌─[RESULT]─
+┌─[RESULT]─ Test4 ─
 │ Computation successful!
 └─
 ```

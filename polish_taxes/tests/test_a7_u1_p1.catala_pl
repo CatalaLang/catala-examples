@@ -25,14 +25,14 @@ zakres Test_A7_U1_P1_PPb:
 
 ```catala-test-cli
 $ catala test-scope Test_A7_U1_P1_PPa --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test_A7_U1_P1_PPa ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test_A7_U1_P1_PPb --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test_A7_U1_P1_PPb ─
 │ Computation successful!
 └─
 ```

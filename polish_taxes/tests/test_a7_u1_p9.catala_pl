@@ -14,7 +14,7 @@ zakres Test_A7_U1_P9:
 ```
 ```catala-test-cli
 $ catala test-scope Test_A7_U1_P9 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test_A7_U1_P9 ─
 │ Computation successful!
 └─
 ```
