@@ -1002,6 +1002,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1041,6 +1042,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1058,6 +1060,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1075,6 +1078,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1112,6 +1116,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1136,6 +1141,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1201,6 +1207,7 @@ sous condition date_courante >= |2024-10-01| et date_courante < |2025-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1330,6 +1337,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1369,6 +1377,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1386,6 +1395,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1403,6 +1413,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1440,6 +1451,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1464,6 +1476,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1529,6 +1542,7 @@ sous condition date_courante >= |2024-01-01| et date_courante < |2024-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1675,6 +1689,7 @@ sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1714,6 +1729,7 @@ sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1731,6 +1747,7 @@ sous condition date_courante >= |2023-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1748,6 +1765,7 @@ sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1785,6 +1803,7 @@ sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1809,6 +1828,7 @@ sous condition date_courante >= |2023-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1874,6 +1894,7 @@ sous condition date_courante >= |2023-10-01| et date_courante <= |2023-12-31|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -1948,6 +1969,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -1987,6 +2009,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -2004,6 +2027,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -2021,6 +2045,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -2058,6 +2083,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -2082,6 +2108,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -2147,6 +2174,7 @@ sous condition date_courante >= |2023-01-01| et date_courante < |2023-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3117,6 +3145,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3169,6 +3198,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3188,6 +3218,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3213,6 +3244,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3237,6 +3269,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3262,6 +3295,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3284,6 +3318,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3314,6 +3349,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3337,6 +3373,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3360,6 +3397,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3395,6 +3433,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3428,6 +3467,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3479,6 +3519,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -3802,6 +3843,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3853,6 +3895,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3872,6 +3915,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3897,6 +3941,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3922,6 +3967,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3947,6 +3993,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3969,6 +4016,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -3999,6 +4047,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -4022,6 +4071,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -4045,6 +4095,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -4080,6 +4131,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -4113,6 +4165,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -4164,6 +4217,7 @@ sous condition date_courante >= |2022-01-01| et date_courante < |2022-07-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -5052,6 +5106,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5103,6 +5158,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5122,6 +5178,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5147,6 +5204,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5171,6 +5229,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5196,6 +5255,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5218,6 +5278,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -5248,6 +5309,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -5271,6 +5333,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -5294,6 +5357,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -5329,6 +5393,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -5362,6 +5427,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -5412,6 +5478,7 @@ sous condition date_courante >= |2021-10-01| et date_courante < |2022-01-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6266,6 +6333,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6318,6 +6386,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6337,6 +6406,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6362,6 +6432,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6386,6 +6457,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6411,6 +6483,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6433,6 +6506,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6464,6 +6538,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6487,6 +6562,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6510,6 +6586,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6545,6 +6622,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6578,6 +6656,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6629,6 +6708,7 @@ sous condition date_courante >= |2020-10-01| et date_courante < |2021-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -6870,6 +6950,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6922,6 +7003,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6941,6 +7023,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6966,6 +7049,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -6991,6 +7075,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -7016,6 +7101,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     nombre_personnes_à_charge >= 6
     et selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -7038,6 +7124,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -7069,6 +7156,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -7092,6 +7180,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -7115,6 +7204,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -7150,6 +7240,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -7183,6 +7274,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -7234,6 +7326,7 @@ sous condition date_courante >= |2020-01-01| et date_courante < |2020-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -8360,6 +8453,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -8399,6 +8493,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -8416,6 +8511,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -8433,6 +8529,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
@@ -8470,6 +8567,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -8494,6 +8592,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
     (
       selon résidence sous forme
       -- Guadeloupe : vrai
+      -- Guyane : vrai
       -- Martinique : vrai
       -- LaRéunion : vrai
       -- Mayotte : vrai
@@ -8559,6 +8658,7 @@ sous condition date_courante >= |2025-01-01| et date_courante < |2025-10-01|:
   sous condition (
     selon résidence sous forme
     -- Guadeloupe : vrai
+    -- Guyane : vrai
     -- Martinique : vrai
     -- LaRéunion : vrai
     -- Mayotte : vrai
