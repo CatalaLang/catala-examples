@@ -413,9 +413,11 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état montée_en_charge_saint_pierre_miquelon
   égal à
-    soit aide_finale égal à traitement_aide_finale de aide_finale dans
+    soit aide_finale_réduction_loyer_solidarité égal à
+      traitement_aide_finale de aide_finale
+    dans
     montée_en_charge_saint_pierre_miquelon de
-      aide_finale,
+      aide_finale_réduction_loyer_solidarité,
       résidence,
       date_courante
 

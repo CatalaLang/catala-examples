@@ -569,6 +569,7 @@ déclaration champ d'application CalculAidePersonnaliséeLogementLocatif:
     champ d'application ContributionsSocialesAidesPersonnelleLogement
 
   résultat aide_finale_formule contenu argent
+  résultat aide_finale_nette_arrondie contenu argent
 
   résultat traitement_aide_finale contenu argent
   dépend de aide_finale contenu argent état diminué

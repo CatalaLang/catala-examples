@@ -867,9 +867,16 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état réduction_loyer_solidarité
   égal à
-    soit aide_finale égal à traitement_aide_finale de aide_finale dans
-    si aide_finale - réduction_loyer_solidarité * fraction_l832_3 >= 0€ alors
-      aide_finale - réduction_loyer_solidarité * fraction_l832_3
+    soit aide_finale_contributions_sociales_arrondi égal à
+      traitement_aide_finale de aide_finale
+    dans
+    si
+      aide_finale_contributions_sociales_arrondi
+      - réduction_loyer_solidarité * fraction_l832_3
+      >= 0€
+    alors
+      aide_finale_contributions_sociales_arrondi
+      - réduction_loyer_solidarité * fraction_l832_3
     sinon 0€
 
   assertion fraction_l832_3 >= 90% et fraction_l832_3 <= 98%

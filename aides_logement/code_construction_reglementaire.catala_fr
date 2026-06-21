@@ -1870,14 +1870,15 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état diminué
   égal à
+    soit aide_finale_base égal à aide_finale dans
     si loyer_principal > plafond_suppression_d823_16 alors
       0€
     sinon
       (
         si loyer_principal > plafond_dégressivité_d823_16 alors
-          aide_finale
+          aide_finale_base
           - (
-            aide_finale
+            aide_finale_base
             * (
               (loyer_principal - plafond_dégressivité_d823_16)
               / (plafond_suppression_d823_16 - plafond_dégressivité_d823_16)
@@ -1885,7 +1886,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
           )
         # Faire un graphique pour se convaincre que la pente proportionnelle
         # a bien cette expression.
-        sinon aide_finale
+        sinon aide_finale_base
       )
 
   exception
@@ -1893,7 +1894,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
     de aide_finale état diminué
   sous condition bénéficiaire_aide_adulte_ou_enfant_handicapés
   conséquence égal à
-    aide_finale
+    soit aide_finale_base égal à aide_finale dans aide_finale_base
 
   assertion plafond_dégressivité_d823_16 >= plafond_loyer_d823_16_2 * 2,5
 ```
@@ -1905,9 +1906,9 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état minoration_forfaitaire
   égal à
-    soit aide_finale égal à traitement_aide_finale de aide_finale dans
-    si aide_finale - montant_forfaitaire_d823_16 >= 0€ alors
-      aide_finale - montant_forfaitaire_d823_16
+    soit aide_finale_diminué égal à traitement_aide_finale de aide_finale dans
+    si aide_finale_diminué - montant_forfaitaire_d823_16 >= 0€ alors
+      aide_finale_diminué - montant_forfaitaire_d823_16
     sinon 0€
 ```
 
@@ -1920,16 +1921,27 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état contributions_sociales_arrondi
   égal à
-    soit aide_finale égal à traitement_aide_finale de aide_finale dans
+    soit aide_finale_minoration_forfaitaire égal à
+      traitement_aide_finale de aide_finale
+    dans
     soit crds égal à
-      contributions_sociales.montant de aide_finale
+      contributions_sociales.montant de aide_finale_minoration_forfaitaire
     dans
     soit aide_finale_moins_crds_arrondie égal à
-      arrondi de ((aide_finale - crds) - 0,50€)
+      arrondi de ((aide_finale_minoration_forfaitaire - crds) - 0,50€)
     dans
     si aide_finale_moins_crds_arrondie + crds >= 0€ alors
       aide_finale_moins_crds_arrondie + crds
     sinon 0€
+
+  # Expose explicitement l'intermédiaire pour les tests et explain.
+  définition aide_finale_nette_arrondie égal à
+    soit aide_brute égal à traitement_aide_finale de aide_finale_formule dans
+    soit crds égal à contributions_sociales.montant de aide_brute dans
+    soit aide_nette_arrondie égal à
+      arrondi de ((aide_brute - crds) - 0,50€)
+    dans
+    si aide_nette_arrondie >= 0€ alors aide_nette_arrondie sinon 0€
 ```
 
 Pour les locataires qui bénéficient de la réduction de loyer de solidarité en application
@@ -1950,10 +1962,15 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état montant_minimal
   égal à
-    soit aide_finale égal à traitement_aide_finale de aide_finale dans
-    si aide_finale < montant_minimal_aide_d823_16 alors
+    soit aide_finale_montée_en_charge_saint_pierre_miquelon égal à
+      traitement_aide_finale de aide_finale
+    dans
+    si
+      aide_finale_montée_en_charge_saint_pierre_miquelon
+      < montant_minimal_aide_d823_16
+    alors
       0 €
-    sinon aide_finale
+    sinon aide_finale_montée_en_charge_saint_pierre_miquelon
 ```
 
 ######## Article D823-17 | LEGIARTI000041419255
