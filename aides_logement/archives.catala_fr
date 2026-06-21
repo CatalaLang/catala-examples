@@ -3575,7 +3575,7 @@ sous condition date_courante >= |2022-07-01| et date_courante < |2023-01-01|:
     sinon si nombre_personnes_à_charge = 6 alors
       9 816 €
     sinon
-      9 816 € + 350 € * (décimal de (nombre_personnes_à_charge - 6))
+      9 816 € + 323 € * (décimal de (nombre_personnes_à_charge - 6))
 ```
 
 ## Articles en vigueur à partir du 1er janvier 2023 - Arrêté du 26 décembre 2022 relatif au calcul des aides personnelles au logement pour l'année 2023 (NOR : TREL2226772A)
