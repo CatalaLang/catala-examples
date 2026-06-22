@@ -32,12 +32,12 @@ champ d'application Exemple1:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 181,91 €
   assertion calcul.mensualité_éligible = 533,91 €
   assertion calcul.mensualité_minimale = 332,76 €
   assertion calcul.coefficient_prise_en_charge_d832_10 = 0,67
-  assertion calcul.aide_finale_formule = 187,35€
+  assertion calcul.aide_finale_formule_initiale = 187,35€
 ```
 
 ```catala
@@ -72,12 +72,12 @@ champ d'application Exemple2:
   # par le 18° b° de l'article 18 de l'arrêté du 27 septembre 2019, et non
   # par le 18° a). Ce qui donne une mensualité éligible de 399,20 € et non
   # de 495,73 €.
-  définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule
+  définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule_initiale
   assertion montant = 67,34 €
   assertion calcul.mensualité_éligible = 399,20 €
   assertion calcul.mensualité_minimale = 367,42 €
   assertion calcul.coefficient_prise_en_charge_d832_10 = 0,66
-  assertion calcul.aide_finale_formule = 72,77€
+  assertion calcul.aide_finale_formule_initiale = 72,77€
 ```
 
 ```catala
@@ -108,12 +108,12 @@ champ d'application Exemple3:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 181,91 €
   assertion calcul.mensualité_éligible = 533,91 €
   assertion calcul.mensualité_minimale = 332,76 €
   assertion calcul.coefficient_prise_en_charge_d832_10 = 0,67
-  assertion calcul.aide_finale_formule = 187,57€
+  assertion calcul.aide_finale_formule_initiale = 187,57€
 ```
 
 ```catala
@@ -144,12 +144,12 @@ champ d'application Exemple4:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 118,59 €
   assertion calcul.mensualité_éligible = 399,20 €
   assertion calcul.mensualité_minimale = 290,21 €
   assertion calcul.coefficient_prise_en_charge_d832_10 = 0,66
-  assertion calcul.aide_finale_formule = 123,94 €
+  assertion calcul.aide_finale_formule_initiale = 123,94 €
 ```
 
 ```catala-test-cli

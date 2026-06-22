@@ -32,12 +32,12 @@ champ d'application Exemple1:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 96,48 €
   assertion calcul.mensualité_éligible = 375,2 €
   assertion calcul.mensualité_minimale = 267,90 €
   assertion calcul.coefficient_prise_en_charge = 0,62
-  assertion calcul.aide_finale_formule = 101,90€
+  assertion calcul.aide_finale_formule_initiale = 101,90€
 ```
 
 ```catala
@@ -67,11 +67,11 @@ champ d'application Exemple2:
 
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion calcul.mensualité_éligible = 405,10 €
   assertion calcul.mensualité_minimale = 296,96 €
   assertion calcul.coefficient_prise_en_charge = 0,66
-  assertion calcul.aide_finale_formule = 141,99€
+  assertion calcul.aide_finale_formule_initiale = 141,99€
   assertion montant = 85,00 €
 ```
 

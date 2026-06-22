@@ -292,7 +292,7 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
     # calculette_sans_garde_alternée.traitement_aide_finale ?
     calculette.traitement_aide_finale de
       (
-        calculette_sans_garde_alternée.aide_finale_formule
+        calculette_sans_garde_alternée.aide_finale_formule_initiale
         + (
           si nombre de coefficients_enfants_garde_alternée_pris_en_compte = 0 alors
             0 €
@@ -302,8 +302,8 @@ champ d'application CalculetteAidesAuLogementGardeAlternée:
             # période cumulée pendant laquelle le ménage accueille l'enfant
             # à domicile.
             (
-              calculette.aide_finale_formule
-              - calculette_sans_garde_alternée.aide_finale_formule
+              calculette.aide_finale_formule_initiale
+              - calculette_sans_garde_alternée.aide_finale_formule_initiale
             )
             * (
               (
@@ -413,9 +413,11 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
   définition traitement_aide_finale
     de aide_finale état montée_en_charge_saint_pierre_miquelon
   égal à
-    soit aide_finale égal à traitement_aide_finale de aide_finale dans
+    soit aide_finale_réduction_loyer_solidarité égal à
+      traitement_aide_finale de aide_finale
+    dans
     montée_en_charge_saint_pierre_miquelon de
-      aide_finale,
+      aide_finale_réduction_loyer_solidarité,
       résidence,
       date_courante
 
