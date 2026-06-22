@@ -568,8 +568,8 @@ déclaration champ d'application CalculAidePersonnaliséeLogementLocatif:
   contributions_sociales
     champ d'application ContributionsSocialesAidesPersonnelleLogement
 
-  résultat aide_finale_formule contenu argent
-  résultat aide_finale_nette_arrondie contenu argent
+  résultat aide_finale_formule_initiale contenu argent
+  résultat aide_finale_après_traitement contenu argent
 
   résultat traitement_aide_finale contenu argent
   dépend de aide_finale contenu argent état diminué
@@ -670,7 +670,7 @@ déclaration champ d'application CalculAidePersonnaliséeLogementFoyer:
     état coeff_arrondi
     état seuil
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale contenu argent
   dépend de aide_finale contenu argent état minoration_forfaitaire
     état abattement
@@ -747,7 +747,7 @@ déclaration champ d'application CalculAidePersonnaliséeLogementAccessionPropri
   contributions_sociales
     champ d'application ContributionsSocialesAidesPersonnelleLogement
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale contenu argent
   dépend de aide_finale contenu argent état minoration_forfaitaire
     état abattement
@@ -768,7 +768,7 @@ champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
 
 ```catala-metadata
 déclaration structure Traitement_formule_aide_finale:
-  donnée aide_finale_formule contenu argent
+  donnée aide_finale_formule_initiale contenu argent
   donnée traitement_aide_finale
         contenu argent dépend de aide_finale contenu argent
 
@@ -789,7 +789,7 @@ déclaration champ d'application CalculAidePersonnaliséeLogement:
 
   interne sous_calcul_traitement contenu Traitement_formule_aide_finale
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale
     contenu argent dépend de arg contenu argent
 ```
@@ -831,7 +831,7 @@ déclaration champ d'application CalculAllocationLogementLocatif:
 
   calcul_apl_locatif champ d'application CalculAidePersonnaliséeLogementLocatif
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale
     contenu argent dépend de aide_finale contenu argent
   résultat montant_forfaitaire_charges_d823_16 contenu argent
@@ -911,7 +911,7 @@ déclaration champ d'application CalculAllocationLogementAccessionPropriété:
   calcul_équivalence_loyer_minimale
     champ d'application CalculÉquivalenceLoyerMinimale
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
 
   résultat traitement_aide_finale contenu argent
   dépend de aide_finale contenu argent état minoration_forfaitaire
@@ -1006,7 +1006,7 @@ déclaration champ d'application CalculAllocationLogementFoyer:
   calcul_équivalence_loyer_minimale
     champ d'application CalculÉquivalenceLoyerMinimale
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale contenu argent
   dépend de aide_finale contenu argent état minoration_forfaitaire
     état dépense_nette_minimale
@@ -1070,7 +1070,7 @@ déclaration champ d'application CalculAllocationLogement:
 
   interne sous_calcul_traitement contenu Traitement_formule_aide_finale
 
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale
     contenu argent dépend de arg contenu argent
 ```
@@ -1135,7 +1135,7 @@ déclaration champ d'application CalculetteAidesAuLogement:
     champ d'application CalculAllocationLogement
 
   résultat éligibilité contenu booléen
-  résultat aide_finale_formule contenu argent
+  résultat aide_finale_formule_initiale contenu argent
   résultat traitement_aide_finale
     contenu argent dépend de aide_finale contenu argent
   résultat coefficients_enfants_garde_alternée_pris_en_compte

@@ -1453,8 +1453,8 @@ champ d'application CalculAllocationLogement:
     -- LocationAccession contenu propriétaire :
       AccessionPropriété contenu propriétaire
 
-  définition aide_finale_formule égal à
-    sous_calcul_traitement.aide_finale_formule
+  définition aide_finale_formule_initiale égal à
+    sous_calcul_traitement.aide_finale_formule_initiale
   définition traitement_aide_finale de arg égal à
   (
     sous_calcul_traitement.
@@ -1474,8 +1474,8 @@ champ d'application CalculAidePersonnaliséeLogement:
     -- LocationAccession contenu propriétaire :
       AccessionPropriété contenu propriétaire
 
-  définition aide_finale_formule égal à
-    sous_calcul_traitement.aide_finale_formule
+  définition aide_finale_formule_initiale égal à
+    sous_calcul_traitement.aide_finale_formule_initiale
   définition traitement_aide_finale de arg égal à
   (
     sous_calcul_traitement.
@@ -1520,9 +1520,9 @@ champ d'application CalculAidePersonnaliséeLogement:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
+          -- aide_finale_formule_initiale:
             traitement_formule.
-              CalculAidePersonnaliséeLogementLocatif.aide_finale_formule
+              CalculAidePersonnaliséeLogementLocatif.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAidePersonnaliséeLogementLocatif.traitement_aide_finale
@@ -1546,9 +1546,9 @@ champ d'application CalculAidePersonnaliséeLogement:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
+          -- aide_finale_formule_initiale:
             traitement_formule.
-              CalculAidePersonnaliséeLogementFoyer.aide_finale_formule
+              CalculAidePersonnaliséeLogementFoyer.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAidePersonnaliséeLogementFoyer.traitement_aide_finale
@@ -1577,9 +1577,9 @@ champ d'application CalculAidePersonnaliséeLogement:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
+          -- aide_finale_formule_initiale:
             traitement_formule.
-              CalculAidePersonnaliséeLogementAccessionPropriété.aide_finale_formule
+              CalculAidePersonnaliséeLogementAccessionPropriété.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAidePersonnaliséeLogementAccessionPropriété.traitement_aide_finale
@@ -1619,8 +1619,8 @@ champ d'application CalculAllocationLogement:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
-            traitement_formule.aide_finale_formule
+          -- aide_finale_formule_initiale:
+            traitement_formule.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAllocationLogementLocatif.traitement_aide_finale
@@ -1646,8 +1646,8 @@ champ d'application CalculAllocationLogement:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
-            traitement_formule.aide_finale_formule
+          -- aide_finale_formule_initiale:
+            traitement_formule.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAllocationLogementFoyer.traitement_aide_finale
@@ -1678,9 +1678,9 @@ champ d'application CalculAllocationLogement:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
+          -- aide_finale_formule_initiale:
             traitement_formule.
-              CalculAllocationLogementAccessionPropriété.aide_finale_formule
+              CalculAllocationLogementAccessionPropriété.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAllocationLogementAccessionPropriété.traitement_aide_finale
@@ -1814,7 +1814,7 @@ $$\textrm{Af} = \textrm{L} + \textrm{C}-\textrm{Pp}$$
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementLocatif:
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     soit aide_finale égal à
       loyer_éligible + montant_forfaitaire_charges_d823_16
       - participation_personnelle
@@ -1935,8 +1935,8 @@ champ d'application CalculAidePersonnaliséeLogementLocatif:
     sinon 0€
 
   # Expose explicitement l'intermédiaire pour les tests et explain.
-  définition aide_finale_nette_arrondie égal à
-    soit aide_brute égal à traitement_aide_finale de aide_finale_formule dans
+  définition aide_finale_après_traitement égal à
+    soit aide_brute égal à traitement_aide_finale de aide_finale_formule_initiale dans
     soit crds égal à contributions_sociales.montant de aide_brute dans
     soit aide_nette_arrondie égal à
       arrondi de ((aide_brute - crds) - 0,50€)
@@ -3168,7 +3168,7 @@ $$\textrm{Af} = \textrm{K} \times (\textrm{L} + \textrm{C}-\textrm{L0})$$
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementAccessionPropriété:
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     soit aide_finale égal à
       (
         mensualité_éligible + montant_forfaitaire_charges_d832_10
@@ -3846,7 +3846,7 @@ $$\textrm{Af} = \textrm{K} \times (\textrm{E}-\textrm{E0})$$
 
 ```catala
 champ d'application CalculAidePersonnaliséeLogementFoyer:
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     soit aide_finale égal à
       (équivalence_loyer_éligible - équivalence_loyer_minimale)
       * coefficient_prise_en_charge_d832_25
@@ -4406,7 +4406,8 @@ champ d'application CalculAllocationLogementLocatif:
     logement_meublé_d842_2
   définition calcul_apl_locatif.résidence égal à résidence
 
-  définition aide_finale_formule égal à calcul_apl_locatif.aide_finale_formule
+  définition aide_finale_formule_initiale égal à
+    calcul_apl_locatif.aide_finale_formule_initiale
   définition traitement_aide_finale de aide_finale égal à
     calcul_apl_locatif.traitement_aide_finale de aide_finale
 ```
@@ -4488,7 +4489,7 @@ sous condition
   -- PasDeChangement : faux:
 
   exception
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     selon changement_logement_d842_4 sous forme
     -- Changement contenu infos :
       loyer_principal
@@ -4604,7 +4605,7 @@ $$\textrm{Af} = \textrm{K} \times (\textrm{L} + \textrm{C}-\textrm{L0})$$
 
 ```catala
 champ d'application CalculAllocationLogementAccessionPropriété:
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     (
       mensualité_éligible + montant_forfaitaire_charges
       - mensualité_minimale
@@ -5033,7 +5034,7 @@ $$\textrm{Af} = \textrm{K} \times (\textrm{L} + \textrm{C}-\textrm{L0})$$
 
 ```catala
 champ d'application CalculAllocationLogementFoyer:
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     (
       équivalence_loyer
       + montant_forfaitaire_charges
@@ -6870,8 +6871,8 @@ sous condition résidence sous forme SaintPierreEtMiquelon:
           }
         dans
         Traitement_formule_aide_finale {
-          -- aide_finale_formule:
-            traitement_formule.aide_finale_formule
+          -- aide_finale_formule_initiale:
+            traitement_formule.aide_finale_formule_initiale
           -- traitement_aide_finale:
             traitement_formule.
               CalculAllocationLogementLocatif.traitement_aide_finale
@@ -6881,12 +6882,12 @@ sous condition résidence sous forme SaintPierreEtMiquelon:
     # nous renvoyons des valeurs nulles qui ne seront jamais utilisées.
     -- AccessionPropriété :
       Traitement_formule_aide_finale {
-        -- aide_finale_formule: 0€
+        -- aide_finale_formule_initiale: 0€
         -- traitement_aide_finale: traitement_nul_tout_le_temps
       }
     -- Location :
       Traitement_formule_aide_finale {
-        -- aide_finale_formule: 0€
+        -- aide_finale_formule_initiale: 0€
         -- traitement_aide_finale: traitement_nul_tout_le_temps
       }
 

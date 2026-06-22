@@ -43,7 +43,7 @@ champ d'application CouvertureAPLLocatifMétropole:
           -- logement_meublé_d842_2: faux
           -- résidence: France.Collectivité.Métropole
         }
-      ).aide_finale_formule
+      ).aide_finale_formule_initiale
 ```
 
 ## APL locatif — résidence en Métropole, avec colocation
@@ -77,7 +77,7 @@ champ d'application CouvertureAPLLocatifColocation:
           -- logement_meublé_d842_2: faux
           -- résidence: France.Collectivité.Métropole
         }
-      ).aide_finale_formule
+      ).aide_finale_formule_initiale
 ```
 
 ## APL locatif — résidence dans les DROM
@@ -111,5 +111,5 @@ champ d'application CouvertureAPLLocatifDROM:
           -- logement_meublé_d842_2: faux
           -- résidence: France.Collectivité.Guadeloupe
         }
-      ).aide_finale_formule
+      ).aide_finale_formule_initiale
 ```

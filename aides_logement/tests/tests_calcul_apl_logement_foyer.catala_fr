@@ -26,7 +26,7 @@ champ d'application CasTest1:
   assertion calcul.coefficient_prise_en_charge_d832_25 = 0,41
   assertion calcul.plafond_équivalence_loyer_éligible = 450,57 €
   assertion calcul.équivalence_loyer_minimale = 318,13 €
-  définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule
+  définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule_initiale
   assertion montant = 12,06 €
 
 #[test]
@@ -53,7 +53,7 @@ champ d'application CasTest2:
   assertion calcul.coefficient_prise_en_charge = 0,43
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 23,12 €
 ```
 
@@ -80,7 +80,7 @@ champ d'application CasTest3:
   assertion calcul.plafond_équivalence_loyer_éligible = 444,43€
   assertion calcul.équivalence_loyer_minimale = 98,95 €
   assertion calcul.coefficient_prise_en_charge_d832_25 = 0,64
-  définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule
+  définition montant égal à calcul.traitement_aide_finale de calcul.aide_finale_formule_initiale
   assertion montant = 154,78 €
 ```
 
@@ -108,7 +108,7 @@ champ d'application CasTest4:
   assertion calcul.coefficient_prise_en_charge_d832_25 = 0,64
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 154,78 €
 ```
 
@@ -137,7 +137,7 @@ champ d'application CasTest5:
   assertion calcul.coefficient_prise_en_charge_d832_25 = 0,6
   définition montant égal à
     calcul.traitement_aide_finale de
-      calcul.aide_finale_formule
+      calcul.aide_finale_formule_initiale
   assertion montant = 129,65 €
 ```
 

@@ -1156,7 +1156,7 @@ champ d'application CalculetteAidesAuLogement:
       TypeAidesPersonnelleLogement.AllocationLogementSociale
   )
 
-  définition aide_finale_formule égal à
+  définition aide_finale_formule_initiale égal à
     si non éligibilité alors 0 €
     sinon si
       éligibilité_aide_personnalisée_logement.éligibilité
@@ -1165,17 +1165,17 @@ champ d'application CalculetteAidesAuLogement:
       (
         si
           calcul_aide_personnalisée_logement.traitement_aide_finale de
-            calcul_aide_personnalisée_logement.aide_finale_formule
+            calcul_aide_personnalisée_logement.aide_finale_formule_initiale
           > calcul_allocation_logement.traitement_aide_finale de
-            calcul_allocation_logement.aide_finale_formule
+            calcul_allocation_logement.aide_finale_formule_initiale
         alors
-          calcul_aide_personnalisée_logement.aide_finale_formule
+          calcul_aide_personnalisée_logement.aide_finale_formule_initiale
         sinon
-          calcul_allocation_logement.aide_finale_formule
+          calcul_allocation_logement.aide_finale_formule_initiale
       )
     sinon si éligibilité_aide_personnalisée_logement.éligibilité alors
-      calcul_aide_personnalisée_logement.aide_finale_formule
-    sinon calcul_allocation_logement.aide_finale_formule
+      calcul_aide_personnalisée_logement.aide_finale_formule_initiale
+    sinon calcul_allocation_logement.aide_finale_formule_initiale
 
   définition traitement_aide_finale de aide_finale égal à
     soit aide_finale_apl égal à
