@@ -33,7 +33,7 @@ champ d'application Exemple1:
   assertion calcul.plafond_loyer_d823_16_2 = 524,20 €
   assertion calcul.participation_minimale = 52,30 €
   assertion calcul.taux_composition_familiale = 2,01%
-  assertion calcul.participation_personnelle = 713,25 €
+  assertion calcul.participation_personnelle = 714,35 €
 ```
 
 ```catala
@@ -99,7 +99,7 @@ champ d'application Exemple3:
   assertion calcul.plafond_loyer_d823_16_2 = 425,80 €
   assertion calcul.participation_minimale = 42,42 €
   assertion calcul.taux_composition_familiale = 2,01%
-  assertion calcul.participation_personnelle = 172,05 €
+  assertion calcul.participation_personnelle = 172,22 €
 ```
 
 ```catala
@@ -132,7 +132,7 @@ champ d'application Exemple4:
   assertion calcul.plafond_loyer_d823_16_2 = 406,30 €
   assertion calcul.participation_minimale = 40,19€
   assertion calcul.taux_composition_familiale = 2,70%
-  assertion calcul.participation_personnelle = 1016,63 €
+  assertion calcul.participation_personnelle = 1015,68 €
 ```
 
 ```catala
@@ -231,7 +231,7 @@ champ d'application Exemple7:
   assertion calcul.plafond_loyer_d823_16_2 = 618,20 €
   assertion calcul.participation_minimale = 55,67 €
   assertion calcul.taux_composition_familiale = 1,73%
-  assertion calcul.participation_personnelle = 495,64 €
+  assertion calcul.participation_personnelle = 496,10 €
 ```
 
 ```catala
@@ -264,7 +264,7 @@ champ d'application Exemple8:
   assertion calcul.plafond_loyer_d823_16_2 = 268,26 €
   assertion calcul.participation_minimale = 35,39 €
   assertion calcul.taux_composition_familiale = 3,15%
-  assertion calcul.participation_personnelle = 306,11 €
+  assertion calcul.participation_personnelle = 306,36 €
 ```
 
 ```catala
@@ -295,7 +295,7 @@ champ d'application Exemple9:
   définition calcul.bénéficiaire_aide_adulte_ou_enfant_handicapés égal à faux
   définition calcul.logement_meublé_d842_2 égal à faux
   définition calcul.résidence égal à Métropole
-  assertion montant = 210,06 €
+  assertion montant = 211,06 €
 ```
 
 ```catala-test-cli
@@ -357,6 +357,6 @@ $ catala test-scope Exemple8 --disable-warnings
 ```catala-test-cli
 $ catala test-scope Exemple9 --disable-warnings
 ┌─[RESULT]─ Exemple9 ─
-│ montant = 210,06 €
+│ montant = 211,06 €
 └─
 ```

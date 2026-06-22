@@ -423,7 +423,8 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 champ d'application CalculAidePersonnaliséeLogementLocatif
 sous condition date_courante >= |2023-10-01| et date_courante < |2024-10-01|:
   définition rapport_loyers égal à
-    arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
+    # La deuxième décimale en pourcentage est la quatrième décimale du rapport
+    arrondi de ((loyer_éligible / loyer_référence) * 10000,0) / 10000,0
 ```
 
 Pour la détermination de TL , les taux progressifs et les tranches successives de RL mentionnés
@@ -2483,7 +2484,8 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 champ d'application CalculAidePersonnaliséeLogementLocatif
 sous condition date_courante >= |2022-07-01| et date_courante < |2023-10-01|:
   définition rapport_loyers égal à
-    arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
+    # La deuxième décimale en pourcentage est la quatrième décimale du rapport
+    arrondi de ((loyer_éligible / loyer_référence) * 10000,0) / 10000,0
 ```
 
 Pour la détermination de TL , les taux progressifs et les tranches successives de RL mentionnés
@@ -4493,7 +4495,8 @@ sous condition
   date_courante >= |2021-10-01|
   et date_courante < |2022-07-01|:
   définition rapport_loyers égal à
-    arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
+    # La deuxième décimale en pourcentage est la quatrième décimale du rapport
+    arrondi de ((loyer_éligible / loyer_référence) * 10000,0) / 10000,0
 ```
 
 Pour la détermination de TL , les taux progressifs et les tranches successives de RL mentionnés
@@ -5710,7 +5713,8 @@ sous condition
   date_courante >= |2020-10-01|
   et date_courante < |2021-10-01|:
   définition rapport_loyers égal à
-    arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
+    # La deuxième décimale en pourcentage est la quatrième décimale du rapport
+    arrondi de ((loyer_éligible / loyer_référence) * 10000,0) / 10000,0
 ```
 
 Pour la détermination de TL , les taux progressifs et les tranches successives de RL mentionnés
@@ -7791,7 +7795,8 @@ RL est exprimé en pourcentage et arrondi à la deuxième décimale.
 champ d'application CalculAidePersonnaliséeLogementLocatif
 sous condition date_courante >= |2024-10-01| et date_courante < |2025-10-01|:
   définition rapport_loyers égal à
-    arrondi de ((loyer_éligible / loyer_référence) * 100,0) / 100,0
+    # La deuxième décimale en pourcentage est la quatrième décimale du rapport
+    arrondi de ((loyer_éligible / loyer_référence) * 10000,0) / 10000,0
 ```
 
 Pour la détermination de TL , les taux progressifs et les tranches successives de RL mentionnés
