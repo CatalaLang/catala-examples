@@ -196,7 +196,7 @@ champ d'application Exemple2:
 $ catala test-scope Exemple1
 ┌─[RESULT]─ Exemple1 ─
 │ éligibilité = vrai
-│ montant_versé = 246,23 €
+│ montant_versé = 245,23 €
 └─
 ```
 
