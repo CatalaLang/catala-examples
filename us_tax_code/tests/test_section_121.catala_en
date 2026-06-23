@@ -160,42 +160,42 @@ scope Test6:
 
 ```catala-test-cli
 $ catala test-scope Test1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test1 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test2 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test3 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test4 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test5 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test5 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test6 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test6 ─
 │ Computation successful!
 └─
 ```

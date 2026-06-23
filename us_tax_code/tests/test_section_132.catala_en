@@ -47,21 +47,21 @@ scope TestSection132_3:
 
 ```catala-test-cli
 $ catala test-scope TestSection132_1
-┌─[RESULT]─
+┌─[RESULT]─ TestSection132_1 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope TestSection132_2
-┌─[RESULT]─
+┌─[RESULT]─ TestSection132_2 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope TestSection132_3
-┌─[RESULT]─
+┌─[RESULT]─ TestSection132_3 ─
 │ Computation successful!
 └─
 ```

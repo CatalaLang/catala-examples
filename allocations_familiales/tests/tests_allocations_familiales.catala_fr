@@ -406,98 +406,98 @@ $ catala Typecheck
 
 ```catala-test-cli
 $ catala test-scope Test1 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test1 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test2 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test2 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test3 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test3 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test4 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test4 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test5 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test5 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test6 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test6 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test7 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test7 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test8 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test8 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test9 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test9 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test10 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test10 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test11 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test11 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test12 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test12 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test13 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test13 ─
 │ Computation successful!
 └─
 ```
 
 ```catala-test-cli
 $ catala test-scope Test13 --disable-warnings
-┌─[RESULT]─
+┌─[RESULT]─ Test13 ─
 │ Computation successful!
 └─
 ```
