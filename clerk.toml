@@ -24,7 +24,9 @@ include_objects = true
 [[target]]
 name = "aides-logement"
 modules = ["Aides_logement"]
-backends = ["ocaml", "python", "c", "java"]
+## Disable java for now as the generated code with traces yields a "code too large" error
+# backends = ["ocaml", "python", "c", "java"]
+backends = ["ocaml", "python", "c"]
 tests = ["aides_logement/tests/"]
 include_objects = true
 
