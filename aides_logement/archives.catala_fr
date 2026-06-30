@@ -1674,7 +1674,7 @@ champ d'application CalculAidePersonnaliséeLogementLocatif
     sinon si nombre_personnes_à_charge = 1 alors
       8 002 €
     sinon si nombre_personnes_à_charge = 2 alors
-      8 192 €
+      8 182 €
     sinon si nombre_personnes_à_charge = 3 alors
       8 495 €
     sinon si nombre_personnes_à_charge = 4 alors
