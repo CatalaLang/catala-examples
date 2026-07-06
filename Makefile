@@ -118,7 +118,7 @@ $(BUILD)/%.html: %.catala_??
 ##########################
 
 _targets/%.cmxa: targets
-	ocamlmklib _targets/$*/ocaml/*.cmx -o _targets/$*
+	ocamlmklib _targets/ocaml/$*/*.cmx -o _targets/$*
 
 ocaml-libs: _targets/allocations-familiales.cmxa _targets/aides-logement.cmxa _targets/impot-revenu.cmxa
 

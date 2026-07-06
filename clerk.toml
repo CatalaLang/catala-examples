@@ -29,6 +29,7 @@ modules = ["Aides_logement"]
 backends = ["ocaml", "python", "c"]
 tests = ["aides_logement/tests/"]
 include_objects = true
+dependencies = ["allocations-familiales"]
 
 [[target]]
 name = "impot-revenu"
