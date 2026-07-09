@@ -155,7 +155,14 @@ champ d'application ContributionsSocialesAidesPersonnelleLogement:
   définition montant de aide_finale
   sous condition date_courante >= |2018-09-01|
   conséquence égal à
-    aide_finale * taux_crds
+    # Voir brochure APL "Les aides personnelles au logement - Elements de calcul",
+    # edition avril 2023, page 59 (regles d'arrondi) :
+    # https://web.archive.org/web/20260518101631/https://www.ecologie.gouv.fr/sites/default/files/documents/Brochure-bareme-avril-2023-APL.pdf
+    soit crds_brut_décimal égal à aide_finale * taux_crds dans
+    soit crds_arrondi_centime_inf_décimal égal à
+      (arrondi de ((crds_brut_décimal * 100,0) - 0,5 €)) / 100,0
+    dans
+    crds_arrondi_centime_inf_décimal
 
   assertion exonéré_csg
 # Voir L136-1-3 code de la sécurité sociale
