@@ -21,12 +21,36 @@ jobs:
         run: sudo sh -c "echo HOME=/home/ocaml >> ${GITHUB_ENV}"
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check formatting
-        run: |
-          opam --cli=2.1 exec -- make check-format
+      # - name: Check formatting
+      #   run: |
+      #     opam --cli=2.1 exec -- make check-format
       - name: Install Java dependencies
         run: |
           apk add openjdk21
       - name: Run tests (interpreter and backends)
         run: |
           opam --cli=2.1 exec -- clerk ci
+
+  check-format:
+    name: Check formatting (glibc)
+    runs-on: self-hosted
+    container:
+      image: ocaml/opam:debian-12-ocaml-4.14
+      options: --user root
+    env:
+      OPAMROOTISOK: "1"
+    steps:
+      - name: Fix home
+        run: sh -c "echo HOME=/home/opam >> ${GITHUB_ENV}"
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Rust
+        run: |
+          curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal
+          echo "${HOME}/.cargo/bin" >> "${GITHUB_PATH}"
+      - name: Install catala-format
+        run: |
+          opam --cli=2.1 pin add -y catala-format git+https://github.com/CatalaLang/catala-format
+      - name: Check formatting
+        run: |
+          opam --cli=2.1 exec -- make check-format
