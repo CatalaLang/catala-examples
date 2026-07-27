@@ -19,7 +19,6 @@ name = "allocations-familiales"
 modules = ["Allocations_familiales"]
 backends = ["ocaml", "python", "c", "java"]
 tests = ["allocations_familiales/tests/"]
-include_objects = true
 
 [[target]]
 name = "aides-logement"
@@ -28,7 +27,6 @@ modules = ["Aides_logement"]
 # backends = ["ocaml", "python", "c", "java"]
 backends = ["ocaml", "python", "c"]
 tests = ["aides_logement/tests/"]
-include_objects = true
 dependencies = ["allocations-familiales"]
 
 [[target]]
@@ -36,14 +34,12 @@ name = "impot-revenu"
 modules = ["Impot_revenu"]
 backends = ["ocaml"]            # External module 'Oracle' exists only in OCaml
 tests = ["impot_revenu/tests/"]
-include_objects = true
 
 [[target]]
 name = "aide-fibre"
 modules = ["Aide_travaux_raccordement_fibre_optique", "Eligibilite_commune"]
 backends = ["ocaml"]                                                         # External module 'Oracle' exists only in OCaml
 tests = ["asp/aide_fibre/tests/"]
-include_objects = true
 
 [[target]]
 name = "fonpeps"
