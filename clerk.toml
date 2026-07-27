@@ -1,4 +1,5 @@
 [project]
+name = "catala-examples"
 include_dirs = [
   "base_mensuelle_allocations_familiales",
   "smic",
