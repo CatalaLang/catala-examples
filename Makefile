@@ -117,10 +117,12 @@ $(BUILD)/%.html: %.catala_??
 # Rules: OCaml compilation
 ##########################
 
-_targets/%.cmxa: targets
-	ocamlmklib _targets/$*/ocaml/*.cmx -o _targets/$*
+_targets/ocaml/%.cmxa: targets
+	@# clerk build %*
+	dune build --root _targets/ocaml $*
+	cp _targets/ocaml/_build/default/$*/*.cmxa _targets/ocaml/$*.cmxa
 
-ocaml-libs: _targets/allocations-familiales.cmxa _targets/aides-logement.cmxa _targets/impot-revenu.cmxa
+ocaml-libs: _targets/ocaml/allocations-familiales.cmxa _targets/ocaml/aides-logement.cmxa _targets/ocaml/impot-revenu.cmxa
 
 
 ################################################
@@ -146,17 +148,14 @@ build-backend = "hatchling.build"
 packages = ["$1"]
 endef
 
-_targets/%_python.tar.gz: targets
+_targets/python/%.tar.gz: targets
 	@mkdir -p $(BUILD)/python/$*/$*
-	cp _targets/$*/python/* $(BUILD)/python/$*/$*/
-	echo '__all__ = [$(foreach f,$(wildcard _targets/$*/python/*),"$(notdir $(basename $f))",)]' \
-	  >$(BUILD)/python/$*/$*/__init__.py
-	touch $(BUILD)/python/$*/$*/py.typed
+	cp _targets/python/$*/* $(BUILD)/python/$*/$*/
 	$(file >$(BUILD)/$*.toml,$(call pyproject_toml,$*))
 	mv $(BUILD)/$*.toml $(BUILD)/python/$*/pyproject.toml
 	tar czf $@ -C $(BUILD)/python $*
 
-python-libs: _targets/allocations-familiales_python.tar.gz _targets/aides-logement_python.tar.gz
+python-libs: _targets/python/allocations-familiales.tar.gz _targets/python/aides-logement.tar.gz
 
 
 clean: .FORCE
