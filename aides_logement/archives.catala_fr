@@ -5563,9 +5563,9 @@ sous condition
     et nombre_personnes_à_charge = 0
   conséquence égal à
     selon zone sous forme
-    -- Zone1 : 296,82€
-    -- Zone2 : 258,59€
-    -- Zone3 : 242,46€
+    -- Zone1: 296,82€
+    -- Zone2: 258,69€
+    -- Zone3: 242,46€
 
   # Colonne 2
   étiquette base
