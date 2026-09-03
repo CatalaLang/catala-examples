@@ -34,13 +34,15 @@ CATALA_DEPENDS = $(CATALA) depends -I $(CATALA_INCLUDE) --prefix=$(BUILD)
 
 OCAML_FLAGS = -g
 
+MVN = mvn
+
 #######################
 # List of build targets
 #######################
 
 NODOC ?=
 
-all: targets ocaml-libs python-libs
+all: targets ocaml-libs python-libs java-libs
 
 targets:
 	$(CLERK_BUILD)
@@ -124,6 +126,8 @@ _targets/ocaml/%.cmxa: targets
 
 ocaml-libs: _targets/ocaml/allocations-familiales.cmxa _targets/ocaml/aides-logement.cmxa _targets/ocaml/impot-revenu.cmxa
 
+java-libs: targets
+	$(MVN) -f _targets/java package
 
 ################################################
 # Rule for python, and python project generation
