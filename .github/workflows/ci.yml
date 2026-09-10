@@ -26,7 +26,7 @@ jobs:
           opam --cli=2.1 exec -- make check-format
       - name: Install Java dependencies
         run: |
-          apk add openjdk21
+          apk add openjdk17 maven
       - name: Run tests (interpreter and backends)
         run: |
           opam --cli=2.1 exec -- clerk ci
