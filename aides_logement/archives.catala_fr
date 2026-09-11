@@ -6931,7 +6931,7 @@ sous condition
     sinon si nombre_personnes_à_charge = 6 alors
       9 246 €
     sinon
-      9 246€ + 305 € * (décimal de (nombre_personnes_à_charge - 6))
+      9 246€ + 305 € * multiplicateur_majoration_r0
 ```
 
 NOTA :
