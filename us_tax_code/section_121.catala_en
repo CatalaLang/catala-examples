@@ -112,7 +112,7 @@ scope Section121TwoPersons:
   definition section121Person2.property_ownage equals person2.property_ownage
 
   definition section121Person2.property_usage_as_principal_residence equals
-    person1.property_usage_as_principal_residence
+    person2.property_usage_as_principal_residence
 
   definition section121Person1.gain_from_sale_or_exchange_of_property equals
     gain_from_sale_or_exchange_of_property
