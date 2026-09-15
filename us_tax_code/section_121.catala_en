@@ -214,10 +214,14 @@ scope Section121SinglePerson:
 
 scope Section121TwoPersons:
   definition section121a_requirements_met equals
-    section121Person1.requirements_met
+    section121Person1.requirements_met or section121Person2.requirements_met
 
   definition income_excluded_from_gross_income_uncapped equals
-    section121Person1.income_excluded_from_gross_income_uncapped
+    Money.max of
+      (
+        section121Person1.income_excluded_from_gross_income_uncapped,
+        section121Person2.income_excluded_from_gross_income_uncapped
+      )
 ```
 
 ### (b) Limitations
