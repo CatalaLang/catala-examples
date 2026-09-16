@@ -32,19 +32,18 @@ dependencies = ["allocations-familiales"]
 [[target]]
 name = "impot-revenu"
 modules = ["Impot_revenu"]
-backends = ["ocaml"]            # External module 'Oracle' exists only in OCaml
+backends = ["ocaml"] # External module 'Oracle' exists only in OCaml
 tests = ["impot_revenu/tests/"]
 
 [[target]]
 name = "aide-fibre"
 modules = ["Aide_travaux_raccordement_fibre_optique", "Eligibilite_commune"]
-backends = ["ocaml"]                                                         # External module 'Oracle' exists only in OCaml
+backends = ["ocaml"] # External module 'Eligibilite_commune' exists only in OCaml
 tests = ["asp/aide_fibre/tests/"]
 
 [[target]]
 name = "fonpeps"
 modules = ["Fonpeps"]
-backends = ["ocaml"]           # External module 'Oracle' exists only in OCaml
 tests = ["asp/fonpeps/tests/"]
 dependencies = ["smic"]
 

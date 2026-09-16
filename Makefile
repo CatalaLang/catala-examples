@@ -42,7 +42,7 @@ MVN = mvn
 
 NODOC ?=
 
-all: targets ocaml-libs python-libs java-libs
+all: targets ocaml-libs python-libs java-libs c-libs
 
 targets:
 	$(CLERK_BUILD)
@@ -128,6 +128,9 @@ ocaml-libs: _targets/ocaml/allocations-familiales.cmxa _targets/ocaml/aides-loge
 
 java-libs: targets
 	$(MVN) -f _targets/java package
+
+c-libs: targets
+	$(MAKE) -C _targets/c
 
 ################################################
 # Rule for python, and python project generation
