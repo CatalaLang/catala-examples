@@ -3171,5 +3171,5 @@ let eligibilite_commune : integer -> bool =
 
 let () =
   Catala_runtime.register_module "Eligibilite_commune"
-    ["\195\137ligibilit\195\169Commune", Obj.repr eligibilite_commune]
+    ["\195\169ligibilit\195\169_commune", Obj.repr eligibilite_commune]
     "*external*"
