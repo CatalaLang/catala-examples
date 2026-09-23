@@ -306,6 +306,16 @@ let prorata_arrondi_euro_listes
   in
   valeurs_proratisees
 
+let test () =
+  let json_string = {|
+  {"number" : 42,
+   "string" : "yes",
+   "list": ["for", "sure", 42]}|}
+  in
+  let json = Yojson.Safe.from_string json_string
+  in
+  Format.eprintf "Parsed to %a@\n" Yojson.Safe.pp json
+
 (* Toplevel def prorata_arrondi_euro_branchement *)
 let prorata_arrondi_euro_branchement
     (montant_a_distribuer : money)
@@ -328,6 +338,7 @@ let prorata_arrondi_euro_branchement
     (bases_prorata_liste_8 : money array)
     (bases_prorata_liste_9 : money array) :
     ResultatProRataArrondiEuroBranchement.t =
+  test ();
   let base_prorata_1 =
     match base_prorata_1 with
     | Absent -> money_of_units_int 0

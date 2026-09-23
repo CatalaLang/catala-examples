@@ -15,6 +15,9 @@ include_dirs = [
   "us_tax_code",
 ]
 
+[ocaml]
+use_libraries = ["yojson"]
+
 [[target]]
 name = "allocations-familiales"
 modules = ["Allocations_familiales"]
