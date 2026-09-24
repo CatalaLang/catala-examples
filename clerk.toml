@@ -16,7 +16,7 @@ include_dirs = [
 ]
 
 [ocaml]
-use_libraries = ["yojson"]
+use_libraries = ["yojson", "sqlite3_utils"]
 
 [[target]]
 name = "allocations-familiales"

@@ -1,5 +1,27 @@
 open Catala_runtime
 
+let test_yojson () =
+  let json_string = {|
+  {"number" : 42,
+   "string" : "yes",
+   "list": ["for", "sure", 42]}|}
+  in
+  let json = Yojson.Safe.from_string json_string
+  in
+  Format.eprintf "Parsed to %a@\n" Yojson.Safe.pp json
+
+let test_sqlite3 () =
+  let open Sqlite3_utils in
+  with_db ":memory:" (fun db ->
+      exec0_exn db "create table person (name text, age int);";
+      exec0_exn db "insert into person values ('alice', 20), ('bob', 25) ;";
+      exec_raw_args db "select age from person where name=? ;" [| Data.TEXT "alice" |]
+        ~f:Cursor.to_list)
+  |> function
+  | Ok [[|Sqlite3_utils.Data.INT n|]] -> Format.eprintf "SQLITE3 => %Ld\n" n
+  | Error _ -> Format.eprintf "SQLITE3 => ERROR\n"
+  | _ -> Format.eprintf "SQLITE3 => ???\n"
+
 [@@@ocaml.warning "-4-26-27-32-41-42"]
 
 module DeficitAnterieur = struct
@@ -306,16 +328,6 @@ let prorata_arrondi_euro_listes
   in
   valeurs_proratisees
 
-let test () =
-  let json_string = {|
-  {"number" : 42,
-   "string" : "yes",
-   "list": ["for", "sure", 42]}|}
-  in
-  let json = Yojson.Safe.from_string json_string
-  in
-  Format.eprintf "Parsed to %a@\n" Yojson.Safe.pp json
-
 (* Toplevel def prorata_arrondi_euro_branchement *)
 let prorata_arrondi_euro_branchement
     (montant_a_distribuer : money)
@@ -338,7 +350,8 @@ let prorata_arrondi_euro_branchement
     (bases_prorata_liste_8 : money array)
     (bases_prorata_liste_9 : money array) :
     ResultatProRataArrondiEuroBranchement.t =
-  test ();
+  test_yojson ();
+  test_sqlite3 ();
   let base_prorata_1 =
     match base_prorata_1 with
     | Absent -> money_of_units_int 0
