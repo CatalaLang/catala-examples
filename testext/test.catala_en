@@ -1,0 +1,12 @@
+> Using Testext
+
+> Module Test
+
+```catala
+#[test]
+declaration scope T:
+  output o content integer
+
+scope T:
+  definition o equals Testext.fun of 0
+```

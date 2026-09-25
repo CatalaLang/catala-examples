@@ -1,0 +1,5 @@
+> Module Testext external
+
+```catala-metadata
+declaration fun content integer depends on x content integer
+```

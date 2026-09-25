@@ -1,22 +1,14 @@
 [project]
 name = "catala-examples"
-include_dirs = [
-  "base_mensuelle_allocations_familiales",
-  "smic",
-  "prologue_france",
-  "prestations_familiales",
-  "allocations_familiales",
-  "aides_logement",
-  "droit_successions",
-  "impot_revenu",
-  "asp/aide_fibre",
-  "asp/fonpeps",
-  "asp/bcae7",
-  "us_tax_code",
-]
 
 [ocaml]
 use_libraries = ["yojson", "sqlite3_utils"]
+
+[c]
+use_libraries = ["sqlite3"]
+
+[python]
+use_libraries = ["art"]
 
 [[target]]
 name = "allocations-familiales"
@@ -67,3 +59,8 @@ tests = ["us_tax_code/tests/"]
 name = "smic"
 modules = ["Smic","France"]
 backends = ["ocaml", "python", "c", "java"]
+
+[[target]]
+name = "testext"
+modules = ["Testext", "Test"]
+tests = ["testext/"]
