@@ -395,7 +395,7 @@ champ d'application ConditionnalitéBCAE7Pour2025:
   conséquence rempli
 
   # On ne contrôle pas 2022
-  définition années_évaluation_pluriannuelle égal à [ 2023; 2024; 2025 ]
+  définition années_évaluation_pluriannuelle égal à [ 2023; 2024; 2025; ]
 
   définition rotation_cultures_critère_pluriannuel_parcelle
     de parcelle état base
