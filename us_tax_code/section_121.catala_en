@@ -373,7 +373,7 @@ scope Section121SinglePerson:
   under condition
     other_section_121a_sale
     with pattern MostRecentSaleWhereSection121aApplied content other_sale
-    and date_of_sale_or_exchange - other_sale.date_of_sale_or_exchange <= 2 year
+    and date_of_sale_or_exchange <= other_sale.date_of_sale_or_exchange + 2 year
   consequence fulfilled
 
   exception

@@ -36,28 +36,28 @@ scope Data:
     }
   definition person_ok_1 equals
     T.PersonalData {
-      -- property_ownage: [ period_four_years_recent ]
-      -- property_usage_as_principal_residence: [ period_four_years_recent ]
+      -- property_ownage: [ period_four_years_recent; ]
+      -- property_usage_as_principal_residence: [ period_four_years_recent; ]
       -- other_section_121a_sale: T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
     }
   definition person_ok_2 equals
     T.PersonalData {
-      -- property_ownage: [ period_four_years_recent ]
+      -- property_ownage: [ period_four_years_recent; ]
       -- property_usage_as_principal_residence:
-        [ period_two_years_middle; period_one_year_recent ]
+        [ period_two_years_middle; period_one_year_recent; ]
       -- other_section_121a_sale: T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
     }
   definition person_ko_1 equals
     T.PersonalData {
-      -- property_ownage: [ period_four_years_recent ]
-      -- property_usage_as_principal_residence: [ period_one_year_recent ]
+      -- property_ownage: [ period_four_years_recent; ]
+      -- property_usage_as_principal_residence: [ period_one_year_recent; ]
       -- other_section_121a_sale: T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
     }
 
   definition person_ko_2 equals
     T.PersonalData {
-      -- property_ownage: [ period_four_years_recent ]
-      -- property_usage_as_principal_residence: [ period_two_years_middle ]
+      -- property_ownage: [ period_four_years_recent; ]
+      -- property_usage_as_principal_residence: [ period_two_years_middle; ]
       -- other_section_121a_sale: T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
     }
 
@@ -72,9 +72,9 @@ scope Test1:
   definition scope121a.date_of_sale_or_exchange equals data_.date_of_sale_or_exchange
   definition scope121a.gain_from_sale_or_exchange_of_property equals
     data_.gain_from_sale_or_exchange_of_property
-  definition scope121a.property_ownage equals [ data_.period_four_years_recent ]
+  definition scope121a.property_ownage equals [ data_.period_four_years_recent; ]
   definition scope121a.property_usage_as_principal_residence equals
-    [ data_.period_four_years_recent ]
+    [ data_.period_four_years_recent; ]
   definition scope121a.other_section_121a_sale equals T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
   assertion scope121a.requirements_met
 
@@ -87,9 +87,9 @@ scope Test2:
   definition scope121a.date_of_sale_or_exchange equals data_.date_of_sale_or_exchange
   definition scope121a.gain_from_sale_or_exchange_of_property equals
     data_.gain_from_sale_or_exchange_of_property
-  definition scope121a.property_ownage equals [ data_.period_four_years_recent ]
+  definition scope121a.property_ownage equals [ data_.period_four_years_recent; ]
   definition scope121a.property_usage_as_principal_residence equals
-    [ data_.period_one_year_recent ]
+    [ data_.period_one_year_recent; ]
   definition scope121a.other_section_121a_sale equals T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
   assertion not scope121a.requirements_met
 
@@ -102,9 +102,9 @@ scope Test3:
   definition scope121a.date_of_sale_or_exchange equals data_.date_of_sale_or_exchange
   definition scope121a.gain_from_sale_or_exchange_of_property equals
     data_.gain_from_sale_or_exchange_of_property
-  definition scope121a.property_ownage equals [ data_.period_four_years_recent ]
+  definition scope121a.property_ownage equals [ data_.period_four_years_recent; ]
   definition scope121a.property_usage_as_principal_residence equals
-    [ data_.period_two_years_middle ]
+    [ data_.period_two_years_middle; ]
   definition scope121a.other_section_121a_sale equals T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
   assertion not scope121a.requirements_met
 
@@ -117,9 +117,9 @@ scope Test4:
   definition scope121a.date_of_sale_or_exchange equals data_.date_of_sale_or_exchange
   definition scope121a.gain_from_sale_or_exchange_of_property equals
     data_.gain_from_sale_or_exchange_of_property
-  definition scope121a.property_ownage equals [ data_.period_four_years_recent ]
+  definition scope121a.property_ownage equals [ data_.period_four_years_recent; ]
   definition scope121a.property_usage_as_principal_residence equals
-    [ data_.period_two_years_middle; data_.period_one_year_recent ]
+    [ data_.period_two_years_middle; data_.period_one_year_recent; ]
   definition scope121a.other_section_121a_sale equals T.OtherSection121aSale.NoOtherSaleWhereSection121aApplied
   assertion scope121a.requirements_met
 

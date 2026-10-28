@@ -683,7 +683,7 @@ champ d'application TraitementsSalaires5:
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
       -- déclarant1: déclarant1.sortie
       -- déclarant2: Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie; ]
       -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
@@ -891,7 +891,7 @@ champ d'application TraitementsSalaires6:
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
       -- déclarant1: déclarant1.sortie
       -- déclarant2: Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie; ]
       -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
@@ -1350,7 +1350,7 @@ champ d'application TraitementsSalaires7:
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
       -- déclarant1: déclarant1.sortie
       -- déclarant2: Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie; ]
       -- année_revenus: 2022
       -- revenus: foyer.sortie
     }
@@ -1657,7 +1657,7 @@ champ d'application TraitementsSalaires8:
     résultat de IR.TraitementsSalairesFoyerFiscal avec {
       -- déclarant1: déclarant1.sortie
       -- déclarant2: Déclaration contenu déclarant2.sortie
-      -- déclarations_personnes_à_charge: [ déclarant3.sortie ]
+      -- déclarations_personnes_à_charge: [ déclarant3.sortie; ]
       -- année_revenus: 2022
       -- revenus: foyer.sortie
     }

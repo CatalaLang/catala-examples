@@ -69,7 +69,7 @@ champ d'application BénéficesIndustrielsCommerciaux1:
     résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
       -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
       -- déficits_réels_années_antérieures_non_professionnels: []
-      -- revenus: [ déclarant1.sortie ]
+      -- revenus: [ déclarant1.sortie; ]
       -- année_revenus: 2023
     }
 ```
@@ -333,7 +333,7 @@ champ d'application BénéficesIndustrielsCommerciaux2:
     résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
       -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
       -- déficits_réels_années_antérieures_non_professionnels: []
-      -- revenus: [ déclarant1.sortie ]
+      -- revenus: [ déclarant1.sortie; ]
       -- année_revenus: 2023
     }
 ```
@@ -625,7 +625,7 @@ champ d'application BénéficesIndustrielsCommerciaux3:
     résultat de IR.BénéficesIndustrielsCommerciauxFoyerFiscal avec {
       -- déficits_réels_années_antérieures_non_professionnels_locations_meublées: []
       -- déficits_réels_années_antérieures_non_professionnels: []
-      -- revenus: [ déclarant1.sortie ]
+      -- revenus: [ déclarant1.sortie; ]
       -- année_revenus: 2023
     }
 ```

@@ -5529,7 +5529,7 @@ plus de deux personnes.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  étiquette r_844_4 exception base
+  étiquette r_844_4 exception mayotte
   règle condition_logement_surface
   sous condition
     ménage.personnes_âgées_handicapées_foyer_r844_4
@@ -5612,7 +5612,7 @@ personnes et plus.
 
 ```catala
 champ d'application ÉligibilitéAidesPersonnelleLogement:
-  exception base
+  étiquette mayotte exception base
   règle condition_logement_surface
   sous condition
     ménage.résidence sous forme Mayotte

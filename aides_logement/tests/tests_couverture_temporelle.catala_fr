@@ -25,7 +25,7 @@ déclaration champ d'application CouvertureAPLLocatifMétropole:
 champ d'application CouvertureAPLLocatifMétropole:
   définition montants égal à
     transforme chaque date_test
-    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01| ] en
+    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01|; ] en
       (
         résultat de AL.CalculAidePersonnaliséeLogementLocatif avec {
           -- date_courante: date_test
@@ -59,7 +59,7 @@ déclaration champ d'application CouvertureAPLLocatifColocation:
 champ d'application CouvertureAPLLocatifColocation:
   définition montants égal à
     transforme chaque date_test
-    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01| ] en
+    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01|; ] en
       (
         résultat de AL.CalculAidePersonnaliséeLogementLocatif avec {
           -- date_courante: date_test
@@ -93,7 +93,7 @@ déclaration champ d'application CouvertureAPLLocatifDROM:
 champ d'application CouvertureAPLLocatifDROM:
   définition montants égal à
     transforme chaque date_test
-    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01| ] en
+    parmi [ |2023-10-01|; |2024-01-01|; |2024-04-01|; |2024-07-01|; |2024-10-01|; |2025-01-01|; |2025-04-01|; |2025-07-01|; |2025-10-01|; |2026-01-01|; |2026-04-01|; |2026-07-01|; |2026-10-01|; |2027-01-01|; |2027-04-01|; |2027-07-01|; ] en
       (
         résultat de AL.CalculAidePersonnaliséeLogementLocatif avec {
           -- date_courante: date_test
